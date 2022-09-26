@@ -12,7 +12,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
     </parent>
-    <name>L7-4</name>
+    <name>Tirans of the Underdark</name>
 
     <properties>
 
@@ -43,6 +43,20 @@
                 <properties>
                     <picUrl>
                         https://avatars.githubusercontent.com/u/72501425?v=4
+                    </picUrl>
+                </properties>
+            </developer>
+            <developers>
+            <developer>
+                <id>javfercas3</id>
+                <name>Javier Fernández Castillo</name>
+                <email>javidelatorre400@gmail.com</email>
+                <roles>
+                    <role>tech master</role>
+                </roles>
+                <properties>
+                    <picUrl>
+                        https://avatars.githubusercontent.com/u/100673872?v=4
                     </picUrl>
                 </properties>
             </developer>
