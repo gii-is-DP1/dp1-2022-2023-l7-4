@@ -46,7 +46,6 @@
                     </picUrl>
                 </properties>
             </developer>
-            <developers>
             <developer>
                 <id>javfercas3</id>
                 <name>Javier Fernández Castillo</name>
@@ -70,6 +69,19 @@
                 <properties>
                     <picUrl>
                         https://avatars.githubusercontent.com/u/72501425?v=4
+                    </picUrl>
+                </properties>
+            </developer>
+            <developer>
+                <id>davdelcar</id>
+                <name>David del Hoyo Carcaboso</name>
+                <email>daviddhc02@gmail.com</email>
+                <roles>
+                    <role>tech master</role>
+                </roles>
+                <properties>
+                    <picUrl>
+                        https://avatars.githubusercontent.com/u/72883670?v=4
                     </picUrl>
                 </properties>
             </developer>
