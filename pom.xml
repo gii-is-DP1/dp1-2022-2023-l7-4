@@ -60,6 +60,19 @@
                     </picUrl>
                 </properties>
             </developer>
+            <developer>
+                <id>manotebar</id>
+                <name>Manuel</name>
+                <email>manolo.ob@hotmail.com</email>
+                <roles>
+                    <role>tech master chief</role>
+                </roles>
+                <properties>
+                    <picUrl>
+                        https://avatars.githubusercontent.com/u/72501425?v=4
+                    </picUrl>
+                </properties>
+            </developer>
         </developers>
         <dependency>
             <groupId>org.springframework.boot</groupId>
