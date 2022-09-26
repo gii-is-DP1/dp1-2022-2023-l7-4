@@ -15,9 +15,10 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','owner');
 INSERT INTO users(username,password,enabled) VALUES ('javfercas3','secret1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (5,'javfercas3','owner');
 
-
 INSERT INTO users(username,password,enabled) VALUES ('manotebar','manotebar',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'manotebar','owner');
+INSERT INTO users(username,password,enabled) VALUES ('davdelcar','owner2',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (6,'davdelcar','owner');
 
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');
 INSERT INTO vets(id, first_name,last_name) VALUES (2, 'Helen', 'Leary');
@@ -56,7 +57,9 @@ INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Mad
 INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'owner1');
 -- 8.5
 INSERT INTO owners VALUES (11, 'Andres', 'Dominguez', '2335 Independence La.', 'Waunakee', '6085555487', 'anddomrui');
+
 INSERT INTO owners VALUES (13, 'Manuel', 'Otero', '2335 Independence La.', 'Waunakee', '6085555487', 'manotebar');
+INSERT INTO owners VALUES (12, 'David', 'Del Hoyo', '345 Maple St.', 'Madison', '6085557683', 'davdelcar');
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
@@ -74,6 +77,7 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-0
 -- 8.6
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (14, 'Ramon', '2012-06-08', 1, 11);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (14, 'huesitos', '2012-06-08', 1, 13);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (15, 'Harry', '2013-06-07', 2, 12);
 
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (1, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02', 'rabies shot');
