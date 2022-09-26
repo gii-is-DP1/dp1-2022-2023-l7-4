@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
-    <artifactId>spring-petclinic</artifactId>
+    <artifactId>L7-4</artifactId>
     <version>2.2.0.BUILD-SNAPSHOT</version>
 
     <parent>
@@ -12,7 +12,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
     </parent>
-    <name>petclinic</name>
+    <name>Tirans of the Underdark</name>
 
     <properties>
 
@@ -26,14 +26,54 @@
         <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
         <webjars-jquery.version>2.2.4</webjars-jquery.version>
         <wro4j.version>1.8.0</wro4j.version>
-
-        <jacoco.version>0.8.5</jacoco.version>
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
 
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
+        <developers>
+            <developer>
+                <id>anddomrui</id>
+                <name>Andrés</name>
+                <email>andresdominguezruiz.ad@gmail.com</email>
+                <roles>
+                    <role>tech master</role>
+                </roles>
+                <properties>
+                    <picUrl>
+                        https://avatars.githubusercontent.com/u/72501425?v=4
+                    </picUrl>
+                </properties>
+            </developer>
+            <developers>
+            <developer>
+                <id>javfercas3</id>
+                <name>Javier Fernández Castillo</name>
+                <email>javidelatorre400@gmail.com</email>
+                <roles>
+                    <role>tech master</role>
+                </roles>
+                <properties>
+                    <picUrl>
+                        https://avatars.githubusercontent.com/u/100673872?v=4
+                    </picUrl>
+                </properties>
+            </developer>
+            <developer>
+                <id>manotebar</id>
+                <name>Manuel</name>
+                <email>manolo.ob@hotmail.com</email>
+                <roles>
+                    <role>tech master chief</role>
+                </roles>
+                <properties>
+                    <picUrl>
+                        https://avatars.githubusercontent.com/u/72501425?v=4
+                    </picUrl>
+                </properties>
+            </developer>
+        </developers>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
@@ -171,26 +211,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- Spring Boot Actuator displays build-related information if a git.properties 
             file is present at the classpath -->
             <plugin>
