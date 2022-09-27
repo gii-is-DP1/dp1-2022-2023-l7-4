@@ -85,6 +85,19 @@
                     </picUrl>
                 </properties>
             </developer>
+            <developer>
+                <id>javgaragu1</id>
+                <name>Javier</name>
+                <email>javgaragu1@alum.us.es</email>
+                <roles>
+                    <role>tech master</role>
+                </roles>
+                <properties>
+                    <picUrl>
+                        https://avatars.githubusercontent.com/u/72880234?v=4
+                    </picUrl>
+                </properties>
+            </developer>
         </developers>
         <dependency>
             <groupId>org.springframework.boot</groupId>
