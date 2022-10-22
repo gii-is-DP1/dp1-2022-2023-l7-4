@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "positions")
 @Entity
-public class Position extends NamedEntity{
+public class Position{
     @NotBlank
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
