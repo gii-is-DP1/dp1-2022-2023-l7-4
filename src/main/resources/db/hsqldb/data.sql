@@ -25,7 +25,7 @@ INSERT INTO users(username,password,enabled) VALUES ('javgaragu1','secret2',TRUE
 INSERT INTO authorities(id,username,authority) VALUES (8,'javgaragu1','owner');
 
 INSERT INTO users(username,password,enabled) VALUES ('davzarort','anuel',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (4,'davzarort','owner');
+INSERT INTO authorities(id,username,authority) VALUES (9,'davzarort','owner');
 
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');
 INSERT INTO vets(id, first_name,last_name) VALUES (2, 'Helen', 'Leary');
