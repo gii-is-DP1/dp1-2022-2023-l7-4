@@ -26,13 +26,11 @@
         <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
         <webjars-jquery.version>2.2.4</webjars-jquery.version>
         <wro4j.version>1.8.0</wro4j.version>
+        <jacoco.version>0.8.5</jacoco.version>
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
-
-    <dependencies>
-        <!-- Spring and Spring Boot dependencies -->
-        <developers>
+    <developers>
             <developer>
                 <id>anddomrui</id>
                 <name>Andrés</name>
@@ -113,6 +111,10 @@
                 </properties>
             </developer>
         </developers>
+
+    <dependencies>
+        <!-- Spring and Spring Boot dependencies -->
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
