@@ -6,7 +6,7 @@
 
 <petclinic:layout pageName="positions">
     <h2>Positions</h2>
-
+    
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
@@ -27,9 +27,19 @@
                 <td>
                     <c:out value="${position.occupied}"/>
                 </td>
+                <td>
+                    <button name="Ocupar">
+                        
+                    </button>
+                </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
+    <c:forEach items="${freePositions}" var="freePosition">
+        <c:out value="${freePosition.id}"/>
+    </c:forEach>
+    <spring:url value="/resources/images/example_map.jpg" htmlEscape="true" var="map"/>
+            <img class="img-responsive" src="${map}"/>
 
 </petclinic:layout>

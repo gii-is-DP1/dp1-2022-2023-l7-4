@@ -4,9 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.samples.petclinic.city.City;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
 import lombok.Getter;
@@ -27,6 +29,11 @@ public class Position{
 
     @NotBlank
     private Boolean occupied;
+
+    //RN- una posicion o pertenece a una ciudad o pertenece a un camino
+
+    @OneToOne(optional=true)
+    private City city;
 
     
     

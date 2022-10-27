@@ -23,6 +23,7 @@ public class PositionController {
     public ModelAndView showPositions(){
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
+        result.addObject("freePositions", positionService.getFreePositions());
         return result;
     }
     

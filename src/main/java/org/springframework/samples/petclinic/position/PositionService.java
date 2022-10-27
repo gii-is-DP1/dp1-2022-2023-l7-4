@@ -3,7 +3,9 @@ package org.springframework.samples.petclinic.position;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PositionService {
@@ -17,6 +19,16 @@ public class PositionService {
 
     public List<Position> getPositions(){
         return (List<Position>)positionRepository.findAll();
+    }
+
+    @Transactional
+    public void save(Position p){
+        positionRepository.save(p);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getFreePositions() throws DataAccessException{
+        return positionRepository.findAllPositionByOccupiedFalse();
     }
     
 }
