@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.position;
+package org.springframework.samples.petclinic.board.position;
 
 import java.util.List;
 

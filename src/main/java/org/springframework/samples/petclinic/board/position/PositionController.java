@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.position;
+package org.springframework.samples.petclinic.board.position;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

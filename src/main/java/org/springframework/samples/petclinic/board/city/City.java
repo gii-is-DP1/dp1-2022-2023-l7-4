@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.city;
+package org.springframework.samples.petclinic.board.city;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
