@@ -42,12 +42,6 @@ public class PositionController {
         if(p.getOccupied()) p.setOccupied(false);
         else p.setOccupied(true);
         this.positionService.saveAndFlush(p);
-        List<Position> ps= positionService.getPositions();
-        // System.out.println("POSITIONS_LISTING_VIEW");
-        // ModelAndView mav=new ModelAndView(POSITIONS_LISTING_VIEW);
-        // mav.addObject("positions", positionService.getPositions());
-        // result.addObject("freePositions", positionService.getFreePositions());
-    
         return "redirect:/positions";
 
     }
