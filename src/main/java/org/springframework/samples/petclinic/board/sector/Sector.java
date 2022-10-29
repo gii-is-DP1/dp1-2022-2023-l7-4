@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.position;
+package org.springframework.samples.petclinic.board.sector;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,27 +7,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.samples.petclinic.model.NamedEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
-@Table(name = "positions")
+@Table(name = "Sectors")
 @Entity
-public class Position extends NamedEntity{
+public class Sector {
+
     @NotBlank
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank
-    private Integer territory;
+    private Integer capacity;
 
-    @NotBlank
-    private Boolean occupied;
 
     
+
     
 }
