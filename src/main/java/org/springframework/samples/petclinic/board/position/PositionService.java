@@ -27,10 +27,10 @@ public class PositionService {
         positionRepository.save(p);
     }
 
-    // @Transactional(readOnly = true)
-    // public List<Position> getFreePositions() throws DataAccessException{
-    //     return positionRepository.findAllPositionByOccupiedFalse();
-    // }
+     @Transactional(readOnly = true)
+     public List<Position> getFreePositions() throws DataAccessException{
+        return positionRepository.findAllPositionByOccupiedFalse();
+    }
 
     public void saveAndFlush(Position p) {
         positionRepository.saveAndFlush(p);

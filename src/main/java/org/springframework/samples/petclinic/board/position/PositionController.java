@@ -33,7 +33,7 @@ public class PositionController {
     public ModelAndView showPositions(){
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
-        // result.addObject("freePositions", positionService.getFreePositions());
+        result.addObject("freePositions", positionService.getFreePositions());
         return result;
     }
     @GetMapping(value = "/{id}/occupy")
