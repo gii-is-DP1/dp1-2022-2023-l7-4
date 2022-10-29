@@ -42,7 +42,54 @@
     <c:forEach items="${freePositions}" var="freePosition">
         <c:out value="${freePosition.id}"/>
     </c:forEach>
-    <spring:url value="/resources/images/example_map.jpg" htmlEscape="true" var="map"/>
-            <img class="img-responsive" src="${map}"/>
+    
+    <body>
+        
+    <style>
+        .btn-pos-1{
+            background-color: aqua;
+            border: 8px;
+            text-align: center;
+            position: absolute;
+            border-radius: 50%;
+            top:0px;
+        }
+        .btn-pos-2{
+            background-color: aqua;
+            border: 8px;
+            text-align: center;
+            position: absolute;
+            border-radius: 50%;
+            top:30px;
+        }
+        .btn-pos-3{
+            background-color: aqua;
+            border: 8px;
+            text-align: center;
+            position: absolute;
+            border-radius: 50%;
+            top:60px;
+        }
+        .board{
+            background-image: url("/resources/images/example_map.jpg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 600px;
+            width: 600px;
+            position:relative;
+        }
+    </style>
+    
+        <div class="board">
+            <c:forEach items="${positions}" var="position">
+                <!--OJO, PUEDES ENCADENAR VALORES DE LAS ETIQUETAS CON LOS ATRIBUTOS DE LOS ITEMS-->
+            <div class="btn-pos-${position.id}">
+                <form action="positions/${position.id}/occupy">
+                    <input type="submit" value="${position.id}" />
+            </div>
+            </c:forEach>
+        </div>
+    </body>
+    
 
 </petclinic:layout>

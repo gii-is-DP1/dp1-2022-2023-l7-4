@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PositionRepository extends CrudRepository<Position,Integer>{
 
-    // @Query
-    // List<Position> findAllPositionByOccupiedFalse();
+    @Query
+    List<Position> findAllPositionByOccupiedFalse();
     //TODO:findAllPositionNextToPositionIdAndOccupiedFalse
 
     void saveAndFlush(Position p);
