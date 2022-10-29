@@ -1,11 +1,10 @@
-package org.springframework.samples.petclinic.board.city;
+package org.springframework.samples.petclinic.board.sector;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Getter;
@@ -14,9 +13,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Table(name = "Cities")
+@Table(name = "Sectors")
 @Entity
-public class City {
+public class Sector {
 
     @NotBlank
     @Id
@@ -24,11 +23,8 @@ public class City {
     private Integer id;
 
     @NotBlank
-    private String name;
+    private Integer capacity;
 
-    @NotBlank
-    @Min(1) //RN-vpEndgameValue >0
-    private Integer vpEndgameValue;
 
     
 

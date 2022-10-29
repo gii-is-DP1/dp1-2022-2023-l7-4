@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.city;
+package org.springframework.samples.petclinic.board.sector.city;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

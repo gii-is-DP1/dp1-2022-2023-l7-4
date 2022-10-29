@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.board.position;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -26,9 +27,17 @@ public class PositionService {
         positionRepository.save(p);
     }
 
-    @Transactional(readOnly = true)
-    public List<Position> getFreePositions() throws DataAccessException{
-        return positionRepository.findAllPositionByOccupiedFalse();
+    // @Transactional(readOnly = true)
+    // public List<Position> getFreePositions() throws DataAccessException{
+    //     return positionRepository.findAllPositionByOccupiedFalse();
+    // }
+
+    public void saveAndFlush(Position p) {
+        positionRepository.saveAndFlush(p);
+    }
+
+    public Position findPositionById(Integer id) {
+        return positionRepository.findById2(id);
     }
     
 }

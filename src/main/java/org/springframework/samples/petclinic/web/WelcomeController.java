@@ -17,12 +17,12 @@ public class WelcomeController {
 		
 		List<Person> persons=new ArrayList<Person>();
 		Person person=new Person();
-		person.setFirstName("José Antonio");
-		person.setLastName("Parejo");
+		person.setFirstName("Manuel ");
+		person.setLastName("Otero");
 		persons.add(person);
 		model.put("persons" , persons);
-		model.put("title", "My proyect");
-		model.put("group", "Teachers");
+		model.put("title", "Tiranos del underdark pero no hay quien entienda spring");
+		model.put("group", "Chiefs");
 	    return "welcome";
 	  }
 }

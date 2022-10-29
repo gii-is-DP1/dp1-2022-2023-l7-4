@@ -3,15 +3,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-
 <petclinic:layout pageName="positions">
     <h2>Positions</h2>
+    <script>
+        console.log("sssss")
+    </script>
     
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Territory</th>
+            <th>Zone</th>
             <th>Occupied</th>
         </tr>
         </thead>
@@ -22,15 +24,16 @@
                     <c:out value="${position.id}"/>
                 </td>
                 <td>
-                    <c:out value="${position.territory} "/>
+                    <c:out value="${position.zone} "/>
                 </td>
                 <td>
                     <c:out value="${position.occupied}"/>
                 </td>
+                
                 <td>
-                    <button name="Ocupar">
-                        
-                    </button>
+                    <form action="positions/${position.id}/occupy">
+                        <input type="submit" value="Des/Ocupar" />
+                </form>
                 </td>
             </tr>
         </c:forEach>

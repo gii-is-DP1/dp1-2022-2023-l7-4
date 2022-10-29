@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.city;
+package org.springframework.samples.petclinic.board.sector.city;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
