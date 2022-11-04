@@ -24,6 +24,9 @@ INSERT INTO authorities(id,username,authority) VALUES (7,'manotebar','owner');
 INSERT INTO users(username,password,enabled) VALUES ('javgaragu1','secret2',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (8,'javgaragu1','owner');
 
+INSERT INTO users(username,password,enabled) VALUES ('davzarort','anuel',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (9,'davzarort','owner');
+
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');
 INSERT INTO vets(id, first_name,last_name) VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets(id, first_name,last_name) VALUES (3, 'Linda', 'Douglas');
@@ -66,6 +69,7 @@ INSERT INTO owners VALUES (12, 'David', 'Del Hoyo', '345 Maple St.', 'Madison', 
 INSERT INTO owners VALUES (13, 'Javier', 'Fernández', '1450 Oak Blvd.', 'Monona', '6085557683', 'javfercas3');
 INSERT INTO owners VALUES (14, 'Manuel', 'Otero', '2335 Independence La.', 'Waunakee', '6085555487', 'manotebar');
 INSERT INTO owners VALUES (15, 'Javier', 'García', '105 N. Lake St.', 'Monona', '6085552654', 'javgaragu1');
+INSERT INTO owners VALUES (16, 'David', 'Zarandieta', '105 N. Lake St.', 'Monona', '6085552654', 'davzarort');
 
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
@@ -93,7 +97,7 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO positions(id,territory,occupied) VALUES (1,2,TRUE);
-INSERT INTO positions(id,territory,occupied) VALUES (2,2,FALSE);
-INSERT INTO positions(id,territory,occupied) VALUES (3,1,TRUE);
+INSERT INTO positions(id,zone,occupied) VALUES (1,2,TRUE);
+INSERT INTO positions(id,zone,occupied) VALUES (2,2,FALSE);
+INSERT INTO positions(id,zone,occupied) VALUES (3,1,TRUE);
 
