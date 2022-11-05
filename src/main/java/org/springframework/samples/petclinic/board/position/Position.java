@@ -1,20 +1,13 @@
 package org.springframework.samples.petclinic.board.position;
 
-import java.util.List;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
-import org.springframework.samples.petclinic.board.sector.Sector;
 import org.springframework.samples.petclinic.board.sector.city.City;
 
 import lombok.Getter;
@@ -48,9 +41,8 @@ public class Position{
         System.out.println(s);
     }
 
-    @OneToMany
-    private List<Position> adjacents;
-    
+//    @OneToMany
+//    private List<Position> adjacents;
 
     @Override
     public String toString() {
