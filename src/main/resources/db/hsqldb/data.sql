@@ -101,3 +101,11 @@ INSERT INTO positions(id,zone,occupied) VALUES (1,2,TRUE);
 INSERT INTO positions(id,zone,occupied) VALUES (2,2,FALSE);
 INSERT INTO positions(id,zone,occupied) VALUES (3,1,TRUE);
 
+
+INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','prueba');
+INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','prueba');
+
+INSERT INTO cards(id,name,cost,aspect,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id) VALUES (1,'Cuadrilla de mercenarios',3,'Ambicion','La única otra opcion que les queda a quienes carecen de casa es el exilio.','Despliega 3 tropas.',1,4,2,1);
+INSERT INTO cards(id,name,cost,aspect,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id) VALUES (2,'Maestra de espías',2,'Astucia','<<Puedo ayudarte a sortear las puertas y los guardias. Lo que hagas despues es cosa tuya>>','Pon un espía',1,2,2,1);
+
+
