@@ -8,27 +8,16 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.samples.petclinic.board.sector.Sector;
+
 import lombok.Getter;
 import lombok.Setter;
 
 
-@Getter
-@Setter
-@Table(name = "Paths")
+
+@Table(name = "paths")
 @Entity
-public class Path {
-
-    @NotBlank
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
+public class Path extends Sector{
 
 
-    @NotBlank
-    @Min(1) //RN-vpEndgameValue >0
-    private Integer vpEndgameValue;
-
-    
-
-    
 }
