@@ -1,17 +1,14 @@
 package org.springframework.samples.petclinic.board.position;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
-import org.springframework.samples.petclinic.board.sector.Sector;
+import org.springframework.samples.petclinic.board.sector.city.City;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,19 +26,23 @@ public class Position{
     // @NotBlank
     private Integer zone;
 
+    //poner atributo derivado: Boolean isPlayable
+
     // @NotBlank
     private Boolean occupied;
 
     //RN- una posicion o pertenece a una ciudad o pertenece a un camino
 
-    @OneToOne(optional=true)
-    private Sector sector;
+    @ManyToOne(optional=true)
+    @JoinColumn(name="city_id")
+    private City city;
+    
     static void print(String s){
         System.out.println(s);
     }
 
-    @OneToMany
-    private List<Position> adjacents;
+//    @OneToMany
+//    private List<Position> adjacents;
 
     @Override
     public String toString() {
