@@ -23,8 +23,8 @@ public class PlayerService {
     private AuthoritiesService authoritiesService;
 
 	@Transactional
-	public Collection<Player> getPlayerByUsername(String username){
-		return playerRepository.findPlayersByUsername(username);
+	public Collection<Player> getPlayerByName(String username){
+		return playerRepository.findPlayersByName(username);
 	}
 
 	@Transactional

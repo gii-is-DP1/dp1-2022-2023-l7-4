@@ -18,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PlayerController {
 
-    private static final String VIEWS_PLAYER_CREATE_OR_UPDATE_FORM = "players/createPlayerForm";
+    private static final String VIEWS_PLAYER_CREATE_OR_UPDATE_FORM = "players/createOrUpdatePlayerForm";
+
+    private static final String VIEWS_PLAYER_CREATE_FORM = "users/createPlayerForm";
 
     @Autowired
     private PlayerService playerService;
@@ -27,13 +29,13 @@ public class PlayerController {
 	public String initCreationForm(Map<String, Object> model) {
 		Player player = new Player();
 		model.put( "player", player);
-		return VIEWS_PLAYER_CREATE_OR_UPDATE_FORM;
+		return VIEWS_PLAYER_CREATE_FORM;
 	}
 
     @PostMapping(value = "/players/new")
 	public String processCreationForm(@Valid Player player, BindingResult result) {
 		if (result.hasErrors()) {
-			return VIEWS_PLAYER_CREATE_OR_UPDATE_FORM;
+			return VIEWS_PLAYER_CREATE_FORM;
 		}
 		else {
 			//creating player, user and authorities
@@ -46,23 +48,23 @@ public class PlayerController {
     @GetMapping(value = "/players/find")
 	public String initFindForm(Map<String, Object> model) {
 		model.put("player", new Player());
-		return "players/findplayers";
+		return "players/findPlayers";
 	}
 
 	@GetMapping(value = "/players")
 	public String processFindForm(Player player, BindingResult result, Map<String, Object> model) {
 
 		// allow parameterless GET request for /players to return all records
-		if (player.getUser().getUsername() == null) {
-			player.setUser(new User());// empty string signifies broadest possible search
+		if (player.getName()== null) {
+			player.setName("");// empty string signifies broadest possible search
 		}
 
 		// find players by last name
-		Collection<Player> results = playerService.getPlayerByUsername(player.getUser().getUsername());
+		Collection<Player> results = playerService.getPlayerByName(player.getName());
 		if (results.isEmpty()) {
 			// no players found
-			result.rejectValue("username", "notFound", "not found");
-			return "players/findplayers";
+			result.rejectValue("name", "notFound", "not found");
+			return "players/findPlayers";
 		}
 		else if (results.size() == 1) {
 			// 1 player found
