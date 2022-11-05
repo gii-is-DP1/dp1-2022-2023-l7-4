@@ -96,7 +96,5 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
 INSERT INTO cities(id,capacity,name,vp_endgame_value,starting_city) VALUES (1,4,'pepe',3,TRUE);
 INSERT INTO cities(id,capacity,name,vp_endgame_value,starting_city) VALUES (2,2,'messi',3,FALSE);
 
-INSERT INTO positions(id,zone,occupied,sector_id) VALUES (1,2,TRUE,1);
-INSERT INTO positions(id,zone,occupied,sector_id) VALUES (2,2,FALSE,2);
-INSERT INTO positions(id,zone,occupied) VALUES (3,1,TRUE);
+
 

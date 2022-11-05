@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.samples.petclinic.board.sector.Sector;
+import org.springframework.samples.petclinic.board.sector.city.City;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,8 +38,9 @@ public class Position{
     //RN- una posicion o pertenece a una ciudad o pertenece a un camino
 
     @ManyToOne(optional=true)
-    @JoinColumn(name="sector_id")
-    private Sector sector;
+    @JoinColumn(name="city_id")
+    private City city;
+    
     static void print(String s){
         System.out.println(s);
     }

@@ -19,8 +19,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "sectors")
+@MappedSuperclass
 public class Sector {
 
     @NotBlank
