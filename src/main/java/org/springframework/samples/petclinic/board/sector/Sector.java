@@ -1,11 +1,17 @@
 package org.springframework.samples.petclinic.board.sector;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.samples.petclinic.board.position.Position;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +19,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Table(name = "Sectors")
 @Entity
+@Table(name = "sectors")
 public class Sector {
 
     @NotBlank
@@ -24,6 +30,8 @@ public class Sector {
 
     @NotBlank
     private Integer capacity;
+
+    
 
 
     
