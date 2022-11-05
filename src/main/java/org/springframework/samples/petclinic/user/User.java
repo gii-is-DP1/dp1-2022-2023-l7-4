@@ -22,6 +22,8 @@ public class User{
 	String password;
 	
 	boolean enabled;
+
+	boolean isSpectator;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
