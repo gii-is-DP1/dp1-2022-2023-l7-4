@@ -1,10 +1,15 @@
 package org.springframework.samples.petclinic.board.pieces;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.samples.petclinic.board.position.Position;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +23,11 @@ public class Piece {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     
+    @Column(name="piece_type")
     PieceType pieceType;
+
+    @ManyToOne(optional=true)
+    @JoinColumn(name="position_id")
+    private Position position;
     
 }
