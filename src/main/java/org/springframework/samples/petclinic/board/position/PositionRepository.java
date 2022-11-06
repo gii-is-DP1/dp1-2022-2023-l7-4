@@ -13,9 +13,14 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     @Query
     List<Position> findAllPositionByOccupiedFalse();
     //TODO:findAllPositionNextToPositionIdAndOccupiedFalse
+    @Query("SELECT city.name FROM City city WHERE city.id = :id")
+    String findCityNameBy(int id);
 
     void saveAndFlush(Position p);
     @Query("SELECT position FROM Position position WHERE position.id =:id")
 	public Position findById2(@Param("id") int id);
+
+    List<Position> findAllPositionByPathId(int path_id);
+    List<Position> findAllPositionByCityId(int city_id);
     
 }

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +24,13 @@ public class PositionController {
     private String POSITIONS_LISTING_VIEW="positions/positionsListing";
 
     private PositionService positionService;
+    private CityService cityService;
+    
 
     @Autowired
-    public PositionController(PositionService posServ){
+    public PositionController(PositionService posServ,CityService city){
         this.positionService=posServ;
+        this.cityService=city;
     }
 
     @GetMapping("")
@@ -34,6 +38,7 @@ public class PositionController {
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
         result.addObject("freePositions", positionService.getFreePositions());
+        result.addObject("pathPositions", positionService.getPositionsFromPath(1));
         return result;
     }
     @GetMapping(value = "/{id}/occupy")
