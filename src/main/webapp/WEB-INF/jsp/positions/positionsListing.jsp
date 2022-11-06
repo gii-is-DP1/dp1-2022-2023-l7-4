@@ -15,6 +15,7 @@
             <th>Id</th>
             <th>Zone</th>
             <th>Occupied</th>
+            <th>For Spy?</th>
         </tr>
         </thead>
         <tbody>
@@ -29,18 +30,25 @@
                 <td>
                     <c:out value="${position.occupied}"/>
                 </td>
+                <td>
+                    <c:out value="${position.forSpy}"/>
+                </td>
                 
                 <td>
                     <form action="positions/${position.id}/occupy">
                         <input type="submit" value="Des/Ocupar" />
                 </form>
                 </td>
+                
             </tr>
         </c:forEach>
         </tbody>
     </table>
     <c:forEach items="${freePositions}" var="freePosition">
         <c:out value="${freePosition.id}"/>
+    </c:forEach>
+    <c:forEach items="${pathPositions}" var="pathPosition">
+        <c:out value="${pathPosition.id}"></c:out>
     </c:forEach>
     
     <body>
