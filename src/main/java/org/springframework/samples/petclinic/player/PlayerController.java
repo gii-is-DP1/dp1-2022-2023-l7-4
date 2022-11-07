@@ -54,28 +54,29 @@ public class PlayerController {
 	@GetMapping(value = "/players")
 	public String processFindForm(Player player, BindingResult result, Map<String, Object> model) {
 
-		// allow parameterless GET request for /players to return all records
+		
 		if (player.getName()== null) {
-			player.setName("");// empty string signifies broadest possible search
+			player.setName("");
 		}
-
-		// find players by last name
 		Collection<Player> results = playerService.getPlayerByName(player.getName());
 		if (results.isEmpty()) {
-			// no players found
 			result.rejectValue("name", "notFound", "not found");
 			return "players/findPlayers";
 		}
 		else if (results.size() == 1) {
-			// 1 player found
 			player = results.iterator().next();
 			return "redirect:/players/" + player.getId();
 		}
 		else {
-			// multiple players found
 			model.put("selections", results);
 			return "players/playersList";
 		}
+	}
+
+	@GetMapping(value = "/players/list")
+	public String proccesPlayersListing(Map<String, Object> model){
+		model.put("selections", playerService.getPlayes());
+		return "players/playersList";
 	}
 
 	@GetMapping(value = "/players/{playerId}/edit")
@@ -97,12 +98,6 @@ public class PlayerController {
 			return "redirect:/players/{playerId}";
 		}
 	}
-
-	/**
-	 * Custom handler for displaying an player.
-	 * @param playerId the ID of the player to display
-	 * @return a ModelMap with the model attributes for the view
-	 */
 	@GetMapping("/players/{playerId}")
 	public ModelAndView showplayer(@PathVariable("playerId") int playerId) {
 		ModelAndView mav = new ModelAndView("players/playerDetails");

@@ -46,11 +46,21 @@
 					<span>Error</span>
 				</petclinic:menuItem> -->
 
+				<!-- <petclinic:menuItem active="${name eq 'position'}" url="/positions"
+					title="positions">
+					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
+					<span>positions</span>
+				</petclinic:menuItem> -->
+
+
+
+				<sec:authorize url="/positions">
 				<petclinic:menuItem active="${name eq 'position'}" url="/positions"
 					title="positions">
 					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
 					<span>positions</span>
 				</petclinic:menuItem>
+			    </sec:authorize>
 
 			</ul>
 

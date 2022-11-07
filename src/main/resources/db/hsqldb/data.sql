@@ -105,4 +105,5 @@ INSERT INTO positions(id,zone,occupied) VALUES (2,2,FALSE);
 INSERT INTO positions(id,zone,occupied) VALUES (3,1,TRUE);
 
 INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',true, 'daviddhc');
-
+INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (2, 'David', 'daviddhc@gmail.com', '2002-04-08',true, 'daviddhc');
+INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (3, 'Pablo', 'daviddhc@gmail.com', '2002-04-08',true, 'daviddhc');

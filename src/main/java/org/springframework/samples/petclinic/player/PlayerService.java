@@ -23,22 +23,27 @@ public class PlayerService {
     private AuthoritiesService authoritiesService;
 
 	@Transactional
+	public Collection<Player> getPlayes(){
+		return (Collection<Player>) playerRepository.findAll();
+	}
+
+	@Transactional
 	public Collection<Player> getPlayerByName(String username){
 		return playerRepository.findPlayersByName(username);
 	}
 
 	@Transactional
-	public Player getPlayerById(Integer id){
-		return playerRepository.findById(1);
+	public Player getPlayerById(int id){
+		return playerRepository.findById(id);
 	}
 
     @Transactional
 	public void savePlayer(Player player) throws DataAccessException {
-		//creating owner
+		
 		playerRepository.save(player);		
-		//creating user
+		
 		userService.saveUser(player.getUser());
-		//creating authorities
+		
 		authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
 	}	
 
