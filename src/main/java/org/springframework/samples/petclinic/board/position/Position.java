@@ -32,7 +32,7 @@ public class Position{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-
+    @NotNull
     private Boolean occupied;
 
     
@@ -60,10 +60,16 @@ public class Position{
         return new ArrayList<>();
         
     }
-    public void addPositions(List<Position> positions) {
+    public void addAdjacents(List<Position> positions) {
 		getAdjacentsInternal().addAll(positions);
 	}
 
+    public Boolean isInCity(){
+        return city!=null;
+    }
+    public Boolean isInPath(){
+        return path!=null;
+    }
     @Override
     public String toString() {
         return "" + id;

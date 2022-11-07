@@ -53,11 +53,9 @@ public class PositionController {
         
     @GetMapping(value = "/positions/{id}/adjacents")
     public String adjacents(@PathVariable("id") Integer id) throws DataAccessException {
-        System.out.println("id="+id);
-        Position p= this.positionService.findPositionById(id);
-        System.out.println("posicion a calcular encontrada: "+p);
-        positionService.populateAdjacent(p);
-        this.positionService.save(p);
+        Position position= this.positionService.findPositionById(id);
+        positionService.calculateAdjacents(position);
+        this.positionService.save(position);
         return "redirect:/positions";
         
     }
