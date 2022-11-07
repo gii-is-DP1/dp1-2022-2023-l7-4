@@ -15,12 +15,12 @@ public class GameService {
     
 
 	@Transactional
-	public Game getHousesById(Integer id){
+	public Game getGameById(Integer id){
 		return grepo.findById(1);
 	}
 
     @Transactional
-	public void saveHouse(Game game) throws DataAccessException {
+	public void saveGame(Game game) throws DataAccessException {
 		grepo.save(game);
 	}	
 

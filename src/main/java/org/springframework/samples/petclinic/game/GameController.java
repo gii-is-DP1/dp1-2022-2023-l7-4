@@ -35,7 +35,7 @@ public class GameController {
 		}
 		else {
 			//creating owner, user, and authority
-			this.gService.saveHouse(game);
+			this.gService.saveGame(game);
 			return "welcome";
 		}
 	}
