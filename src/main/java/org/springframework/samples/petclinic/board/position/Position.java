@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
@@ -46,7 +47,7 @@ public class Position{
     @JoinColumn(name="path_id")
     private Path path;
 
-    // @NotBlank 
+    @NotNull 
     @Column(name="for_spy")
     private Boolean forSpy;
 
