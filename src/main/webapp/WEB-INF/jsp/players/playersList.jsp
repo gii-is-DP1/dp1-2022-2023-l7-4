@@ -12,10 +12,11 @@
         <thead>
         <tr>
             <th style="width: 150px;">Name</th>
-            <th style="width: 200px;">Address</th>
-            <th>City</th>
-            <th style="width: 120px">Telephone</th>
-            <th>Pets</th>
+            <th style="width: 200px;">Email</th>
+            <th>BirthDate</th>
+            <th style="width: 120px">Privilege</th>
+            <th>Username</th>
+            <th>Password</th>
         </tr>
         </thead>
         <tbody>
@@ -31,12 +32,10 @@
                     <c:out value="${player.email}"/>
                 </td>
                 <td>
-                    <c:out value="${player.birthDate}"/>
+                    <c:out value="${player.birthdate}"/>
                 </td>
                 <td>
-                    <c:out value="${player.privilage}"/>
-                </td>
-                <td>
+                    <c:out value="${player.privilege}"/>
                 </td>
                 <td> 
                     <c:out value="${player.user.username}"/> 
@@ -50,4 +49,6 @@
         </c:forEach>
         </tbody>
     </table>
+
+    <a class="btn btn-default" href='<spring:url value="/players/find" htmlEscape="true"/>'>Find a player</a>
 </petclinic:layout>

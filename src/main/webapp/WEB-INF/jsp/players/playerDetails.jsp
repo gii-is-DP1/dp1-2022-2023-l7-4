@@ -12,7 +12,7 @@
     <table class="table table-striped">
         <tr>
             <th>Name</th>
-            <td><b><c:out value="${player.name}"/></b></td>
+            <td><strong><c:out value="${player.name}"/></strong></td>
         </tr>
         <tr>
             <th>Email</th>
@@ -23,7 +23,7 @@
             <td><c:out value="${player.birthdate}"/></td>
         </tr>
         <tr>
-            <th>Privilage</th>
+            <th>Privilege</th>
             <td><c:out value="${player.privilege}"/></td>
         </tr>
     </table>
