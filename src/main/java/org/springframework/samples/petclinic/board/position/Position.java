@@ -9,8 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Check;
+import org.springframework.samples.petclinic.board.pieces.Piece;
 import org.springframework.samples.petclinic.board.sector.Sector;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
@@ -28,13 +31,13 @@ public class Position{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
+    @NotNull
     private Integer zone;
 
     //poner atributo derivado: Boolean isPlayable
 
-    @NotBlank
-    private Boolean occupied;
+    @NotNull
+    Boolean occupied;
 
     
 
@@ -48,7 +51,9 @@ public class Position{
     @JoinColumn(name="path_id")
     private Path path;
 
-    @NotBlank
+
+
+    @NotNull
     @Column(name="for_spy")
     private Boolean forSpy;
 
@@ -60,6 +65,12 @@ public class Position{
     static void print(String s){
         System.out.println(s);
     }
+
+    public Position(){
+        this.occupied=false;
+        this.forSpy=false;
+    }
+
 
 //    @OneToMany
 //    private List<Position> adjacents;

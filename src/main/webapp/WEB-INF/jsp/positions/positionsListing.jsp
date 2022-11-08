@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <petclinic:layout pageName="positions">
+    <link href="../../styles/board_position.css" rel="stylesheet" type="text/css">
     <h2>Positions</h2>
     <script>
         console.log("sssss")

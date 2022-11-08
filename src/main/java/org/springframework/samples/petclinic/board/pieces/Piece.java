@@ -23,11 +23,13 @@ public class Piece {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name="piece_type")
-    PieceType pieceType;
+    @ManyToOne
+    @JoinColumn(name="piece_type_id")
+    private PieceType pieceType;
 
     @ManyToOne(optional=true)
     @JoinColumn(name="position_id")
     private Position position;
+
     
 }

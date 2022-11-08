@@ -98,9 +98,16 @@ INSERT INTO cities(capacity,name,vp_endgame_value,starting_city) VALUES (2,'mess
 
 INSERT INTO paths(capacity,city_id_1,city_id_2) VALUES (3,1,2);
 
-INSERT INTO positions(id,zone,occupied,city_id) VALUES (1,2,TRUE,1);
-INSERT INTO positions(id,zone,occupied,city_id) VALUES (2,2,FALSE,2);
-INSERT INTO positions(id,zone,occupied,city_id) VALUES (3,1,TRUE,1);
+INSERT INTO positions(id,zone,occupied,city_id,for_spy) VALUES (1,2,1);
+INSERT INTO positions(id,zone,city_id) VALUES (2,2,2);
+INSERT INTO positions(id,zone,city_id) VALUES (3,1,1);
 
-INSERT INTO positions(id,zone,occupied,path_id) VALUES (4,1,TRUE,1);
+INSERT INTO positions(id,zone,path_id) VALUES (4,1,1);
+
+INSERT INTO piece_types(name) VALUES ('spy');
+INSERT INTO piece_types(name) VALUES ('troop');
+
+INSERT INTO pieces(piece_type_id,position_id) VALUES (1,1);
+INSERT INTO pieces(piece_type_id,position_id) VALUES (2,3);
+INSERT INTO pieces(piece_type_id,position_id) VALUES (2,4);
 
