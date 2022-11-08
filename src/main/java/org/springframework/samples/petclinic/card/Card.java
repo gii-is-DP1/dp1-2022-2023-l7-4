@@ -2,8 +2,6 @@ package org.springframework.samples.petclinic.card;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,11 +35,6 @@ public class Card {
     private Integer cost;
 
     @NotBlank
-    @Enumerated(EnumType.STRING)
-    @Column(name = "aspect")
-    private CardAspectEnum aspect;
-
-    @NotBlank
     private String story;
 
     @NotBlank
@@ -63,9 +56,14 @@ public class Card {
     private Integer rarity;
     
     @ManyToOne
+    @NotBlank
     @JoinColumn(name = "half_deck_id")
     private HalfDeck halfDeck;
 
+    @ManyToOne
+    @NotBlank
+    @JoinColumn(name = "aspect_id")
+    private Aspect aspect;
 }
 
 
