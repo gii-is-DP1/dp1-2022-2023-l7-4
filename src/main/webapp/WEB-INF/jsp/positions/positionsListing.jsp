@@ -4,19 +4,89 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <petclinic:layout pageName="positions">
-    <link href="../../styles/board_position.css" rel="stylesheet" type="text/css">
-    <h2>Positions</h2>
     <script>
         console.log("sssss")
     </script>
-    
+    <h2>Cities</h2>
+    <table id="citiesTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Capacity</th>
+            <th>Zone</th>
+            <th>VP</th>
+            <th>isStartingCity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${cities}" var="city">
+            <tr>
+                <td>
+                    <c:out value="${city.id}"/>
+                </td>
+                <td>
+                    <c:out value="${city.capacity}"/>
+                </td>
+                <td>
+                    <c:out value="${city.zone}"/>
+                </td>
+                <td>
+                    <c:out value="${city.vpEndgameValue}"/>
+                </td>
+                <td>
+                    <c:out value="${city.isStartingCity}"/>
+                </td>
+                
+                
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <h2>Paths</h2>
+    <table id="pathsTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Capacity</th>
+            <th>CityA</th>
+            <th>CityB</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${paths}" var="path">
+            <tr>
+                <td>
+                    <c:out value="${path.id}"/>
+                </td>
+                <td>
+                    <c:out value="${path.capacity}"/>
+                </td>
+                <td>
+                    <c:out value="${path.firstCity}"/>
+                </td>
+                <td>
+                    <c:out value="${path.secondCity}"/>
+                </td>
+                
+                
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <h2> AUTOGENERATE POSITIONS</h2>
+    <form action="positions/populate">
+        <input type="submit" value="Populate!" />
+    </form>
+    <h2> All positions</h2>
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Zone</th>
             <th>Occupied</th>
             <th>For Spy?</th>
+            <th>Path</th>
+            <th>City<th>
+            <th>Adjacency</th>
         </tr>
         </thead>
         <tbody>
@@ -26,18 +96,26 @@
                     <c:out value="${position.id}"/>
                 </td>
                 <td>
-                    <c:out value="${position.zone} "/>
-                </td>
-                <td>
                     <c:out value="${position.occupied}"/>
                 </td>
                 <td>
                     <c:out value="${position.forSpy}"/>
                 </td>
-                
                 <td>
-                    <form action="positions/${position.id}/occupy">
+                    <c:out value="${position.path}"/>
+                </td>
+                <td>
+                    <c:out value="${position.city}"/>
+                </td>
+                <td>
+                    <c:out value="${position.adjacents}"/>
+                </td>
+                <td>
+                <form action="positions/${position.id}/occupy">
                         <input type="submit" value="Des/Ocupar" />
+                </form>
+                <form action="positions/${position.id}/adjacents">
+                        <input type="submit" value="adjacents" />
                 </form>
                 </td>
                 

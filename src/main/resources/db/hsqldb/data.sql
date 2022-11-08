@@ -93,21 +93,17 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city) VALUES (4,'pepe',3,TRUE);
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city) VALUES (2,'messi',3,FALSE);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'pepe',3,TRUE,1);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'messi',3,FALSE,2);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'lolaso',6,FALSE,3);
 
-INSERT INTO paths(capacity,city_id_1,city_id_2) VALUES (3,1,2);
+INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,2,0);
+INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,3,2);
+INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 
-INSERT INTO positions(id,zone,occupied,city_id,for_spy) VALUES (1,2,1);
-INSERT INTO positions(id,zone,city_id) VALUES (2,2,2);
-INSERT INTO positions(id,zone,city_id) VALUES (3,1,1);
-
-INSERT INTO positions(id,zone,path_id) VALUES (4,1,1);
-
-INSERT INTO piece_types(name) VALUES ('spy');
-INSERT INTO piece_types(name) VALUES ('troop');
-
-INSERT INTO pieces(piece_type_id,position_id) VALUES (1,1);
-INSERT INTO pieces(piece_type_id,position_id) VALUES (2,3);
-INSERT INTO pieces(piece_type_id,position_id) VALUES (2,4);
+-- INSERT INTO positions(id,zone,occupied,city_id) VALUES (1,2,TRUE,1);
+-- INSERT INTO positions(id,zone,occupied,city_id) VALUES (2,2,FALSE,2);
+-- INSERT INTO positions(id,zone,occupied,city_id) VALUES (3,1,TRUE,1);
+-- positions se autogenera
+-- INSERT INTO positions(id,zone,occupied,path_id) VALUES (4,1,TRUE,1);
 
