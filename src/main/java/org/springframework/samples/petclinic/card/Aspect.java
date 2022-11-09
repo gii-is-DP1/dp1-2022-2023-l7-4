@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Table(name = "aspects")
 @Entity
 public class Aspect {
-    @NotBlank
+    @NotNull
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
