@@ -15,7 +15,7 @@ public class GameController {
     @Autowired
     GameService gService;
 
-    private static final String VIEWS_GAME_CREATE_FORM = "";
+    private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
     
     @GetMapping(value = "/game/create")
 	public String initCreationForm(Map<String, Object> model) {
