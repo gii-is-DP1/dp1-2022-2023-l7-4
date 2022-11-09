@@ -11,4 +11,5 @@ public interface PieceRepository extends CrudRepository<Piece,Integer>{
     List<Piece> findAllPieceByPositionIsNullAndPieceType(PieceType type);
     List<Piece> findAllPieceByPositionIsNotNullAndPieceType(PieceType type);
     
+    
 }
