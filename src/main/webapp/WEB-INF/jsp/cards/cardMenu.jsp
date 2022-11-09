@@ -12,12 +12,12 @@ uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="cards">
 
-    <h2>Menú de cartas</h2>
-
+    <h2 class="menu">Menú de cartas</h2>
+    <div class="grid-container">
     <form:form modelAttribute="card" action="/cards" method="get" class="form-horizontal"
                id="search-owner-form">
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col-sm-offset-1 col-sm-10">
                 <button type="submit" class="btn btn-default">Mostrar todas las cartas</button>
             </div>
         </div>
@@ -26,10 +26,23 @@ uri="http://www.springframework.org/security/tags"%>
     <form:form modelAttribute="card" action="/searching" method="get" class="form-horizontal"
                id="search-owner-form">
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col-sm-offset-5 col-sm-5">
                 <button type="submit" class="btn btn-default">Buscar cartas por nombre</button>
             </div>
         </div>
     </form:form>
-	
+</div>
+	<style>
+        .grid-container {
+            display: grid;
+            grid-template-rows: 0px 100px;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-gap: 0px;
+        }
+        .menu{
+            margin-left: 25px;
+        }
+    </style>
 </petclinic:layout>
+
+
