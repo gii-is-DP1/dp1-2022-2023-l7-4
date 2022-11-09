@@ -11,13 +11,11 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
-@Table(name = "halfdecks")
+@Table(name = "aspects")
 @Entity
-public class HalfDeck {
-
+public class Aspect {
     @NotNull
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -28,4 +26,8 @@ public class HalfDeck {
 
     @NotBlank
     private String description;
+
+    @NotBlank
+    private String image;
+    
 }

@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.card;
+package org.springframework.samples.petclinic.card.action;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,26 +6,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
-@Table(name = "halfdecks")
+@Table(name = "simples")
 @Entity
-public class HalfDeck {
-
-    @NotNull
+public class Simple {
+    @NotBlank
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
-
-    @NotBlank
-    private String name;
-
-    @NotBlank
-    private String description;
+    
 }

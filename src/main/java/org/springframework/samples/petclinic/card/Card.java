@@ -2,8 +2,6 @@ package org.springframework.samples.petclinic.card;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import lombok.Getter;
@@ -23,7 +22,7 @@ import lombok.Setter;
 @Entity
 public class Card {
 
-    @NotBlank
+    @NotNull
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
@@ -33,13 +32,8 @@ public class Card {
 
 
     @PositiveOrZero
-    @NotBlank
+    @NotNull
     private Integer cost;
-
-    @NotBlank
-    @Enumerated(EnumType.STRING)
-    @Column(name = "aspect")
-    private CardAspectEnum aspect;
 
     @NotBlank
     private String story;
@@ -49,23 +43,28 @@ public class Card {
     private String rulesText;
 
     @PositiveOrZero
-    @NotBlank
+    @NotNull
     @Column(name = "deck_pv")        
     private Integer deckVP;
 
     @PositiveOrZero
-    @NotBlank
+    @NotNull
     @Column(name = "inner_circle_pv")        
     private Integer innerCirclePV;
 
     @PositiveOrZero
-    @NotBlank
+    @NotNull
     private Integer rarity;
     
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "half_deck_id")
     private HalfDeck halfDeck;
 
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "aspect_id")
+    private Aspect aspect;
 }
 
 
