@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.card;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,13 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
-    public Card getCardByName(String name) {
+    public List<Card> getCardByName(String name) {
         return cardRepository.findCardByName(name);
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<Card> getCardById(Integer id) {
+        return cardRepository.findCardById(id);
     }
 
     @Transactional(readOnly = true)
