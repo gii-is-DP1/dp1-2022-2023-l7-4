@@ -3,9 +3,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <petclinic:layout pageName="cards">
-    <h2>Cards</h2>
+    
+<h2>Cartas</h2>
     <script>
         console.log("ssss")
     </script>
@@ -13,75 +15,49 @@
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
-            <th>id</th>
-            <th>Carta</th>
+            <th>Id</th>
+            <th>Nombre</th>
             <th>Coste</th>
             <th>Historia</th>
             <th>Acción de la carta</th>
             <th>PV</th>
+            <th>PV en Círculo interno</th>
+            <th>Rareza</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${cards}" var="card">
+        <c:forEach items="${cards}" var="cards">
             <tr>
                 <td>
-                    <c:out value="${card.id}"/>
+                    <c:out value="${cards.id}"/>
                 </td>
                 <td>
-                    <c:out value="${card.name} "/>
+                    <spring:url value="/searching/{cardId}" var="cardUrl">
+                        <spring:param name="cardId" value="${cards.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(cardUrl)}"><c:out value="${cards.name}"/></a>
                 </td>
                 <td>
-                    <c:out value="${card.cost} "/>
+                    <c:out value="${cards.cost} "/>
                 </td>
                 <td>
-                    <c:out value="${card.story} "/>
+                    <c:out value="${cards.story} "/>
                 </td>
                 <td>
-                    <c:out value="${card.rulesText} "/>
+                    <c:out value="${cards.rulesText} "/>
                 </td>
                 <td>
-                    <c:out value="${card.deckVP} "/>
+                    <c:out value="${cards.deckVP} "/>
                 </td>   
+                <td>
+                    <c:out value="${cards.innerCirclePV} "/>
+                </td>   
+                <td>
+                    <c:out value="${cards.rarity} "/>
+                </td>       
             </tr>
         </c:forEach>
         </tbody>
     </table>
-    
-    <body>
-        
-    <style>
-        .btn-pos-1{
-            background-color: aqua;
-            border: 8px;
-            text-align: center;
-            position: absolute;
-            border-radius: 50%;
-            top:0px;
-        }
-        .btn-pos-2{
-            background-color: aqua;
-            border: 8px;
-            text-align: center;
-            position: absolute;
-            border-radius: 50%;
-            top:30px;
-        }
-        .btn-pos-3{
-            background-color: aqua;
-            border: 8px;
-            text-align: center;
-            position: absolute;
-            border-radius: 50%;
-            top:60px;
-        }
-        .board{
-            background-image: url("/resources/images/example_map.jpg");
-            background-size: contain;
-            background-repeat: no-repeat;
-            height: 600px;
-            width: 600px;
-            position:relative;
-        }
-    </style>
-    </body>
+
 </petclinic:layout>

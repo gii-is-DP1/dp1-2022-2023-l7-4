@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.card;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -13,8 +14,11 @@ public interface CardRepository extends CrudRepository<Card, Integer> {
     //Card
     List<Card> findAll();
 
-    @Query("SELECT c FROM HalfDeck h JOIN Card c WHERE c.name = ?1")
-    Card findCardByName(String name);
+    @Query("SELECT c FROM Card c WHERE c.name = ?1")
+    List<Card> findCardByName(String name);
+
+    @Query("SELECT c FROM Card c WHERE c.id = ?1")
+    Collection<Card> findCardById(Integer id);
 
     @Query("SELECT c FROM Card c JOIN HalfDeck h WHERE h.name = ?1")
     List<Card> findAllCardsByHalfDeck(String name);
