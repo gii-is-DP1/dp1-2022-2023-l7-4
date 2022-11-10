@@ -101,6 +101,15 @@ INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,2,0);
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,3,2);
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 
+INSERT INTO piece_types(name) VALUES('troop');
+INSERT INTO piece_types(name) VALUES('spy');
+
+INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
+INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
+INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
+INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
+INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
+
 -- INSERT INTO positions(id,zone,occupied,city_id) VALUES (1,2,TRUE,1);
 -- INSERT INTO positions(id,zone,occupied,city_id) VALUES (2,2,FALSE,2);
 -- INSERT INTO positions(id,zone,occupied,city_id) VALUES (3,1,TRUE,1);

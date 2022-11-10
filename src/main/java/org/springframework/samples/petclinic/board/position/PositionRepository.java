@@ -18,6 +18,9 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     @Query("SELECT city.name FROM City city WHERE city.id = :id")
     String findCityNameBy(int id);
 
+    List<Position> findAlPositionsByOccupiedFalseAndForSpyFalse();
+    List<Position> findAlPositionsByOccupiedFalseAndForSpyTrue();
+
     @Query("SELECT position FROM Position position WHERE position.id = :id")
 	public Position findById2(@Param("id") int id);
 

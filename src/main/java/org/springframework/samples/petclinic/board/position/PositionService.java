@@ -49,6 +49,15 @@ public class PositionService {
     public List<Position> getFreePositions() throws DataAccessException{
         return positionRepository.findAllPositionByOccupiedFalse();
     }
+    @Transactional(readOnly = true)
+    public List<Position> getFreeTroopPositions() throws DataAccessException{
+        return positionRepository.findAlPositionsByOccupiedFalseAndForSpyFalse();
+    }
+    @Transactional(readOnly = true)
+    public List<Position> getFreeSpyPositions() throws DataAccessException{
+        return positionRepository.findAlPositionsByOccupiedFalseAndForSpyTrue();
+    }
+    
 
     public Position findPositionById(Integer id) {
         return positionRepository.findById2(id);
