@@ -4,13 +4,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <petclinic:layout pageName="positions">
-
+<<<<<<< HEAD
+    <h2>Positions</h2>    
     <table id="positionsTable" class="table table-striped">
+=======
     <script>
         console.log("sssss")
     </script>
     <h2>Cities</h2>
     <table id="citiesTable" class="table table-striped">
+>>>>>>> anddomruimandmanotebar
         <thead>
         <tr>
             <th>Id</th>
@@ -85,11 +88,14 @@
         <tr>
             <th>Id</th>
             <th>Occupied</th>
-
+<<<<<<< HEAD
+            <th>Ocupar</th>
+=======
             <th>For Spy?</th>
             <th>Path</th>
             <th>City<th>
             <th>Adjacency</th>
+>>>>>>> anddomruimandmanotebar
         </tr>
         </thead>
         <tbody>
@@ -108,11 +114,11 @@
                     <c:out value="${position.path}"/>
                 </td>
                 <td>
-
+<<<<<<< HEAD
                     
                     <form action="positions/${position.id}/occupy">
                         <input class = "btn-submit-form" type="submit" value="Des/Ocupar"/>
-
+=======
                     <c:out value="${position.city}"/>
                 </td>
                 <td>
@@ -121,7 +127,7 @@
                 <td>
                 <form action="positions/${position.id}/occupy">
                         <input type="submit" value="Des/Ocupar" />
-
+>>>>>>> anddomruimandmanotebar
                 </form>
                 <form action="positions/${position.id}/adjacents">
                         <input type="submit" value="adjacents" />
@@ -220,15 +226,5 @@
         }
     </style>
     
-
-        <div class="board">
-            <c:forEach items="${positions}" var="position">
-                <!--OJO, PUEDES ENCADENAR VALORES DE LAS ETIQUETAS CON LOS ATRIBUTOS DE LOS ITEMS-->
-                <form action="positions/${position.id}/occupy">
-                    <input class="btn-pos-${position.id}"type="submit" value="${position.id}" />
-            </c:forEach>
-        </div>
-    </body>
-
 
 </petclinic:layout>
