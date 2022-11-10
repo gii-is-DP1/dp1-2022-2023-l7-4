@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenerationTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,10 +31,9 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name="game")
+@Table(name="games")
 public class Game {
     @Id
-    @Column(name="id")
     private Integer id;
 
     @NotEmpty
@@ -48,7 +48,7 @@ public class Game {
     @Column(name="is_finished")
     Boolean isFinished;
 
-    @OneToMany(mappedBy = "game")
-    private Set<Player> player;
+    @ManyToMany(targetEntity=Player.class)
+   private Set<Player> players;
 
 }

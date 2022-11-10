@@ -104,11 +104,10 @@ INSERT INTO positions(id,zone,occupied) VALUES (1,2,TRUE);
 INSERT INTO positions(id,zone,occupied) VALUES (2,2,FALSE);
 INSERT INTO positions(id,zone,occupied) VALUES (3,1,TRUE);
 
-INSERT INTO game(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,false);
+INSERT INTO games(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,FALSE);
 
-INSERT INTO players(id,name,email,birthdate,privilege,username,game_id) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',true, 'daviddhc',1);
+INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',TRUE, 'daviddhc');
 
-
-
-INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
+INSERT INTO games_players(players_id,game_id) VALUES (1,1);
+ INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
 

@@ -1,11 +1,14 @@
 package org.springframework.samples.petclinic.player;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -43,8 +46,8 @@ public class Player{
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 
-    @ManyToOne
-    @JoinColumn(name="game_id", nullable=false)
-    private Game game;
+    @ManyToMany(targetEntity=Game.class)
+   private Set<Game> games;
+
    
 }

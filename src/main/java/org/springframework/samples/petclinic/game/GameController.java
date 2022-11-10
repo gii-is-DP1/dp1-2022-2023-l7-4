@@ -1,11 +1,17 @@
 package org.springframework.samples.petclinic.game;
 
+import java.security.Principal;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.player.Player;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class GameController {
     @Autowired
     GameService gService;
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
     
@@ -25,19 +32,17 @@ public class GameController {
 		Game game = new Game();
 		model.put("game", game);
 		return VIEWS_GAME_CREATE_FORM;
-
-        
-    
     } 
+
     @PostMapping(value = "/games/create")
-	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model) {
-        
+	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model,@AuthenticationPrincipal Player user) {
+    
 		if (result.hasErrors()) {
             model.put("game", game);
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
-			//creating owner, user, and authority
+			game.setPlayers(new HashSet<Player>(user.getId()));
 			this.gService.saveGame(game);
 			return "welcome";
 		}
