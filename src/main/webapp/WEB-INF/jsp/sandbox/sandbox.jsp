@@ -14,10 +14,9 @@
   </div>
   <script>
   
-  let a = 0
-    document.write(a)
+
     let x=[]
-    let i = 0
+    let y=[]
   </script>
 <c:forEach items="${cities}" var="city">
   <c:out value="${city.name}"/>
@@ -34,17 +33,34 @@
       y: 50
     
     })
-    i++
-    console.log(x)
+    
     
     </script>
 </c:forEach>
+
+<c:forEach items="${paths}" var="path">
+  <script>
+    y.push({ 
+      id: parseInt("${path.id}")  ,
+      pathName: "${path}",
+      target: parseInt("${path.firstCity.id}"),
+      source: parseInt("${path.secondCity.id}"),
+      capacity: parseInt("${path.capacity}"),
+      type: "html"
+    
+    })
+    
+    
+    </script>
+</c:forEach>
+
+
 <script>
-  
-  let html = "<div><h2>hola mundoooo</h2></div>";
+  console.log(x)
+  console.log(y)
+  let html = "<div><h2>Mapa Interactivo</h2></div>";
 
   document.getElementById("aa").innerHTML = html;
-  document.write(a);
 </script>
 
 
@@ -54,34 +70,11 @@
 (function (d3$1) {
   'use strict';
 
-  const network = {
-    nodes: [
-      
-    ],
-    links: [
-      {
-        source: 1,
-        target: 2,
-        port: 0,
-        type: 'https',
-      },
-      {
-        source: 2,
-        target: 3,
-        port: 0,
-        type: 'callback',
-      },
-      {
-        source: 3,
-        target: 1,
-        port: 0,
-        type: 'callback',
-      }
-    ],
-  };
+  const network = {}
 
 
   network.nodes = x;
+  network.links = y;
   const positionColor =null;
   const lineWidth = 4;
   const lineColor = "lightgrey";
@@ -159,10 +152,10 @@
   		.attr("xlink:href", function(d,i) { return "#linePath_"+i; })
       .style("text-anchor", d => d.dir == 'forward' ? "end" : "start" )
   		.attr("startOffset", d => d.dir == 'forward' ? "85%" : "45px" )
-  		.text(function(d) {return ""; });//+d.port
+  		.text(function(d) {return ""+d.pathName; });//+d.pathName
 
   //add mouse over chart
-  var tooltip = d3$1.select("body")
+  var tooltip = d3.select("body")
       .append("div")
       .style("position", "absolute")
       .style("z-index", "10")
