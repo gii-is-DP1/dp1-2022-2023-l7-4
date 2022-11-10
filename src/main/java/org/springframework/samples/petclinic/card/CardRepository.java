@@ -20,7 +20,7 @@ public interface CardRepository extends CrudRepository<Card, Integer> {
     @Query("SELECT c FROM Card c WHERE c.id = ?1")
     Collection<Card> findCardById(Integer id);
 
-    @Query("SELECT c FROM Card c JOIN HalfDeck h WHERE h.name = ?1")
+    @Query("SELECT c FROM Card c WHERE c.halfDeck.name = ?1")
     List<Card> findAllCardsByHalfDeck(String name);
 
     //Aspect

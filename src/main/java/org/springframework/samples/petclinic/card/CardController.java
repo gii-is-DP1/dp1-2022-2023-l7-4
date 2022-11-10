@@ -20,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/card")
 public class CardController {
 
     private String CARDS_LISTING_VIEW="cards/cardsListing";
     private String CARDS_SEARCHING="cards/findCards";
 	private String CARDS_MENU="cards/cardMenu";
+	private String CARDS_BY_DECK="cards/cardsDeck";
+
 
 
     private CardService cardService;
@@ -34,6 +37,7 @@ public class CardController {
         this.cardService = cardService;
     }
 
+	//Card menu
 	@GetMapping("/cardmenu")
     public ModelAndView cardMenu(){
         ModelAndView result=new ModelAndView(CARDS_MENU);
@@ -47,14 +51,44 @@ public class CardController {
         return result;
     }
 
+	//find card by name
     @GetMapping(value = "/cards/find")
 	public String initFindForm(Map<String, Object> model) {
 		model.put("card", new Card());
 		return CARDS_SEARCHING;
 	}
 
-	@GetMapping(value = "/searching")
+	@GetMapping(value = "/searchingCard")
 	public String processFindForm(Card card, BindingResult result, Map<String, Object> model) {
+		Collection<Card> results = this.cardService.getCardByName(card.getName());
+		if (results.size() == 1) {
+			// 1 owner found
+			card = results.iterator().next();
+			return "redirect:/card/searchingCard/" + card.getId();
+		}
+		else {
+			// no owners found
+			result.rejectValue("name", "notFound", "not found");
+			return "cards/findCards";
+		}
+	}
+	
+	@GetMapping("/searchingCard/{cardId}")
+	public ModelAndView showCard(@PathVariable("cardId") Integer cardId) {
+		ModelAndView mav = new ModelAndView("cards/cardDetails");
+		mav.addObject("id",this.cardService.getCardById(cardId));
+		return mav;
+	}
+
+	//Listing card by Deck
+    @GetMapping(value = "/cards/findDeck")
+	public String initFindDeckForm(Map<String, Object> model) {
+		model.put("card", new Card());
+		return CARDS_BY_DECK;
+	}
+
+	@GetMapping(value = "/searchingDeck")
+	public String processFindDeckForm(Card card, BindingResult result, Map<String, Object> model) {
 		// allow parameterless GET request for /owners to return all records
 		if (card.getName() == null) {
 			card.setName(""); // empty string signifies broadest possible search
@@ -72,18 +106,5 @@ public class CardController {
 			return "cards/findCards";
 		}
 	}
-	
-/**
-	 * Custom handler for displaying an owner.
-	 * @param cardId the ID of the owner to display
-	 * @return a ModelMap with the model attributes for the view
-	 */
-	@GetMapping("/searching/{cardId}")
-	public ModelAndView showCard(@PathVariable("cardId") Integer cardId) {
-		ModelAndView mav = new ModelAndView("cards/cardDetails");
-		mav.addObject("id",this.cardService.getCardById(cardId));
-		return mav;
-	}
-
 
 }

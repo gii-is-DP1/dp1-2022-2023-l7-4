@@ -31,6 +31,10 @@
                     <dd><c:out value="${id.innerCirclePV}"/></dd>
                     <dt>Rareza</dt>
                     <dd><c:out value="${id.rarity}"/></dd>
+                    <dt>Aspecto</dt>
+                    <dd><c:out value="${id.aspect.name}"/></dd>
+                    <dt>Mazo</dt>
+                    <dd><c:out value="${id.halfDeck.name}"/></dd>
                 </dl>
             </td>
         </c:forEach>
