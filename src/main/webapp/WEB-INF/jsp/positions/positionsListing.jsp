@@ -170,10 +170,8 @@
         <div class="board">
             <c:forEach items="${positions}" var="position">
                 <!--OJO, PUEDES ENCADENAR VALORES DE LAS ETIQUETAS CON LOS ATRIBUTOS DE LOS ITEMS-->
-            <div class="btn-pos-${position.id}">
                 <form action="positions/${position.id}/occupy">
-                    <input type="submit" value="${position.id}" />
-            </div>
+                    <input class="btn-pos-${position.id}"type="submit" value="${position.id}" />
             </c:forEach>
         </div>
     </body>

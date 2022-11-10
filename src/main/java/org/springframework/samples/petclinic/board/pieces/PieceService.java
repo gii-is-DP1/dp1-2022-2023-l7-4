@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.board.pieces;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -27,10 +28,27 @@ public class PieceService {
         return pieceRepository.findById(id).get();
     }
 
+    @Transactional(readOnly = true)
+    public Piece getFirstNotPlacePieceByTypeId(Integer id) throws DataAccessException{
+        return pieceRepository.findFirstPieceByPositionIsNullAndPieceTypeId(id).orElseGet(null);
+    }
+
     @Transactional
     public void save(Piece p){
         pieceRepository.save(p);
     }
+
+    @Transactional
+    public void delete(Piece p){
+        pieceRepository.delete(p);
+    }
+
+    @Transactional(readOnly=true)
+    public List<Piece> getUsedPieces(Integer typeId) throws DataAccessException{
+        return pieceRepository.findAllPieceByPositionIsNotNullAndPieceTypeId(typeId);
+    }
+
+    
 
     @Transactional
     public void loadPiecesForNewGame(Integer playerNumber,List<Integer> playableZones){
