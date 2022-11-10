@@ -7,12 +7,15 @@
     <h2>PIECES</h2>
     <head>
         <style>
+            .container{
+                justify-content: center;
+            }
             .pre-button{
                 background-color: blueviolet;
                 color:aliceblue;
                 text-align: center;
-                position: absolute;
                 border-radius: 20%;
+                margin-left:30px
             }
         </style>
     </head>
@@ -43,7 +46,14 @@
                 <td>
                     <a href='<c:url value="/pieces/${piece.id}/droop"/>' >
                     <div class="pre-button">
-                        hola
+                        <c:choose>
+                            <c:when test="${piece.pieceType.id==2}">
+                                COLOCAR ESPIA
+                            </c:when>
+                            <c:otherwise>
+                                DESPLEGAR TROPA
+                            </c:otherwise>
+                        </c:choose>
                     </div>
 					</a>
                 </td>
@@ -52,5 +62,22 @@
         </c:forEach>
         </tbody>
     </table>
+            <div class="container">
+                <a href='<c:url value="/pieces/${firstTroop.id}/droop"/>'>
+                    <button class="pre-button">DESPLEGAR TROPA</button>
+                </a>
+                <a href='<c:url value="/pieces/${firstSpy.id}/droop"/>' >
+                    <button class="pre-button">COLOCAR ESPIA</button>
+                </a>
+                <a href='<c:url value="/pieces/kill"/>' >
+                    <button class="pre-button">ELIMINAR TROPA</button>
+                </a>
+                <a href='<c:url value="/pieces/return/1"/>' >
+                    <button class="pre-button">DEVOLVER TROPA</button>
+                </a>
+                <a href='<c:url value="/pieces/return/2"/>' >
+                    <button class="pre-button">DEVOLVER ESPIA</button>
+                </a>
+            </div>
     
 </petclinic:layout>
