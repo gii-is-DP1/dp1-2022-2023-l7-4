@@ -13,7 +13,12 @@
     <form:form modelAttribute="game" class="form-horizontal" id="add-game-form">
         <div class="form-group has-feedback">
             <petclinic:inputField label="Name" name="name"/>
-            <petclinic:inputField label="size" name="size"/>
+            <label class="col-sm-2 control-label">Size</label>
+            <select name="size">  
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+          </select>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

@@ -12,7 +12,16 @@ import org.springframework.stereotype.Service;
 public class GameService {
     @Autowired
     GameRepository grepo;
-    
+
+	@Transactional
+	public Collection<Game> getGameByName(String name){
+		return grepo.findGameByName(name);
+	}
+
+    @Transactional
+	public Collection<Game> getGames(){
+		return (Collection<Game>) grepo.findAll();
+	}
 
 	@Transactional
 	public Game getGameById(Integer id){
