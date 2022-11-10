@@ -48,7 +48,7 @@ public class Game {
     @Column(name="is_finished")
     Boolean isFinished;
 
-    @OneToMany(mappedBy = "game")
+    /* @OneToMany(mappedBy = "game")
     private Set<Player> player;
-
+ */
 }

@@ -2,8 +2,11 @@ package org.springframework.samples.petclinic.player;
 
 import java.time.LocalDate;
 
+import javax.annotation.Generated;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,6 +29,7 @@ import lombok.Setter;
 public class Player{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
 
@@ -43,8 +47,8 @@ public class Player{
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 
-    @ManyToOne
+    /* @ManyToOne
     @JoinColumn(name="game_id", nullable=false)
-    private Game game;
+    private Game game; */
    
 }
