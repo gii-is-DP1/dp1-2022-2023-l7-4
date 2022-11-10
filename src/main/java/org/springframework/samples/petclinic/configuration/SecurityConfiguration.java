@@ -47,11 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/searching/**").permitAll()
 				.antMatchers("/cardmenu/**").permitAll()
 				.antMatchers("/card/**").permitAll()
-
-
-
-
-
+				.antMatchers("/sandbox/**").permitAll()
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
