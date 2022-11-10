@@ -4,17 +4,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <petclinic:layout pageName="positions">
-    <h2>Positions</h2>
-    <script>
-        console.log("sssss")
-    </script>
-    
+    <h2>Positions</h2>    
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
             <th>Zone</th>
             <th>Occupied</th>
+            <th>Ocupar</th>
         </tr>
         </thead>
         <tbody>
@@ -31,8 +28,9 @@
                 </td>
                 
                 <td>
+                    
                     <form action="positions/${position.id}/occupy">
-                        <input type="submit" value="Des/Ocupar" />
+                        <input class = "btn-submit-form" type="submit" value="Des/Ocupar"/>
                 </form>
                 </td>
             </tr>
@@ -45,9 +43,39 @@
     
     <body>
         
+   
+    
+        <div class="board">
+            <c:forEach items="${positions}" var="position">
+                <!--OJO, PUEDES ENCADENAR VALORES DE LAS ETIQUETAS CON LOS ATRIBUTOS DE LOS ITEMS-->
+                <a class = "btn-pos-${position.id}" href="/positions/${position.id}/occupy">${position.id}</a>
+            </c:forEach>
+        </div>
+    </body>
     <style>
+
+        .btn-submit-form{
+            background-color: #96dfe4;
+            border-width: 1px;
+        }
+
+        a:link, a:visited, a:active {
+            text-decoration: none;
+        
+        }
+        .table{
+            width: 50%;
+            margin-right: auto;
+            margin-left: auto;
+             
+        }
+
         .btn-pos-1{
-            background-color: aqua;
+            text-emphasis: none;
+            text-decoration: none;
+            height: 20px;
+            width: 20px;
+            background-color: #96dfe4;
             border: 8px;
             text-align: center;
             position: absolute;
@@ -55,7 +83,11 @@
             top:0px;
         }
         .btn-pos-2{
-            background-color: aqua;
+            text-emphasis: none;
+            text-decoration: none;
+            height: 20px;
+            width: 20px;
+            background-color: #96dfe4;
             border: 8px;
             text-align: center;
             position: absolute;
@@ -63,33 +95,32 @@
             top:30px;
         }
         .btn-pos-3{
-            background-color: aqua;
+            text-emphasis: none;
+            text-decoration: none;
+            height: 20px;
+            width: 20px;
+            background-color: #96dfe4;
             border: 8px;
             text-align: center;
             position: absolute;
             border-radius: 50%;
             top:60px;
         }
+
         .board{
+
+            margin-left: auto;
+            margin-right: auto;
             background-image: url("/resources/images/example_map.jpg");
             background-size: contain;
             background-repeat: no-repeat;
+            background-position: center;
             height: 600px;
             width: 600px;
-            position:relative;
+            display: grid;
+            position: relative;
         }
     </style>
-    
-        <div class="board">
-            <c:forEach items="${positions}" var="position">
-                <!--OJO, PUEDES ENCADENAR VALORES DE LAS ETIQUETAS CON LOS ATRIBUTOS DE LOS ITEMS-->
-            <div class="btn-pos-${position.id}">
-                <form action="positions/${position.id}/occupy">
-                    <input type="submit" value="${position.id}" />
-            </div>
-            </c:forEach>
-        </div>
-    </body>
     
 
 </petclinic:layout>
