@@ -23,6 +23,8 @@
             <th>PV</th>
             <th>PV en Círculo interno</th>
             <th>Rareza</th>
+            <th>Aspecto</th>
+            <th>Mazo</th>
         </tr>
         </thead>
         <tbody>
@@ -32,7 +34,7 @@
                     <c:out value="${cards.id}"/>
                 </td>
                 <td>
-                    <spring:url value="/searching/{cardId}" var="cardUrl">
+                    <spring:url value="/card/searchingCard/{cardId}" var="cardUrl">
                         <spring:param name="cardId" value="${cards.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(cardUrl)}"><c:out value="${cards.name}"/></a>
@@ -54,7 +56,13 @@
                 </td>   
                 <td>
                     <c:out value="${cards.rarity} "/>
-                </td>       
+                </td>
+                <td>
+                    <c:out value="${cards.aspect.name} "/>
+                </td>
+                <td>
+                    <c:out value="${cards.halfDeck.name} "/>
+                </td>
             </tr>
         </c:forEach>
         </tbody>

@@ -14,7 +14,7 @@ uri="http://www.springframework.org/security/tags"%>
 
     <h2 class="menu">Menú de cartas</h2>
     <div class="grid-container">
-    <form:form modelAttribute="card" action="/cards" method="get" class="form-horizontal"
+    <form:form modelAttribute="card" action="/card/cards" method="get" class="form-horizontal"
                id="search-owner-form">
         <div class="form-group">
             <div class="col-sm-offset-1 col-sm-10">
@@ -23,7 +23,7 @@ uri="http://www.springframework.org/security/tags"%>
         </div>
     </form:form>
 
-    <form:form modelAttribute="card" action="/searching" method="get" class="form-horizontal"
+    <form:form modelAttribute="card" action="/card/searchingCard" method="get" class="form-horizontal"
                id="search-owner-form">
         <div class="form-group">
             <div class="col-sm-offset-5 col-sm-5">
