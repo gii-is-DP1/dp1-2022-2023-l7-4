@@ -44,6 +44,19 @@
                     </picUrl>
                 </properties>
             </developer>
+                <developer>
+                    <id>davzarort</id>
+                    <name>David</name>
+                    <email>davidzarandieta@gmail.com</email>
+                    <roles>
+                        <role>tech master</role>
+                    </roles>
+                    <properties>
+                        <picUrl>
+                            https://avatars.githubusercontent.com/u/73244260?s=40¿v=4
+                        </picUrl>
+                    </properties>
+                </developer>
             <developer>
                 <id>javfercas3</id>
                 <name>Javier Fernández Castillo</name>
