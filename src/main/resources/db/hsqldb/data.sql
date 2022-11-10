@@ -93,9 +93,9 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'pepe',3,TRUE,1);
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'messi',3,FALSE,2);
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'lolaso',6,FALSE,3);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'EL LABERINTO',3,TRUE,1);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'GRACKLSTUGH',6,FALSE,3);
 
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,2,0);
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,3,2);
