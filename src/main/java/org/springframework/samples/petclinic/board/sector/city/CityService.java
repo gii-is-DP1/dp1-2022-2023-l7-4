@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.board.sector.city;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ public class CityService {
         this.cityRepository=cityRepo;
     }
 
+    public List<City> getCities(){
+        return cityRepository.findAll2();
+    }
     
     
 }

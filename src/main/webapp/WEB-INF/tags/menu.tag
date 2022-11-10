@@ -48,8 +48,14 @@
 
 				<petclinic:menuItem active="${name eq 'position'}" url="/positions"
 					title="positions">
-					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
-					<span>positions</span>
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Positions</span>
+				</petclinic:menuItem>
+
+				<petclinic:menuItem active="${name eq 'piece'}" url="/pieces"
+					title="pieces">
+					<span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>
+					<span>Pieces</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'cards'}" url="/cardmenu"

@@ -97,9 +97,28 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO positions(id,zone,occupied) VALUES (1,2,TRUE);
-INSERT INTO positions(id,zone,occupied) VALUES (2,2,FALSE);
-INSERT INTO positions(id,zone,occupied) VALUES (3,1,TRUE);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'EL LABERINTO',3,TRUE,1);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'GRACKLSTUGH',6,FALSE,3);
+
+INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,2,0);
+INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,3,2);
+INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
+
+INSERT INTO piece_types(name) VALUES('troop');
+INSERT INTO piece_types(name) VALUES('spy');
+
+INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
+INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
+INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
+INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
+INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
+
+-- INSERT INTO positions(id,zone,occupied,city_id) VALUES (1,2,TRUE,1);
+-- INSERT INTO positions(id,zone,occupied,city_id) VALUES (2,2,FALSE,2);
+-- INSERT INTO positions(id,zone,occupied,city_id) VALUES (3,1,TRUE,1);
+-- positions se autogenera
+-- INSERT INTO positions(id,zone,occupied,path_id) VALUES (4,1,TRUE,1);
 
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','Drow. El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');
 INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','Dragones. El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
