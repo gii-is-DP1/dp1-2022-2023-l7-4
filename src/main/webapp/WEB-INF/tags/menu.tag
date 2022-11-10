@@ -62,6 +62,11 @@
 				</petclinic:menuItem>
 			    </sec:authorize>
 
+				<petclinic:menuItem active="${name eq 'cards'}" url="/cardmenu"
+					title="cards">
+					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
+					<span>Cards</span>
+				</petclinic:menuItem>
 			</ul>
 
 
@@ -100,7 +105,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="divider"></li>		
+							<li class="divider"></li>						
                             <li> 
 								<div class="navbar-login navbar-login-session">
 									<div class="row">
