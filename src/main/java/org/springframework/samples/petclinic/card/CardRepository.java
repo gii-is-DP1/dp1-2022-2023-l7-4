@@ -14,8 +14,8 @@ public interface CardRepository extends CrudRepository<Card, Integer> {
     //Card
     List<Card> findAll();
 
-    @Query("SELECT c FROM Card c WHERE c.name = ?1")
-    List<Card> findCardByName(String name);
+    @Query("SELECT c FROM Card c WHERE c.name LIKE concat('%',?1,'%') ")
+    List<Card> findCardsByName(String name);
 
     @Query("SELECT c FROM Card c WHERE c.id = ?1")
     Collection<Card> findCardById(Integer id);

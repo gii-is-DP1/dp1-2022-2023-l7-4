@@ -16,7 +16,7 @@
 <h2>Buscar carta</h2>
 
     
-<form:form modelAttribute="card" action="/card/searchingCard" method="get" class="form-horizontal"
+<form:form modelAttribute="card" action="/card/cards" method="get" class="form-horizontal"
            id="search-owner-form">
     <div class="form-group">
         <div class="control-group" id="name">

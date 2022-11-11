@@ -24,8 +24,8 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Card> getCardByName(String name) {
-        return cardRepository.findCardByName(name);
+    public List<Card> getCardsByName(String name) {
+        return cardRepository.findCardsByName(name);
     }
 
     @Transactional(readOnly = true)

@@ -1,14 +1,13 @@
 package org.springframework.samples.petclinic.card;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,34 +38,26 @@ public class CardController {
 
 	//Listing card
     @GetMapping("/cards")
-    public ModelAndView showCards(){
-        ModelAndView result=new ModelAndView(CARDS_LISTING_VIEW);
-        result.addObject("cards", cardService.getAllCards());
-        return result;
+    public ModelAndView showCards(Card card,@RequestParam String name,BindingResult result ){
+        ModelAndView result3=new ModelAndView(CARDS_LISTING_VIEW);
+		List<Card> filteredCards = cardService.getCardsByName(name);
+		if(filteredCards.isEmpty()){
+		result.rejectValue("name", "notFound", "not found");
+		}else{
+			result3.addObject("cards", filteredCards);
+		}
+		return result3;
     }
 
-	//find card by name
-	@GetMapping(value = "/searchingCard")
-	public String processFindForm(Card card, BindingResult result, Map<String, Object> model) {
-		Collection<Card> results = this.cardService.getCardByName(card.getName());
-		if (results.size() == 1) {
-			// 1 owner found
-			card = results.iterator().next();
-			return "redirect:/card/searchingCard/" + card.getId();
-		}
-		else {
-			// no owners found
-			result.rejectValue("name", "notFound", "not found");
-			return CARDS_SEARCHING;
-		}
-	}
+
+
 	
-	@GetMapping("/searchingCard/{cardId}")
-	public ModelAndView showCard(@PathVariable("cardId") Integer cardId) {
-		ModelAndView mav = new ModelAndView("cards/cardDetails");
-		mav.addObject("id",this.cardService.getCardById(cardId));
-		return mav;
-	}
+	// @GetMapping("/searchingCard/{cardId}")
+	// public ModelAndView showCard(@PathVariable("cardId") Integer cardId) {
+	// 	ModelAndView mav = new ModelAndView("cards/cardDetails");
+	// 	mav.addObject("id",this.cardService.getCardById(cardId));
+	// 	return mav;
+	// }
 
 	//find card by deck
 	@GetMapping(value = "/searchingDeck")
