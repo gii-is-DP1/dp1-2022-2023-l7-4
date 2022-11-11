@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,10 +33,13 @@ public class Position{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull
-    private Boolean occupied;
+    @ManyToOne
+    @JoinColumn(name="player_id")
+    private Player player;
 
-    
+    public boolean getIsOccupied(){
+        return player!=null;
+    }
 
     //RN- una posicion o pertenece a una ciudad o pertenece a un camino
 
@@ -81,7 +85,7 @@ public class Position{
     }
 
     public Position() {
-        this.occupied= false;
+        this.player= null;
         this.forSpy=false;
     }
     

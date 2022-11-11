@@ -3,6 +3,8 @@ package org.springframework.samples.petclinic.board.position;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.ehcache.impl.internal.classes.commonslang.ArrayUtils;
@@ -47,15 +49,15 @@ public class PositionService {
 
     @Transactional(readOnly = true)
     public List<Position> getFreePositions() throws DataAccessException{
-        return positionRepository.findAllPositionByOccupiedFalse();
+        return positionRepository.findAllPositionByPlayerIsNull();
     }
     @Transactional(readOnly = true)
     public List<Position> getFreeTroopPositions() throws DataAccessException{
-        return positionRepository.findAlPositionsByOccupiedFalseAndForSpyFalse();
+        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyFalse();
     }
     @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositions() throws DataAccessException{
-        return positionRepository.findAlPositionsByOccupiedFalseAndForSpyTrue();
+        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
     }
     
 
@@ -63,6 +65,35 @@ public class PositionService {
         return positionRepository.findById2(id);
     }
     
+    @Transactional(readOnly = true)
+    public List<Position> getPlayerPositions(Integer player_id){
+        return positionRepository.findAllPositionByPlayerId(player_id);
+    }
+    @Transactional(readOnly = true)
+    public List<Position> getReachtablePositionsFromPlayerPositions(Integer player_id,Boolean searchEnemies){
+        List<Position> myPos=getPlayerPositions(player_id);
+        List<Position> adjacencies=myPos.stream().map(pos->pos.getAdjacents()).flatMap(List::stream)
+        .distinct()
+        .filter(adj_pos->adj_pos.getIsOccupied()==searchEnemies)
+        .filter(adj_pos->(!searchEnemies) || adj_pos.getPlayer().getId()!=player_id)//hago 2 filter distintos
+        //para evitar NullPointerException en adj.getPlayer().getId()
+        .collect(Collectors.toList());
+        return adjacencies;
+    }
+    @Transactional(readOnly = true)
+    public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy,Boolean searchForAll){
+        List<Position> res=null;
+        if(searchForAll)
+            res= positionRepository
+            .findAllPositionByPlayerIsNotNullAndPlayerIdNotAndForSpy(player_id,forSpy);
+        else{
+            res=getReachtablePositionsFromPlayerPositions(player_id, true);
+            res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
+        }
+        return res;
+    }
+
+
     /**
      * Given the list of sectors (cities and paths) it calculates all the positions of the board based on
      * in the capacity of these and their relationships. Only positions associated with sectors are generated

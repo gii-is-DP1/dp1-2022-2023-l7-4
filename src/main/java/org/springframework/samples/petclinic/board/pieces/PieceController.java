@@ -65,7 +65,7 @@ public class PieceController {
             Piece updatedPiece=pieceService.getPieceById(id);
             BeanUtils.copyProperties(piece, updatedPiece,"id");
             Position position=updatedPiece.getPosition();
-            position.setOccupied(true);
+            //position.setOccupied(true);
             this.positionService.save(position);
             res=new ModelAndView(PIECES_LISTING_VIEW);
         }

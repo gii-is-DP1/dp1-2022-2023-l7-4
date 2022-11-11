@@ -12,6 +12,7 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
     public Collection<Player> findPlayersByName(String name);
 
     Player findById(int id) throws DataAccessException;
+    
 
     
 

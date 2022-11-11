@@ -13,13 +13,13 @@ import org.springframework.stereotype.Repository;
 public interface PositionRepository extends CrudRepository<Position,Integer>{
 
     @Query
-    List<Position> findAllPositionByOccupiedFalse();
+    List<Position> findAllPositionByPlayerIsNull();
     //TODO:findAllPositionNextToPositionIdAndOccupiedFalse
     @Query("SELECT city.name FROM City city WHERE city.id = :id")
     String findCityNameBy(int id);
 
-    List<Position> findAlPositionsByOccupiedFalseAndForSpyFalse();
-    List<Position> findAlPositionsByOccupiedFalseAndForSpyTrue();
+    List<Position> findAllPositionsByPlayerIsNullAndForSpyFalse();
+    List<Position> findAllPositionsByPlayerIsNullAndForSpyTrue();
 
     @Query("SELECT position FROM Position position WHERE position.id = :id")
 	public Position findById2(@Param("id") int id);
@@ -29,5 +29,11 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     // List<Position> findAllPositionByPath(@Param("path")Path path);
     @Query("select p from Position p where p.city.id = :id")
     List<Position> findAllPositionByCityId(@Param("id")int city_id) throws DataAccessException;
+
+    List<Position> findAllPositionByPlayerId(int player_id);
+
+    //ver todas las posiciones enemigas para un jugador
+    //@Query("SELECT p FROM Position p WHERE p.player IS NOT NULL AND p.player.id <> ?1 AND p.for_spy = : for_spy")
+    List<Position> findAllPositionByPlayerIsNotNullAndPlayerIdNotAndForSpy(int player_id,Boolean for_spy);
     
 }
