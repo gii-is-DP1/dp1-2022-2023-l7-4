@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
+import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
+import org.springframework.samples.petclinic.board.position.exceptions.NullPlayerException;
+import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
+import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.player.Player;
@@ -35,13 +40,17 @@ public class PositionService {
     }
 
     @Transactional
-    public void save(Position p){
+    public void save(Position p) throws DataAccessException{
         positionRepository.save(p);
     }
 
-    @Transactional
-    public void occupyPosition(Position position,Player player){
-        
+    @Transactional(rollbackFor = {OccupiedPositionException.class,NullPointerException.class})
+    public void occupyPosition(Position position,Player player)
+     throws DataAccessException,OccupiedPositionException,NullPointerException{
+        if(position.getIsOccupied())
+            throw new OccupiedPositionException();
+        else if(player==null)
+            throw new NullPointerException();
         if(position.getForSpy()){
             //TODO player.check
             player.setSpies(player.getSpies()-1);
@@ -56,12 +65,49 @@ public class PositionService {
         save(position);
     }
 
-    @Transactional
-    public void killTroop(Position p,Player player){
+    @Transactional(rollbackFor =
+     {IncorrectPositionTypeException.class,EmptyPositionException.class,YourPositionException.class})
+    public void killTroop(Position position,Player player) throws DataAccessException
+    ,IncorrectPositionTypeException,EmptyPositionException,YourPositionException{
         //errores posibles, tipo incorrecto, jugador incorrecto(o vacio o eres tu)
-        p.setPlayer(player);
-        
+        if(position.getForSpy())
+            throw new IncorrectPositionTypeException();
+        else if(position.getPlayer()==null)
+            throw new EmptyPositionException();
+        else if(position.getPlayer().equals(player))
+            throw new YourPositionException();
+    }
 
+    @Transactional
+    public void returnPiece(Position position,Player player) throws DataAccessException{
+        Player enemy=position.getPlayer();
+        if(position.getForSpy()){
+            enemy.setSpies(enemy.getSpies()+1);
+        }else{
+            enemy.setTroops(enemy.getTroops()+1);
+        }
+        playerRepository.save(enemy);
+        position.setPlayer(null);
+        save(position);
+    }
+
+    @Transactional
+    public void movePiece(Position source,Position target) throws DataAccessException{
+        //errores posibles, source vacio y/o target ocupado, source.getForSpy()!=target.getForSpy()
+        source.setPlayer(null);
+        target.setPlayer(source.getPlayer());
+        save(source);
+        save(target);
+    }
+
+    @Transactional
+    public void supplantTroop(Position position,Player player) throws DataAccessException{
+        //errores posibles= posicion sin ocupar o tu posicion
+        player.setTroops(player.getTroops()-1);
+        player.setTrophyPV(player.getTrophyPV()+1);
+        playerRepository.save(player);
+        position.setPlayer(player);
+        save(position);
     }
 
     @Transactional(readOnly = true)
