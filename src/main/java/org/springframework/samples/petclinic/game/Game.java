@@ -44,9 +44,9 @@ public class Game {
 
     @Temporal(TemporalType.DATE)
     Date date;
-
-    @Column(name="is_finished")
-    Boolean isFinished;
+    
+    @Column(name="is_finished",columnDefinition = "boolean default false")
+    Boolean isFinished = false;
 
     /* @OneToMany(mappedBy = "game")
     private Set<Player> player;

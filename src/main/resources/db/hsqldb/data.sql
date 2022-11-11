@@ -108,14 +108,6 @@ INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,2,0);
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,3,2);
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 
-INSERT INTO piece_types(name) VALUES('troop');
-INSERT INTO piece_types(name) VALUES('spy');
-
-INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
-INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
-INSERT INTO pieces(piece_type_id,player_id) VALUES(1,1);
-INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
-INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
 
 -- INSERT INTO positions(id,zone,occupied,city_id) VALUES (1,2,TRUE,1);
 -- INSERT INTO positions(id,zone,occupied,city_id) VALUES (2,2,FALSE,2);
@@ -123,10 +115,10 @@ INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
 -- positions se autogenera
 -- INSERT INTO positions(id,zone,occupied,path_id) VALUES (4,1,TRUE,1);
 
-INSERT INTO game(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,false);
+INSERT INTO game(id,date,name,size) VALUES (1,'2002-04-08','Partida 1', 3);
 
-INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',true, 'daviddhc');
-INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (2, 'Andres', 'aaa', '2002-04-08',true, 'anddomrui');
+INSERT INTO players(id,name,email,birthdate,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08', 'daviddhc');
+INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'aaa', '2002-04-08', 'anddomrui');
 
 
 INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
