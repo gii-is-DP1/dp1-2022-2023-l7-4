@@ -1,18 +1,13 @@
 package org.springframework.samples.petclinic.card;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +23,6 @@ public class CardController {
 	private String CARDS_MENU="cards/cardMenu";
 	private String CARDS_BY_DECK="cards/cardsDeck";
 
-
-
     private CardService cardService;
 
     @Autowired
@@ -44,6 +37,7 @@ public class CardController {
         return result;
 	}
 
+	//Listing card
     @GetMapping("/cards")
     public ModelAndView showCards(){
         ModelAndView result=new ModelAndView(CARDS_LISTING_VIEW);
@@ -52,12 +46,6 @@ public class CardController {
     }
 
 	//find card by name
-    @GetMapping(value = "/cards/find")
-	public String initFindForm(Map<String, Object> model) {
-		model.put("card", new Card());
-		return CARDS_SEARCHING;
-	}
-
 	@GetMapping(value = "/searchingCard")
 	public String processFindForm(Card card, BindingResult result, Map<String, Object> model) {
 		Collection<Card> results = this.cardService.getCardByName(card.getName());
@@ -69,7 +57,7 @@ public class CardController {
 		else {
 			// no owners found
 			result.rejectValue("name", "notFound", "not found");
-			return "cards/findCards";
+			return CARDS_SEARCHING;
 		}
 	}
 	
@@ -80,31 +68,39 @@ public class CardController {
 		return mav;
 	}
 
-	//Listing card by Deck
-    @GetMapping(value = "/cards/findDeck")
-	public String initFindDeckForm(Map<String, Object> model) {
-		model.put("card", new Card());
-		return CARDS_BY_DECK;
-	}
-
+	//find card by deck
 	@GetMapping(value = "/searchingDeck")
-	public String processFindDeckForm(Card card, BindingResult result, Map<String, Object> model) {
-		// allow parameterless GET request for /owners to return all records
-		if (card.getName() == null) {
-			card.setName(""); // empty string signifies broadest possible search
-		}
-
-		Collection<Card> results = this.cardService.getCardByName(card.getName());
-		if (results.size() == 1) {
+	public String showCardsByDeck(Card card, HalfDeck halfDeck, BindingResult result, Map<String, Object> model) {
+		Collection<Card> results = this.cardService.getCarsdByHalfDeck(halfDeck.getName());
+		if (results.size() != 0) {
 			// 1 owner found
 			card = results.iterator().next();
-			return "redirect:/searching/" + card.getId();
+			return "redirect:/card/deck/" + halfDeck.getName();
 		}
 		else {
 			// no owners found
 			result.rejectValue("name", "notFound", "not found");
-			return "cards/findCards";
+			return CARDS_BY_DECK;
 		}
 	}
+
+	@GetMapping("/deck/{halfDeck}")
+	public ModelAndView searchCardByDeck(@PathVariable("halfDeck") String halfDeck) {
+		ModelAndView mav = new ModelAndView("cards/deckDetails");
+		mav.addObject("id",this.cardService.getCarsdByHalfDeck(halfDeck));
+		return mav;
+	}
+	/*@GetMapping("/searchingDeck")
+	public String showCardsByDeck(Model model){
+		model.addAttribute("card", new Card());
+		return CARDS_BY_DECK;
+	}
+
+	@GetMapping("/deck")
+	public String searchCardByDeck(@RequestParam String halfdeck, Model model, @ModelAttribute("card") Card card){
+		model.addAttribute("cardByDeck", cardService.getCarsdByHalfDeck(halfdeck));
+		return CARDS_BY_DECK;
+	}
+*/
 
 }

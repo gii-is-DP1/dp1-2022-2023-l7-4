@@ -31,6 +31,15 @@ uri="http://www.springframework.org/security/tags"%>
             </div>
         </div>
     </form:form>
+
+    <form:form modelAttribute="card" action="/card/searchingDeck" method="get" class="form-horizontal"
+               id="search-owner-form">
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-5">
+                <button type="submit" class="btn btn-default">Buscar cartas por mazo</button>
+            </div>
+        </div>
+    </form:form>
 </div>
 	<style>
         .grid-container {
