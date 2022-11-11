@@ -85,7 +85,7 @@ public class PositionService {
         List<Position> res=null;
         if(searchForAll)
             res= positionRepository
-            .findAllPositionByPlayerIsNotNullAndPlayerIdNotAndForSpy(player_id,forSpy);
+            .findAllEnemyPositionsByType(player_id,forSpy);
         else{
             res=getReachtablePositionsFromPlayerPositions(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());

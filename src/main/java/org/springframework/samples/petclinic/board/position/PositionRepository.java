@@ -34,6 +34,7 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
 
     //ver todas las posiciones enemigas para un jugador
     //@Query("SELECT p FROM Position p WHERE p.player IS NOT NULL AND p.player.id <> ?1 AND p.for_spy = : for_spy")
-    List<Position> findAllPositionByPlayerIsNotNullAndPlayerIdNotAndForSpy(int player_id,Boolean for_spy);
+    @Query("SELECT p FROM Position p WHERE p.player IS NOT NULL AND p.player.id =: player_id AND p.forSpy =: for_spy")
+    List<Position> findAllEnemyPositionsByType(int player_id,Boolean for_spy);
     
 }

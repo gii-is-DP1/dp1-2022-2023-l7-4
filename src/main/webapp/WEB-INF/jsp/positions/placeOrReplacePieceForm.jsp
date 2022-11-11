@@ -62,13 +62,11 @@
            ${user} 
         </div>
 
-        <form:form modelAttribute="position">
             <td>POSITIONS</td>
-            <form:select path="position.id">
-                <form:options items="${freePositions}" itemLabel="id"/>
-            </form:select>
-            <button type="submit">COLOCAR</button>
-        </form:form>
+            <form:form modelAttribute="position">
+                
+            </form:form>
+            <button type="submit" id="sed">COLOCAR</button>
         
     <style>
 
