@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +19,15 @@ public class PositionService {
     private PositionRepository positionRepository;
     private PopulatePositionService populatePositionService;
     private AdjacentPositionService adjacentPositionService;
+    private PlayerRepository playerRepository;
 
     @Autowired
-    public PositionService(PositionRepository posRepo,PopulatePositionService populatePositionService,AdjacentPositionService adjacentPositionService){
+    public PositionService(PositionRepository posRepo,PopulatePositionService populatePositionService
+    ,AdjacentPositionService adjacentPositionService,PlayerRepository playerRepository){
         this.positionRepository=posRepo;
         this.populatePositionService= populatePositionService;
         this.adjacentPositionService= adjacentPositionService;
+        this.playerRepository=playerRepository;
     }
 
     public List<Position> getPositions(){
@@ -32,6 +37,31 @@ public class PositionService {
     @Transactional
     public void save(Position p){
         positionRepository.save(p);
+    }
+
+    @Transactional
+    public void occupyPosition(Position position,Player player){
+        
+        if(position.getForSpy()){
+            //TODO player.check
+            player.setSpies(player.getSpies()-1);
+            
+
+        }else{
+            //TODO player.checkPlayerHasEnoughTroops
+            player.setTroops(player.getTroops()-1);
+        }
+        playerRepository.save(player);
+        position.setPlayer(player);
+        save(position);
+    }
+
+    @Transactional
+    public void killTroop(Position p,Player player){
+        //errores posibles, tipo incorrecto, jugador incorrecto(o vacio o eres tu)
+        p.setPlayer(player);
+        
+
     }
 
     @Transactional(readOnly = true)
@@ -67,7 +97,7 @@ public class PositionService {
         return positionRepository.findAllPositionByPlayerId(player_id);
     }
     @Transactional(readOnly = true)
-    public List<Position> getReachtablePositionsFromPlayerPositions(Integer player_id,Boolean searchEnemies){
+    public List<Position> getAdjacentPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
         List<Position> myPos=getPlayerPositions(player_id);
         List<Position> adjacencies=myPos.stream().map(pos->pos.getAdjacents()).flatMap(List::stream)
         .distinct()
@@ -84,7 +114,7 @@ public class PositionService {
             res= positionRepository
             .findAllEnemyPositionsByType(player_id,forSpy);
         else{
-            res=getReachtablePositionsFromPlayerPositions(player_id, true);
+            res=getAdjacentPositionsFromPlayer(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
         }
         return res;

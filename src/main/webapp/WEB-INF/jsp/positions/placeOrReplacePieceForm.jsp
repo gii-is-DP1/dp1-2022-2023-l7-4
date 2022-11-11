@@ -63,8 +63,8 @@
         </div>
 
             <td>POSITIONS</td>
-            <form:form modelAttribute="position">
-                
+            <form:form>
+                <select 
             </form:form>
             <button type="submit" id="sed">COLOCAR</button>
         

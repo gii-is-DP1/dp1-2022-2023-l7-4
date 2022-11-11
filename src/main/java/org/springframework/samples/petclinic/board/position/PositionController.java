@@ -60,7 +60,7 @@ public class PositionController {
         
         if(reachable)
             result.addObject("freePositions"
-            , positionService.getReachtablePositionsFromPlayerPositions(1,false));
+            , positionService.getAdjacentPositionsFromPlayer(1,false));
         else
             result.addObject("freePositions",positionService.getFreePositions());
         result.addObject("user", auth.getName());
