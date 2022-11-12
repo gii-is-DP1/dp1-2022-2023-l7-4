@@ -1,11 +1,9 @@
 package org.springframework.samples.petclinic.board.sector;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,17 +11,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Table(name = "Sectors")
-@Entity
-public class Sector {
+@MappedSuperclass
+public class Sector extends BaseEntity {
 
-    @NotBlank
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
 
     @NotBlank
     private Integer capacity;
+
+    
 
 
     

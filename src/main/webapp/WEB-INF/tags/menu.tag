@@ -28,36 +28,51 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
+				<!-- <petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find owners</span>
-				</petclinic:menuItem>
+				</petclinic:menuItem> -->
 
-				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
+				<!-- <petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Veterinarians</span>
-				</petclinic:menuItem>
+				</petclinic:menuItem> -->
 
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
+				<!-- <petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
-				</petclinic:menuItem>
+				</petclinic:menuItem> -->
 
-				<petclinic:menuItem active="${name eq 'position'}" url="/positions"
+				<!-- <petclinic:menuItem active="${name eq 'position'}" url="/positions"
 					title="positions">
 					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
 					<span>positions</span>
+				</petclinic:menuItem> -->
+
+
+
+				<sec:authorize url="/positions">
+				<petclinic:menuItem active="${name eq 'position'}" url="/positions"
+					title="positions">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Positions</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'card'}" url="/cards"
+				<petclinic:menuItem active="${name eq 'piece'}" url="/pieces"
+					title="pieces">
+					<span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>
+					<span>Pieces</span>
+				</petclinic:menuItem>
+			    </sec:authorize>
+
+				<petclinic:menuItem active="${name eq 'cards'}" url="/card/cardmenu"
 					title="cards">
 					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
-					<span>cards</span>
+					<span>Cards</span>
 				</petclinic:menuItem>
-
 			</ul>
 
 
@@ -66,11 +81,12 @@
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
-					<li><a href="<c:url value="/users/new" />">Register</a></li>
+					<!-- <li><a href="<c:url value="/users/new" />">Register</a></li> -->
+					<li><a href="<c:url value="/player/new" />">Register as player</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>�
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
@@ -95,8 +111,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="divider"></li>
-<!-- 							
+							<li class="divider"></li>						
                             <li> 
 								<div class="navbar-login navbar-login-session">
 									<div class="row">
@@ -110,7 +125,6 @@
 									</div>
 								</div>
 							</li>
--->
 						</ul></li>
 				</sec:authorize>
 			</ul>
