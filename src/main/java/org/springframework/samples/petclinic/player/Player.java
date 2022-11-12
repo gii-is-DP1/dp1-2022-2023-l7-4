@@ -15,7 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.house.House;
 import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;
@@ -39,6 +39,8 @@ public class Player{
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     LocalDate birthdate;
 
+    @OneToOne( optional = false)
+	private House house;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "username", referencedColumnName = "username")

@@ -37,9 +37,7 @@ public class Position{
     @JoinColumn(name="player_id")
     private Player player;
 
-    public boolean getIsOccupied(){
-        return player!=null;
-    }
+
 
     //RN- una posicion o pertenece a una ciudad o pertenece a un camino
 
@@ -67,7 +65,10 @@ public class Position{
     public void addAdjacents(List<Position> positions) {
 		getAdjacentsInternal().addAll(positions);
 	}
-
+    
+    public boolean getIsOccupied(){
+        return player!=null;
+    }
     public Boolean isInCity(){
         return city!=null;
     }

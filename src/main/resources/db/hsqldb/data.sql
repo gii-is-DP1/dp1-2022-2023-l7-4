@@ -113,15 +113,18 @@ INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 -- INSERT INTO positions(id,zone,occupied,city_id) VALUES (2,2,FALSE,2);
 -- INSERT INTO positions(id,zone,occupied,city_id) VALUES (3,1,TRUE,1);
 -- positions se autogenera
--- INSERT INTO positions(id,zone,occupied,path_id) VALUES (4,1,TRUE,1);
 
 INSERT INTO game(id,date,name,size) VALUES (1,'2002-04-08','Partida 1', 3);
 
-INSERT INTO players(id,name,email,birthdate,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08', 'daviddhc');
-INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'aaa', '2002-04-08', 'anddomrui');
+INSERT INTO houses(id,name,description,photo,hex_color) VALUES (1,'Casa1','None', 'none','#f00');
+INSERT INTO houses(id,name,description,photo,hex_color) VALUES (2,'Casa2','None', 'none','#f40');
+INSERT INTO houses(id,name,description,photo,hex_color) VALUES (3,'Casa3','None', 'none','#00f');
+INSERT INTO houses(id,name,description,photo,hex_color) VALUES (4,'Casa4','None', 'none','#777');
+
+INSERT INTO players(id,name,email,birthdate,username,house_id) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08', 'daviddhc',1);
+INSERT INTO players(id,name,email,birthdate,username,house_id) VALUES (2, 'Andres', 'aaa', '2002-04-08', 'anddomrui',2);
 
 
-INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','Drow. El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');
 INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','Dragones. El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
 

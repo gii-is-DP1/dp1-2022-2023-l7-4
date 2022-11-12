@@ -78,6 +78,7 @@
   const positionColor =null;
   const lineWidth = 4;
   const lineColor = "lightgrey";
+  const strokeColor = "#000"
   const circleRadius = 20;
   const forceStrength = 0.;
   const linkStrength = 0.;
@@ -153,6 +154,14 @@
       .style("text-anchor", d => d.dir == 'forward' ? "end" : "start" )
   		.attr("startOffset", d => d.dir == 'forward' ? "85%" : "45px" )
   		.text(function(d) {return ""+d.pathName; });//+d.pathName
+
+      var linkcircle = svg.selectAll(".lineText")
+      .data(network.links)
+      .enter().append("circle")
+      .attr("r", positionRadius)
+      .attr("stroke" , strokeColor)
+      .attr("stroke-width","1")
+      .attr("fill","none")
 
   //add mouse over chart
   var tooltip = d3.select("body")
