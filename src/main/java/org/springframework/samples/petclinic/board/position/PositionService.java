@@ -92,6 +92,12 @@ public class PositionService {
             throw new EmptyPositionException();
         else if(position.getPlayer().equals(player))
             throw new YourPositionException();
+        else{
+            player.setTrophyPV(player.getTrophyPV()+1);
+            playerRepository.save(player);
+            position.setPlayer(player);
+            save(position);
+        }
     }
 
     @Transactional
