@@ -44,21 +44,37 @@ public class PositionService {
         positionRepository.save(p);
     }
 
-    @Transactional(rollbackFor = {OccupiedPositionException.class,NullPointerException.class})
-    public void occupyPosition(Position position,Player player)
-     throws DataAccessException,OccupiedPositionException,NullPointerException{
+    @Transactional(rollbackFor = {OccupiedPositionException.class,NullPointerException.class
+        ,IncorrectPositionTypeException.class})
+    public void occupyTroopPosition(Position position,Player player)
+     throws DataAccessException,OccupiedPositionException,NullPointerException,IncorrectPositionTypeException{
         if(position.getIsOccupied())
             throw new OccupiedPositionException();
         else if(player==null)
             throw new NullPointerException();
-        if(position.getForSpy()){
-            //TODO player.check
-            player.setSpies(player.getSpies()-1);
-            
-
+        else if(position.getForSpy()){
+            throw new IncorrectPositionTypeException();
         }else{
             //TODO player.checkPlayerHasEnoughTroops
             player.setTroops(player.getTroops()-1);
+        }
+        playerRepository.save(player);
+        position.setPlayer(player);
+        save(position);
+    }
+    @Transactional(rollbackFor = {OccupiedPositionException.class,NullPointerException.class
+        ,IncorrectPositionTypeException.class})
+    public void occupySpyPosition(Position position,Player player)
+     throws DataAccessException,OccupiedPositionException,NullPointerException,IncorrectPositionTypeException{
+        if(position.getIsOccupied())
+            throw new OccupiedPositionException();
+        else if(player==null)
+            throw new NullPointerException();
+        else if(position.getForSpy()==false){
+            throw new IncorrectPositionTypeException();
+        }else{
+            //TODO player.checkPlayerHasEnoughTroops
+            player.setSpies(player.getSpies()-1);
         }
         playerRepository.save(player);
         position.setPlayer(player);
@@ -154,6 +170,12 @@ public class PositionService {
         return adjacencies;
     }
     @Transactional(readOnly = true)
+    public List<Position> getAdjacentTroopPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
+        List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
+        return positions.stream().filter(pos->pos.getForSpy()==false).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy,Boolean searchForAll){
         List<Position> res=null;
         if(searchForAll)
@@ -164,6 +186,16 @@ public class PositionService {
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
         }
         return res;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getAllEnemyTroopsForPlayer(Integer player_id){
+        return getEnemyPositionsByType(player_id, false, true);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getAllEnemySpiesForPlayer(Integer player_id){
+        return getEnemyPositionsByType(player_id, true, true);
     }
 
 
