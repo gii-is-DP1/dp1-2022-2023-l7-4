@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
+import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
+import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
 import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
@@ -88,14 +90,14 @@ public class PositionController {
             res=showPositions();
             try{
                 Player player=this.playerService.getPlayerById(playerId);
-                this.positionService.occupyTroopPosition(position, player);
+                this.positionService.occupyTroopPosition(position, player,reachable);
                 String msg="Posicion "+position.getId()+" ocupada por jugador "+player.getName();
                 res.addObject("message", msg);
             }catch(OccupiedPositionException e){
                 br.rejectValue("position","occupied","already occupy");
                 res=errorRes;
-            }catch(NullPointerException e){
-                br.rejectValue("player","null","not null player or player id");
+            }catch(NotEnoughPresence e){
+                br.rejectValue("position","presence","not enought presence");
                 res=errorRes;
             }catch(IncorrectPositionTypeException e){
                 br.rejectValue("position","for troop","only for troops");
@@ -125,16 +127,14 @@ public class PositionController {
             res=showPositions();
             try{
                 Player player=this.playerService.getPlayerById(playerId);
-                this.positionService.occupyTroopPosition(position, player);
+                this.positionService.occupySpyPosition(position, player);
                 String msg="Posicion "+position.getId()+" ocupada por jugador "+player.getName();
                 res.addObject("message", msg);
-            }catch(OccupiedPositionException e){
-                br.rejectValue("position","occupied","already occupy");
+            }catch(MoreThanOnePlayerSpyInSameCity e){
+                br.rejectValue("position","more than one spy","only one player spy for one city");
                 res=errorRes;
-            }catch(NullPointerException e){
-                br.rejectValue("player","null","not null player or player id");
-                res=errorRes;
-            }catch(IncorrectPositionTypeException e){
+            }
+            catch(IncorrectPositionTypeException e){
                 br.rejectValue("position","for spy","only for spy");
                 res=errorRes;
             }
@@ -142,20 +142,15 @@ public class PositionController {
         return res;
     }
 
-    @GetMapping("/{playerId}/kill/{reachable}")
-    public ModelAndView initKillTroopForm(@PathVariable Integer playerId,@PathVariable Boolean reachable){
+    @GetMapping("/{playerId}/kill")
+    public ModelAndView initKillTroopForm(@PathVariable Integer playerId){
         ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
-        if(reachable)
-            result.addObject("availablePositions"
-            , positionService.getAdjacentTroopPositionsFromPlayer(playerId,true));
-        else
-            result.addObject("availablePositions",positionService.getAllEnemyTroopsForPlayer(playerId));
+        result.addObject("availablePositions",positionService.getAdjacentPositionsFromPlayer(playerId, true));
         return result;
     }
     
-    @PostMapping("/{playerId}/kill/{reachable}")
-    public ModelAndView processKillTroopForm(@Valid Position position,@PathVariable Integer playerId
-    ,@PathVariable Boolean reachable,BindingResult br){
+    @PostMapping("/{playerId}/kill")
+    public ModelAndView processKillTroopForm(@Valid Position position,@PathVariable Integer playerId,BindingResult br){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -177,11 +172,8 @@ public class PositionController {
                 br.rejectValue("position","own","you cant kill your own troop");
                 res=errorRes;
             }
-            catch(NullPointerException e){
-                br.rejectValue("player","null","not null player or player id");
-                res=errorRes;
-            }catch(IncorrectPositionTypeException e){
-                br.rejectValue("position","for spy","only for spy");
+            catch(NotEnoughPresence e){
+                br.rejectValue("position","unreachable","you dont have enough presence");
                 res=errorRes;
             }
         }
@@ -189,12 +181,79 @@ public class PositionController {
     }
 
     @GetMapping("{playerId}/return")
-    public String initReturnPieceForm(@PathVariable Integer playerId){
-        return CHOOSE_POSITION_FORM_VIEW;
+    public ModelAndView initReturnPieceForm(@PathVariable Integer playerId){
+        ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
+        result.addObject("availablePositions",positionService.getAdjacentPositionsFromPlayer(playerId, true));
+        return result;
     }
 
     @PostMapping("{playerId}/return")
-    
+    public ModelAndView processReturnPieceForm(@Valid Position position
+    ,@PathVariable Integer playerId,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+        }else{
+            res=showPositions();
+            try{
+                Player enemy=position.getPlayer();
+                Player player=this.playerService.getPlayerById(playerId);
+                this.positionService.returnPiece(position, player);
+                String msg="Pieca de jugador "+enemy.getName()+" en posicion "+position.getId()
+                +"devuelta por jugador "+player.getName();
+                res.addObject("message", msg);
+            }catch(NotEnoughPresence e){
+                br.rejectValue("position","unreachable","you dont have enough presence");
+                res=errorRes;
+            }
+        }
+        return res;
+    }
+
+    @GetMapping("{playerId}/supplant/{reachable}")
+    public ModelAndView initSupplantTroop(@PathVariable Integer playerId,@PathVariable Boolean reachable){
+        ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
+        if(reachable)
+            result.addObject("availablePositions"
+            , positionService.getAdjacentTroopPositionsFromPlayer(playerId,true));
+        else
+            result.addObject("availablePositions",positionService.getAllEnemyTroopsForPlayer(playerId));
+        return result;
+    }
+
+    @PostMapping("{playerId}/supplant/{reachable}")
+    public ModelAndView processSupplantTroop(@Valid Position position,@PathVariable Integer playerId
+    ,@PathVariable Boolean reachable,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+        }else{
+            res=showPositions();
+            try{
+                Player player=this.playerService.getPlayerById(playerId);
+                Player enemy=position.getPlayer();
+                this.positionService.supplantTroop(position, player, reachable);;
+                String msg="Pieza enemiga de jugador "+enemy.getName()
+                +"en posicion "+position.getId()+" ha sido suplantada por jugador "+player.getName();
+                res.addObject("message", msg);
+            }catch(EmptyPositionException e){
+                br.rejectValue("position","free","free position");
+                res=errorRes;
+            }catch(YourPositionException e){
+                br.rejectValue("position","own","you cant supplant your own piece");
+                res=errorRes;
+            }
+            catch(NotEnoughPresence e){
+                br.rejectValue("position","unreachable","you dont have enough presence");
+                res=errorRes;
+            }
+        }
+        return res;
+    }
     
 
     @GetMapping(value = "/{id}/occupy")

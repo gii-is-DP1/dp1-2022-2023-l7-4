@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
+import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
+import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
 import org.springframework.samples.petclinic.board.position.exceptions.NullPlayerException;
 import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
@@ -44,64 +46,58 @@ public class PositionService {
         positionRepository.save(p);
     }
 
-    @Transactional(rollbackFor = {OccupiedPositionException.class,NullPointerException.class
-        ,IncorrectPositionTypeException.class})
-    public void occupyTroopPosition(Position position,Player player)
-     throws DataAccessException,OccupiedPositionException,NullPointerException,IncorrectPositionTypeException{
+    @Transactional(rollbackFor = {OccupiedPositionException.class
+        ,IncorrectPositionTypeException.class,NotEnoughPresence.class})
+    public void occupyTroopPosition(Position position,Player player,Boolean onlyAdjacencies)
+     throws DataAccessException,OccupiedPositionException,IncorrectPositionTypeException,NotEnoughPresence{
         if(position.getIsOccupied())
             throw new OccupiedPositionException();
-        else if(player==null)
-            throw new NullPointerException();
         else if(position.getForSpy()){
             throw new IncorrectPositionTypeException();
-        }else{
-            //TODO player.checkPlayerHasEnoughTroops
-            player.setTroops(player.getTroops()-1);
+        }else if(onlyAdjacencies ){
+            List<Position> playerPositions=getAdjacentPositionsFromPlayer(player.getId(),false);
+            if(!playerPositions.contains(position))
+                throw new NotEnoughPresence();
         }
+        player.setTroops(player.getTroops()-1);
         playerRepository.save(player);
         position.setPlayer(player);
         save(position);
     }
-    @Transactional(rollbackFor = {OccupiedPositionException.class,NullPointerException.class
-        ,IncorrectPositionTypeException.class})
+    @Transactional(rollbackFor = {IncorrectPositionTypeException.class,MoreThanOnePlayerSpyInSameCity.class})
     public void occupySpyPosition(Position position,Player player)
-     throws DataAccessException,OccupiedPositionException,NullPointerException,IncorrectPositionTypeException{
-        if(position.getIsOccupied())
-            throw new OccupiedPositionException();
-        else if(player==null)
-            throw new NullPointerException();
-        else if(position.getForSpy()==false){
+     throws DataAccessException,IncorrectPositionTypeException,MoreThanOnePlayerSpyInSameCity{
+        if(position.getForSpy()==false){
             throw new IncorrectPositionTypeException();
-        }else{
-            //TODO player.checkPlayerHasEnoughTroops
-            player.setSpies(player.getSpies()-1);
-        }
+        }else if(positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()))
+            throw new MoreThanOnePlayerSpyInSameCity();
+        player.setSpies(player.getSpies()-1);
         playerRepository.save(player);
         position.setPlayer(player);
         save(position);
     }
 
     @Transactional(rollbackFor =
-     {IncorrectPositionTypeException.class,EmptyPositionException.class,YourPositionException.class})
+     {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void killTroop(Position position,Player player) throws DataAccessException
-    ,IncorrectPositionTypeException,EmptyPositionException,YourPositionException{
+    ,EmptyPositionException,YourPositionException,NotEnoughPresence{
         //errores posibles, tipo incorrecto, jugador incorrecto(o vacio o eres tu)
-        if(position.getForSpy())
-            throw new IncorrectPositionTypeException();
-        else if(position.getPlayer()==null)
+        if(position.getPlayer()==null)
             throw new EmptyPositionException();
         else if(position.getPlayer().equals(player))
             throw new YourPositionException();
-        else{
-            player.setTrophyPV(player.getTrophyPV()+1);
-            playerRepository.save(player);
-            position.setPlayer(player);
-            save(position);
-        }
+        else if(!getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
+            throw new NotEnoughPresence();
+        player.setTrophyPV(player.getTrophyPV()+1);
+        playerRepository.save(player);
+        position.setPlayer(player);
+        save(position);
     }
 
-    @Transactional
-    public void returnPiece(Position position,Player player) throws DataAccessException{
+    @Transactional(rollbackFor = NotEnoughPresence.class)
+    public void returnPiece(Position position,Player player) throws DataAccessException,NotEnoughPresence{
+        if(!getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
+            throw new NotEnoughPresence();
         Player enemy=position.getPlayer();
         if(position.getForSpy()){
             enemy.setSpies(enemy.getSpies()+1);
@@ -122,9 +118,17 @@ public class PositionService {
         save(target);
     }
 
-    @Transactional
-    public void supplantTroop(Position position,Player player) throws DataAccessException{
-        //errores posibles= posicion sin ocupar o tu posicion
+    @Transactional(rollbackFor =
+    {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
+    public void supplantTroop(Position position,Player player,Boolean onlyAdjacencies) throws DataAccessException
+    ,EmptyPositionException,YourPositionException,NotEnoughPresence{
+        if(position.getPlayer()==null)
+            throw new EmptyPositionException();
+        else if(position.getPlayer().equals(player))
+            throw new YourPositionException();
+        else if(onlyAdjacencies
+         & !getAdjacentPositionsFromPlayer(player.getId(),false).contains(position))
+            throw new NotEnoughPresence();
         player.setTroops(player.getTroops()-1);
         player.setTrophyPV(player.getTrophyPV()+1);
         playerRepository.save(player);
