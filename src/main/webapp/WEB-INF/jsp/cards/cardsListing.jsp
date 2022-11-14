@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -11,6 +12,18 @@
     <script>
         console.log("ssss")
     </script>
+
+<h2>Buscar carta</h2>
+
+    
+<form action="/cards/filter">
+    <label for="fname">Nombre de la carta:</label><br>
+    <input type="text" id="fname" name="name" value=${param.name}><br>
+    <label for="lname">Mazo de la carta:</label><br>
+    <input type="text" id="lname" name="deck" value="${param.deck}"><br><br>
+    <input type="submit" value="Submit" class="btn btn-default">
+  </form> 
+    <div>-</div>
     
     <table id="positionsTable" class="table table-striped">
         <thead>
@@ -28,40 +41,40 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${cards}" var="cards">
+        <c:forEach var="card" items="${cards}" >
             <tr>
                 <td>
-                    <c:out value="${cards.id}"/>
+                    <c:out value="${card.id}"/>
                 </td>
                 <td>
-                    <spring:url value="/card/searchingCard/{cardId}" var="cardUrl">
-                        <spring:param name="cardId" value="${cards.id}"/>
+                    <spring:url value="/cards/{cardId}" var="cardUrl">
+                        <spring:param name="cardId" value="${card.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(cardUrl)}"><c:out value="${cards.name}"/></a>
+                    <a href="${fn:escapeXml(cardUrl)}"><c:out value="${card.name}"/></a>
                 </td>
                 <td>
-                    <c:out value="${cards.cost} "/>
+                    <c:out value="${card.cost} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.story} "/>
+                    <c:out value="${card.story} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.rulesText} "/>
+                    <c:out value="${card.rulesText} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.deckVP} "/>
+                    <c:out value="${card.deckVP} "/>
                 </td>   
                 <td>
-                    <c:out value="${cards.innerCirclePV} "/>
+                    <c:out value="${card.innerCirclePV} "/>
                 </td>   
                 <td>
-                    <c:out value="${cards.rarity} "/>
+                    <c:out value="${card.rarity} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.aspect.name} "/>
+                    <c:out value="${card.aspect.name} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.halfDeck.name} "/>
+                    <c:out value="${card.halfDeck.name} "/>
                 </td>
             </tr>
         </c:forEach>
