@@ -20,9 +20,14 @@
     <label for="fname">Nombre de la carta:</label><br>
     <input type="text" id="fname" name="name" value=${param.name}><br>
     <label for="lname">Mazo de la carta:</label><br>
-    <input type="text" id="lname" name="deck" value="${param.deck}"><br><br>
+            <select name="deck" class="form-control required">
+                  <option value=""> Selecciona una opción</option>
+			      <c:forEach items="${cards}" var="card">
+			    	    <option value="${card.halfDeck.name}">${card.halfDeck.name}</option>
+			      </c:forEach>
+	    <select>    
     <input type="submit" value="Submit" class="btn btn-default">
-  </form> 
+</form> 
     <div>-</div>
     
     <table id="positionsTable" class="table table-striped">
