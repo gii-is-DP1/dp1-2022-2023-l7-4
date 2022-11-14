@@ -28,6 +28,7 @@
 	    <select>    
     <input type="submit" value="Submit" class="btn btn-default">
 </form> 
+
     <div>-</div>
     
     <table id="positionsTable" class="table table-striped">

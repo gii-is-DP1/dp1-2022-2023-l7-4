@@ -64,8 +64,9 @@ public class CardController {
 
 	//Listing by HalfDecks
 	@GetMapping("/allDecks")
-    public ModelAndView showCards(HalfDeck halfDeck,@RequestParam String name, BindingResult result){
+    public ModelAndView showCards(HalfDeck halfDeck,@RequestParam("name") String name, BindingResult result){
         ModelAndView result2=new ModelAndView(HALFDECK_LISTING_VIEW);
+		System.out.println(name);
 
 		List<HalfDeck> filteredHalfDecks = cardService.getHalfDeckFromCard(name);
 

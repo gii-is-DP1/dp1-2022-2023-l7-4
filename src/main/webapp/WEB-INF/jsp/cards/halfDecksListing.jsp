@@ -15,24 +15,10 @@
 
 <h2>Buscar carta</h2>
 
-    
-<form:form modelAttribute="halfDeck" action="/cards/allDecks" method="get" class="form-horizontal"
-           id="search-owner-form">
-    <div class="form-group">
-        <div class="control-group" id="name">
-            <label class="col-sm-2 control-label"> Nombre del mazo </label>
-            <div class="col-sm-10">
-                <form:input class="form-control" path="name" size="30" maxlength="80"/>
-                <span class="help-inline"><form:errors path="*"/></span>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Buscar</button>
-        </div>
-    </div>
-</form:form>
+    <form action="/cards/allDecks">
+     <label for="fname">Nombre de la carta:</label><br>
+     <input type="text" id="fname" name="name" value=${param.name}><br>
+    </form> 
     
     <table id="positionsTable" class="table table-striped">
         <thead>
