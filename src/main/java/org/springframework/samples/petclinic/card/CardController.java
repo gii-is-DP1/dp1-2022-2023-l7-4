@@ -18,7 +18,8 @@ public class CardController {
     private String CARDS_LISTING_VIEW="cards/cardsListing";
     private String CARD_DETAILS="cards/cardDetails";
 	private String CARDS_MENU="cards/cardMenu";
-	private String CARDS_BY_DECK="cards/cardsDeck";
+	private String HALFDECK_LISTING_VIEW="cards/halfDecksListing";
+
 
     private CardService cardService;
 
@@ -61,6 +62,18 @@ public class CardController {
 	 	return mav;
 	 }
 
-	//find card by deck
+	//Listing by HalfDecks
+	@GetMapping("/allDecks")
+    public ModelAndView showCards(HalfDeck halfDeck,@RequestParam String name, BindingResult result){
+        ModelAndView result2=new ModelAndView(HALFDECK_LISTING_VIEW);
 
+		List<HalfDeck> filteredHalfDecks = cardService.getHalfDeckFromCard(name);
+
+		if(filteredHalfDecks.isEmpty()){
+			result.rejectValue("name", "notFound", "not found");
+		}else{
+			result2.addObject("halfDecks", filteredHalfDecks);
+		}
+		return result2;
+    }
 }
