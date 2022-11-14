@@ -19,44 +19,31 @@ public class CardService {
 
     //Card
     @Transactional(readOnly = true)
-    public List<Card> getAllCards(){
-        return this.cardRepository.findAll();    
+    public List<Card> getCardsByNameAndByHalfDeck(String name, String deck) {
+        return cardRepository.findCardsByNameAndByHalfDeck(name, deck);
     }
 
     @Transactional(readOnly = true)
-    public List<Card> getCardByName(String name) {
-        return cardRepository.findCardByName(name);
-    }
-
-    @Transactional(readOnly = true)
-    public Collection<Card> getCardById(Integer id) {
+    public Card getCardById(Integer id) {
         return cardRepository.findCardById(id);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Card> getCarsdByHalfDeck(String name) {
-        return cardRepository.findAllCardsByHalfDeck(name);
     }
 
     //Aspect
     @Transactional(readOnly = true)
-    public List<Aspect> getAllAspects() {
-        return cardRepository.findAllAspects();
+    public List<Aspect> getAspectFromCard(String name) {
+        return cardRepository.findAspectsByName(name);
     }
 
-    @Transactional(readOnly = true)
-    public Aspect getAspectFromCard(String name) {
-        return cardRepository.findAspectFromCard(name);
-    }
-
-    //HaldDeck
+    //HalfDeck
     @Transactional(readOnly = true)
     public List<HalfDeck> getAllHalfDecks() {
-        return cardRepository.findAllHalfDecks();
+        return cardRepository.findAllDecks();
     }
 
     @Transactional(readOnly = true)
-    public HalfDeck getHalfDeckFromCard(String name) {
-        return cardRepository.findHalfDeckFromCard(name);
+    public List<HalfDeck> getHalfDeckFromCard(String name) {
+        return cardRepository.findHalfDecksByName(name);
     }
+
+    
 }
