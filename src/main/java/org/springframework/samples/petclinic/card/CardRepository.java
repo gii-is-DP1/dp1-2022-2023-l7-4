@@ -14,13 +14,13 @@ public interface CardRepository extends CrudRepository<Card, Integer> {
     //Card
     List<Card> findAll();
 
-    @Query("SELECT c FROM Card c WHERE c.name LIKE concat('%',?1,'%') ")
-    List<Card> findCardsByName(String name);
+    @Query("SELECT c FROM Card c WHERE c.name LIKE concat('%',:name,'%') AND c.halfDeck.name LIKE concat('%',:deck,'%')")
+    List<Card> findCardsByNameAndByHalfDeck(String name, String deck);
 
     @Query("SELECT c FROM Card c WHERE c.id = ?1")
-    Collection<Card> findCardById(Integer id);
+    Card findCardById(Integer id);
 
-    @Query("SELECT c FROM Card c WHERE c.halfDeck.name = ?1")
+    @Query("SELECT c FROM Card c WHERE c.halfDeck.name LIKE concat('%',?1,'%')")
     List<Card> findAllCardsByHalfDeck(String name);
 
     //Aspect

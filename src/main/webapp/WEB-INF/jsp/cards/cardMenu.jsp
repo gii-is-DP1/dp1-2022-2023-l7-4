@@ -14,20 +14,12 @@ uri="http://www.springframework.org/security/tags"%>
 
     <h2 class="menu">Menú de cartas</h2>
     <div class="grid-container">
-    <form:form modelAttribute="card" action="/card/cards" method="get" class="form-horizontal"
+    <form:form modelAttribute="card" action="/cards/all" method="get" class="form-horizontal"
                id="search-owner-form">
         <div class="form-group">
             <div class="col-sm-offset-1 col-sm-10">
                 <button type="submit" class="btn btn-default">Mostrar todas las cartas</button>
-            </div>
-        </div>
-    </form:form>
-
-    <form:form modelAttribute="card" action="/card/searchingCard" method="get" class="form-horizontal"
-               id="search-owner-form">
-        <div class="form-group">
-            <div class="col-sm-offset-5 col-sm-5">
-                <button type="submit" class="btn btn-default">Buscar cartas por nombre</button>
+                <form:input class="form-control" path="name" size="30" maxlength="80"  style="visibility:hidden"/>
             </div>
         </div>
     </form:form>

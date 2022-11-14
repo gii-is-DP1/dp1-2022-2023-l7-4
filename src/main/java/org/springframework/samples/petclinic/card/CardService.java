@@ -24,12 +24,12 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Card> getCardsByName(String name) {
-        return cardRepository.findCardsByName(name);
+    public List<Card> getCardsByNameAndByHalfDeck(String name, String deck) {
+        return cardRepository.findCardsByNameAndByHalfDeck(name, deck);
     }
 
     @Transactional(readOnly = true)
-    public Collection<Card> getCardById(Integer id) {
+    public Card getCardById(Integer id) {
         return cardRepository.findCardById(id);
     }
 

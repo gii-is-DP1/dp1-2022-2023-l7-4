@@ -128,6 +128,7 @@ INSERT INTO game(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 
 INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',true, 'daviddhc');
 
 INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
+
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','Drow. El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');
 INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','Dragones. El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
 
@@ -157,8 +158,8 @@ INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,h
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (18,'Matrona',6,'La voluntad de la matrona es absoluta','Pon tu mazo en tu pila de descartes=>Asciende 1 carta de tu pila de descartes',3,6,1,1,1);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (19,'Traficante de información',5,'<<¿Por qué malgastar hechizos y acero cuando unas simples palabras son capaces de derribar una casa?>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Roba 3 cartas',2,5,2,1,4);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (20,'Negociadora Drow',3,'<<Puedo abrir puertas que están cerradas para todos excepto para las matronas.>>','Si hay 4 cartas o más en tu círculo interno, +3 influencia. Al final del turno, asciende otra carta jugada durante este turno',1,2,2,1,1);
-INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (21,'',3,'','',1,2,2,1,1);
-INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (22,'',3,'','',1,2,2,1,1);
+INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (21,'',3,'','',1,2,2,2,1);
+INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (22,'',3,'','',1,2,2,2,1);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (23,'',3,'','',1,2,2,1,1);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (24,'',3,'','',1,2,2,1,1);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (25,'',3,'','',1,2,2,1,1);

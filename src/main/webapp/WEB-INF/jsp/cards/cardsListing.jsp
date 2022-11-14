@@ -16,7 +16,7 @@
 <h2>Buscar carta</h2>
 
     
-<form:form modelAttribute="card" action="/card/cards" method="get" class="form-horizontal"
+<form:form modelAttribute="card" action="/cards/all" method="get" class="form-horizontal"
            id="search-owner-form">
     <div class="form-group">
         <div class="control-group" id="name">
@@ -33,7 +33,6 @@
         </div>
     </div>
 </form:form>
-
     
     <table id="positionsTable" class="table table-striped">
         <thead>
@@ -51,40 +50,40 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${cards}" var="cards">
+        <c:forEach var="card" items="${cards}" >
             <tr>
                 <td>
-                    <c:out value="${cards.id}"/>
+                    <c:out value="${card.id}"/>
                 </td>
                 <td>
-                    <spring:url value="/card/searchingCard/{cardId}" var="cardUrl">
-                        <spring:param name="cardId" value="${cards.id}"/>
+                    <spring:url value="/cards/{cardId}" var="cardUrl">
+                        <spring:param name="cardId" value="${card.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(cardUrl)}"><c:out value="${cards.name}"/></a>
+                    <a href="${fn:escapeXml(cardUrl)}"><c:out value="${card.name}"/></a>
                 </td>
                 <td>
-                    <c:out value="${cards.cost} "/>
+                    <c:out value="${card.cost} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.story} "/>
+                    <c:out value="${card.story} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.rulesText} "/>
+                    <c:out value="${card.rulesText} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.deckVP} "/>
+                    <c:out value="${card.deckVP} "/>
                 </td>   
                 <td>
-                    <c:out value="${cards.innerCirclePV} "/>
+                    <c:out value="${card.innerCirclePV} "/>
                 </td>   
                 <td>
-                    <c:out value="${cards.rarity} "/>
+                    <c:out value="${card.rarity} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.aspect.name} "/>
+                    <c:out value="${card.aspect.name} "/>
                 </td>
                 <td>
-                    <c:out value="${cards.halfDeck.name} "/>
+                    <c:out value="${card.halfDeck.name} "/>
                 </td>
             </tr>
         </c:forEach>
