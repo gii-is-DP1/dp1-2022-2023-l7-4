@@ -34,9 +34,16 @@ public class CardService {
         return cardRepository.findAspectsByName(name);
     }
 
-    //HaldDeck
+    //HalfDeck
+    @Transactional(readOnly = true)
+    public List<HalfDeck> getAllHalfDecks() {
+        return cardRepository.findAllDecks();
+    }
+
     @Transactional(readOnly = true)
     public List<HalfDeck> getHalfDeckFromCard(String name) {
         return cardRepository.findHalfDecksByName(name);
     }
+
+    
 }

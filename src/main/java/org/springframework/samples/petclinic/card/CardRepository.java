@@ -23,6 +23,9 @@ public interface CardRepository extends CrudRepository<Card, Integer> {
     List<Aspect> findAspectsByName(String name);
 
     //HalfDeck
+    @Query("SELECT h FROM HalfDeck h")
+    List<HalfDeck> findAllDecks();
+
     @Query("SELECT h FROM HalfDeck h WHERE h.name LIKE concat('%',?1,'%')")
     List<HalfDeck> findHalfDecksByName(String name);
 

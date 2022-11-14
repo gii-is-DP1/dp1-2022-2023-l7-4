@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.card;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,12 +41,16 @@ public class CardController {
     public String showCards(){
 		return "redirect:/cards/filter?name=&deck=";
     }
+
     @GetMapping("/filter")
     public ModelAndView showFilterdCards(Card card,@RequestParam("name") String name, @RequestParam("deck") String deck, BindingResult result){
         ModelAndView result2=new ModelAndView(CARDS_LISTING_VIEW);
 		System.out.println(name);
 		System.out.println(deck);
 		List<Card> filteredCards = cardService.getCardsByNameAndByHalfDeck(name,deck);
+		List<HalfDeck> HalfDecks = cardService.getAllHalfDecks();
+
+		result2.addObject("halfDecks", HalfDecks);
 
 		if(filteredCards.isEmpty()){
 			result.rejectValue("name", "notFound", "not found");
@@ -62,14 +67,12 @@ public class CardController {
 	 	return mav;
 	 }
 
-
+	//Listing by HalfDecks
 	@GetMapping("/decks")
 	public String showDecks(){
 		return "redirect:/cards/decks/filter?name=";
 	}
-	//Listing by HalfDecks
-	
-	
+
 	@GetMapping("/decks/filter")
     public ModelAndView showFilteredDecks(HalfDeck halfDeck,@RequestParam("name") String name, BindingResult result){
         ModelAndView result2=new ModelAndView(HALFDECK_LISTING_VIEW);
