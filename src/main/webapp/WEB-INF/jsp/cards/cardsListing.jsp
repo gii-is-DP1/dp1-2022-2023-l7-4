@@ -16,24 +16,14 @@
 <h2>Buscar carta</h2>
 
     
-<form:form modelAttribute="card" action="/cards/all" method="get" class="form-horizontal"
-           id="search-owner-form">
-    <div class="form-group">
-        <div class="control-group" id="name">
-            <label class="col-sm-2 control-label"> Nombre de la carta </label>
-            <div class="col-sm-10">
-                <form:input class="form-control" path="name" size="30" maxlength="80"/>
-                <span class="help-inline"><form:errors path="*"/></span>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Buscar</button>
-        </div>
-    </div>
-</form:form>
-    
+<form action="/cards/filter">
+    <label for="fname">Nombre de la carta:</label><br>
+    <input type="text" id="fname" name="name" value=""><br>
+    <label for="lname">Mazo de la carta:</label><br>
+    <input type="text" id="lname" name="deck" value=""><br><br>
+    <input type="submit" value="Submit" class="btn btn-default">
+  </form> 
+    <div>-</div>
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
