@@ -19,7 +19,8 @@ uri="http://www.springframework.org/security/tags"%>
         <div class="form-group">
             <div class="col-sm-offset-1 col-sm-10">
                 <button type="submit" class="btn btn-default">Mostrar todas las cartas</button>
-                <form:input class="form-control" path="name" size="30" maxlength="80"  style="visibility:hidden"/>
+                <!-- <form:input class="form-control" path="name" size="30" maxlength="80"  style="visibility:hidden"/> -->
+                <!-- ya no hace falta, hay un redirect -->
             </div>
         </div>
     </form:form>
