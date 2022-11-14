@@ -152,11 +152,7 @@ uri="http://www.springframework.org/security/tags"%>
             cursor: pointer;
         }
 
-        /* 
-        ========================
-            BUTTON TWO
-        ========================
-        */
+        /*Botton*/
         .btn-two {
             color: rgb(197, 172, 63);
             transition: all 0.5s;
