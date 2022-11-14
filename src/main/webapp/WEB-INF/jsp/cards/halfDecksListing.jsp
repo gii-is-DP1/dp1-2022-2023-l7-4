@@ -15,11 +15,11 @@
 
 <h2>Buscar carta</h2>
 
-    <form action="/cards/allDecks">
-     <label for="fname">Nombre de la carta:</label><br>
+    <form action="/cards/decks/filter">
+     <label for="fname">Nombre del mazo:</label><br>
      <input type="text" id="fname" name="name" value=${param.name}><br>
     </form> 
-    
+    <div>-</div>
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>

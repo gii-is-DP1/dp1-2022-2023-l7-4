@@ -62,9 +62,16 @@ public class CardController {
 	 	return mav;
 	 }
 
+
+	@GetMapping("/decks")
+	public String showDecks(){
+		return "redirect:/cards/decks/filter?name=";
+	}
 	//Listing by HalfDecks
-	@GetMapping("/allDecks")
-    public ModelAndView showCards(HalfDeck halfDeck,@RequestParam("name") String name, BindingResult result){
+	
+	
+	@GetMapping("/decks/filter")
+    public ModelAndView showFilteredDecks(HalfDeck halfDeck,@RequestParam("name") String name, BindingResult result){
         ModelAndView result2=new ModelAndView(HALFDECK_LISTING_VIEW);
 		System.out.println(name);
 
