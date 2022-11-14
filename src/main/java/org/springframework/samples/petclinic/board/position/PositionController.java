@@ -142,15 +142,20 @@ public class PositionController {
         return res;
     }
 
-    @GetMapping("/{playerId}/kill")
-    public ModelAndView initKillTroopForm(@PathVariable Integer playerId){
+    @GetMapping("/{playerId}/kill/{reachable}")
+    public ModelAndView initKillTroopForm(@PathVariable Integer playerId,@PathVariable Boolean reachable){
         ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
-        result.addObject("availablePositions",positionService.getAdjacentPositionsFromPlayer(playerId, true));
+        if(reachable)
+            result.addObject("availablePositions"
+            , positionService.getAdjacentTroopPositionsFromPlayer(playerId,true));
+        else
+            result.addObject("availablePositions",positionService.getAllEnemyTroopsForPlayer(playerId));
         return result;
     }
     
-    @PostMapping("/{playerId}/kill")
-    public ModelAndView processKillTroopForm(@Valid Position position,@PathVariable Integer playerId,BindingResult br){
+    @PostMapping("/{playerId}/kill/{reachable}")
+    public ModelAndView processKillTroopForm(@Valid Position position,@PathVariable Integer playerId,
+    BindingResult br,@PathVariable Boolean reachable){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -161,7 +166,7 @@ public class PositionController {
             try{
                 Player player=this.playerService.getPlayerById(playerId);
                 Player enemy=position.getPlayer();
-                this.positionService.killTroop(position, player);;
+                this.positionService.killTroop(position, player,reachable);
                 String msg="Tropa enemiga de jugador "+enemy.getName()
                 +"en posicion "+position.getId()+" ha sido asesinada por jugador "+player.getName();
                 res.addObject("message", msg);

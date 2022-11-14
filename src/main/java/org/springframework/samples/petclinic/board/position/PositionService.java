@@ -14,7 +14,9 @@ import org.springframework.samples.petclinic.board.position.exceptions.NullPlaye
 import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
 import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.board.sector.city.CityRepository;
 import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.board.sector.path.PathRepository;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -27,14 +29,19 @@ public class PositionService {
     private PopulatePositionService populatePositionService;
     private AdjacentPositionService adjacentPositionService;
     private PlayerRepository playerRepository;
+    private CityRepository cityRepository;
+    private PathRepository pathRepository;
 
     @Autowired
     public PositionService(PositionRepository posRepo,PopulatePositionService populatePositionService
-    ,AdjacentPositionService adjacentPositionService,PlayerRepository playerRepository){
+    ,AdjacentPositionService adjacentPositionService,PlayerRepository playerRepository
+    ,CityRepository cityRepository,PathRepository pathRepository){
         this.positionRepository=posRepo;
         this.populatePositionService= populatePositionService;
         this.adjacentPositionService= adjacentPositionService;
         this.playerRepository=playerRepository;
+        this.cityRepository=cityRepository;
+        this.pathRepository=pathRepository;
     }
 
     public List<Position> getPositions(){
@@ -79,14 +86,15 @@ public class PositionService {
 
     @Transactional(rollbackFor =
      {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
-    public void killTroop(Position position,Player player) throws DataAccessException
+    public void killTroop(Position position,Player player,Boolean forAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
         //errores posibles, tipo incorrecto, jugador incorrecto(o vacio o eres tu)
         if(position.getPlayer()==null)
             throw new EmptyPositionException();
         else if(position.getPlayer().equals(player))
             throw new YourPositionException();
-        else if(!getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
+        else if(forAdjacencies & 
+        !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
         player.setTrophyPV(player.getTrophyPV()+1);
         playerRepository.save(player);
@@ -136,35 +144,38 @@ public class PositionService {
         save(position);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//habría que utilizar directamente un id, pero afecta al calculo de adyacencias
     public List<Position> getPositionsFromPath(Path path){
         return positionRepository.findAllPositionByPathId(path.getId());
     }
+    public List<Position> getPositionsFromPathId(int path_id){//test realizado
+        return positionRepository.findAllPositionByPathId(path_id);
+    }
 
     @Transactional(readOnly = true)
-    public List<Position> getPositionsFromCity(int city_id){
+    public List<Position> getPositionsFromCityId(int city_id){
         return positionRepository.findAllPositionByCityId(city_id);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//test realizado
     public List<Position> getFreePositions() throws DataAccessException{
         return positionRepository.findAllPositionByPlayerIsNull();
     }
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//test realizado
     public List<Position> getFreeTroopPositions() throws DataAccessException{
         return positionRepository.findAllPositionsByPlayerIsNullAndForSpyFalse();
     }
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//test realizado
     public List<Position> getFreeSpyPositions() throws DataAccessException{
         return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
     }
     
-
+    @Transactional(readOnly = true) //test realizado
     public Position findPositionById(Integer id) {
         return positionRepository.findById2(id);
     }
     
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//test realizado
     public List<Position> getPlayerPositions(Integer player_id){
         return positionRepository.findAllPositionByPlayerId(player_id);
     }
@@ -226,6 +237,10 @@ public class PositionService {
         populatePositionService.populatePaths(paths,playableZones);
 
     }
+    public void autoPopulatePositions(List<Integer> playableZones){
+        populatePositions(cityRepository.findAll2(),pathRepository.findAll2(), playableZones);
+    }
+
     /**
      * Given a position calculates the positions that are adjacent to it. Itself does not count.
      * It is saved in the database and in the position attribute called adjacents
