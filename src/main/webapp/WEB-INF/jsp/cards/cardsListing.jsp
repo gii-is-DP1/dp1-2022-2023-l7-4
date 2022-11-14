@@ -18,12 +18,13 @@
     
 <form action="/cards/filter">
     <label for="fname">Nombre de la carta:</label><br>
-    <input type="text" id="fname" name="name" value=""><br>
+    <input type="text" id="fname" name="name" value=${param.name}><br>
     <label for="lname">Mazo de la carta:</label><br>
-    <input type="text" id="lname" name="deck" value=""><br><br>
+    <input type="text" id="lname" name="deck" value="${param.deck}"><br><br>
     <input type="submit" value="Submit" class="btn btn-default">
   </form> 
     <div>-</div>
+    
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
