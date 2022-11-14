@@ -154,9 +154,10 @@ INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,h
 
 -- DATOS PARA PRUEBA, OJO, PARA LOS TEST, TENEIS QUE UTILIZAR LOS DATOS DE AQUI, NO VALEN LOS AUTOGENERADOS
 INSERT INTO positions(id,city_id,for_spy) VALUES (1,1,TRUE);
-INSERT INTO positions(id,city_id,player_id,for_spy) VALUES (2,2,2,TRUE);
 INSERT INTO positions(id,city_id,for_spy) VALUES (3,1,FALSE);
-INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (4,1,1,FALSE);
 INSERT INTO positions(id,city_id,for_spy) VALUES (5,1,FALSE);
+INSERT INTO positions(id,city_id,player_id,for_spy) VALUES (2,2,2,TRUE);
+-- caminos
+INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (4,1,1,FALSE);
 INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (6,2,1,FALSE);
 INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (7,2,2,FALSE);

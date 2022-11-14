@@ -237,8 +237,10 @@ public class PositionService {
         populatePositionService.populatePaths(paths,playableZones);
 
     }
-    public void autoPopulatePositions(List<Integer> playableZones){
-        populatePositions(cityRepository.findAll2(),pathRepository.findAll2(), playableZones);
+    public void initPositions(List<Integer> playableZones){
+        populatePositions(cityRepository.findAll(),pathRepository.findAll(), playableZones);
+        positionRepository.findAll().forEach(x->calculateAdjacents(x));
+
     }
 
     /**
