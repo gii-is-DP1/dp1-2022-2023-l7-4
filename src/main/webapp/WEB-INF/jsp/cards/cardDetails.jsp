@@ -11,29 +11,31 @@
     </script>
     
     <table class="table table-striped">
-        <c:forEach items="${id}" var="id">
         <tr>
             <td valign="top">
                 <dl class="dl-horizontal">
                     <dt>Id</dt>
-                    <dd><c:out value="${id.id}"/></dd>
+                    <dd><c:out value="${card.id}"/></dd>
                     <dt>Nombre</dt>
-                    <dd><c:out value="${id.name}"/></dd>
+                    <dd><c:out value="${card.name}"/></dd>
                     <dt>Coste</dt>
-                    <dd><c:out value="${id.cost}"/></dd>
+                    <dd><c:out value="${card.cost}"/></dd>
                     <dt>Historia</dt>
-                    <dd><c:out value="${id.story}"/></dd>
+                    <dd><c:out value="${card.story}"/></dd>
                     <dt>Acción de la carta</dt>
-                    <dd><c:out value="${id.rulesText}"/></dd>
+                    <dd><c:out value="${card.rulesText}"/></dd>
                     <dt>PV</dt>
-                    <dd><c:out value="${id.deckVP}"/></dd>
+                    <dd><c:out value="${card.deckVP}"/></dd>
                     <dt>PV en Círculo interno</dt>
-                    <dd><c:out value="${id.innerCirclePV}"/></dd>
+                    <dd><c:out value="${card.innerCirclePV}"/></dd>
                     <dt>Rareza</dt>
-                    <dd><c:out value="${id.rarity}"/></dd>
+                    <dd><c:out value="${card.rarity}"/></dd>
+                    <dt>Aspecto</dt>
+                    <dd><c:out value="${card.aspect.name}"/></dd>
+                    <dt>Mazo</dt>
+                    <dd><c:out value="${card.halfDeck.name}"/></dd>
                 </dl>
             </td>
-        </c:forEach>
         </tbody>
     </table>
 
