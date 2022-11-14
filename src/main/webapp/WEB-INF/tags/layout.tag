@@ -9,7 +9,7 @@
 <html>
 <petclinic:htmlHeader/>
 
-<body>
+<body class="bodybackground">
 <petclinic:bodyHeader menuName="${pageName}"/>
 
 <div class="container-fluid">
@@ -33,4 +33,11 @@
 
 </body>
 
+<style>
+	.bodybackground {
+		background-image: url(/resources/images/body_background.png);
+		background-size: cover;
+		background-position: center;
+	}
+</style>
 </html>
