@@ -19,11 +19,6 @@ public class CardService {
 
     //Card
     @Transactional(readOnly = true)
-    public List<Card> getAllCards(){
-        return this.cardRepository.findAll();    
-    }
-
-    @Transactional(readOnly = true)
     public List<Card> getCardsByNameAndByHalfDeck(String name, String deck) {
         return cardRepository.findCardsByNameAndByHalfDeck(name, deck);
     }
@@ -40,23 +35,13 @@ public class CardService {
 
     //Aspect
     @Transactional(readOnly = true)
-    public List<Aspect> getAllAspects() {
-        return cardRepository.findAllAspects();
-    }
-
-    @Transactional(readOnly = true)
-    public Aspect getAspectFromCard(String name) {
-        return cardRepository.findAspectFromCard(name);
+    public List<Aspect> getAspectFromCard(String name) {
+        return cardRepository.findAspectsByName(name);
     }
 
     //HaldDeck
     @Transactional(readOnly = true)
-    public List<HalfDeck> getAllHalfDecks() {
-        return cardRepository.findAllHalfDecks();
-    }
-
-    @Transactional(readOnly = true)
-    public HalfDeck getHalfDeckFromCard(String name) {
-        return cardRepository.findHalfDeckFromCard(name);
+    public List<HalfDeck> getHalfDeckFromCard(String name) {
+        return cardRepository.findHalfDecksByName(name);
     }
 }

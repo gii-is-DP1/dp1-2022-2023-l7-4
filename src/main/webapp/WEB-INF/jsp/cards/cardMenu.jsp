@@ -24,7 +24,7 @@ uri="http://www.springframework.org/security/tags"%>
         </div>
     </form:form>
 
-    <form:form modelAttribute="card" action="/card/searchingDeck" method="get" class="form-horizontal"
+    <form:form modelAttribute="card" action="/cards/allDecks" method="get" class="form-horizontal"
                id="search-owner-form">
         <div class="form-group">
             <div class="col-sm-offset-5 col-sm-5">
