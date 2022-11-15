@@ -1,5 +1,4 @@
 package org.springframework.samples.petclinic.player;
-
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Map;
@@ -11,6 +10,7 @@ import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +22,8 @@ public class PlayerController {
     private static final String VIEWS_PLAYER_CREATE_OR_UPDATE_FORM = "players/createOrUpdatePlayerForm";
 
     private static final String VIEWS_PLAYER_CREATE_FORM = "users/createPlayerForm";
+
+	
 
     @Autowired
     private PlayerService playerService;
@@ -76,7 +78,7 @@ public class PlayerController {
 
 	@GetMapping(value = "/players/list")
 	public String proccesPlayersListing(Map<String, Object> model){
-		model.put("selections", playerService.getPlayes());
+		model.put("selections", playerService.getPlayers());
 		return "players/playersList";
 	}
 
@@ -104,6 +106,15 @@ public class PlayerController {
 		ModelAndView mav = new ModelAndView("players/playerDetails");
 		mav.addObject(playerService.getPlayerById(playerId));
 		return mav;
+	}
+
+	@GetMapping("/players/{playerId}/delete")
+	public String deletePlayer(@PathVariable("playerId") int playerId){
+		playerService.deletePlayer(playerId);
+		System.out.println("Player " + playerId + " was deleted");
+		return "redirect:/players/list";
+		
+
 	}
     
 }

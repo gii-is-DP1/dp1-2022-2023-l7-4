@@ -17,6 +17,7 @@
             <th style="width: 120px">Privilege</th>
             <th>Username</th>
             <th>Password</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -42,7 +43,10 @@
                 </td>
                 <td> 
                    <c:out value="${player.user.password}"/> 
-                </td> 
+                </td>
+                <td>
+                    <a href="/players/${player.id}/delete"  class="btn btn-default">Delete player</a>
+                </td>
 
                 
             </tr>

@@ -2,13 +2,14 @@ package org.springframework.samples.petclinic.player;
 
 import java.util.Collection;
 
-import javax.transaction.Transactional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PlayerService {
@@ -22,17 +23,17 @@ public class PlayerService {
     @Autowired
     private AuthoritiesService authoritiesService;
 
-	@Transactional
-	public Collection<Player> getPlayes(){
+	@Transactional(readOnly = true)
+	public Collection<Player> getPlayers(){
 		return (Collection<Player>) playerRepository.findAll();
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public Collection<Player> getPlayerByName(String username){
 		return playerRepository.findPlayersByName(username);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public Player getPlayerById(int id){
 		return playerRepository.findById(id);
 	}
@@ -45,7 +46,12 @@ public class PlayerService {
 		userService.saveUser(player.getUser());
 		
 		authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
-	}	
+	}
+	
+	@Transactional
+	public void deletePlayer (Integer id){
+		playerRepository.deleteById(id);
+	}
 
     
 }

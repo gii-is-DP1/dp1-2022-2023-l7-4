@@ -73,6 +73,13 @@
 					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
 					<span>Cards</span>
 				</petclinic:menuItem>
+				<sec:authorize url="/players">
+				<petclinic:menuItem active="${name eq 'players'}" url="/players/list"
+					title="players">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Players</span>
+				</petclinic:menuItem>
+			    </sec:authorize>
 			</ul>
 
 
