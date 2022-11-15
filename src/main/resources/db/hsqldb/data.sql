@@ -123,9 +123,10 @@ INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
 -- positions se autogenera
 -- INSERT INTO positions(id,zone,occupied,path_id) VALUES (4,1,TRUE,1);
 
-INSERT INTO game(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,false);
+INSERT INTO games(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,FALSE);
 
-INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',true, 'daviddhc');
+INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',TRUE, 'daviddhc');
+
 
 INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','Drow. El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');

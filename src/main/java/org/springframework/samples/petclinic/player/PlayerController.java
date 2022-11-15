@@ -122,9 +122,6 @@ public class PlayerController {
 	@GetMapping("/myprofile")
 	public String currentUserProfile(Principal user, Model model){
 		Player p =playerService.getPlayerByUsername(user.getName());
-		Player playernew = new Player();
-		playernew.setAll(p.getId(), p.getName(), p.getEmail(), p.getBirthdate(), p.getPrivilege(), p.getUser());
-		System.out.println(playernew);
 		model.addAttribute(p);
 		return VIEWS_CURRENT_PLAYER_DETAILS;
 
