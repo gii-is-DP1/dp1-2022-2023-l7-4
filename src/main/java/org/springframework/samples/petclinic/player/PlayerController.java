@@ -27,14 +27,14 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @GetMapping(value = "/players/new")
+    @GetMapping(value = "/player/new")
 	public String initCreationForm(Map<String, Object> model) {
 		Player player = new Player();
 		model.put( "player", player);
 		return VIEWS_PLAYER_CREATE_FORM;
 	}
 
-    @PostMapping(value = "/players/new")
+    @PostMapping(value = "/player/new")
 	public String processCreationForm(@Valid Player player, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_PLAYER_CREATE_FORM;

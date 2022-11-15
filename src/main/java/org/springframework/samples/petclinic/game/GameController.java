@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.User;
@@ -52,21 +53,22 @@ public class GameController {
 		}
 		else {
 			this.gService.saveGame(game);
-			return "welcome";
+			return "redirect:/games/" + game.getId();
 		}
 	}
 	@GetMapping("/games/{gameId}")
 		public ModelAndView showgame(@PathVariable("gameId") int gameId) {
 			ModelAndView mav = new ModelAndView("games/gameDetails");
-			mav.addObject(gService.getGameById(gameId));
+			mav.addObject(this.gService.getGameById(gameId));
 
 			return mav;
 		}
+
 	@GetMapping("/games/join/{gameId}")
 		public String joinGame(@PathVariable("gameId") int gameId, Principal user) {
 			String name= user.getName();
-			Player player= pService.getPlayerByName(name);
-			Game game = gService.getGameById(gameId);
+			Player player= this.pService.getPlayerByName(name);
+			Game game = this.gService.getGameById(gameId);
 			game.addPlayer(player);
 			player.setGame(game);
 			pService.savePlayer(player);
