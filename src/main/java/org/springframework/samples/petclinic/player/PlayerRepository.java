@@ -12,8 +12,8 @@ import org.springframework.samples.petclinic.game.Game;
 
 public interface PlayerRepository extends CrudRepository<Player, Integer> {
 
-    @Query("SELECT player FROM Player player WHERE player.user.username = ?1")
-    public Player findPlayersByUsername(String username);
+    @Query("SELECT player FROM Player player WHERE player.name = ?1")
+    public Collection<Player> findPlayerByName(String username);
     @Modifying
 
     @Query(value = "INSERT INTO games_players(game_id,players_id) VALUES(?1,?2)", nativeQuery = true)

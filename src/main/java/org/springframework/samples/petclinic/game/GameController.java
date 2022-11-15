@@ -67,7 +67,7 @@ public class GameController {
 	@GetMapping("/games/join/{gameId}")
 		public String joinGame(@PathVariable("gameId") int gameId, Principal user) {
 			String name= user.getName();
-			Player player= this.pService.getPlayerByName(name);
+			Player player= this.pService.getPlayerByUsername(name);
 			Game game = this.gService.getGameById(gameId);
 			game.addPlayer(player);
 			player.setGame(game);
