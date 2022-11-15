@@ -13,7 +13,7 @@ import org.springframework.samples.petclinic.player.Player;
 public interface GameRepository extends CrudRepository<Game,Integer>{
 
     @Query("SELECT game FROM Game game WHERE game.Name = ?1")
-    public Game findGameByName(String name);
+    public Collection<Game> findGameByName(String name);
     
    
 

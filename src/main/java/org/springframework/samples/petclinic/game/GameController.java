@@ -86,20 +86,18 @@ public class GameController {
 		if (game.getName()== null) {
 			game.setName("");
 		}
-		Game results = gService.getGameByName(game.getName());
-		List<Game> lista= new ArrayList<Game>();
-		lista.add(results);
+		Collection<Game> results = this.gService.getGameByName(game.getName());
 		
-		if (lista.isEmpty()) {
+		if (results.isEmpty()) {
 			result.rejectValue("name", "notFound", "not found");
 			return "games/findGames";
 		}
-		else if (lista.size() == 1) {
-			game = lista.iterator().next();
+		else if (results.size() == 1) {
+			game = results.iterator().next();
 			return "redirect:/games/" + game.getId();
 		}
 		else {
-			model.put("selections", lista);
+			model.put("selections", results);
 			return "games/gamesList";
 		}
 	}

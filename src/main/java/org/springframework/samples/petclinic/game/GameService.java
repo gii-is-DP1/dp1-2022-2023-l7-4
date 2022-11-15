@@ -14,7 +14,7 @@ public class GameService {
     GameRepository grepo;
 
 	@Transactional
-	public Game getGameByName(String name){
+	public Collection<Game> getGameByName(String name){
 		return grepo.findGameByName(name);
 	}
 
