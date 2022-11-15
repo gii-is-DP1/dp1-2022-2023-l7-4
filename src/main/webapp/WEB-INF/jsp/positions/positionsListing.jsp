@@ -229,26 +229,48 @@ window.onbeforeunload = function(e) {
             position: relative;
         }
         .container{
-            margin-left: auto;
-            margin-right: auto;
-            background-position: center;
+            display: inline-block; 
         }
         .pre-button{
                 background-color: blueviolet;
                 color:aliceblue;
                 text-align: center;
                 border-radius: 20%;
+                width: 130px
             }
     </style>
         <div class="container">
-            <a href='<c:url value="/positions/place/troop/false"/>' >
-                    <div class="pre-button">
-                        DESPLEGAR TROPA
+            
+            <a href='<c:url value="/positions/1/place/troop/false"/>' >
+                    <div class="btn-default">
+                        DESPLEGAR TROPA COMO JUGADOR 1
                     </div>
 			</a>
-            <a href='<c:url value="/positions/place/spy"/>' >
-                <div class="pre-button">
-                    COLOCAR ESPIA
+            <a href='<c:url value="/positions/2/place/troop/false"/>' >
+                    <div class="btn-default">
+                        DESPLEGAR TROPA COMO JUGADOR 2
+                    </div>
+			</a>
+            <a href='<c:url value="/positions/1/place/troop/true"/>' >
+                    <div class="btn-default">
+                        DESPLEGAR TROPA COMO JUGADOR 1 CON PRESENCIA
+                    </div>
+			</a>
+            <a href='<c:url value="/positions/2/place/troop/true"/>' >
+                    <div class="btn-default">
+                        DESPLEGAR TROPA COMO JUGADOR 2 CON PRESENCIA
+                    </div>
+			</a>
+        </div>
+        <div class="container">
+            <a href='<c:url value="/positions/1/place/spy"/>' >
+                <div class="btn-default">
+                    COLOCAR ESPIA COMO JUGADOR 1
+                </div>
+            </a>
+            <a href='<c:url value="/positions/2/place/spy"/>' >
+                <div class="btn-default">
+                    COLOCAR ESPIA COMO JUGADOR 2
                 </div>
             </a>
         </div>

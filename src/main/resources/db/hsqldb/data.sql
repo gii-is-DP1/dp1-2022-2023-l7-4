@@ -118,7 +118,7 @@ INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 INSERT INTO game(id,date,name,size) VALUES (1,'2002-04-08','Partida 1', 3);
 
 INSERT INTO players(id,name,email,birthdate,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08', 'daviddhc');
-INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'aaa', '2002-04-08', 'anddomrui');
+INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'davidhc@gmail.com', '2002-04-08', 'anddomrui');
 
 
 INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');

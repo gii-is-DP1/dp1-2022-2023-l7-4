@@ -1,10 +1,15 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <petclinic:layout pageName="positions">
     <h2>Positions</h2>
+    <script>
+        $(document).ready(function () {
+            $('select').attr("id", "selected-pos"); //direct descendant of a
+        });
+    </script>
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
@@ -18,55 +23,47 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${freePositions}" var="position">
+        <c:forEach items="${availablePositions}" var="pos">
             <tr>
                 <td>
-                    <c:out value="${position.id}"/>
+                    <c:out value="${pos.id}"/>
                 </td>
                 <td>
-                    <c:out value="${position.isOccupied}"/>
+                    <c:out value="${pos.isOccupied}"/>
                 </td>
                 <td>
-                    <c:out value="${position.player.name}"/>
+                    <c:out value="${pos.player.name}"/>
                 </td>
                 <td>
-                    <c:out value="${position.forSpy}"/>
+                    <c:out value="${pos.forSpy}"/>
                 </td>
                 <td>
-                    <c:out value="${position.path}"/>
+                    <c:out value="${pos.path}"/>
                 </td>
                 <td>
                     
-                    <c:out value="${position.city}"/>
+                    <c:out value="${pos.city}"/>
                 </td>
                 <td>
-                    <c:out value="${position.adjacents}"/>
+                    <c:out value="${pos.adjacents}"/>
                 </td>
                 <td>
-                <form action="positions/${position.id}/occupy">
-                        <input class = "btn-submit-form" type="submit" value="Des/Ocupar" />
-                </form>
+                <form:form modelAttribute="idposition" id="${pos.id}">
+                    <input type="hidden" name="id" value="${pos.id}"/>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" id="{pos.id}" class="btn btn-default">SELECCIONAR POSICION</button>
+                        </div>
+                    </div>
+                </form:form>
                 </td>
                 
             </tr>
         </c:forEach>
+        
         </tbody>
     </table>
-        <div class="board">
-            <c:forEach items="${freePositions}" var="position">
-                <!--OJO, PUEDES ENCADENAR VALORES DE LAS ETIQUETAS CON LOS ATRIBUTOS DE LOS ITEMS-->
-                <a class = "btn-pos-${position.id}" href="/positions/${position.id}/occupy">${position.id}</a>
-            </c:forEach>
-        </div>
-        <div>
-           ${user} 
-        </div>
 
-            <td>POSITIONS</td>
-            <form:form>
-                <select 
-            </form:form>
-            <button type="submit" id="sed">COLOCAR</button>
         
     <style>
 

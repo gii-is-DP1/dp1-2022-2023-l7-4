@@ -35,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class PositionController {
 
     private String POSITIONS_LISTING_VIEW="positions/positionsListing";
-    private final String CHOOSE_POSITION_FORM_VIEW="positions/placeOrKillPieceForm";
+    private final String CHOOSE_POSITION_FORM_VIEW="positions/chooseOnePositionForm";
     //cambiar a place or kill piece form view
 
     private PositionService positionService;
@@ -78,7 +78,7 @@ public class PositionController {
     }
 
     @PostMapping("{playerId}/place/troop/{reachable}")
-    public ModelAndView processPlaceTroopForm(@Valid Position position,BindingResult br,
+    public ModelAndView processPlaceTroopForm(@Valid Idposition idpos,BindingResult br,
     @PathVariable("reachable") Boolean reachable
     ,@PathVariable("playerId") Integer playerId){
         ModelAndView res=null;
@@ -86,12 +86,14 @@ public class PositionController {
         if(br.hasErrors()){
             res=errorRes;
             res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
         }else{
-            res=showPositions();
             try{
+                Position position= positionService.findPositionById(idpos.getId());
                 Player player=this.playerService.getPlayerById(playerId);
                 this.positionService.occupyTroopPosition(position, player,reachable);
                 String msg="Posicion "+position.getId()+" ocupada por jugador "+player.getName();
+                res=showPositions();
                 res.addObject("message", msg);
             }catch(OccupiedPositionException e){
                 br.rejectValue("position","occupied","already occupy");
@@ -103,21 +105,22 @@ public class PositionController {
                 br.rejectValue("position","for troop","only for troops");
                 res=errorRes;
             }
+            
         }
         return res;
 
     }
 
-    @GetMapping("/{playerId}/place/spy/")
-    public ModelAndView initPlaceSpyForm(@PathVariable Integer playerId){
+    @GetMapping("{playerId}/place/spy")
+    public ModelAndView initPlaceSpyForm(@PathVariable("playerId") Integer playerId){
         ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
-        result.addObject("freePositions",positionService.getFreeSpyPositions());
+        result.addObject("availablePositions",positionService.getFreeSpyPositions());
         return result;
     }
 
-    @PostMapping("/{playerId}/place/spy/")
-    public ModelAndView processPlaceSpyForm(@Valid Position position
-    ,BindingResult br,@PathVariable Integer playerId){
+    @PostMapping("{playerId}/place/spy")
+    public ModelAndView processPlaceSpyForm(@Valid Idposition idposition
+    ,BindingResult br,@PathVariable("playerId") Integer playerId){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -126,6 +129,7 @@ public class PositionController {
         }else{
             res=showPositions();
             try{
+                Position position= positionService.findPositionById(idposition.getId());
                 Player player=this.playerService.getPlayerById(playerId);
                 this.positionService.occupySpyPosition(position, player);
                 String msg="Posicion "+position.getId()+" ocupada por jugador "+player.getName();
@@ -142,8 +146,8 @@ public class PositionController {
         return res;
     }
 
-    @GetMapping("/{playerId}/kill/{reachable}")
-    public ModelAndView initKillTroopForm(@PathVariable Integer playerId,@PathVariable Boolean reachable){
+    @GetMapping("{playerId}/kill/{reachable}")
+    public ModelAndView initKillTroopForm(@PathVariable("playerId") Integer playerId,@PathVariable Boolean reachable){
         ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
         if(reachable)
             result.addObject("availablePositions"
@@ -153,8 +157,8 @@ public class PositionController {
         return result;
     }
     
-    @PostMapping("/{playerId}/kill/{reachable}")
-    public ModelAndView processKillTroopForm(@Valid Position position,@PathVariable Integer playerId,
+    @PostMapping("{playerId}/kill/{reachable}")
+    public ModelAndView processKillTroopForm(@Valid Idposition idposition,@PathVariable("playerId") Integer playerId,
     BindingResult br,@PathVariable Boolean reachable){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
@@ -164,6 +168,7 @@ public class PositionController {
         }else{
             res=showPositions();
             try{
+                Position position= positionService.findPositionById(idposition.getId());
                 Player player=this.playerService.getPlayerById(playerId);
                 Player enemy=position.getPlayer();
                 this.positionService.killTroop(position, player,reachable);
@@ -193,7 +198,7 @@ public class PositionController {
     }
 
     @PostMapping("{playerId}/return")
-    public ModelAndView processReturnPieceForm(@Valid Position position
+    public ModelAndView processReturnPieceForm(@Valid Idposition idposition
     ,@PathVariable Integer playerId,BindingResult br){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
@@ -203,6 +208,7 @@ public class PositionController {
         }else{
             res=showPositions();
             try{
+                Position position= positionService.findPositionById(idposition.getId());
                 Player enemy=position.getPlayer();
                 Player player=this.playerService.getPlayerById(playerId);
                 this.positionService.returnPiece(position, player);
@@ -229,7 +235,7 @@ public class PositionController {
     }
 
     @PostMapping("{playerId}/supplant/{reachable}")
-    public ModelAndView processSupplantTroop(@Valid Position position,@PathVariable Integer playerId
+    public ModelAndView processSupplantTroop(@Valid Idposition idposition,@PathVariable Integer playerId
     ,@PathVariable Boolean reachable,BindingResult br){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
@@ -239,6 +245,7 @@ public class PositionController {
         }else{
             res=showPositions();
             try{
+                Position position= positionService.findPositionById(idposition.getId());
                 Player player=this.playerService.getPlayerById(playerId);
                 Player enemy=position.getPlayer();
                 this.positionService.supplantTroop(position, player, reachable);;

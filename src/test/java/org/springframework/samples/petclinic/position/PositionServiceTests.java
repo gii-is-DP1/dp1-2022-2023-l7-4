@@ -50,13 +50,13 @@ public class PositionServiceTests {
     @Test
     public void shouldFindAllPositions(){
         List<Position> allPositios=positionService.getPositions();
-        assertThat(allPositios.size()).isEqualTo(7);
+        assertThat(allPositios.size()).isGreaterThan(0);
     }
 
     @Test
     public void shouldFindAllFreePositions(){
         List<Position> freePositions=this.positionService.getFreePositions();
-        assertThat(freePositions.size()).isEqualTo(4);
+        assertThat(freePositions).isNotEmpty();
         assertThat(freePositions).allMatch(pos->pos.getIsOccupied()==false);
     }
 
@@ -85,7 +85,7 @@ public class PositionServiceTests {
     @Test
     public void shouldFindAllPositionsFromPathId(){
         List<Position> pathPositions=this.positionService.getPositionsFromPathId(2);
-        assertThat(pathPositions.size()).isEqualTo(2);
+        assertThat(pathPositions).isNotEmpty();
         assertThat(pathPositions).allMatch(pos->pos.getPath().getFirstCity().getId()==1
          & pos.getPath().getSecondCity().getId()==3);       
     }

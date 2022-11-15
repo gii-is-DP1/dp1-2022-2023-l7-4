@@ -76,7 +76,7 @@ public class PositionService {
      throws DataAccessException,IncorrectPositionTypeException,MoreThanOnePlayerSpyInSameCity{
         if(position.getForSpy()==false){
             throw new IncorrectPositionTypeException();
-        }else if(positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()))
+        }else if(!positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()).isEmpty())
             throw new MoreThanOnePlayerSpyInSameCity();
         player.setSpies(player.getSpies()-1);
         playerRepository.save(player);
