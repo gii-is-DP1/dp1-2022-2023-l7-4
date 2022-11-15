@@ -1,12 +1,19 @@
 package org.springframework.samples.petclinic.player;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Generated;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+<<<<<<< HEAD
 import javax.persistence.FetchType;
+=======
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+>>>>>>> b193d587252abe198cee0f551914d5d695b1a128
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -30,9 +37,10 @@ import lombok.Setter;
 public class Player{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-
+    @NotBlank
     String name;
 
     @Email
@@ -51,5 +59,18 @@ public class Player{
     @JoinColumn(name="game_id", nullable=true)
     private Game game;
 
-   
+   protected Set<Game> getGamesInternal() {
+    if (this.games == null) {
+        this.games = new HashSet<>();
+    }
+    return this.games;
+}
+protected void setGamesInternal(Set<Game> games) {
+    this.games = games;
+}
+
+public void addGame(Game game) {
+    getGamesInternal().add(game);
+    game.setPlayers(new HashSet<>());
+}
 }

@@ -19,6 +19,9 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
     @Query(value = "INSERT INTO games_players(game_id,players_id) VALUES(?1,?2)", nativeQuery = true)
     public void updatePlayersGames(@Param(value = "gameId")Integer gameId, @Param(value = "playerId")Integer playerId);
 
+    @Query(value = "SELECT * FROM PLAYERS WHERE USERNAME = ?1", nativeQuery = true)
+    public Collection<Player> findPlayersByUsername(String name);
+
     Player findById(int id) throws DataAccessException;
 
 
