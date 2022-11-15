@@ -1,11 +1,13 @@
 package org.springframework.samples.petclinic.player;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
@@ -28,8 +30,11 @@ public class PlayerService {
 	}
 
 	@Transactional
-	public Collection<Player> getPlayerByName(String username){
-		return playerRepository.findPlayersByName(username);
+	public void updatePlayersGames(Integer player, Integer game){
+		playerRepository.updatePlayersGames(player,game);}
+	@Transactional
+	public Player getPlayerByName(String username){
+		return playerRepository.findPlayersByUsername(username);
 	}
 
 	@Transactional
@@ -45,7 +50,7 @@ public class PlayerService {
 		userService.saveUser(player.getUser());
 		
 		authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
-	}	
+	}
 
     
 }

@@ -4,10 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="players">
+<petclinic:layout pageName="game">
 
     <h2>Game Information</h2>
-
 
     <table class="table table-striped">
         <tr>
@@ -20,8 +19,9 @@
         </tr>
     </table>
 
-    <spring:url value="{gameId}/edit" var="editUrl">
+    <spring:url value="join/{gameId}" var="editUrl">
         <spring:param name="gameId" value="${game.id}"/>
     </spring:url>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Join game</a>
 
 </petclinic:layout>

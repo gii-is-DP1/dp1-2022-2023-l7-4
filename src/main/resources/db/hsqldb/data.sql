@@ -108,6 +108,6 @@ INSERT INTO games(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida
 
 INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',TRUE, 'daviddhc');
 
-INSERT INTO games_players(players_id,game_id) VALUES (1,1);
- INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
+
+INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
 

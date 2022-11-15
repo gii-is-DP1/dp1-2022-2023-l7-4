@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -46,8 +47,9 @@ public class Player{
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 
-    @ManyToMany(targetEntity=Game.class)
-   private Set<Game> games;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="game_id", nullable=true)
+    private Game game;
 
    
 }

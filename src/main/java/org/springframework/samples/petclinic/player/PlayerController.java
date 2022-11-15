@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -58,13 +60,15 @@ public class PlayerController {
 		if (player.getName()== null) {
 			player.setName("");
 		}
-		Collection<Player> results = playerService.getPlayerByName(player.getName());
-		if (results.isEmpty()) {
+		Player results = playerService.getPlayerByName(player.getName());
+		List<Player> lista= new ArrayList<Player>();
+		lista.add(results);
+		if (lista.isEmpty()) {
 			result.rejectValue("name", "notFound", "not found");
 			return "players/findPlayers";
 		}
-		else if (results.size() == 1) {
-			player = results.iterator().next();
+		else if (lista.size() == 1) {
+			player = lista.iterator().next();
 			return "redirect:/players/" + player.getId();
 		}
 		else {
