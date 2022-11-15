@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,9 @@ public class PlayerController {
     private static final String VIEWS_PLAYER_CREATE_OR_UPDATE_FORM = "players/createOrUpdatePlayerForm";
 
     private static final String VIEWS_PLAYER_CREATE_FORM = "users/createPlayerForm";
+
+	private static final String VIEWS_CURRENT_PLAYER_DETAILS = "players/currentPlayerDetails";
+	
 
 	
 
@@ -113,8 +117,28 @@ public class PlayerController {
 		playerService.deletePlayer(playerId);
 		System.out.println("Player " + playerId + " was deleted");
 		return "redirect:/players/list";
-		
-
 	}
     
+	@GetMapping("/myprofile")
+	public String currentUserProfile(Principal user, Model model){
+		Player p =playerService.getPlayerByUsername(user.getName());
+		Player playernew = new Player();
+		playernew.setAll(p.getId(), p.getName(), p.getEmail(), p.getBirthdate(), p.getPrivilege(), p.getUser());
+		System.out.println(playernew);
+		model.addAttribute(p);
+		return VIEWS_CURRENT_PLAYER_DETAILS;
+
+	}
+	@PostMapping(value = "/myprofile")
+	public String processPlayerProfile(@Valid Player player, BindingResult result,Principal user) {
+		if (result.hasErrors()) {
+			return VIEWS_PLAYER_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			Player p = playerService.getPlayerByUsername(user.getName());
+			player.setId(p.getId());
+			playerService.savePlayer(player);
+			return "redirect:/myprofile";
+		}
+	}
 }

@@ -2,8 +2,7 @@ package org.springframework.samples.petclinic.player;
 
 import java.util.Collection;
 
-
-
+import org.hibernate.type.TrueFalseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
@@ -36,6 +35,11 @@ public class PlayerService {
 	@Transactional(readOnly = true)
 	public Player getPlayerById(int id){
 		return playerRepository.findById(id);
+	}
+
+	@Transactional(readOnly = true)
+	public Player getPlayerByUsername(String username){
+		return playerRepository.findPlayerByUsername(username);
 	}
 
     @Transactional
