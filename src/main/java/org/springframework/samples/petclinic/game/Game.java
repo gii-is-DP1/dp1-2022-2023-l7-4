@@ -34,7 +34,8 @@ import lombok.Setter;
 @Table(name="games")
 public class Game {
     @Id
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
 
     @NotEmpty
     String Name;
@@ -50,5 +51,7 @@ public class Game {
 
     @ManyToMany(targetEntity=Player.class)
    private Set<Player> players;
+
+   
 
 }

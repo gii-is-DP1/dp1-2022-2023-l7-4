@@ -11,6 +11,9 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
     @Query("SELECT player FROM Player player WHERE player.name = ?1")
     public Collection<Player> findPlayersByName(String name);
 
+    @Query(value = "SELECT * FROM PLAYERS WHERE USERNAME = ?1", nativeQuery = true)
+    public Collection<Player> findPlayersByUsername(String name);
+
     Player findById(int id) throws DataAccessException;
 
     
