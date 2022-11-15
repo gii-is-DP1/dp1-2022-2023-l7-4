@@ -58,6 +58,14 @@ public class PositionController {
 
     @GetMapping("")
     public ModelAndView showPositions(){
+        
+        var pos = positionService.getPositions();
+        if(pos.isEmpty()){
+            positionService.initPositions(List.of(1,2,3));
+            for(var p:pos){
+                positionService.calculateAdjacents(p);
+            }
+        }
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
         result.addObject("cities", cityService.getCities());
@@ -127,12 +135,12 @@ public class PositionController {
             res=errorRes;
             res.addObject("message", "Ha ocurrido un error");
         }else{
-            res=showPositions();
             try{
                 Position position= positionService.findPositionById(idposition.getId());
                 Player player=this.playerService.getPlayerById(playerId);
                 this.positionService.occupySpyPosition(position, player);
                 String msg="Posicion "+position.getId()+" ocupada por jugador "+player.getName();
+                res=showPositions();
                 res.addObject("message", msg);
             }catch(MoreThanOnePlayerSpyInSameCity e){
                 br.rejectValue("position","more than one spy","only one player spy for one city");
@@ -166,14 +174,14 @@ public class PositionController {
             res=errorRes;
             res.addObject("message", "Ha ocurrido un error");
         }else{
-            res=showPositions();
             try{
                 Position position= positionService.findPositionById(idposition.getId());
                 Player player=this.playerService.getPlayerById(playerId);
                 Player enemy=position.getPlayer();
                 this.positionService.killTroop(position, player,reachable);
                 String msg="Tropa enemiga de jugador "+enemy.getName()
-                +"en posicion "+position.getId()+" ha sido asesinada por jugador "+player.getName();
+                +" en posicion "+position.getId()+" ha sido asesinada por jugador "+player.getName();
+                res=showPositions();
                 res.addObject("message", msg);
             }catch(EmptyPositionException e){
                 br.rejectValue("position","free","free position");
@@ -206,14 +214,14 @@ public class PositionController {
             res=errorRes;
             res.addObject("message", "Ha ocurrido un error");
         }else{
-            res=showPositions();
             try{
                 Position position= positionService.findPositionById(idposition.getId());
                 Player enemy=position.getPlayer();
                 Player player=this.playerService.getPlayerById(playerId);
                 this.positionService.returnPiece(position, player);
-                String msg="Pieca de jugador "+enemy.getName()+" en posicion "+position.getId()
-                +"devuelta por jugador "+player.getName();
+                String msg="Pieza de jugador "+enemy.getName()+" en posicion "+position.getId()
+                +" devuelta por jugador "+player.getName();
+                res=showPositions();
                 res.addObject("message", msg);
             }catch(NotEnoughPresence e){
                 br.rejectValue("position","unreachable","you dont have enough presence");
@@ -243,14 +251,14 @@ public class PositionController {
             res=errorRes;
             res.addObject("message", "Ha ocurrido un error");
         }else{
-            res=showPositions();
             try{
                 Position position= positionService.findPositionById(idposition.getId());
                 Player player=this.playerService.getPlayerById(playerId);
                 Player enemy=position.getPlayer();
                 this.positionService.supplantTroop(position, player, reachable);;
                 String msg="Pieza enemiga de jugador "+enemy.getName()
-                +"en posicion "+position.getId()+" ha sido suplantada por jugador "+player.getName();
+                +" en posicion "+position.getId()+" ha sido suplantada por jugador "+player.getName();
+                res=showPositions();
                 res.addObject("message", msg);
             }catch(EmptyPositionException e){
                 br.rejectValue("position","free","free position");

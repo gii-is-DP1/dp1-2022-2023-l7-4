@@ -33,7 +33,7 @@ public class Position{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(optional=true)
     @JoinColumn(name="player_id")
     private Player player;
 
@@ -87,6 +87,14 @@ public class Position{
     public Position() {
         this.player= null;
         this.forSpy=false;
+    }
+
+    public Position(Integer id,Player player,Boolean forSpy,City city,Path path){
+        this.id=id;
+        this.player=player;
+        this.forSpy=forSpy;
+        this.city=city;
+        this.path=path;
     }
     
     

@@ -47,7 +47,7 @@ public class PositionService {
     public List<Position> getPositions(){
         return (List<Position>)positionRepository.findAll();
     }
-
+    
     @Transactional
     public void save(Position p) throws DataAccessException{
         positionRepository.save(p);
@@ -98,7 +98,7 @@ public class PositionService {
             throw new NotEnoughPresence();
         player.setTrophyPV(player.getTrophyPV()+1);
         playerRepository.save(player);
-        position.setPlayer(player);
+        position.setPlayer(null);
         save(position);
     }
 
@@ -135,7 +135,7 @@ public class PositionService {
         else if(position.getPlayer().equals(player))
             throw new YourPositionException();
         else if(onlyAdjacencies
-         & !getAdjacentPositionsFromPlayer(player.getId(),false).contains(position))
+         & !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
         player.setTroops(player.getTroops()-1);
         player.setTrophyPV(player.getTrophyPV()+1);

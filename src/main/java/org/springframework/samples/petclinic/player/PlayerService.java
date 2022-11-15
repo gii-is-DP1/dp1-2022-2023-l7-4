@@ -13,14 +13,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlayerService {
 
-    @Autowired
+
     private PlayerRepository playerRepository;
 
-    @Autowired
+	@Autowired
     private UserService userService;
 
-    @Autowired
+	@Autowired
     private AuthoritiesService authoritiesService;
+
+	@Autowired
+	public PlayerService(PlayerRepository playerRepository){
+		this.playerRepository=playerRepository;
+	}
+
 
 	@Transactional
 	public Collection<Player> getPlayers(){

@@ -143,102 +143,10 @@ window.onbeforeunload = function(e) {
         </c:forEach>
         </tbody>
     </table>
-    <c:forEach items="${freePositions}" var="freePosition">
-        <c:out value="${freePosition.id}"/>
-    </c:forEach>
-    <c:forEach items="${pathPositions}" var="pathPosition">
-        <c:out value="${pathPosition.id}"></c:out>
-    </c:forEach>
+
     
     <body>
-        
-   
-    
-        <div class="board">
-            <c:forEach items="${positions}" var="position">
-                <!--OJO, PUEDES ENCADENAR VALORES DE LAS ETIQUETAS CON LOS ATRIBUTOS DE LOS ITEMS-->
-                <a class = "btn-pos-${position.id}" href="/positions/${position.id}/occupy">${position.id}</a>
-            </c:forEach>
-        </div>
-    </body>
-    <style>
 
-        .btn-submit-form{
-            background-color: #96dfe4;
-            border-width: 1px;
-        }
-
-        a:link, a:visited, a:active {
-            text-decoration: none;
-        
-        }
-        .table{
-            width: 50%;
-            margin-right: auto;
-            margin-left: auto;
-             
-        }
-
-        .btn-pos-1{
-            text-emphasis: none;
-            text-decoration: none;
-            height: 20px;
-            width: 20px;
-            background-color: #96dfe4;
-            border: 8px;
-            text-align: center;
-            position: absolute;
-            border-radius: 50%;
-            top:0px;
-        }
-        .btn-pos-2{
-            text-emphasis: none;
-            text-decoration: none;
-            height: 20px;
-            width: 20px;
-            background-color: #96dfe4;
-            border: 8px;
-            text-align: center;
-            position: absolute;
-            border-radius: 50%;
-            top:30px;
-        }
-        .btn-pos-3{
-            text-emphasis: none;
-            text-decoration: none;
-            height: 20px;
-            width: 20px;
-            background-color: #96dfe4;
-            border: 8px;
-            text-align: center;
-            position: absolute;
-            border-radius: 50%;
-            top:60px;
-        }
-
-        .board{
-
-            margin-left: auto;
-            margin-right: auto;
-            background-image: url("/resources/images/example_map.jpg");
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            height: 600px;
-            width: 600px;
-            position: relative;
-        }
-        .container{
-            display: inline-block; 
-        }
-        .pre-button{
-                background-color: blueviolet;
-                color:aliceblue;
-                text-align: center;
-                border-radius: 20%;
-                width: 130px
-            }
-    </style>
         <div class="container">
             
             <a href='<c:url value="/positions/1/place/troop/false"/>' >
@@ -271,6 +179,66 @@ window.onbeforeunload = function(e) {
             <a href='<c:url value="/positions/2/place/spy"/>' >
                 <div class="btn-default">
                     COLOCAR ESPIA COMO JUGADOR 2
+                </div>
+            </a>
+        </div>
+        <div class="container">
+            <a href='<c:url value="/positions/1/kill/false"/>' >
+                <div class="btn-default">
+                    MATAR TROPA COMO JUGADOR 1
+                </div>
+            </a>
+            <a href='<c:url value="/positions/1/kill/true"/>' >
+                <div class="btn-default">
+                    MATAR TROPA COMO JUGADOR 1 CON PRESENCIA
+                </div>
+            </a>
+        </div>
+        <div class="container">
+            <a href='<c:url value="/positions/2/kill/false"/>' >
+                <div class="btn-default">
+                    MATAR TROPA COMO JUGADOR 2
+                </div>
+            </a>
+            <a href='<c:url value="/positions/2/kill/true"/>' >
+                <div class="btn-default">
+                    MATAR TROPA COMO JUGADOR 2 CON PRESENCIA
+                </div>
+            </a>
+        </div>
+        <div class="container">
+            <a href='<c:url value="/positions/1/return"/>' >
+                <div class="btn-default">
+                    DEVOLVER PIEZA COMO JUGADOR 1
+                </div>
+            </a>
+            <a href='<c:url value="/positions/2/return"/>' >
+                <div class="btn-default">
+                    DEVOLVER PIEZA COMO JUGADOR 2
+                </div>
+            </a>
+        </div>
+        <div class="container">
+            <a href='<c:url value="/positions/1/supplant/false"/>' >
+                <div class="btn-default">
+                    SUPLANTAR TROPA COMO JUGADOR 1
+                </div>
+            </a>
+            <a href='<c:url value="/positions/1/supplant/true"/>' >
+                <div class="btn-default">
+                    SUPLANTAR TROPA COMO JUGADOR 1 CON PRESENCIA
+                </div>
+            </a>
+        </div>
+        <div class="container">
+            <a href='<c:url value="/positions/2/supplant/false"/>' >
+                <div class="btn-default">
+                    SUPLANTAR TROPA COMO JUGADOR 2
+                </div>
+            </a>
+            <a href='<c:url value="/positions/2/supplant/true"/>' >
+                <div class="btn-default">
+                    SUPLANTAR TROPA COMO JUGADOR 2 CON PRESENCIA
                 </div>
             </a>
         </div>
