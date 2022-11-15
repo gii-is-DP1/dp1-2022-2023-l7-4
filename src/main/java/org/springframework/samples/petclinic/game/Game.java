@@ -57,7 +57,6 @@ public class Game {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",fetch = FetchType.EAGER)
     private Set<Player> players;
 
-<<<<<<< HEAD
     protected Set<Player> getPlayersInternal() {
 		if (this.players == null) {
 			this.players = new HashSet<>();
@@ -73,8 +72,4 @@ public class Game {
             players.remove(player);
             player.setGame(null);
         }
-=======
-   
-
->>>>>>> b193d587252abe198cee0f551914d5d695b1a128
 }
