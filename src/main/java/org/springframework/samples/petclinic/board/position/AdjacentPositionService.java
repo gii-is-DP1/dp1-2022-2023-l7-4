@@ -83,8 +83,9 @@ public class AdjacentPositionService {
     }
 
     private List<Position> adjacentsInsideCity(Position position) {
+        List<Position> adjacents = new ArrayList<>();
         City city = position.getCity();
-        List<Position> adjacents = city.getPositions();
+        adjacents.addAll( city.getPositions());
         adjacents.remove(position);
         return adjacents;
     }

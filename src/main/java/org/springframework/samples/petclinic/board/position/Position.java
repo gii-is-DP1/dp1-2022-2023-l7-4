@@ -57,7 +57,7 @@ public class Position{
 
     @ManyToMany
     @JoinColumn(name= "adj_id",unique = false)
-    private List<Position> adjacents;
+    private List<Position> adjacents=null;
     
     public List<Position> getAdjacentsInternal(){
         if(adjacents != null) return adjacents;
@@ -74,11 +74,12 @@ public class Position{
     public Boolean isInPath(){
         return path!=null;
     }
+    
+
     @Override
     public String toString() {
-        return "" + id;
+        return ""+id ;
     }
-
     public void checkSector(Integer city_id,Integer path_id){
         if(city_id!=null & path_id!=null)
             throw new IllegalAccessError("No puedes asignar una posición a 2 sectores a la vez");
@@ -89,13 +90,13 @@ public class Position{
         this.forSpy=false;
     }
 
-    public Position(Integer id,Player player,Boolean forSpy,City city,Path path){
-        this.id=id;
-        this.player=player;
-        this.forSpy=forSpy;
-        this.city=city;
-        this.path=path;
-    }
+    // public Position(Integer id,Player player,Boolean forSpy,City city,Path path){
+    //     this.id=id;
+    //     this.player=player;
+    //     this.forSpy=forSpy;
+    //     this.city=city;
+    //     this.path=path;
+    // }
     
     
 }

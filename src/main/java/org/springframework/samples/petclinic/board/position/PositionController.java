@@ -58,13 +58,14 @@ public class PositionController {
 
     @GetMapping("")
     public ModelAndView showPositions(){
-        
-        var pos = positionService.getPositions();
+        var cities= cityService.getCities();
+        var paths= pathService.getPaths();
+        var zones= List.of(1,2,3);
+        List<Position> pos = positionService.getPositions();
         if(pos.isEmpty()){
-            positionService.initPositions(List.of(1,2,3));
-            for(var p:pos){
-                positionService.calculateAdjacents(p);
-            }
+            positionService.populatePositions(cities, paths, zones);
+            pos = positionService.getPositions();
+            pos.forEach(position -> positionService.calculateAdjacents(position));
         }
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
@@ -289,7 +290,6 @@ public class PositionController {
     public String adjacents(@PathVariable("id") Integer id) throws DataAccessException {
         Position position= this.positionService.findPositionById(id);
         positionService.calculateAdjacents(position);
-        this.positionService.save(position);
         return "redirect:/positions";
         
     }
