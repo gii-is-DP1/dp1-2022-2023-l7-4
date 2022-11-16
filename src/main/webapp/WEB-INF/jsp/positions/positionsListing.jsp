@@ -95,11 +95,11 @@ window.onbeforeunload = function(e) {
         <thead>
         <tr>
             <th>Id</th>
-            <th>Occupied?</th>
+            <th>Occupied</th>
             <th>Player</th>
-            <th>For Spy?</th>
+            <th>Type</th>
             <th>Path</th>
-            <th>City<th>
+            <th>City</th>
             <th>Adjacencies</th>
         </tr>
         </thead>
@@ -110,34 +110,24 @@ window.onbeforeunload = function(e) {
                     <c:out value="${position.id}"/>
                 </td>
                 <td>
-                    <c:out value="${position.isOccupied}"/>
+                    <c:out value="${position.isOccupied== true? 'Yes':'-'}"/>
                 </td>
                 <td>
                     <c:out value="${position.player.name}"/>
                 </td>
                 <td>
-                    <c:out value="${position.forSpy}"/>
+                    <c:out value="${position.forSpy==true? 'Spy': 'Troop'}"/>
                 </td>
                 <td>
                     <c:out value="${position.path}"/>
                 </td>
                 <td>
-                    
-                    <form action="positions/${position.id}/occupy">
-                        <input class = "btn-submit-form" type="submit" value="Des/Ocupar"/>
                     <c:out value="${position.city}"/>
                 </td>
                 <td>
                     <c:out value="${position.adjacents}"/>
                 </td>
-                <td>
-                <form action="positions/${position.id}/occupy">
-                        <input type="submit" value="Des/Ocupar" />
-                </form>
-                <form action="positions/${position.id}/adjacents">
-                        <input type="submit" value="adjacents" />
-                </form>
-                </td>
+
                 
             </tr>
         </c:forEach>
