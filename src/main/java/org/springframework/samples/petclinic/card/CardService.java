@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.card;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
-    public List<HalfDeck> getHalfDeckFromCard(String name) {
+    public List<HalfDeck> getHalfDeckByCard(String name) {
         return cardRepository.findHalfDecksByName(name);
     }
 

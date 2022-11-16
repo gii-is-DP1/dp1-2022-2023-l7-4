@@ -78,7 +78,7 @@ public class CardController {
         ModelAndView result2=new ModelAndView(HALFDECK_LISTING_VIEW);
 		System.out.println(name);
 
-		List<HalfDeck> filteredHalfDecks = cardService.getHalfDeckFromCard(name);
+		List<HalfDeck> filteredHalfDecks = cardService.getHalfDeckByCard(name);
 
 		if(filteredHalfDecks.isEmpty()){
 			result.rejectValue("name", "notFound", "not found");
