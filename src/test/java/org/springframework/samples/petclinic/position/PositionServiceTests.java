@@ -60,75 +60,7 @@ public class PositionServiceTests {
 
 
 
-    @BeforeEach
-    public void setUp(){
-        //hacer inicio de mock de positionRepo,cityRepo,pathRepo y playerRepo + constructor de position,player,city,path
-        //con los
-        
 
-        
-        //Mockito.lenient().when(positionRepository.findAllPositionByPlayerIsNull()).thenReturn(freePos);
-
-    }
-
-
-
-    //OJO, SOLO DETECTARÁ LAS POSICIONES EN EL DATA.SQL, CON POPULATE NO
-    /* 
-    @Test
-    public void shouldFindPositionByCorrectId(){
-        Position position1=this.positionService.findPositionById(1);
-        assertThat(position1.getCity().getName()).startsWith("EL LABERINTO");
-        assertThat(position1.getIsOccupied()).isFalse();
-        assertThat(position1.getPath()).isNull();
-        assertThat(position1.getForSpy()).isTrue();
-    }
-    @Test
-    public void shouldFindAllPositions(){
-        List<Position> allPositios=positionService.getPositions();
-        assertThat(allPositios.size()).isGreaterThan(0);
-    }
-
-    //crear positionrepofake( en el beforeeach, haces un Positionrepo vacio, y luego creas por separado posiciones)
-    @Test
-    public void shouldFindAllFreePositions(){
-        List<Position> freePositions=this.positionService.getFreePositions();
-        assertThat(freePositions).isNotEmpty();
-        assertThat(freePositions).allMatch(pos->pos.getIsOccupied()==false);
-    }
-
-    @Test
-    public void shouldFindAllFreeTroopPositions(){
-        List<Position> freePositions=this.positionService.getFreeTroopPositions();
-        assertThat(freePositions).isNotEmpty();
-        assertThat(freePositions).allMatch(pos->pos.getIsOccupied()==false & pos.getForSpy()==false);
-    }
-
-    @Test
-    public void shouldFindAllFreeSpyPositions(){
-        List<Position> freePositions=this.positionService.getFreeSpyPositions();
-        assertThat(freePositions).isNotEmpty();
-        assertThat(freePositions).allMatch(pos->pos.getIsOccupied()==false & pos.getForSpy());
-    }
-
-    @Test//lo mismo, pero creando un fakeplayerrepo, creas un player y verificas 
-    public void shouldFindAllPositionsFromPlayerId(){
-        List<Position> allPlayerPositions=this.positionService.getPlayerPositions(1);
-        assertThat(allPlayerPositions).isNotEmpty();
-        assertThat(allPlayerPositions)
-        .allMatch(pos->pos.getIsOccupied() & pos.getPlayer().getName().equals("David"));
-    }
-
-    @Test
-    public void shouldFindAllPositionsFromPathId(){
-        List<Position> pathPositions=this.positionService.getPositionsFromPathId(2);
-        assertThat(pathPositions).isNotEmpty();
-        assertThat(pathPositions).allMatch(pos->pos.getPath().getFirstCity().getId()==1
-         & pos.getPath().getSecondCity().getId()==3);       
-    }
-    */
-
-    //que en el findTroopByPlayer este en el mock
     @Test
     public void testOccupyCorrectTroopPositionWithOutAdjacencies(){
             Player player =new Player();
@@ -374,6 +306,85 @@ public class PositionServiceTests {
         assertThrows(NotEnoughPresence.class,()->positionService.returnPiece(wantedPos,player));
     }
 
+    @Test
+    public void testSupplantAnyTroop(){
+        Player player1=new Player();
+        Player player2=new Player();
+        player1.setId(1);
+        player2.setId(2);
+        Integer expectPV=player2.getTrophyPV();
+        Position position=new Position();
+        position.setPlayer(player1);
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        assertThat(position.getPlayer().getId()).isEqualTo(player1.getId());
+        try {
+            positionService.supplantTroop(position, player2, false);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            fail("No deberia salir ninguna excepción");
+        } 
+        assertThat(position.getPlayer().getId()).isEqualTo(player2.getId());
+        assertThat(player2.getTrophyPV()).isEqualTo(expectPV+1);
+    }
+    @Test
+    public void testSupplantAdjTroop(){
+        Player player1=new Player();
+        Player player2=new Player();
+        player1.setId(1);
+        player2.setId(2);
+        Integer expectPV=player2.getTrophyPV();
+        Position wantedPosition=new Position();
+        Position player2pos=new Position();
+        player2pos.setPlayer(player2);
+        player2pos.setAdjacents(new ArrayList<>(List.of(wantedPosition)));
+        wantedPosition.setPlayer(player1);
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player2.getId())).thenReturn(List.of(player2pos));
+        Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player1.getId())).thenReturn(List.of(wantedPosition));
+        assertThat(wantedPosition.getPlayer().getId()).isEqualTo(player1.getId());
+        assertThat(positionService.getAdjacentTroopPositionsFromPlayer(player2.getId(), true)).contains(wantedPosition);
+        try {
+            positionService.supplantTroop(wantedPosition, player2, true);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            fail("No deberia salir ninguna excepción");
+        } 
+        assertThat(wantedPosition.getPlayer().getId()).isEqualTo(player2.getId());
+        assertThat(player2.getTrophyPV()).isEqualTo(expectPV+1);
+    }
+
+    @Test
+    public void testSupplantEmptyPosition(){
+        Position position=new Position();
+        Player player=new Player();
+        player.setId(1);
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        assertThrows(EmptyPositionException.class,()->positionService.supplantTroop(position, player,false));
+    }
+    @Test
+    public void testSupplantOwnPosition(){
+        Position position=new Position();
+        Player player=new Player();
+        player.setId(1);
+        position.setPlayer(player);
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        assertThrows(YourPositionException.class,()->positionService.supplantTroop(position, player,false));
+    }
+
+    @Test
+    public void testSupplantWithoutEnoughPresence(){
+        Player player=new Player();
+        Player enemy=new Player();
+        Position positionPlayer=new Position();
+        Position emptyPos=new Position();
+        Position wantedPos=new Position();
+        wantedPos.setPlayer(enemy);
+        emptyPos.setAdjacents(new ArrayList<>(List.of(positionPlayer,wantedPos)));
+        positionPlayer.setPlayer(player);
+        positionPlayer.setAdjacents(new ArrayList<>(List.of(emptyPos)));
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        assertThrows(NotEnoughPresence.class,()->positionService.supplantTroop(wantedPos,player,true));
+    }
 
 
     
