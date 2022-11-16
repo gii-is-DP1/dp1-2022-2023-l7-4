@@ -22,13 +22,16 @@ public class AdjacentPositionService {
     }
     
     public List<Position> adjacentsToPositonInCity(Position position) {
+        System.out.println("pasa por city"+position.getCity().getName());
         List<Position> adjacents = new ArrayList<>();
         adjacents.addAll(adjacentsInsideCity(position));
         adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));
+        adjacents.addAll(adjacentsFromPathsIncomingCity(position.getCity()));
         return adjacents;
     }
     
     public List<Position> adjacentsToPositonInPath(Position position) {
+        System.out.println("pasa por path"+position.getPath());
         List<Position> adjacents = new ArrayList<>();
         Path path = position.getPath();
         List<Position> pathPositions= positionRepository.findAllPositionByPathId(path.getId());//ordered
@@ -82,9 +85,28 @@ public class AdjacentPositionService {
         return adjacents;
     }
 
+    private List<Position> adjacentsFromPathsIncomingCity(City city) {
+        List<Position> adjacents = new ArrayList<>();
+        List<Path> Paths = pathService.getIncomingPathsFromCity(city);
+        for(Path path : Paths){
+            List<Position> pathPositions = positionRepository.findAllPositionByPathId(path.getId());
+            if(pathPositions.isEmpty()){ // empty path = link to other city
+
+                List<Position> targetCity = positionRepository.findAllPositionByCityId(path.getFirstCity().getId());
+                adjacents.addAll(targetCity);
+                
+            }else{// not empty path = link to first element of path
+                
+                adjacents.add(pathPositions.get(pathPositions.size()-1));
+
+            }
+        }
+        return adjacents;
+    }
     private List<Position> adjacentsInsideCity(Position position) {
+        List<Position> adjacents = new ArrayList<>();
         City city = position.getCity();
-        List<Position> adjacents = city.getPositions();
+        adjacents.addAll( city.getPositions());
         adjacents.remove(position);
         return adjacents;
     }

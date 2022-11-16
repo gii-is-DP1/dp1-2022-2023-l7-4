@@ -21,6 +21,9 @@ public class PathService {
     }
     
     public List<Path> getExitPathsFromCity(City city){
-        return pathRepository.getExitPathsFromCity(city);
+        return pathRepository.findExitPathsFromCity(city);
+    };
+    public List<Path> getIncomingPathsFromCity(City city){
+        return pathRepository.findIncomingPathsFromCity(city);
     };
 }

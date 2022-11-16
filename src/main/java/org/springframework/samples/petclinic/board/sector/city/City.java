@@ -43,5 +43,5 @@ public class City extends Sector{
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
-    List<Position> positions;
+    private List<Position> positions;
 }

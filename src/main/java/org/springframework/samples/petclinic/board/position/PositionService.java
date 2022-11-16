@@ -44,10 +44,19 @@ public class PositionService {
         this.pathRepository=pathRepository;
     }
 
+    public PositionService(PositionRepository posRepo,PlayerRepository playerRepository
+    ,CityRepository cityRepository,PathRepository pathRepository){
+        this.positionRepository=posRepo;
+        this.playerRepository=playerRepository;
+        this.cityRepository=cityRepository;
+        this.pathRepository=pathRepository;
+    }
+
+
     public List<Position> getPositions(){
         return (List<Position>)positionRepository.findAll();
     }
-
+    
     @Transactional
     public void save(Position p) throws DataAccessException{
         positionRepository.save(p);
@@ -76,7 +85,7 @@ public class PositionService {
      throws DataAccessException,IncorrectPositionTypeException,MoreThanOnePlayerSpyInSameCity{
         if(position.getForSpy()==false){
             throw new IncorrectPositionTypeException();
-        }else if(positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()))
+        }else if(!positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()).isEmpty())
             throw new MoreThanOnePlayerSpyInSameCity();
         player.setSpies(player.getSpies()-1);
         playerRepository.save(player);
@@ -98,7 +107,7 @@ public class PositionService {
             throw new NotEnoughPresence();
         player.setTrophyPV(player.getTrophyPV()+1);
         playerRepository.save(player);
-        position.setPlayer(player);
+        position.setPlayer(null);
         save(position);
     }
 
@@ -135,7 +144,7 @@ public class PositionService {
         else if(position.getPlayer().equals(player))
             throw new YourPositionException();
         else if(onlyAdjacencies
-         & !getAdjacentPositionsFromPlayer(player.getId(),false).contains(position))
+         & !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
         player.setTroops(player.getTroops()-1);
         player.setTrophyPV(player.getTrophyPV()+1);

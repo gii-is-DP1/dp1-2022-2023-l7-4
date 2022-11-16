@@ -4,70 +4,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <petclinic:layout pageName="positions">
-    <h2>Positions</h2>
-    <table id="positionsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Occupied?</th>
-            <th>Player</th>
-            <th>For Spy?</th>
-            <th>Path</th>
-            <th>City<th>
-            <th>Adjacencies</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${freePositions}" var="position">
-            <tr>
-                <td>
-                    <c:out value="${position.id}"/>
-                </td>
-                <td>
-                    <c:out value="${position.isOccupied}"/>
-                </td>
-                <td>
-                    <c:out value="${position.player.name}"/>
-                </td>
-                <td>
-                    <c:out value="${position.forSpy}"/>
-                </td>
-                <td>
-                    <c:out value="${position.path}"/>
-                </td>
-                <td>
-                    
-                    <c:out value="${position.city}"/>
-                </td>
-                <td>
-                    <c:out value="${position.adjacents}"/>
-                </td>
-                <td>
-                <form action="positions/${position.id}/occupy">
-                        <input class = "btn-submit-form" type="submit" value="Des/Ocupar" />
-                </form>
-                </td>
+    <body>
                 
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+   
+    
         <div class="board">
-            <c:forEach items="${freePositions}" var="position">
+            <c:forEach items="${positions}" var="position">
                 <!--OJO, PUEDES ENCADENAR VALORES DE LAS ETIQUETAS CON LOS ATRIBUTOS DE LOS ITEMS-->
                 <a class = "btn-pos-${position.id}" href="/positions/${position.id}/occupy">${position.id}</a>
             </c:forEach>
         </div>
-        <div>
-           ${user} 
-        </div>
-
-            <td>POSITIONS</td>
-            <form:form>
-                <select 
-            </form:form>
-            <button type="submit" id="sed">COLOCAR</button>
-        
+    </body>
     <style>
 
         .btn-submit-form{
@@ -133,10 +80,19 @@
             background-position: center;
             height: 600px;
             width: 600px;
-            display: grid;
             position: relative;
         }
+        .container{
+            display: inline-block; 
+        }
+        .pre-button{
+                background-color: blueviolet;
+                color:aliceblue;
+                text-align: center;
+                border-radius: 20%;
+                width: 130px
+            }
     </style>
-    
+    </body>
 
 </petclinic:layout>

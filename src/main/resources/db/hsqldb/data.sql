@@ -119,7 +119,7 @@ INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 INSERT INTO games(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,FALSE);
 
 INSERT INTO players(id,name,email,birthdate,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08', 'daviddhc');
-INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'aaa', '2002-04-08', 'anddomrui');
+INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'davidhc@gmail.com', '2002-04-08', 'anddomrui');
 
 
 
@@ -180,11 +180,3 @@ INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,h
 
 
 -- DATOS PARA PRUEBA, OJO, PARA LOS TEST, TENEIS QUE UTILIZAR LOS DATOS DE AQUI, NO VALEN LOS AUTOGENERADOS
-INSERT INTO positions(id,city_id,for_spy) VALUES (1,1,TRUE);
-INSERT INTO positions(id,city_id,for_spy) VALUES (3,1,FALSE);
-INSERT INTO positions(id,city_id,for_spy) VALUES (5,1,FALSE);
-INSERT INTO positions(id,city_id,player_id,for_spy) VALUES (2,2,2,TRUE);
--- caminos
-INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (4,1,1,FALSE);
-INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (6,2,1,FALSE);
-INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (7,2,2,FALSE);
