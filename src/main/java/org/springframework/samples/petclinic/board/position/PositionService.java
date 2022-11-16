@@ -1,22 +1,19 @@
 package org.springframework.samples.petclinic.board.position;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
 import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
 import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
-import org.springframework.samples.petclinic.board.position.exceptions.NullPlayerException;
 import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
 import org.springframework.samples.petclinic.board.sector.city.City;
-import org.springframework.samples.petclinic.board.sector.city.CityRepository;
 import org.springframework.samples.petclinic.board.sector.path.Path;
-import org.springframework.samples.petclinic.board.sector.path.PathRepository;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -28,11 +25,15 @@ public class PositionService {
     private PositionRepository positionRepository;
     private AdjacentPositionService adjacentPositionService;
     private PlayerRepository playerRepository;
+    private PopulatePositionService populatePositionService;
+
 
     @Autowired
-    public PositionService(PositionRepository posRepo,PlayerRepository playerRepository){
+    public PositionService(PositionRepository posRepo,PlayerRepository playerRepository,PopulatePositionService populatePositionService,AdjacentPositionService adjacentPositionService){
         this.positionRepository=posRepo;
         this.playerRepository=playerRepository;
+        this.populatePositionService=populatePositionService;
+        this.adjacentPositionService= adjacentPositionService;
     }
 
 
@@ -225,11 +226,16 @@ public class PositionService {
      * @param playableZones
      */
 
-    // public void initPositions(List<Integer> playableZones){
-    //     populatePositions(cityRepository.findAll(),pathRepository.findAll(), playableZones);
-    //     positionRepository.findAll().forEach(x->calculateAdjacents(x));
+    public void initializePositions(List<Integer> playableZones,List<City> cities, List<Path> paths){
+        List<Position> positions = getPositions();
+        if(positions.isEmpty()){
+            populatePositionService.populatePositions(playableZones, cities, paths);
+            positions = getPositions();
+            positions.forEach(position -> adjacentPositionService.calculateAdjacents(position));
 
-    // }
+        }
+
+    }
 
     
 

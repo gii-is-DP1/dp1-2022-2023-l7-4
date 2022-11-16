@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.board.position;
 
-import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,18 +12,16 @@ import org.springframework.samples.petclinic.board.position.exceptions.MoreThanO
 import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
 import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
+import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
+import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +39,6 @@ public class PositionController {
     private CityService cityService;
     private PathService pathService;
     private PlayerService playerService;
-    private AdjacentPositionService adjacentPositionService;
     
     @ModelAttribute(name = "zones")
     public String zones(){
@@ -60,15 +56,12 @@ public class PositionController {
 
     @GetMapping("")
     public ModelAndView showPositions(){
-        var cities= cityService.getCities();
-        var paths= pathService.getPaths();
-        var zones= List.of(1,2,3);
-        List<Position> pos = positionService.getPositions();
-        if(pos.isEmpty()){
-            positionService.populatePositions(cities, paths, zones);
-            pos = positionService.getPositions();
-            pos.forEach(position -> adjacentPositionService.calculateAdjacents(position));
-        }
+        List<City> cities= cityService.getCities();
+        List<Path> paths= pathService.getPaths();
+        List<Integer> zones= List.of(1,2,3);
+        
+        positionService.initializePositions(zones,cities, paths);
+        System.out.println(positionService.getPositions());
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
         result.addObject("cities", cityService.getCities());
@@ -287,22 +280,6 @@ public class PositionController {
         this.positionService.save(p);
         return "redirect:/positions";
     }
-        
-    @GetMapping(value = "/{id}/adjacents")
-    public String adjacents(@PathVariable("id") Integer id) throws DataAccessException {
-        Position position= this.positionService.findPositionById(id);
-        adjacentPositionService.calculateAdjacents(position);
-        return "redirect:/positions";
-        
-    }
-    //TODO choose the zones in populate method
-    @GetMapping(value = "/populate")
-    public String populate(){
-        System.out.println("llamada a /populate");
-        List<Integer> zoneList=List.of(1,2,3);
-        
-        this.positionService.populatePositions( cityService.getCities(),pathService.getPaths(), zoneList);
-        return "redirect:/positions";
-    }
+    
     
 }

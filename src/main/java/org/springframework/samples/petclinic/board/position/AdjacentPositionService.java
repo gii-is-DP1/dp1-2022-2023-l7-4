@@ -14,13 +14,11 @@ public class AdjacentPositionService {
     
     private PositionRepository positionRepository;
     private PathService pathService;
-    private PositionService positionService;
 
     @Autowired
-    private AdjacentPositionService(PositionRepository posRepo,PathService pathService,PositionService positionService){
+    private AdjacentPositionService(PositionRepository posRepo,PathService pathService){
         this.positionRepository=posRepo;
         this.pathService=pathService;
-        this.positionService=positionService;
     }
     
     /**
@@ -40,11 +38,11 @@ public class AdjacentPositionService {
             adjacents = adjacentsToPositonInPath(position);
         }
         position.setAdjacents(adjacents);
-        positionService.save(position);
+        positionRepository.save(position);
     }
     
     private List<Position> adjacentsToPositonInPath(Position position) {
-        System.out.println("pasa por path"+position.getPath());
+
         List<Position> adjacents = new ArrayList<>();
         Path path = position.getPath();
         List<Position> pathPositions= positionRepository.findAllPositionByPathId(path.getId());//ordered
@@ -78,7 +76,7 @@ public class AdjacentPositionService {
     }
 
     private List<Position> adjacentsToPositonInCity(Position position) {
-        System.out.println("pasa por city"+position.getCity().getName());
+
         List<Position> adjacents = new ArrayList<>();
         adjacents.addAll(adjacentsInsideCity(position));
         adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));

@@ -1,28 +1,20 @@
 package org.springframework.samples.petclinic.position;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.board.position.AdjacentPositionService;
-import org.springframework.samples.petclinic.board.position.PopulatePositionService;
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionRepository;
 import org.springframework.samples.petclinic.board.position.PositionService;
@@ -34,7 +26,6 @@ import org.springframework.samples.petclinic.board.position.exceptions.OccupiedP
 import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityRepository;
-import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.board.sector.path.PathRepository;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
@@ -67,7 +58,7 @@ public class PositionServiceTests {
             Integer numTroops=player.getTroops();
             Position emptyPos=new Position();
             emptyPos.setForSpy(false);
-            PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+            PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
                     try {
                         positionService.occupyTroopPosition(emptyPos, player, false);
                     } catch (Exception e) {
@@ -91,7 +82,7 @@ public class PositionServiceTests {
         emptyPos.setForSpy(false);
         emptyPos.setAdjacents(new ArrayList<>(List.of(playerPos,adjPosToEmptyPos)));
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player.getId())).thenReturn(List.of(playerPos));
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThat(positionService.getAdjacentTroopPositionsFromPlayer(player.getId(), false)).contains(emptyPos);
         assertThat(positionService.getAdjacentTroopPositionsFromPlayer(player.getId(), false)).doesNotContain(adjPosToEmptyPos);
                 try {
@@ -110,7 +101,7 @@ public class PositionServiceTests {
         Player player2=new Player();
         Position position=new Position();
         position.setPlayer(player2);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(OccupiedPositionException.class,()->positionService.occupyTroopPosition(position,player1,false));
     }
 
@@ -119,7 +110,7 @@ public class PositionServiceTests {
         Player player1=new Player();
         Position position=new Position();
         position.setForSpy(true);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(IncorrectPositionTypeException.class,()->positionService.occupyTroopPosition(position,player1,false));
     }
 
@@ -132,7 +123,7 @@ public class PositionServiceTests {
         emptyPos.setAdjacents(new ArrayList<>(List.of(positionPlayer,wantedPos)));
         positionPlayer.setPlayer(player);
         positionPlayer.setAdjacents(new ArrayList<>(List.of(emptyPos)));
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(NotEnoughPresence.class,()->positionService.occupyTroopPosition(wantedPos,player,true));
     }
     @Test
@@ -145,7 +136,7 @@ public class PositionServiceTests {
             city.setId(1);
             emptyPos.setForSpy(true);
             emptyPos.setCity(city);
-            PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+            PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
                         try {
                             positionService.occupySpyPosition(emptyPos, player);
 
@@ -163,7 +154,7 @@ public class PositionServiceTests {
         Player player =new Player();
         Position position=new Position();
         position.setPlayer(player);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(IncorrectPositionTypeException.class,()->positionService.occupySpyPosition(position, player));
     }
 
@@ -177,7 +168,7 @@ public class PositionServiceTests {
         city.setId(1);
         position.setForSpy(true);
         position.setCity(city);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         when(positionRepository.findAnySpyOfAPlayerInACity(player.getId(),city.getId())).thenReturn(List.of(playerPos));
         assertThrows(MoreThanOnePlayerSpyInSameCity.class,()->positionService.occupySpyPosition(position, player));
     }
@@ -192,7 +183,7 @@ public class PositionServiceTests {
         Integer expectPV=player2.getTrophyPV();
         Position position=new Position();
         position.setPlayer(player1);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThat(position.getIsOccupied()).isTrue();
         try {
             positionService.killTroop(position, player2, false);
@@ -216,7 +207,7 @@ public class PositionServiceTests {
         player2pos.setPlayer(player2);
         player2pos.setAdjacents(new ArrayList<>(List.of(wantedPosition)));
         wantedPosition.setPlayer(player1);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player2.getId())).thenReturn(List.of(player2pos));
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player1.getId())).thenReturn(List.of(wantedPosition));
         assertThat(wantedPosition.getIsOccupied()).isTrue();
@@ -236,7 +227,7 @@ public class PositionServiceTests {
         Position position=new Position();
         Player player=new Player();
         player.setId(1);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(EmptyPositionException.class,()->positionService.killTroop(position, player,false));
     }
     @Test
@@ -245,7 +236,7 @@ public class PositionServiceTests {
         Player player=new Player();
         player.setId(1);
         position.setPlayer(player);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(YourPositionException.class,()->positionService.killTroop(position, player,false));
     }
 
@@ -260,7 +251,7 @@ public class PositionServiceTests {
         emptyPos.setAdjacents(new ArrayList<>(List.of(positionPlayer,wantedPos)));
         positionPlayer.setPlayer(player);
         positionPlayer.setAdjacents(new ArrayList<>(List.of(emptyPos)));
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(NotEnoughPresence.class,()->positionService.killTroop(wantedPos,player,true));
     }
 
@@ -276,7 +267,7 @@ public class PositionServiceTests {
         player2pos.setPlayer(player2);
         player2pos.setAdjacents(new ArrayList<>(List.of(wantedPosition)));
         wantedPosition.setPlayer(player1);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player2.getId())).thenReturn(List.of(player2pos));
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player1.getId())).thenReturn(List.of(wantedPosition));
         assertThat(wantedPosition.getIsOccupied()).isTrue();
@@ -302,7 +293,7 @@ public class PositionServiceTests {
         emptyPos.setAdjacents(new ArrayList<>(List.of(positionPlayer,wantedPos)));
         positionPlayer.setPlayer(player);
         positionPlayer.setAdjacents(new ArrayList<>(List.of(emptyPos)));
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(NotEnoughPresence.class,()->positionService.returnPiece(wantedPos,player));
     }
 
@@ -315,7 +306,7 @@ public class PositionServiceTests {
         Integer expectPV=player2.getTrophyPV();
         Position position=new Position();
         position.setPlayer(player1);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThat(position.getPlayer().getId()).isEqualTo(player1.getId());
         try {
             positionService.supplantTroop(position, player2, false);
@@ -338,7 +329,7 @@ public class PositionServiceTests {
         player2pos.setPlayer(player2);
         player2pos.setAdjacents(new ArrayList<>(List.of(wantedPosition)));
         wantedPosition.setPlayer(player1);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player2.getId())).thenReturn(List.of(player2pos));
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player1.getId())).thenReturn(List.of(wantedPosition));
         assertThat(wantedPosition.getPlayer().getId()).isEqualTo(player1.getId());
@@ -358,7 +349,7 @@ public class PositionServiceTests {
         Position position=new Position();
         Player player=new Player();
         player.setId(1);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(EmptyPositionException.class,()->positionService.supplantTroop(position, player,false));
     }
     @Test
@@ -367,7 +358,7 @@ public class PositionServiceTests {
         Player player=new Player();
         player.setId(1);
         position.setPlayer(player);
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(YourPositionException.class,()->positionService.supplantTroop(position, player,false));
     }
 
@@ -382,7 +373,7 @@ public class PositionServiceTests {
         emptyPos.setAdjacents(new ArrayList<>(List.of(positionPlayer,wantedPos)));
         positionPlayer.setPlayer(player);
         positionPlayer.setAdjacents(new ArrayList<>(List.of(emptyPos)));
-        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         assertThrows(NotEnoughPresence.class,()->positionService.supplantTroop(wantedPos,player,true));
     }
 
