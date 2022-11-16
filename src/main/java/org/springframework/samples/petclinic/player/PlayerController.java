@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.player;
 
+import java.security.Principal;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -7,9 +9,14 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.user.User;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +28,11 @@ public class PlayerController {
     private static final String VIEWS_PLAYER_CREATE_OR_UPDATE_FORM = "players/createOrUpdatePlayerForm";
 
     private static final String VIEWS_PLAYER_CREATE_FORM = "users/createPlayerForm";
+
+	private static final String VIEWS_CURRENT_PLAYER_DETAILS = "players/currentPlayerDetails";
+	
+
+	
 
     @Autowired
     private PlayerService playerService;
@@ -104,5 +116,31 @@ public class PlayerController {
 		mav.addObject(playerService.getPlayerById(playerId));
 		return mav;
 	}
+
+	@GetMapping("/players/{playerId}/delete")
+	public String deletePlayer(@PathVariable("playerId") int playerId){
+		playerService.deletePlayer(playerId);
+		System.out.println("Player " + playerId + " was deleted");
+		return "redirect:/players/list";
+	}
     
+	@GetMapping("/myprofile")
+	public String currentUserProfile(Principal user, Model model){
+		Player p =playerService.getPlayerByUsername(user.getName());
+		model.addAttribute(p);
+		return VIEWS_CURRENT_PLAYER_DETAILS;
+
+	}
+	@PostMapping(value = "/myprofile")
+	public String processPlayerProfile(@Valid Player player, BindingResult result,Principal user) {
+		if (result.hasErrors()) {
+			return VIEWS_PLAYER_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			Player p = playerService.getPlayerByUsername(user.getName());
+			player.setId(p.getId());
+			playerService.savePlayer(player);
+			return "redirect:/myprofile";
+		}
+	}
 }

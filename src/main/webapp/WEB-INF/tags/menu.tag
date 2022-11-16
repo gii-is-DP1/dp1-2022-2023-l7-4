@@ -73,6 +73,18 @@
 					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
 					<span>Cartas y mazos</span>
 				</petclinic:menuItem>
+				<sec:authorize url="/players">
+				<petclinic:menuItem active="${name eq 'players'}" url="/players/list"
+					title="players">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Players</span>
+				</petclinic:menuItem>
+			    </sec:authorize>
+				<petclinic:menuItem active="${name eq 'games'}" url="/games/list"
+					title="games">
+					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+					<span>Games</span>
+				</petclinic:menuItem>
 			</ul>
 
 
@@ -117,8 +129,8 @@
 									<div class="row">
 										<div class="col-lg-12">
 											<p>
-												<a href="#" class="btn btn-primary btn-block">My Profile</a>
-												<a href="#" class="btn btn-danger btn-block">Change
+												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">My Profile</a>
+												<a href="<c:url value="/myprofile/changepassword" />" class="btn btn-danger btn-block">Change
 													Password</a>
 											</p>
 										</div>
