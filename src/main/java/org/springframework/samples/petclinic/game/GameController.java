@@ -70,6 +70,7 @@ public class GameController {
 			Player player= this.pService.getPlayerByUsername(name);
 			Game game = this.gService.getGameById(gameId);
 			game.addPlayer(player);
+			gService.saveGame(game);
 			player.setGame(game);
 			pService.savePlayer(player);
 			return "welcome";

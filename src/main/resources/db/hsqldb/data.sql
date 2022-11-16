@@ -125,7 +125,7 @@ INSERT INTO pieces(piece_type_id,player_id) VALUES(2,1);
 
 INSERT INTO games(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,FALSE);
 
-INSERT INTO players(id,name,email,birthdate,privilege,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08',TRUE, 'daviddhc');
+INSERT INTO players(id,name,email,birthdate,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08','daviddhc');
 
 
 INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');

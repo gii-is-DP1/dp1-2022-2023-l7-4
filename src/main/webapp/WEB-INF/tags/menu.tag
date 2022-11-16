@@ -80,6 +80,11 @@
 					<span>Players</span>
 				</petclinic:menuItem>
 			    </sec:authorize>
+				<petclinic:menuItem active="${name eq 'games'}" url="/games/list"
+					title="games">
+					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+					<span>Games</span>
+				</petclinic:menuItem>
 			</ul>
 
 

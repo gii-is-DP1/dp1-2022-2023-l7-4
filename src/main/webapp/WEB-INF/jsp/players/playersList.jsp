@@ -35,9 +35,6 @@
                 <td>
                     <c:out value="${player.birthdate}"/>
                 </td>
-                <td>
-                    <c:out value="${player.privilege}"/>
-                </td>
                 <td> 
                     <c:out value="${player.user.username}"/> 
                 </td>

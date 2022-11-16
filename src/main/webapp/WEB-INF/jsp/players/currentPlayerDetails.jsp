@@ -15,7 +15,6 @@
             <petclinic:inputField label="Name" name="name"/>
             <petclinic:inputField label="Email" name="email"/>
             <petclinic:inputField label="Birthdate" name="birthdate"/>
-            <petclinic:inputField label="Privilege" name="privilege"/>
             <petclinic:inputField label="Username" name="user.username"/>
             <petclinic:inputField label="Password" name="user.password"/>
         </div>

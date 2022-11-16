@@ -35,16 +35,15 @@ public class Player{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-
+    @NotBlank
     String name;
 
     @Email
+    @NotBlank
     String email;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     LocalDate birthdate;
-
-    Boolean privilege;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "username", referencedColumnName = "username")
