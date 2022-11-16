@@ -50,9 +50,9 @@ public class Game {
 
     @Temporal(TemporalType.DATE)
     Date date;
-
-    @Column(name="is_finished")
-    Boolean isFinished;
+    
+    @Column(name="is_finished",columnDefinition = "boolean default false")
+    Boolean isFinished = false;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",fetch = FetchType.EAGER)
     private Set<Player> players;

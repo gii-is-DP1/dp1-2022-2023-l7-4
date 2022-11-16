@@ -24,6 +24,7 @@ public class PlayerService {
     @Autowired
     private AuthoritiesService authoritiesService;
 
+
 	@Transactional(readOnly = true)
 	public Collection<Player> getPlayers(){
 		return (Collection<Player>) playerRepository.findAll();

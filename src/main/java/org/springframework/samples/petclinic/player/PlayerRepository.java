@@ -23,6 +23,7 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
     public Player findPlayerByUsername(String username);
 
     Player findById(int id) throws DataAccessException;
+    
 
 
     

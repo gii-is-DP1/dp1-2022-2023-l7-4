@@ -16,11 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;
@@ -47,11 +46,36 @@ public class Player{
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "username", referencedColumnName = "username")
-	private User user;
+	  private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="game_id", nullable=true)
     private Game game;
 
    
+    @Column(columnDefinition = "integer default 40")
+    @Min(0)
+    private int troops=40;
+
+    @Column(columnDefinition = "integer default 5")
+    @Min(0)
+    private int spies=5;
+
+    @Column(columnDefinition = "integer default 0")
+    @Min(0)
+    private int trophyPV=0;
+
+    
+    /* @ManyToOne
+    @JoinColumn(name="game_id", nullable=false)
+    private Game game; */
+    
+    @Override
+    public String toString() {
+        return "Player [id=" + id + ", name=" + name 
+        + ", email=" + email + ", birthdate=" + birthdate 
+        + ", user=" + user + ", troops=" + troops 
+        + ", spies=" + spies + ", trophyPV=" + trophyPV
+                + "]";
+    }
 }
