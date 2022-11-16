@@ -68,10 +68,10 @@
 				</petclinic:menuItem>
 			    </sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'cards'}" url="/card/cardmenu"
+				<petclinic:menuItem active="${name eq 'cards'}" url="/cards/menu"
 					title="cards">
 					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
-					<span>Cards</span>
+					<span>Cartas y mazos</span>
 				</petclinic:menuItem>
 			</ul>
 

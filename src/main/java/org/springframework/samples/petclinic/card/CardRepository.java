@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.card;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -12,30 +11,18 @@ import org.springframework.data.repository.CrudRepository;
 @Repository
 public interface CardRepository extends CrudRepository<Card, Integer> {
     //Card
-    List<Card> findAll();
-
-    @Query("SELECT c FROM Card c WHERE c.name = ?1")
-    List<Card> findCardByName(String name);
+    @Query("SELECT c FROM Card c WHERE LOWER(c.name) LIKE LOWER(concat('%',:name,'%')) AND c.halfDeck.name LIKE concat('%',:deck,'%')")
+    List<Card> findCardsByNameAndByHalfDeck(String name, String deck);
 
     @Query("SELECT c FROM Card c WHERE c.id = ?1")
-    Collection<Card> findCardById(Integer id);
-
-    @Query("SELECT c FROM Card c WHERE c.halfDeck.name = ?1")
-    List<Card> findAllCardsByHalfDeck(String name);
-
-    //Aspect
-    @Query("SELECT a FROM Aspect a")
-	List <Aspect> findAllAspects();
-
-    @Query("SELECT c FROM Aspect a JOIN Card c WHERE c.name = ?1")
-    Aspect findAspectFromCard(String name);
+    Card findCardById(Integer id);
 
     //HalfDeck
     @Query("SELECT h FROM HalfDeck h")
-    List<HalfDeck> findAllHalfDecks();
+    List<HalfDeck> findAllDecks();
 
-    @Query("SELECT c FROM HalfDeck h JOIN Card c WHERE c.name = ?1")
-    HalfDeck findHalfDeckFromCard(String name);
+    @Query("SELECT h FROM HalfDeck h WHERE LOWER(h.name) LIKE LOWER(concat('%',?1,'%'))")
+    List<HalfDeck> findHalfDecksByName(String name);
 
     //Modulo de creación de cartas: Card save(Card p);
 }

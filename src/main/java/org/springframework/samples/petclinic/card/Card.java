@@ -12,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
+import org.hibernate.validator.constraints.Length;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,6 +41,7 @@ public class Card {
     private String story;
 
     @NotBlank
+    @Length(min = 0, max = 500)
     @Column(name = "rules_text")        
     private String rulesText;
 

@@ -6,85 +6,49 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<petclinic:layout pageName="cards">
-<div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZOS &nbsp|&nbsp CARTAS</h2> </div></div>   
+<petclinic:layout pageName="halfDecks">
+    <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZOS &nbsp|&nbsp MAZOS</h2> </div></div>   
 
     <script>
         console.log("ssss")
     </script>
-<div class="filt-container">
-    <div style="font-size: 25px; color: aliceblue; text-align: center;"><b>FILTRAR CARTAS</b></div>
-    <br>
 
-    <form action="/cards/filter">
-        <label for="lname" style="color: aliceblue; margin-left:23px;font-size: 17px;">Nombre de la carta:&nbsp&nbsp</label>
-        <input type="text" id="fname" name="name" value=${param.name}><br>
-        <div style="color: aliceblue; margin-left:23px;font-size: 17px;"><b>Selecciona un mazo:</b></div>
-        <div style="padding-bottom: 20px;">
-            <select name="deck" style="margin-left:23px">
-                <option value="${param.deck}" label="${param.deck}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspEscoge un mazo&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</option>
-                <c:forEach var="halfDeck" items="${halfDecks}">
-                    <option value="${halfDeck.name}">${halfDeck.name}</option>
-                </c:forEach>
-            </select>
-        </div>
-        <div class="aBotton">
-            <button type="submit" class="btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
-        </div>
-    </form> 
-</div>
+    <div class="filt-container">
+        <div style="font-size: 25px; color: aliceblue; text-align: center;"><b>FILTRAR MAZOS</b></div>
+        <br>
 
-<br><br>
+        <form action="/cards/decks/filter">
+            <div>
+                <label for="fname" style="color: aliceblue; margin-left:20px;font-size: 17px;">Nombre del mazo:&nbsp&nbsp</label>   
+                <input type="text" id="fname" name="name" value=${param.name}>
+            </div>
+            <div class="aBotton">
+                <button type="submit" class="btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
+            </div>
+        </form>
+    </div>
+
+    <br><br>
+
     <table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
             <th>Nombre</th>
-            <th>Coste</th>
-            <th>Historia</th>
-            <th>Acción de la carta</th>
-            <th>PV</th>
-            <th>PV en Círculo interno</th>
-            <th>Rareza</th>
-            <th>Aspecto</th>
-            <th>Mazo</th>
+            <th>Descripción</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="card" items="${cards}" >
+        <c:forEach var="halfDeck" items="${halfDecks}" >
             <tr>
                 <td>
-                    <c:out value="${card.id}"/>
+                    <c:out value="${halfDeck.id}"/>
                 </td>
                 <td>
-                    <spring:url value="/cards/{cardId}" var="cardUrl">
-                        <spring:param name="cardId" value="${card.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(cardUrl)}"><c:out value="${card.name}"/></a>
+                    <c:out value="${halfDeck.name}"/>
                 </td>
                 <td>
-                    <c:out value="${card.cost} "/>
-                </td>
-                <td>
-                    <c:out value="${card.story} "/>
-                </td>
-                <td>
-                    <c:out value="${card.rulesText} "/>
-                </td>
-                <td>
-                    <c:out value="${card.deckVP} "/>
-                </td>   
-                <td>
-                    <c:out value="${card.innerCirclePV} "/>
-                </td>   
-                <td>
-                    <c:out value="${card.rarity} "/>
-                </td>
-                <td>
-                    <c:out value="${card.aspect.name} "/>
-                </td>
-                <td>
-                    <c:out value="${card.halfDeck.name} "/>
+                    <c:out value="${halfDeck.description} "/>
                 </td>
             </tr>
         </c:forEach>
@@ -94,8 +58,8 @@
     <style>
         .aBotton {
             position: relative;
-            left: 65%;
-            margin-top: -10%;
+            left: 62%;
+            margin-top: -5.8%;
         }
 
         .filt-container {
@@ -117,8 +81,8 @@
 
         .contenedor {
             background-color: rgb(25, 24, 24);
-            margin-left: -13.9%;
-            margin-right: -13.88%;
+            margin-left: -14.5%;
+            margin-right: -14.5%;
             margin-top: -40px;
             margin-bottom: 2%;
         }
@@ -207,4 +171,5 @@
 
         }
     </style>
+
 </petclinic:layout>
