@@ -60,12 +60,6 @@
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Positions</span>
 				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'piece'}" url="/pieces"
-					title="pieces">
-					<span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>
-					<span>Pieces</span>
-				</petclinic:menuItem>
 			    </sec:authorize>
 
 				<petclinic:menuItem active="${name eq 'cards'}" url="/cards/menu"
@@ -73,6 +67,7 @@
 					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
 					<span>Cartas y mazos</span>
 				</petclinic:menuItem>
+
 				<sec:authorize url="/players">
 				<petclinic:menuItem active="${name eq 'players'}" url="/players/list"
 					title="players">
@@ -80,6 +75,7 @@
 					<span>Players</span>
 				</petclinic:menuItem>
 			    </sec:authorize>
+
 				<petclinic:menuItem active="${name eq 'games'}" url="/games/list"
 					title="games">
 					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
