@@ -23,7 +23,7 @@
                 <input type="text" id="fname" name="name" value=${param.name}>
             </div>
             <div class="aBotton">
-                <button type="submit" class="btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
+                <button type="submit" class="special-btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
             </div>
         </form>
     </div>
@@ -103,7 +103,7 @@
             margin-top: 1px;
         }
 
-        .btn {
+        .special-btn {
             opacity: 90%;
             line-height: 50px;
             height: 40px;

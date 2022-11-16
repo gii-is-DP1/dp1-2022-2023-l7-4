@@ -86,10 +86,7 @@ window.onbeforeunload = function(e) {
         </c:forEach>
         </tbody>
     </table>
-    <h2> AUTOGENERATE POSITIONS</h2>
-    <form action="positions/populate">
-        <input type="submit" value="Populate!" />
-    </form>
+    
     <h2> All positions</h2>
     <table id="positionsTable" class="table table-striped">
         <thead>
@@ -137,8 +134,7 @@ window.onbeforeunload = function(e) {
     
     <body>
 
-        <div class="container">
-            
+        <div class="container-button">
             <a href='<c:url value="/positions/1/place/troop/false"/>' >
                 <div class="aBotton">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 1</div></div>
@@ -159,8 +155,7 @@ window.onbeforeunload = function(e) {
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 2 CON PRESENCIA</div></div>
                     </div>
 			</a><br>
-        </div>
-        <div class="container">
+
             <a href='<c:url value="/positions/1/place/spy"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">COLOCAR ESPIA COMO JUGADOR 1</div></div>
@@ -171,8 +166,7 @@ window.onbeforeunload = function(e) {
                     <div class="especial-btn btn-two"><div class="textbtn">COLOCAR ESPIA COMO JUGADOR 2</div></div>
                     </div>
             </a><br>
-        </div>
-        <div class="container">
+
             <a href='<c:url value="/positions/1/kill/false"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA COMO JUGADOR 1</div></div>
@@ -183,8 +177,7 @@ window.onbeforeunload = function(e) {
                     <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA COMO JUGADOR 2</div></div>
                     </div>
             </a><br>
-        </div>
-        <div class="container">
+
             <a href='<c:url value="/positions/2/kill/false"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA COMO JUGADOR 1 CON PRESENCIA</div></div>
@@ -195,8 +188,7 @@ window.onbeforeunload = function(e) {
                     <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA COMO JUGADOR 2 CON PRESENCIA</div></div>
                     </div>
             </a><br>
-        </div>
-        <div class="container">
+
             <a href='<c:url value="/positions/1/return"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">DEVOLVER PIEZA COMO JUGADOR 1</div></div>
@@ -207,8 +199,6 @@ window.onbeforeunload = function(e) {
                     <div class="especial-btn btn-two"><div class="textbtn">DEVOLVER PIEZA COMO JUGADOR 2</div></div>
                     </div>
             </a><br>
-        </div>
-        <div class="container">
             <a href='<c:url value="/positions/1/supplant/false"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">SUPLANTAR TROPA COMO JUGADOR 1</div></div>
@@ -219,8 +209,6 @@ window.onbeforeunload = function(e) {
                     <div class="especial-btn btn-two"><div class="textbtn">SUPLANTAR TROPA COMO JUGADOR 1 CON PRESENCIA</div></div>
                     </div>
             </a><br>
-        </div>
-        <div class="container">
             <a href='<c:url value="/positions/2/supplant/false"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">SUPLANTAR TROPA COMO JUGADOR 2</div></div>
@@ -260,11 +248,11 @@ window.onbeforeunload = function(e) {
             line-height: 50px;
             height: 50px;
             text-align: center;
-            width: 800px;
+            width: 100%;
             cursor: pointer;
         }
-        .container{
-            text-align: center;
+        .container-button{
+            margin-left: 0%;
         }
 
         /*Botton*/
