@@ -22,10 +22,6 @@
             <th>BirthDate</th>
             <td><c:out value="${player.birthdate}"/></td>
         </tr>
-        <tr>
-            <th>Privilege</th>
-            <td><c:out value="${player.privilege}"/></td>
-        </tr>
     </table>
 
     <spring:url value="{playerId}/edit" var="editUrl">

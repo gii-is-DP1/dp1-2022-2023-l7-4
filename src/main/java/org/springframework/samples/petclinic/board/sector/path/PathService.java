@@ -17,7 +17,7 @@ public class PathService {
     }
 
     public List<Path> getPaths(){
-        return pathRepository.findAll2();
+        return pathRepository.findAll();
     }
     
     public List<Path> getExitPathsFromCity(City city){

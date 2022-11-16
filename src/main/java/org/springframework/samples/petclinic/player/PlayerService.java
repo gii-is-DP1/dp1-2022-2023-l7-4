@@ -23,7 +23,7 @@ public class PlayerService {
     private AuthoritiesService authoritiesService;
 
 	@Transactional
-	public Collection<Player> getPlayes(){
+	public Collection<Player> getPlayers(){
 		return (Collection<Player>) playerRepository.findAll();
 	}
 

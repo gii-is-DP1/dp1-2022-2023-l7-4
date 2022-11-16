@@ -1,16 +1,24 @@
 package org.springframework.samples.petclinic.board.position;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.IntStream;
 
-import org.ehcache.impl.internal.classes.commonslang.ArrayUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
+import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
+import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
+import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
+import org.springframework.samples.petclinic.board.position.exceptions.NullPlayerException;
+import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
+import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
 import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.board.sector.city.CityRepository;
 import org.springframework.samples.petclinic.board.sector.path.Path;
-import org.springframework.samples.petclinic.board.sector.path.PathService;
+import org.springframework.samples.petclinic.board.sector.path.PathRepository;
+import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +26,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class PositionService {
 
     private PositionRepository positionRepository;
-    private PathService pathService;
+    private PopulatePositionService populatePositionService;
+    private AdjacentPositionService adjacentPositionService;
+    private PlayerRepository playerRepository;
+    private CityRepository cityRepository;
+    private PathRepository pathRepository;
 
     @Autowired
-    public PositionService(PositionRepository posRepo,PathService pathService){
+    public PositionService(PositionRepository posRepo,PopulatePositionService populatePositionService
+    ,AdjacentPositionService adjacentPositionService,PlayerRepository playerRepository
+    ,CityRepository cityRepository,PathRepository pathRepository){
         this.positionRepository=posRepo;
-        this.pathService=pathService;
+        this.populatePositionService= populatePositionService;
+        this.adjacentPositionService= adjacentPositionService;
+        this.playerRepository=playerRepository;
+        this.cityRepository=cityRepository;
+        this.pathRepository=pathRepository;
     }
 
     public List<Position> getPositions(){
@@ -31,38 +49,177 @@ public class PositionService {
     }
 
     @Transactional
-    public void save(Position p){
+    public void save(Position p) throws DataAccessException{
         positionRepository.save(p);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(rollbackFor = {OccupiedPositionException.class
+        ,IncorrectPositionTypeException.class,NotEnoughPresence.class})
+    public void occupyTroopPosition(Position position,Player player,Boolean onlyAdjacencies)
+     throws DataAccessException,OccupiedPositionException,IncorrectPositionTypeException,NotEnoughPresence{
+        if(position.getIsOccupied())
+            throw new OccupiedPositionException();
+        else if(position.getForSpy()){
+            throw new IncorrectPositionTypeException();
+        }else if(onlyAdjacencies ){
+            List<Position> playerPositions=getAdjacentPositionsFromPlayer(player.getId(),false);
+            if(!playerPositions.contains(position))
+                throw new NotEnoughPresence();
+        }
+        player.setTroops(player.getTroops()-1);
+        playerRepository.save(player);
+        position.setPlayer(player);
+        save(position);
+    }
+    @Transactional(rollbackFor = {IncorrectPositionTypeException.class,MoreThanOnePlayerSpyInSameCity.class})
+    public void occupySpyPosition(Position position,Player player)
+     throws DataAccessException,IncorrectPositionTypeException,MoreThanOnePlayerSpyInSameCity{
+        if(position.getForSpy()==false){
+            throw new IncorrectPositionTypeException();
+        }else if(positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()))
+            throw new MoreThanOnePlayerSpyInSameCity();
+        player.setSpies(player.getSpies()-1);
+        playerRepository.save(player);
+        position.setPlayer(player);
+        save(position);
+    }
+
+    @Transactional(rollbackFor =
+     {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
+    public void killTroop(Position position,Player player,Boolean forAdjacencies) throws DataAccessException
+    ,EmptyPositionException,YourPositionException,NotEnoughPresence{
+        //errores posibles, tipo incorrecto, jugador incorrecto(o vacio o eres tu)
+        if(position.getPlayer()==null)
+            throw new EmptyPositionException();
+        else if(position.getPlayer().equals(player))
+            throw new YourPositionException();
+        else if(forAdjacencies & 
+        !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
+            throw new NotEnoughPresence();
+        player.setTrophyPV(player.getTrophyPV()+1);
+        playerRepository.save(player);
+        position.setPlayer(player);
+        save(position);
+    }
+
+    @Transactional(rollbackFor = NotEnoughPresence.class)
+    public void returnPiece(Position position,Player player) throws DataAccessException,NotEnoughPresence{
+        if(!getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
+            throw new NotEnoughPresence();
+        Player enemy=position.getPlayer();
+        if(position.getForSpy()){
+            enemy.setSpies(enemy.getSpies()+1);
+        }else{
+            enemy.setTroops(enemy.getTroops()+1);
+        }
+        playerRepository.save(enemy);
+        position.setPlayer(null);
+        save(position);
+    }
+
+    @Transactional
+    public void movePiece(Position source,Position target) throws DataAccessException{
+        //errores posibles, source vacio y/o target ocupado, source.getForSpy()!=target.getForSpy()
+        source.setPlayer(null);
+        target.setPlayer(source.getPlayer());
+        save(source);
+        save(target);
+    }
+
+    @Transactional(rollbackFor =
+    {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
+    public void supplantTroop(Position position,Player player,Boolean onlyAdjacencies) throws DataAccessException
+    ,EmptyPositionException,YourPositionException,NotEnoughPresence{
+        if(position.getPlayer()==null)
+            throw new EmptyPositionException();
+        else if(position.getPlayer().equals(player))
+            throw new YourPositionException();
+        else if(onlyAdjacencies
+         & !getAdjacentPositionsFromPlayer(player.getId(),false).contains(position))
+            throw new NotEnoughPresence();
+        player.setTroops(player.getTroops()-1);
+        player.setTrophyPV(player.getTrophyPV()+1);
+        playerRepository.save(player);
+        position.setPlayer(player);
+        save(position);
+    }
+
+    @Transactional(readOnly = true)//habría que utilizar directamente un id, pero afecta al calculo de adyacencias
     public List<Position> getPositionsFromPath(Path path){
         return positionRepository.findAllPositionByPathId(path.getId());
     }
+    public List<Position> getPositionsFromPathId(int path_id){//test realizado
+        return positionRepository.findAllPositionByPathId(path_id);
+    }
 
     @Transactional(readOnly = true)
-    public List<Position> getPositionsFromCity(int city_id){
+    public List<Position> getPositionsFromCityId(int city_id){
         return positionRepository.findAllPositionByCityId(city_id);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//test realizado
     public List<Position> getFreePositions() throws DataAccessException{
-        return positionRepository.findAllPositionByOccupiedFalse();
+        return positionRepository.findAllPositionByPlayerIsNull();
     }
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//test realizado
     public List<Position> getFreeTroopPositions() throws DataAccessException{
-        return positionRepository.findAlPositionsByOccupiedFalseAndForSpyFalse();
+        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyFalse();
     }
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//test realizado
     public List<Position> getFreeSpyPositions() throws DataAccessException{
-        return positionRepository.findAlPositionsByOccupiedFalseAndForSpyTrue();
+        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
     }
     
-
+    @Transactional(readOnly = true) //test realizado
     public Position findPositionById(Integer id) {
         return positionRepository.findById2(id);
     }
     
+    @Transactional(readOnly = true)//test realizado
+    public List<Position> getPlayerPositions(Integer player_id){
+        return positionRepository.findAllPositionByPlayerId(player_id);
+    }
+    @Transactional(readOnly = true)
+    public List<Position> getAdjacentPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
+        List<Position> myPos=getPlayerPositions(player_id);
+        List<Position> adjacencies=myPos.stream().map(pos->pos.getAdjacents()).flatMap(List::stream)
+        .distinct()
+        .filter(adj_pos->adj_pos.getIsOccupied()==searchEnemies)
+        .filter(adj_pos->(!searchEnemies) || adj_pos.getPlayer().getId()!=player_id)//hago 2 filter distintos
+        //para evitar NullPointerException en adj.getPlayer().getId()
+        .collect(Collectors.toList());
+        return adjacencies;
+    }
+    @Transactional(readOnly = true)
+    public List<Position> getAdjacentTroopPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
+        List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
+        return positions.stream().filter(pos->pos.getForSpy()==false).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy,Boolean searchForAll){
+        List<Position> res=null;
+        if(searchForAll)
+            res= positionRepository
+            .findAllEnemyPositionsByType(player_id,forSpy);
+        else{
+            res=getAdjacentPositionsFromPlayer(player_id, true);
+            res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
+        }
+        return res;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getAllEnemyTroopsForPlayer(Integer player_id){
+        return getEnemyPositionsByType(player_id, false, true);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getAllEnemySpiesForPlayer(Integer player_id){
+        return getEnemyPositionsByType(player_id, true, true);
+    }
+
+
     /**
      * Given the list of sectors (cities and paths) it calculates all the positions of the board based on
      * in the capacity of these and their relationships. Only positions associated with sectors are generated
@@ -76,10 +233,16 @@ public class PositionService {
      * @param playableZones
      */
     public void populatePositions(List<City> cities,List<Path> paths,List<Integer> playableZones){
-        populateCities(cities,playableZones);
-        populatePaths(paths,playableZones);
+        populatePositionService.populateCities(cities,playableZones);
+        populatePositionService.populatePaths(paths,playableZones);
 
     }
+    public void initPositions(List<Integer> playableZones){
+        populatePositions(cityRepository.findAll(),pathRepository.findAll(), playableZones);
+        positionRepository.findAll().forEach(x->calculateAdjacents(x));
+
+    }
+
     /**
      * Given a position calculates the positions that are adjacent to it. Itself does not count.
      * It is saved in the database and in the position attribute called adjacents
@@ -92,131 +255,15 @@ public class PositionService {
     public void calculateAdjacents(Position position){
         List<Position> adjacents = new ArrayList<>();
         if(position.isInCity()){
-            adjacents = adjacentsToPositonInCity(position);
+            adjacents = adjacentPositionService.adjacentsToPositonInCity(position);
         }else{
-            adjacents = adjacentsToPositonInPath(position);
+            adjacents = adjacentPositionService.adjacentsToPositonInPath(position);
         }
         position.setAdjacents(adjacents);
         save(position);
     }
 
 
-
-
-
-
-
-
-    private List<Position> adjacentsToPositonInPath(Position position) {
-        List<Position> adjacents = new ArrayList<>();
-        Path path = position.getPath();
-        List<Position> pathPositions= positionRepository.findAllPositionByPathId(path.getId());//ordered
-        int i = pathPositions.indexOf(position);
-        if(i==0){ // first from path, add all positions from city A and position i+1 of this path
-            
-            List<Position> fistCityOfPathPositions = positionRepository.findAllPositionByCityId(path.getFirstCity().getId());
-            adjacents.addAll(fistCityOfPathPositions);
-
-            if(pathPositions.size()==1){// the i+1 will be a city
-                List<Position> targetCity = 
-                positionRepository.findAllPositionByCityId(path.getSecondCity().getId());
-                adjacents.addAll(targetCity);
-
-            }else{
-                adjacents.add(pathPositions.get(i+1));
-            }
-
-        }else if(i==pathPositions.size()-1){ // last from path, add positions from city B and position i-1 of this path
-            List<Position> fistCityOfPathPositions = positionRepository.findAllPositionByCityId(path.getSecondCity().getId()); 
-            adjacents.addAll(fistCityOfPathPositions);
-            adjacents.add(pathPositions.get(i-1));
-        }else{// is in the middle of path, add previous and next
-            adjacents.add(pathPositions.get(i-1));
-            adjacents.add(pathPositions.get(i+1));
-
-        }
-        return adjacents;
-    }
-
-    private List<Position> adjacentsToPositonInCity(Position position) {
-        List<Position> adjacents = new ArrayList<>();
-        adjacents.addAll(adjacentsInsideCity(position));
-        adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));
-        return adjacents;
-    }
-
-    private List<Position> adjacentsFromPathsLeavingCity(City city) {
-        List<Position> adjacents = new ArrayList<>();
-        List<Path> Paths = pathService.getExitPathsFromCity(city);
-        for(Path path : Paths){
-            List<Position> pathPositions = positionRepository.findAllPositionByPathId(path.getId());
-            if(pathPositions.isEmpty()){ // empty path = link to other city
-
-                List<Position> targetCity = positionRepository.findAllPositionByCityId(path.getSecondCity().getId());
-                adjacents.addAll(targetCity);
-                
-            }else{// not empty path = link to first element of path
-                
-                adjacents.add(pathPositions.get(0));
-
-            }
-        }
-        return adjacents;
-    }
-
-    private List<Position> adjacentsInsideCity(Position position) {
-        City city = position.getCity();
-        List<Position> adjacents = city.getPositions();
-        adjacents.remove(position);
-        return adjacents;
-    }
-
-    private void populateCities(List<City> cities, List<Integer> playableZones) {
-        cities.forEach(city-> populateCity(city,playableZones));
-        }
-    private void populateCity(City city, List<Integer> playableZones) {
-        if (cityIsPlayable(city,playableZones)){
-            IntStream.range(0, city.getCapacity()).forEach(x->saveNewPositionLinkedTo(city));
-            IntStream.range(0, 4).forEach(x->saveNewSpyPositionLinkedTo(city));
-
-        }
-    }
-    private void populatePaths(List<Path> paths, List<Integer> playableZones) {
-            paths.forEach(path -> populatePath(path,playableZones));
-
-    }
-    private void populatePath(Path path, List<Integer> playableZones) {
-        if (pathIsPlayable(path,playableZones)){
-            for(int i = 0; i< path.getCapacity();i++){
-                Position p = new Position();
-                p.setPath(path);
-                save(p);
-            }
-            
-        }
-    }
-    private Boolean cityIsPlayable(City city, List<Integer> playableZones) {
-        return playableZones.contains(city.getZone());
-    }
-    private Boolean pathIsPlayable(Path path, List<Integer> playableZones) {
-        Boolean firstCityIsPlayable = playableZones.contains(path.getFirstCity().getZone());
-        Boolean secondCityIsPlayable = playableZones.contains(path.getSecondCity().getZone());
-        return firstCityIsPlayable && secondCityIsPlayable;
-    }
-
-
-    private void saveNewPositionLinkedTo(City city) {
-        Position p = new Position();
-        p.setCity(city);
-        save(p);
-    }
-    private void saveNewSpyPositionLinkedTo(City city) {
-        Position p = new Position();
-        p.setCity(city);
-        p.setForSpy(true);
-        save(p);
-    }
-    
 
     
 }
