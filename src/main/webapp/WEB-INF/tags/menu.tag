@@ -61,11 +61,7 @@
 					<span>Positions</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'piece'}" url="/pieces"
-					title="pieces">
-					<span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>
-					<span>Pieces</span>
-				</petclinic:menuItem>
+				
 			    </sec:authorize>
 
 				<petclinic:menuItem active="${name eq 'cards'}" url="/cards/menu"

@@ -9,10 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PlayerRepository extends CrudRepository<Player, Integer> {
 
-    @Query("SELECT player FROM Player player WHERE player.name = ?1")
+    //@Query("SELECT c FROM Card c WHERE LOWER(c.name) LIKE LOWER(concat('%',:name,'%'))
+    @Query("SELECT player FROM Player player WHERE LOWER(player.name) = LOWER(:username)")
     public Collection<Player> findPlayerByName(String username);
     @Modifying
 
@@ -22,7 +25,7 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
     @Query("SELECT player FROM Player player WHERE player.user.username = ?1")
     public Player findPlayerByUsername(String username);
 
-    Player findById(int id) throws DataAccessException;
+    Player findPlayerById(int id) throws DataAccessException;
     
 
 
