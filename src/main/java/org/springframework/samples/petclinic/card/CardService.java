@@ -28,12 +28,6 @@ public class CardService {
         return cardRepository.findCardById(id);
     }
 
-    //Aspect
-    @Transactional(readOnly = true)
-    public List<Aspect> getAspectFromCard(String name) {
-        return cardRepository.findAspectsByName(name);
-    }
-
     //HalfDeck
     @Transactional(readOnly = true)
     public List<HalfDeck> getAllHalfDecks() {

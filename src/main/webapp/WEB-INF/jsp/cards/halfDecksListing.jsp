@@ -7,7 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <petclinic:layout pageName="halfDecks">
-    <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">MAZOS</h2> </div></div>   
+    <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZOS &nbsp|&nbsp MAZOS</h2> </div></div>   
 
     <script>
         console.log("ssss")
