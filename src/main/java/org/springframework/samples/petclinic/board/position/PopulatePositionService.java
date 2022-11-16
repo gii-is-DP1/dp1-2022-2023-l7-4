@@ -34,7 +34,7 @@ public class PopulatePositionService {
     private void populateCity(City city, List<Integer> playableZones) {
         if (cityIsPlayable(city,playableZones)){
             IntStream.range(0, city.getCapacity()).forEach(x->saveNewPositionLinkedTo(city));
-            IntStream.range(0, 1).forEach(x->saveNewSpyPositionLinkedTo(city));
+            IntStream.range(0, 4).forEach(x->saveNewSpyPositionLinkedTo(city));
 
         }
     }

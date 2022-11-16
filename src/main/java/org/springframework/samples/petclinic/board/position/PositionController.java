@@ -42,6 +42,7 @@ public class PositionController {
     private CityService cityService;
     private PathService pathService;
     private PlayerService playerService;
+    private AdjacentPositionService adjacentPositionService;
     
     @ModelAttribute(name = "zones")
     public String zones(){
@@ -49,11 +50,12 @@ public class PositionController {
     }
 
     @Autowired
-    public PositionController(PositionService posServ,CityService city, PathService pService,PlayerService playerSer){
+    public PositionController(PositionService posServ,CityService city, PathService pService,PlayerService playerSer, AdjacentPositionService adjacentPositionService){
         this.positionService=posServ;
         this.cityService=city;
         this.pathService= pService;
         this.playerService=playerSer;
+
     }
 
     @GetMapping("")
@@ -65,7 +67,7 @@ public class PositionController {
         if(pos.isEmpty()){
             positionService.populatePositions(cities, paths, zones);
             pos = positionService.getPositions();
-            pos.forEach(position -> positionService.calculateAdjacents(position));
+            pos.forEach(position -> adjacentPositionService.calculateAdjacents(position));
         }
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
@@ -289,7 +291,7 @@ public class PositionController {
     @GetMapping(value = "/{id}/adjacents")
     public String adjacents(@PathVariable("id") Integer id) throws DataAccessException {
         Position position= this.positionService.findPositionById(id);
-        positionService.calculateAdjacents(position);
+        adjacentPositionService.calculateAdjacents(position);
         return "redirect:/positions";
         
     }

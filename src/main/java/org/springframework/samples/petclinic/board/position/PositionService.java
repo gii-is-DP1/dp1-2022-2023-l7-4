@@ -26,30 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PositionService {
 
     private PositionRepository positionRepository;
-    private PopulatePositionService populatePositionService;
     private AdjacentPositionService adjacentPositionService;
     private PlayerRepository playerRepository;
-    private CityRepository cityRepository;
-    private PathRepository pathRepository;
 
     @Autowired
-    public PositionService(PositionRepository posRepo,PopulatePositionService populatePositionService
-    ,AdjacentPositionService adjacentPositionService,PlayerRepository playerRepository
-    ,CityRepository cityRepository,PathRepository pathRepository){
-        this.positionRepository=posRepo;
-        this.populatePositionService= populatePositionService;
-        this.adjacentPositionService= adjacentPositionService;
-        this.playerRepository=playerRepository;
-        this.cityRepository=cityRepository;
-        this.pathRepository=pathRepository;
-    }
-
-    public PositionService(PositionRepository posRepo,PlayerRepository playerRepository
-    ,CityRepository cityRepository,PathRepository pathRepository){
+    public PositionService(PositionRepository posRepo,PlayerRepository playerRepository){
         this.positionRepository=posRepo;
         this.playerRepository=playerRepository;
-        this.cityRepository=cityRepository;
-        this.pathRepository=pathRepository;
     }
 
 
@@ -241,36 +224,14 @@ public class PositionService {
      * @param paths
      * @param playableZones
      */
-    public void populatePositions(List<City> cities,List<Path> paths,List<Integer> playableZones){
-        populatePositionService.populateCities(cities,playableZones);
-        populatePositionService.populatePaths(paths,playableZones);
 
-    }
-    public void initPositions(List<Integer> playableZones){
-        populatePositions(cityRepository.findAll(),pathRepository.findAll(), playableZones);
-        positionRepository.findAll().forEach(x->calculateAdjacents(x));
+    // public void initPositions(List<Integer> playableZones){
+    //     populatePositions(cityRepository.findAll(),pathRepository.findAll(), playableZones);
+    //     positionRepository.findAll().forEach(x->calculateAdjacents(x));
 
-    }
+    // }
 
-    /**
-     * Given a position calculates the positions that are adjacent to it. Itself does not count.
-     * It is saved in the database and in the position attribute called adjacents
-     * <p>----------<p>
-     * Dada una posicion calcula las posiciones que son adjacentes a ella. Ella misma no cuenta.
-     * Se guarda en la base de datos y en el atributo de posicion llamado adjacents
-     * 
-     * @param position 
-     */
-    public void calculateAdjacents(Position position){
-        List<Position> adjacents = new ArrayList<>();
-        if(position.isInCity()){
-            adjacents = adjacentPositionService.adjacentsToPositonInCity(position);
-        }else{
-            adjacents = adjacentPositionService.adjacentsToPositonInPath(position);
-        }
-        position.setAdjacents(adjacents);
-        save(position);
-    }
+    
 
 
 

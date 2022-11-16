@@ -14,23 +14,36 @@ public class AdjacentPositionService {
     
     private PositionRepository positionRepository;
     private PathService pathService;
+    private PositionService positionService;
 
     @Autowired
-    private AdjacentPositionService(PositionRepository posRepo,PathService pathService){
+    private AdjacentPositionService(PositionRepository posRepo,PathService pathService,PositionService positionService){
         this.positionRepository=posRepo;
         this.pathService=pathService;
+        this.positionService=positionService;
     }
     
-    public List<Position> adjacentsToPositonInCity(Position position) {
-        System.out.println("pasa por city"+position.getCity().getName());
+    /**
+     * Given a position calculates the positions that are adjacent to it. Itself does not count.
+     * It is saved in the database and in the position attribute called adjacents
+     * <p>----------<p>
+     * Dada una posicion calcula las posiciones que son adjacentes a ella. Ella misma no cuenta.
+     * Se guarda en la base de datos y en el atributo de posicion llamado adjacents
+     * 
+     * @param position 
+     */
+    public void calculateAdjacents(Position position){
         List<Position> adjacents = new ArrayList<>();
-        adjacents.addAll(adjacentsInsideCity(position));
-        adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));
-        adjacents.addAll(adjacentsFromPathsIncomingCity(position.getCity()));
-        return adjacents;
+        if(position.isInCity()){
+            adjacents = adjacentsToPositonInCity(position);
+        }else{
+            adjacents = adjacentsToPositonInPath(position);
+        }
+        position.setAdjacents(adjacents);
+        positionService.save(position);
     }
     
-    public List<Position> adjacentsToPositonInPath(Position position) {
+    private List<Position> adjacentsToPositonInPath(Position position) {
         System.out.println("pasa por path"+position.getPath());
         List<Position> adjacents = new ArrayList<>();
         Path path = position.getPath();
@@ -64,7 +77,14 @@ public class AdjacentPositionService {
         return adjacents;
     }
 
-
+    private List<Position> adjacentsToPositonInCity(Position position) {
+        System.out.println("pasa por city"+position.getCity().getName());
+        List<Position> adjacents = new ArrayList<>();
+        adjacents.addAll(adjacentsInsideCity(position));
+        adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));
+        adjacents.addAll(adjacentsFromPathsIncomingCity(position.getCity()));
+        return adjacents;
+    }
 
     private List<Position> adjacentsFromPathsLeavingCity(City city) {
         List<Position> adjacents = new ArrayList<>();
