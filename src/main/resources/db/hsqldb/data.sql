@@ -125,8 +125,6 @@ INSERT INTO players(id,name,email,birthdate,username,house_id) VALUES (1, 'David
 INSERT INTO players(id,name,email,birthdate,username,house_id) VALUES (2, 'Andres', 'aaa', '2002-04-08', 'anddomrui',2);
 
 
-INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
-
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','Drow. El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');
 INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','Dragones. El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
 

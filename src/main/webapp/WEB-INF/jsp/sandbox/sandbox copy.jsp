@@ -78,7 +78,7 @@
   const positionColor =null;
   const lineWidth = 4;
   const lineColor = "lightgrey";
-  const strokeColor = "lightgrey";
+  const strokeColor = "#000"
   const circleRadius = 20;
   const forceStrength = 0.;
   const linkStrength = 0.;
@@ -155,6 +155,14 @@
   		.attr("startOffset", d => d.dir == 'forward' ? "85%" : "45px" )
   		.text(function(d) {return ""+d.pathName; });//+d.pathName
 
+      var linkcircle = svg.selectAll(".lineText")
+      .data(network.links)
+      .enter().append("circle")
+      .attr("r", positionRadius)
+      .attr("stroke" , strokeColor)
+      .attr("stroke-width","1")
+      .attr("fill","none")
+
   //add mouse over chart
   var tooltip = d3.select("body")
       .append("div")
@@ -187,7 +195,7 @@
         return tooltip.style("visibility", "hidden");})
   		.call(d3.drag().on("drag", dragged));
 
-      var cityG = node.append("g").attr("class", (d)=>d.name);
+      var cityG = node.append("g").attr("class", "cityG");
      
   var image = cityG.append("svg:image")
         .attr("xlink:href", "/resources/images/white_city.png")
@@ -197,7 +205,7 @@
         .attr("y",  -60)
         .attr("width", "120")
         .attr("height", "120")
-        
+        .on("click", function() { window.open("https://media.criticalhit.net/2021/08/Halo-tv-series.jpg"); })
             
 
       //   var positionC = svg.selectAll(".cityG").data(network.nodes)
@@ -252,7 +260,13 @@
     let capacity = city.capacity
     for (let positionIndex = 0; positionIndex < capacity; positionIndex++) {
       const color = city.isStartingCity?"#fff":"#000"  
-      var position = cityGroup.append("circle")
+      addPosition(cityGroup,positionIndex,color,city)
+      
+    }
+ }
+
+ function addPosition(group,offset,strokeColor,city){
+  var position = group.append("circle")
       .attr("r", positionRadius)
       .attr("stroke" , strokeColor)
       .attr("stroke-width","1")
@@ -260,20 +274,15 @@
       .attr("cx",(()=>{
         let c = city.capacity
         let r = 2*positionRadius+5
-        let i = positionIndex
+        let i = offset
         console.log(city.name)
         console.log("c:"+c)
-        console.log("i"+positionIndex)
+        console.log("i"+offset)
         return (i*2*r)-((c-1)*r)
         // return -8*positionRadius*(1-cap)+positionRadius*(1-cap)*offset
       }))
-      .attr("cy",0).on("click", function() { window.open("https://media.criticalhit.net/2021/08/Halo-tv-series.jpg"); })
- 
-      
-    }
+      .attr("cy",0)
  }
-
-
 
   simulation
       .nodes(network.nodes)
@@ -303,10 +312,7 @@
           return "translate(" + d.x + "," + d.y + ")";
         });
   }
-  d3.selectAll("#GRACKLSTUGH").append('circle').attr("r", positionRadius)
-      .attr("stroke" , strokeColor)
-      .attr("stroke-width","1")
-      .attr("fill","red")
+
 }(d3));
 </script>
 
