@@ -89,13 +89,6 @@ public class Position{
         this.forSpy=false;
     }
 
-    public Position(Integer id,Player player,Boolean forSpy,City city,Path path){
-        this.id=id;
-        this.player=player;
-        this.forSpy=forSpy;
-        this.city=city;
-        this.path=path;
-    }
     
     
 }
