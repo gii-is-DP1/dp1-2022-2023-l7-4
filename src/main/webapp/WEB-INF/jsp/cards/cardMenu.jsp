@@ -10,7 +10,7 @@ uri="http://www.springframework.org/security/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="cards">
-    <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">Menú de cartas y mazos</h2> </div></div>   
+    <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZO</h2> </div></div>   
     <div class="wrapper">
     <form:form modelAttribute="card" action="/cards/all" method="get" class="box a"
                id="search-owner-form">
@@ -21,16 +21,16 @@ uri="http://www.springframework.org/security/tags"%>
 
     <form:form modelAttribute="card" action="/cards/decks" method="get" class="box b"
                id="search-owner-form">
-               <div class="aBotton">
+                <div class="aBotton">
                     <button type="submit" class="btn btn-two"><div class="textbtn">Mazos</div></button>
-                 </div>
+                </div>
     </form:form>
 
     <form:form modelAttribute="card" action="/cards/all" method="get" class="box c"
                id="search-owner-form">
-               <div class="aBotton">
+                <div class="aBotton">
                     <button type="submit" class="btn btn-two"><div class="textbtn">Crear carta</div></button>
-                 </div>
+                </div>
     </form:form>
 
     <form:form modelAttribute="card" action="/cards/decks" method="get" class="box d"
@@ -43,7 +43,7 @@ uri="http://www.springframework.org/security/tags"%>
 	<style>
         .textmenu{
             color: aliceblue;
-            margin-top: 2px;
+            margin-top: 3px;
         }
         .contenedor {
             background-color: rgb(25, 24, 24);
@@ -126,7 +126,7 @@ uri="http://www.springframework.org/security/tags"%>
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            opacity: 100%ç;
+            opacity: 100%;
         }
         @import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
 
