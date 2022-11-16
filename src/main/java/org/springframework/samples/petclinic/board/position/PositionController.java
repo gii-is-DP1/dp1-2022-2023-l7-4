@@ -61,7 +61,6 @@ public class PositionController {
         List<Integer> zones= List.of(1,2,3);
         
         positionService.initializePositions(zones,cities, paths);
-        System.out.println(positionService.getPositions());
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
         result.addObject("cities", cityService.getCities());

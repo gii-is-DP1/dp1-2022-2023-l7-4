@@ -32,7 +32,6 @@ public class PopulatePositionService {
      */
     public void populatePositions(List<Integer> playableZones,List<City> cities,List<Path> paths){
         populateCities(cities,playableZones);
-        System.out.println((List<Position>)positionRepository.findAll());
         populatePaths(paths,playableZones);
 
     }

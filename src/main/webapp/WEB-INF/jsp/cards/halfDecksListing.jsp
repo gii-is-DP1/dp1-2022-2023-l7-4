@@ -9,9 +9,7 @@
 <petclinic:layout pageName="halfDecks">
     <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZOS &nbsp|&nbsp MAZOS</h2> </div></div>   
 
-    <script>
-        console.log("ssss")
-    </script>
+
 
     <div class="filt-container">
         <div style="font-size: 25px; color: aliceblue; text-align: center;"><b>FILTRAR MAZOS</b></div>

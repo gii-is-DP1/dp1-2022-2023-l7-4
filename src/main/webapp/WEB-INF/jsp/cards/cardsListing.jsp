@@ -9,9 +9,7 @@
 <petclinic:layout pageName="cards">
 <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZOS &nbsp|&nbsp CARTAS</h2> </div></div>   
 
-    <script>
-        console.log("ssss")
-    </script>
+
 <div class="filt-container">
     <div style="font-size: 25px; color: aliceblue; text-align: center;"><b>FILTRAR CARTAS</b></div>
     <br>

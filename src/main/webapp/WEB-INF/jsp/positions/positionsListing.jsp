@@ -17,9 +17,7 @@ window.onbeforeunload = function(e) {
 <petclinic:layout pageName="positions">
     <h2>Positions</h2>    
     <table id="positionsTable" class="table table-striped">
-    <script>
-        console.log("sssss")
-    </script>
+
     <h2>Cities</h2>
     <table id="citiesTable" class="table table-striped">
         <thead>
