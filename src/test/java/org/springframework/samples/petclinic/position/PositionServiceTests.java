@@ -1,44 +1,58 @@
 package org.springframework.samples.petclinic.position;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.board.position.AdjacentPositionService;
+import org.springframework.samples.petclinic.board.position.PopulatePositionService;
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionRepository;
 import org.springframework.samples.petclinic.board.position.PositionService;
 import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
+import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
 import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
 import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
 import org.springframework.samples.petclinic.board.sector.city.City;
-
+import org.springframework.samples.petclinic.board.sector.city.CityRepository;
 import org.springframework.samples.petclinic.board.sector.path.Path;
-
+import org.springframework.samples.petclinic.board.sector.path.PathRepository;
 import org.springframework.samples.petclinic.player.Player;
-
+import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 @ExtendWith(MockitoExtension.class)
+
 public class PositionServiceTests {
 
+    @Mock
+    private PlayerRepository playerRepository;
     
     @Mock
     private PositionRepository positionRepository;
-    
-    protected PositionService positionService;
+    @Mock
+    private CityRepository cityRepository;
+
+    @Mock
+    private PathRepository pathRepository;
 
     public City city1;
 
@@ -61,16 +75,8 @@ public class PositionServiceTests {
     public void setUp(){
         //hacer inicio de mock de positionRepo,cityRepo,pathRepo y playerRepo + constructor de position,player,city,path
         //con los
-        positionService=new PositionService(positionRepository, null, null, null, null, null);
-        player1=new Player();
-        player1.setName("Manuel");
-        player2=new Player();
-        player2.setName("David");
-        city1=new City();
-        city1.setName("Villa Pesadilla");
-        city2=new City();
-        city2.setName("Laberinto");
-        path=new Path();
+        
+
         //DATOS
         positionEmptyCity1=new Position(1,null,false,city1,null);
         positionOccupiedCity1=new Position(2,player1,false,city1,null);
@@ -81,14 +87,16 @@ public class PositionServiceTests {
         //PREPARACIÓN DE ATRIBUTOS
         positionOccupiedCity1.setAdjacents(List.of(positionEmptyCity1,positionpath));
         positionOccupiedCity2.setAdjacents(List.of(positionpath));
-        //when(positionService.getFreePositions()).thenReturn(List.of(positionEmptyCity1,spyPositionCity1,positionpath));
-        //when(positionService.getAdjacentTroopPositionsFromPlayer(player1.getId(), false)).thenReturn(List.of(positionEmptyCity1,positionpath));
+        List<Position> freePos=new ArrayList<>();
+        freePos.addAll(List.of(positionEmptyCity1,spyPositionCity1,positionpath));
+        //Mockito.lenient().when(positionRepository.findAllPositionByPlayerIsNull()).thenReturn(freePos);
 
     }
 
 
 
     //OJO, SOLO DETECTARÁ LAS POSICIONES EN EL DATA.SQL, CON POPULATE NO
+    /* 
     @Test
     public void shouldFindPositionByCorrectId(){
         Position position1=this.positionService.findPositionById(1);
@@ -140,35 +148,110 @@ public class PositionServiceTests {
         assertThat(pathPositions).allMatch(pos->pos.getPath().getFirstCity().getId()==1
          & pos.getPath().getSecondCity().getId()==3);       
     }
+    */
 
     //que en el findTroopByPlayer este en el mock
     @Test
     public void testOccupyCorrectTroopPositionWithOutAdjacencies(){
-            positionEmptyCity1=new Position(1,null,false,city1,null);
-            Integer numTroops=player1.getTroops();
-
-                try {
-                    this.positionService.occupyTroopPosition(positionEmptyCity1, player1, false);
-                } catch (DataAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (OccupiedPositionException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IncorrectPositionTypeException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (NotEnoughPresence e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            
-            assertThat(positionEmptyCity1.getIsOccupied()).isTrue();
-            assertThat(player1.getTroops()).isEqualTo(numTroops-1);
-            assertThat(positionEmptyCity1.getPlayer().getId()).isEqualTo(player1.getId());
-        
-
+            Player player =new Player();
+            Integer numTroops=player.getTroops();
+            Position emptyPos=new Position();
+            emptyPos.setForSpy(false);
+            PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+                    try {
+                        positionService.occupyTroopPosition(emptyPos, player, false);
+                        assertThat(emptyPos.getPlayer().getId()).isEqualTo(player.getId());
+                        assertThat(emptyPos.getIsOccupied()).isTrue();
+                        assertThat(player.getTroops()).isEqualTo(numTroops-1);
+                    } catch (Exception e) {
+                        fail("No deberia salir error");
+                    }    
     }
+
+    @Test
+    public void testOccupyCorrectTroopPositionWithAdjacencies(){
+        Player player =new Player();
+        Integer numTroops=player.getTroops();
+        Position emptyPos=new Position();
+        Position playerPos=new Position();
+        Position adjPosToEmptyPos=new Position();
+        adjPosToEmptyPos.setAdjacents(new ArrayList<>(List.of(emptyPos)));
+        playerPos.setPlayer(player);
+        playerPos.setAdjacents(new ArrayList<>(List.of(emptyPos)));
+        emptyPos.setForSpy(false);
+        emptyPos.setAdjacents(new ArrayList<>(List.of(playerPos,adjPosToEmptyPos)));
+        Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player.getId())).thenReturn(List.of(playerPos));
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+                try {
+                    assertThat(positionService.getAdjacentTroopPositionsFromPlayer(player.getId(), false)).contains(emptyPos);
+                    assertThat(positionService.getAdjacentTroopPositionsFromPlayer(player.getId(), false)).doesNotContain(adjPosToEmptyPos);
+                    positionService.occupyTroopPosition(emptyPos, player, true);
+                    assertThat(emptyPos.getPlayer().getId()).isEqualTo(player.getId());
+                    assertThat(emptyPos.getIsOccupied()).isTrue();
+                    assertThat(player.getTroops()).isEqualTo(numTroops-1);
+                } catch (Exception e) {
+                    fail("No deberia salir error");
+                }    
+    }
+
+    @Test
+    public void testOccupyTroopPositionAlreadyOccupy(){
+        Player player1=new Player();
+        Player player2=new Player();
+        Position position=new Position();
+        position.setPlayer(player2);
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        assertThrows(OccupiedPositionException.class,()->positionService.occupyTroopPosition(position,player1,false));
+    }
+
+    @Test
+    public void testOccupyIncorrectPosition(){
+        Player player1=new Player();
+        Position position=new Position();
+        position.setForSpy(true);
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        assertThrows(IncorrectPositionTypeException.class,()->positionService.occupyTroopPosition(position,player1,false));
+    }
+
+    @Test
+    public void testOccupyTroopPositionWithoutPresence(){
+        Player player=new Player();
+        Position positionPlayer=new Position();
+        Position emptyPos=new Position();
+        Position wantedPos=new Position();
+        emptyPos.setAdjacents(new ArrayList<>(List.of(positionPlayer,wantedPos)));
+        positionPlayer.setPlayer(player);
+        positionPlayer.setAdjacents(new ArrayList<>(List.of(emptyPos)));
+        PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+        assertThrows(NotEnoughPresence.class,()->positionService.occupyTroopPosition(wantedPos,player,true));
+    }
+    @Test
+    public void testOccupySpyPosition(){
+            Player player =new Player();
+            Integer numSpies=player.getSpies();
+            Position emptyPos=new Position();
+            City city=new City();
+            emptyPos.setForSpy(true);
+            emptyPos.setCity(city);
+            PositionService positionService=new PositionService(positionRepository,playerRepository,cityRepository,pathRepository);
+                        try {
+                            positionService.occupySpyPosition(emptyPos, player);
+                        } catch (DataAccessException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (IncorrectPositionTypeException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (MoreThanOnePlayerSpyInSameCity e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        assertThat(emptyPos.getPlayer().getId()).isEqualTo(player.getId());
+                        assertThat(emptyPos.getIsOccupied()).isTrue();
+                        assertThat(player.getSpies()).isEqualTo(numSpies-1);
+                       
+    }
+
 
     
 }

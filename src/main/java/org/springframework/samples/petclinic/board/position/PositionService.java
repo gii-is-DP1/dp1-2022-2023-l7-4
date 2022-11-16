@@ -44,6 +44,15 @@ public class PositionService {
         this.pathRepository=pathRepository;
     }
 
+    public PositionService(PositionRepository posRepo,PlayerRepository playerRepository
+    ,CityRepository cityRepository,PathRepository pathRepository){
+        this.positionRepository=posRepo;
+        this.playerRepository=playerRepository;
+        this.cityRepository=cityRepository;
+        this.pathRepository=pathRepository;
+    }
+
+
     public List<Position> getPositions(){
         return (List<Position>)positionRepository.findAll();
     }
