@@ -67,7 +67,7 @@ public class SandboxController {
         System.out.println("llamada a /populate");
         List<Integer> zoneList=List.of(1,2,3);
         
-        this.positionService.populatePositions( cityService.getCities(),pathService.getPaths(), zoneList);
+        // this.positionService.populatePositions( cityService.getCities(),pathService.getPaths(), zoneList);
         return "redirect:/sandbox";
     }
 
