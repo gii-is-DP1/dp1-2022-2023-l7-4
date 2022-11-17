@@ -21,14 +21,28 @@ public class AdjacentPositionService {
         this.pathService=pathService;
     }
     
-    public List<Position> adjacentsToPositonInCity(Position position) {
+    /**
+     * Given a position calculates the positions that are adjacent to it. Itself does not count.
+     * It is saved in the database and in the position attribute called adjacents
+     * <p>----------<p>
+     * Dada una posicion calcula las posiciones que son adjacentes a ella. Ella misma no cuenta.
+     * Se guarda en la base de datos y en el atributo de posicion llamado adjacents
+     * 
+     * @param position 
+     */
+    public void calculateAdjacents(Position position){
         List<Position> adjacents = new ArrayList<>();
-        adjacents.addAll(adjacentsInsideCity(position));
-        adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));
-        return adjacents;
+        if(position.isInCity()){
+            adjacents = adjacentsToPositonInCity(position);
+        }else{
+            adjacents = adjacentsToPositonInPath(position);
+        }
+        position.setAdjacents(adjacents);
+        positionRepository.save(position);
     }
     
-    public List<Position> adjacentsToPositonInPath(Position position) {
+    private List<Position> adjacentsToPositonInPath(Position position) {
+
         List<Position> adjacents = new ArrayList<>();
         Path path = position.getPath();
         List<Position> pathPositions= positionRepository.findAllPositionByPathId(path.getId());//ordered
@@ -61,7 +75,14 @@ public class AdjacentPositionService {
         return adjacents;
     }
 
+    private List<Position> adjacentsToPositonInCity(Position position) {
 
+        List<Position> adjacents = new ArrayList<>();
+        adjacents.addAll(adjacentsInsideCity(position));
+        adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));
+        adjacents.addAll(adjacentsFromPathsIncomingCity(position.getCity()));
+        return adjacents;
+    }
 
     private List<Position> adjacentsFromPathsLeavingCity(City city) {
         List<Position> adjacents = new ArrayList<>();
@@ -82,9 +103,28 @@ public class AdjacentPositionService {
         return adjacents;
     }
 
+    private List<Position> adjacentsFromPathsIncomingCity(City city) {
+        List<Position> adjacents = new ArrayList<>();
+        List<Path> Paths = pathService.getIncomingPathsFromCity(city);
+        for(Path path : Paths){
+            List<Position> pathPositions = positionRepository.findAllPositionByPathId(path.getId());
+            if(pathPositions.isEmpty()){ // empty path = link to other city
+
+                List<Position> targetCity = positionRepository.findAllPositionByCityId(path.getFirstCity().getId());
+                adjacents.addAll(targetCity);
+                
+            }else{// not empty path = link to first element of path
+                
+                adjacents.add(pathPositions.get(pathPositions.size()-1));
+
+            }
+        }
+        return adjacents;
+    }
     private List<Position> adjacentsInsideCity(Position position) {
+        List<Position> adjacents = new ArrayList<>();
         City city = position.getCity();
-        List<Position> adjacents = city.getPositions();
+        adjacents.addAll( city.getPositions());
         adjacents.remove(position);
         return adjacents;
     }

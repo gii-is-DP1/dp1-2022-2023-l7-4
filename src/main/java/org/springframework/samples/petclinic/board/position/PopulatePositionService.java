@@ -18,16 +18,32 @@ public class PopulatePositionService {
     }
 
     
+    /**
+     * Given the list of sectors (cities and paths) it calculates all the positions of the board based on
+     * in the capacity of these and their relationships. Only positions associated with sectors are generated
+     * inside the play areas
+     * <p>----------<p>
+     * Dada la lista de serctores(ciudades y caminos) calcula todas las posiciones del tablero basandose
+     * en la capacidad de estos y sus relaciones. Solo se generan las posiciones asociadas a sectores 
+     * dentro de las zonas de juego
+     * @param playableZones
+     * @param cities
+     * @param paths
+     */
+    public void populatePositions(List<Integer> playableZones,List<City> cities,List<Path> paths){
+        populateCities(cities,playableZones);
+        populatePaths(paths,playableZones);
+
+    }
 
 
-    public void populateCities(List<City> cities, List<Integer> playableZones) {
+    private void populateCities(List<City> cities, List<Integer> playableZones) {
         cities.forEach(city-> populateCity(city,playableZones));
     }
-    public void populatePaths(List<Path> paths, List<Integer> playableZones) {
+    private void populatePaths(List<Path> paths, List<Integer> playableZones) {
             paths.forEach(path -> populatePath(path,playableZones));
 
     }
-
 
 
 
@@ -48,6 +64,9 @@ public class PopulatePositionService {
             
         }
     }
+
+
+    
     private Boolean cityIsPlayable(City city, List<Integer> playableZones) {
         return playableZones.contains(city.getZone());
     }

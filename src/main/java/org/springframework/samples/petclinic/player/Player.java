@@ -5,17 +5,20 @@ import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.house.House;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;
@@ -30,22 +33,25 @@ public class Player{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-
+    @NotBlank
     String name;
 
     @Email
+    @NotBlank
     String email;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     LocalDate birthdate;
 
-    @OneToOne( optional = false)
-	private House house;
-
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "username", referencedColumnName = "username")
-	private User user;
+	  private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="game_id", nullable=true)
+    private Game game;
+
+   
     @Column(columnDefinition = "integer default 40")
     @Min(0)
     private int troops=40;

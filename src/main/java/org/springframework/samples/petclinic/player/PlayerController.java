@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.player;
 
+import java.security.Principal;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -22,6 +22,11 @@ public class PlayerController {
 
     private static final String VIEWS_PLAYER_CREATE_FORM = "users/createPlayerForm";
 
+	private static final String VIEWS_CURRENT_PLAYER_DETAILS = "players/currentPlayerDetails";
+	
+
+	
+
     @Autowired
     private PlayerService playerService;
 
@@ -41,7 +46,7 @@ public class PlayerController {
 			//creating player, user and authorities
 			this.playerService.savePlayer(player);
 			
-			return "redirect:/players/" + player.getId();
+			return "redirect:/login";
 		}
 	}
 
@@ -104,5 +109,30 @@ public class PlayerController {
 		mav.addObject(playerService.getPlayerById(playerId));
 		return mav;
 	}
+
+	@GetMapping("/players/{playerId}/delete")
+	public String deletePlayer(@PathVariable("playerId") int playerId){
+		playerService.deletePlayer(playerId);
+		return "redirect:/players/list";
+	}
     
+	@GetMapping("/myprofile")
+	public String currentUserProfile(Principal user, Model model){
+		Player p =playerService.getPlayerByUsername(user.getName());
+		model.addAttribute(p);
+		return VIEWS_CURRENT_PLAYER_DETAILS;
+
+	}
+	@PostMapping(value = "/myprofile")
+	public String processPlayerProfile(@Valid Player player, BindingResult result,Principal user) {
+		if (result.hasErrors()) {
+			return VIEWS_PLAYER_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			Player p = playerService.getPlayerByUsername(user.getName());
+			player.setId(p.getId());
+			playerService.savePlayer(player);
+			return "redirect:/myprofile";
+		}
+	}
 }

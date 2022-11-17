@@ -1,22 +1,19 @@
 package org.springframework.samples.petclinic.board.position;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
 import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
 import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
-import org.springframework.samples.petclinic.board.position.exceptions.NullPlayerException;
 import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
 import org.springframework.samples.petclinic.board.sector.city.City;
-import org.springframework.samples.petclinic.board.sector.city.CityRepository;
 import org.springframework.samples.petclinic.board.sector.path.Path;
-import org.springframework.samples.petclinic.board.sector.path.PathRepository;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -26,28 +23,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class PositionService {
 
     private PositionRepository positionRepository;
-    private PopulatePositionService populatePositionService;
     private AdjacentPositionService adjacentPositionService;
     private PlayerRepository playerRepository;
-    private CityRepository cityRepository;
-    private PathRepository pathRepository;
+    private PopulatePositionService populatePositionService;
+
 
     @Autowired
-    public PositionService(PositionRepository posRepo,PopulatePositionService populatePositionService
-    ,AdjacentPositionService adjacentPositionService,PlayerRepository playerRepository
-    ,CityRepository cityRepository,PathRepository pathRepository){
+    public PositionService(PositionRepository posRepo,PlayerRepository playerRepository,PopulatePositionService populatePositionService,AdjacentPositionService adjacentPositionService){
         this.positionRepository=posRepo;
-        this.populatePositionService= populatePositionService;
-        this.adjacentPositionService= adjacentPositionService;
         this.playerRepository=playerRepository;
-        this.cityRepository=cityRepository;
-        this.pathRepository=pathRepository;
+        this.populatePositionService=populatePositionService;
+        this.adjacentPositionService= adjacentPositionService;
     }
+
 
     public List<Position> getPositions(){
         return (List<Position>)positionRepository.findAll();
     }
-
+    
     @Transactional
     public void save(Position p) throws DataAccessException{
         positionRepository.save(p);
@@ -76,7 +69,7 @@ public class PositionService {
      throws DataAccessException,IncorrectPositionTypeException,MoreThanOnePlayerSpyInSameCity{
         if(position.getForSpy()==false){
             throw new IncorrectPositionTypeException();
-        }else if(positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()))
+        }else if(!positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()).isEmpty())
             throw new MoreThanOnePlayerSpyInSameCity();
         player.setSpies(player.getSpies()-1);
         playerRepository.save(player);
@@ -98,7 +91,7 @@ public class PositionService {
             throw new NotEnoughPresence();
         player.setTrophyPV(player.getTrophyPV()+1);
         playerRepository.save(player);
-        position.setPlayer(player);
+        position.setPlayer(null);
         save(position);
     }
 
@@ -135,7 +128,7 @@ public class PositionService {
         else if(position.getPlayer().equals(player))
             throw new YourPositionException();
         else if(onlyAdjacencies
-         & !getAdjacentPositionsFromPlayer(player.getId(),false).contains(position))
+         & !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
         player.setTroops(player.getTroops()-1);
         player.setTrophyPV(player.getTrophyPV()+1);
@@ -232,36 +225,19 @@ public class PositionService {
      * @param paths
      * @param playableZones
      */
-    public void populatePositions(List<City> cities,List<Path> paths,List<Integer> playableZones){
-        populatePositionService.populateCities(cities,playableZones);
-        populatePositionService.populatePaths(paths,playableZones);
 
-    }
-    public void initPositions(List<Integer> playableZones){
-        populatePositions(cityRepository.findAll(),pathRepository.findAll(), playableZones);
-        positionRepository.findAll().forEach(x->calculateAdjacents(x));
+    public void initializePositions(List<Integer> playableZones,List<City> cities, List<Path> paths){
+        List<Position> positions = getPositions();
+        if(positions.isEmpty()){
+            populatePositionService.populatePositions(playableZones, cities, paths);
+            positions = getPositions();
+            positions.forEach(position -> adjacentPositionService.calculateAdjacents(position));
 
-    }
-
-    /**
-     * Given a position calculates the positions that are adjacent to it. Itself does not count.
-     * It is saved in the database and in the position attribute called adjacents
-     * <p>----------<p>
-     * Dada una posicion calcula las posiciones que son adjacentes a ella. Ella misma no cuenta.
-     * Se guarda en la base de datos y en el atributo de posicion llamado adjacents
-     * 
-     * @param position 
-     */
-    public void calculateAdjacents(Position position){
-        List<Position> adjacents = new ArrayList<>();
-        if(position.isInCity()){
-            adjacents = adjacentPositionService.adjacentsToPositonInCity(position);
-        }else{
-            adjacents = adjacentPositionService.adjacentsToPositonInPath(position);
         }
-        position.setAdjacents(adjacents);
-        save(position);
+
     }
+
+    
 
 
 
