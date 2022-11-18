@@ -12,12 +12,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Table(name = "simples")
+@Table(name = "action_simples")
 @Entity
-public class Simple {
-    @NotBlank
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
-    
+public class ActionSimple extends Action{
+    SimpleActionNameEnum simpleActionNameEnum;
+    Integer value;
+    SimpleEntityStatusEnum entityStatusEnum;
+    SimpleEntityEnum entityEnum;
+    Boolean presence;
 }

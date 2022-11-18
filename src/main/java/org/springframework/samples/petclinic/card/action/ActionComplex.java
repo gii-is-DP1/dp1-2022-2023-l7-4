@@ -12,12 +12,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Table(name = "complexs")
+@Table(name = "action_complexs")
 @Entity
-public class Complex {
-    @NotBlank
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
+public class ActionComplex extends Action{
+    ComplexConditionEnum complexConditionEnum;
     
 }
