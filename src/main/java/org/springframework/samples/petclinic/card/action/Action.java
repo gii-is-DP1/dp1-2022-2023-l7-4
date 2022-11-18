@@ -14,7 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "actions")
-@Entity
 @MappedSuperclass
 public class Action {
     @Id

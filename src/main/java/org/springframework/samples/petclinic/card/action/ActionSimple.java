@@ -1,8 +1,10 @@
 package org.springframework.samples.petclinic.card.action;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import lombok.Getter;
@@ -14,16 +16,19 @@ import lombok.Setter;
 @Entity
 public class ActionSimple extends Action{
 
-    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "simple_action_name_enums")
     SimpleActionNameEnum simpleActionNameEnum;
 
     @Positive
     Integer value;
 
-    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "entity_status_enums")
     SimpleEntityStatusEnum entityStatusEnum;
-
-    @NotNull
+    
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "entity_enums")
     SimpleEntityEnum entityEnum;
 
     Boolean presence;
