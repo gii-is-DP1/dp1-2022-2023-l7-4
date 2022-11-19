@@ -53,30 +53,30 @@ public class City extends Sector{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
     private List<Position> positions;
     
-    
-    // public List<Position> getTroopPositions(){
-    //     return this.positions.stream().filter(p-> ! p.getForSpy()).collect(Collectors.toList());
-    // }
-    // public List<Position> getSpyPositions(){
-    //     return this.positions.stream().filter(p->  p.getForSpy()).collect(Collectors.toList());
-    // }
-    
+
+    /**
+     * <pre>
+     * control is archived by having more troops than
+     * any other player in the city
+     * </pre>
+     * @return <b>player</b> who controlls or <b>null</b>
+     */
     public Player whoControls(){
-        if(whoTotallyControls()!=null) return null;
+        if(whoTotallyControls()!=null) return null; //skips if TC
         Map<Player,Integer> playersMap = new HashMap<>();
         int max=0;
         Player controller=null;
         List<Position> troopPosition = positions.stream().filter(ps-> !ps.getForSpy()).collect(Collectors.toList());
-        for(Position p: troopPosition){
+        for(Position p: troopPosition){ //map Player, number of troops
             Player player = p.getPlayer();
             if(player!=null){
 
                 playersMap.put(player,playersMap.getOrDefault(player, 0)+1);
                 int counter = playersMap.get(player);
-                if(counter>max){
+                if(counter>max){ 
                     max = counter;
-                    controller = player;
-                }else if(counter == max){
+                    controller = player; //becomes the controller
+                }else if(counter == max){// its a tie, no one has the control
                     controller= null;
                 }
 
@@ -84,9 +84,13 @@ public class City extends Sector{
         }
         return controller;
     }
-    // public Player whoTotallyControls(){
-    //  return null;   
-    // }
+    /**<pre>
+     * Total control is archieved by having all troop-positions
+     * occupied by the same player. Also it is necessary that
+     * there is no enemy spies (different player) in the spy-zones
+     * </pre>
+     * @return <b>player</b> who totally controlls or <b>null</b>
+     */
     public Player whoTotallyControls(){
         //no enemy spyes
         //all positions with one player
