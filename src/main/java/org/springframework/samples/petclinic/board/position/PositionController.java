@@ -40,10 +40,7 @@ public class PositionController {
     private PathService pathService;
     private PlayerService playerService;
     
-    @ModelAttribute(name = "zones")
-    public String zones(){
-        return "1,2";
-    }
+
 
     @Autowired
     public PositionController(PositionService posServ,CityService city, PathService pService,PlayerService playerSer, AdjacentPositionService adjacentPositionService){
