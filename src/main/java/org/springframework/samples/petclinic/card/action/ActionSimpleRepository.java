@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ActionSimpleRepository extends CrudRepository<ActionSimple, Integer>{
-    //Da problemas no sé porqué
-    /* @Query("SELECT as FROM ActionSimple as WHERE as.id=:id")
-    ActionSimple findActionSimpleById(@Param("id") Integer id); */
+
+    @Query("SELECT ac FROM ActionSimple ac WHERE ac.id = ?1")
+    ActionSimple findActionSimpleById(Integer id);
 }
