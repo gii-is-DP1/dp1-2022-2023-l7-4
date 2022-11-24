@@ -1,22 +1,15 @@
 package org.springframework.samples.petclinic.player;
 
 import java.security.Principal;
-
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.samples.petclinic.game.Game;
-import org.springframework.samples.petclinic.user.User;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +46,7 @@ public class PlayerController {
 			//creating player, user and authorities
 			this.playerService.savePlayer(player);
 			
-			return "redirect:/players/" + player.getId();
+			return "redirect:/login";
 		}
 	}
 
@@ -120,7 +113,6 @@ public class PlayerController {
 	@GetMapping("/players/{playerId}/delete")
 	public String deletePlayer(@PathVariable("playerId") int playerId){
 		playerService.deletePlayer(playerId);
-		System.out.println("Player " + playerId + " was deleted");
 		return "redirect:/players/list";
 	}
     

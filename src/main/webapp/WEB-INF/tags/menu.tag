@@ -57,17 +57,18 @@
 				<sec:authorize url="/positions">
 				<petclinic:menuItem active="${name eq 'position'}" url="/positions"
 					title="positions">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 					<span>Positions</span>
 				</petclinic:menuItem>
 			    </sec:authorize>
 
+
 				<petclinic:menuItem active="${name eq 'cards'}" url="/cards/menu"
 					title="cards">
-					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
 					<span>Cartas y mazos</span>
 				</petclinic:menuItem>
-
+				
 				<sec:authorize url="/players">
 				<petclinic:menuItem active="${name eq 'players'}" url="/players/list"
 					title="players">

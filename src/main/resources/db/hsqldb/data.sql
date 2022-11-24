@@ -1,65 +1,61 @@
-/*Users*/ 
+-- USERS
 INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('anddomrui','hola3',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','admin');
+INSERT INTO authorities(id,username,authority) VALUES (2,'anddomrui','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('javfercas3','secret1',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'javfercas3','admin');
+INSERT INTO authorities(id,username,authority) VALUES (3,'javfercas3','admin');
 
-INSERT INTO users(username,password,enabled) VALUES ('davdelcar','owner2',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (6,'davdelcar','admin'); 
+INSERT INTO users(username,password,enabled) VALUES ('davdelcar','admin2',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (4,'davdelcar','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('manotebar','manotebar',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (7,'manotebar','admin');
+INSERT INTO authorities(id,username,authority) VALUES (5,'manotebar','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('javgaragu1','secret2',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (8,'javgaragu1','admin');
+INSERT INTO authorities(id,username,authority) VALUES (6,'javgaragu1','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('davzarort','anuel',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (9,'davzarort','admin');
+INSERT INTO authorities(id,username,authority) VALUES (7,'davzarort','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('daviddhc','player1',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (10,'daviddhc','admin');
+INSERT INTO authorities(id,username,authority) VALUES (8,'daviddhc','player');
 
-/*Cities*/
+
+-- CITIES
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'EL LABERINTO',3,TRUE,1);
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'GRACKLSTUGH',6,FALSE,3);
 
-/*Paths*/
+-- PATHS
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,2,0);
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,3,2);
 INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 
--- INSERT INTO positions(id,zone,occupied,city_id) VALUES (2,2,FALSE,2);
--- INSERT INTO positions(id,zone,occupied,city_id) VALUES (3,1,TRUE,1);
--- positions se autogenera
--- INSERT INTO positions(id,zone,occupied,path_id) VALUES (4,1,TRUE,1);
-
-/*Games*/
+-- GAMES
 INSERT INTO games(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,FALSE);
 
-/*Players*/
+-- PLAYERS
 INSERT INTO players(id,name,email,birthdate,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08', 'daviddhc');
-INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'aaa', '2002-04-08', 'anddomrui');
+INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'davidhc@gmail.com', '2002-04-08', 'anddomrui');
 
-/*House*/
+-- HOUSE
 INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
 
-/*halfDecks*/
+-- HALFDEK
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');
 INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
 
-/*Aspects*/
+-- ASPECTS
 INSERT INTO aspects(id,name,description,image) VALUES (1,'Ambición','Los siervos de ambición son los mejores para reclutar a otros siervos y crear un círculo interno fuerte.','');
 INSERT INTO aspects(id,name,description,image) VALUES (2,'Conquista','Los siervos de conquista son los mejores para apoderarse de la Infraoscuridad.','');
 INSERT INTO aspects(id,name,description,image) VALUES (3,'Malicia','Los siervos de malicia son flexibles y son los mejores en el asesinato.','');
 INSERT INTO aspects(id,name,description,image) VALUES (4,'Astucia','Los siervos de astucia son los mejores para espiar e interrumpir el control.','');
 INSERT INTO aspects(id,name,description,image) VALUES (5,'Obediencia','Los siervos de obediencia realizan las tareas del día a día.','');
 
-/*Cards*/
+-- CARDS
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (1,'Cuadrilla de mercenarios',3,'La única otra opción que les queda a quienes carecen de casa es el exilio.','Despliega 3 tropas.',1,4,2,1,2);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (2,'Maestra de espías',2,'<<Puedo ayudarte a sortear las puertas y los guardias. Lo que hagas despues es cosa tuya>>','Pon un espía',1,2,2,1,4);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (3,'Adalid',2,'<<Codícia, avarícia y poder: tres idiomas que entiendo a la perfección>>','Elige una Opcion: + 2 Influencia | Al final del turno, asciende una carta jugada durante este turno',1,2,4,1,1);
@@ -101,12 +97,3 @@ INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,h
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (39,'Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (40,'Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3);
 
--- DATOS PARA PRUEBA, OJO, PARA LOS TEST, TENEIS QUE UTILIZAR LOS DATOS DE AQUI, NO VALEN LOS AUTOGENERADOS
-INSERT INTO positions(id,city_id,for_spy) VALUES (1,1,TRUE);
-INSERT INTO positions(id,city_id,for_spy) VALUES (3,1,FALSE);
-INSERT INTO positions(id,city_id,for_spy) VALUES (5,1,FALSE);
-INSERT INTO positions(id,city_id,player_id,for_spy) VALUES (2,2,2,TRUE);
--- caminos
-INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (4,1,1,FALSE);
-INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (6,2,1,FALSE);
-INSERT INTO positions(id,path_id,player_id,for_spy) VALUES (7,2,2,FALSE);
