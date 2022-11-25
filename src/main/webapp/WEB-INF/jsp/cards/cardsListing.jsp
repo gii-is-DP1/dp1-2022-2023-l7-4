@@ -33,70 +33,14 @@
 </div>
 
 <br><br>
-    <!--<table id="positionsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Coste</th>
-            <th>Historia</th>
-            <th>Acción de la carta</th>
-            <th>PV</th>
-            <th>PV en Círculo interno</th>
-            <th>Rareza</th>
-            <th>Aspecto</th>
-            <th>Mazo</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="card" items="${cards}" >
-            <tr>
-                <td>
-                    <c:out value="${card.id}"/>
-                </td>
-                <td>
-                    <spring:url value="/cards/{cardId}" var="cardUrl">
-                        <spring:param name="cardId" value="${card.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(cardUrl)}"><c:out value="${card.name}"/></a>
-                </td>
-                <td>
-                    <c:out value="${card.cost} "/>
-                </td>
-                <td>
-                    <c:out value="${card.story} "/>
-                </td>
-                <td>
-                    <c:out value="${card.rulesText} "/>
-                </td>
-                <td>
-                    <c:out value="${card.deckVP} "/>
-                </td>   
-                <td>
-                    <c:out value="${card.innerCirclePV} "/>
-                </td>   
-                <td>
-                    <c:out value="${card.rarity} "/>
-                </td>
-                <td>
-                    <c:out value="${card.aspect.name} "/>
-                </td>
-                <td>
-                    <c:out value="${card.halfDeck.name} "/>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table> -->
 
-    
     <c:forEach var="card" items="${cards}" >
         <div class="principalCard">
             <spring:url value="/cards/{cardId}" var="cardUrl">
                 <spring:param name="cardId" value="${card.id}" />
             </spring:url>
             <a href="${fn:escapeXml(cardUrl)}">
-                <img src="/resources/images/cardModel.png" class="cardImage">
+                <img src="/resources/images/cardsModel.png" class="cardImage">
             </a>
                 <div class="topTextName">
                     <b><c:out value="${card.name}" /></b>
@@ -164,7 +108,7 @@
         }
         .topTextAspect{
             position: absolute;
-            top: 11%;
+            top: 10%;
             font-size: 103%;
             margin-left: 8%;
             color: aliceblue;
@@ -172,7 +116,7 @@
         }
         .topTextHalfDeck{
             position: absolute;
-            top: 11%;
+            top: 10%;
             font-size: 103%;
             width: 100%;
             text-align: right;
