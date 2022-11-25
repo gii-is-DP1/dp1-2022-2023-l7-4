@@ -35,15 +35,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
-				.antMatchers("/users/new").permitAll()
+				.antMatchers("/user/new").permitAll()
+				.antMatchers("/login").permitAll()
 				.antMatchers("/session/**").permitAll()
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				
 				.antMatchers("/vets/**").authenticated()
-				.antMatchers("/users2/**").permitAll()
+				.antMatchers("/users/**").hasAnyAuthority("admin")
 				.antMatchers("/players/**").hasAnyAuthority("admin")
 				.antMatchers("/player/**").permitAll()
 				.antMatchers("/myprofile/**").permitAll()
+				.antMatchers("/changepassword/**").permitAll()
 				.antMatchers("/games/**").hasAnyAuthority("admin","player")
 				.antMatchers("/positions/**").permitAll()
 				.antMatchers("/cards/**").permitAll()
@@ -51,7 +53,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
-				 	/*.loginPage("/login")*/
+					.loginPage("/login")
+                    .permitAll()
+                    .defaultSuccessUrl("/")
+                    .failureUrl("/login?error=true")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
 				 	.failureUrl("/login-error")
 				.and()
 					.logout()
@@ -62,6 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // se sirve desde esta misma página.
                 http.csrf().ignoringAntMatchers("/h2-console/**");
                 http.headers().frameOptions().sameOrigin();
+				http.csrf().disable();
 	}
 
 	@Override

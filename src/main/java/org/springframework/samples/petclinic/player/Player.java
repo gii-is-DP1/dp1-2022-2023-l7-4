@@ -21,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.house.House;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.user.User;
 
@@ -38,19 +39,16 @@ public class Player{
 
     @NotBlank
     String name;
+    
+    Integer power;
 
-    @Email
-    @NotBlank
-    String email;
+    Integer influence;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    LocalDate birthdate;
-
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "username", referencedColumnName = "username")
-	  private User user;
+	private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name="game_id", nullable=true)
     private Game game;
 
@@ -74,8 +72,7 @@ public class Player{
     
     @Override
     public String toString() {
-        return "Player [id=" + id + ", name=" + name 
-        + ", email=" + email + ", birthdate=" + birthdate 
+        return "Player [id=" + id + ", name=" + name + ", power=" + power + ", influence=" + influence 
         + ", user=" + user + ", troops=" + troops 
         + ", spies=" + spies + ", trophyPV=" + trophyPV
                 + "]";

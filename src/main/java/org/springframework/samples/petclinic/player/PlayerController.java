@@ -30,6 +30,8 @@ public class PlayerController {
     private static final String VIEWS_PLAYER_CREATE_FORM = "users/createPlayerForm";
 
 	private static final String VIEWS_CURRENT_PLAYER_DETAILS = "players/currentPlayerDetails";
+
+	private static final String VIEWS_CURRENT_PLAYER_CHANGE_PASSWORD = "players/currentPlayerChangePassword";
 	
 
 	
@@ -124,23 +126,4 @@ public class PlayerController {
 		return "redirect:/players/list";
 	}
     
-	@GetMapping("/myprofile")
-	public String currentUserProfile(Principal user, Model model){
-		Player p =playerService.getPlayerByUsername(user.getName());
-		model.addAttribute(p);
-		return VIEWS_CURRENT_PLAYER_DETAILS;
-
-	}
-	@PostMapping(value = "/myprofile")
-	public String processPlayerProfile(@Valid Player player, BindingResult result,Principal user) {
-		if (result.hasErrors()) {
-			return VIEWS_PLAYER_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			Player p = playerService.getPlayerByUsername(user.getName());
-			player.setId(p.getId());
-			playerService.savePlayer(player);
-			return "redirect:/myprofile";
-		}
-	}
 }
