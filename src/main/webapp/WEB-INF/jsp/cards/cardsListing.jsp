@@ -33,7 +33,7 @@
 </div>
 
 <br><br>
-    <table id="positionsTable" class="table table-striped">
+    <!--<table id="positionsTable" class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
@@ -87,7 +87,134 @@
             </tr>
         </c:forEach>
         </tbody>
-    </table>
+    </table> -->
+
+    
+    <c:forEach var="card" items="${cards}" >
+        <div class="principalCard">
+            <spring:url value="/cards/{cardId}" var="cardUrl">
+                <spring:param name="cardId" value="${card.id}" />
+            </spring:url>
+            <a href="${fn:escapeXml(cardUrl)}">
+                <img src="/resources/images/cardModel.png" class="cardImage">
+            </a>
+                <div class="topTextName">
+                    <c:out value="${card.name}" />
+                </div>
+                <div class="topTextCost">
+                    <c:out value="${card.cost} " />
+                </div>
+                <div class="topTextAspect">
+                    <c:out value="${card.aspect.name} " />
+                </div>
+                <div class="topTextHalfDeck">
+                    <c:out value="${card.halfDeck.name} " />
+                </div>
+                <div class="topTextRulesText">
+                    <c:out value="${card.rulesText} " />
+                </div>
+                <div class="topTextRarity">
+                    <text>Rarity: </text><c:out value="${card.rarity} " />
+                </div>
+                <div class="topTextDeckVP">
+                    <c:out value="${card.deckVP} " />
+                </div>
+                <div class="topTextInnerCirclePV">
+                    <c:out value="${card.innerCirclePV} " />
+                </div>
+        </div>
+    </c:forEach>
+    </div>
+
+    <style>
+        .centerBlock{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .principalCard{
+            width: 27%;
+            height: 52%;
+            margin-bottom: 2%;
+            margin-left: 5%;
+            position: relative;
+            display: inline-block;
+            
+        }
+        .cardImage {
+            width: 100%;
+            height: 100%;
+        }
+        .topTextName{
+            position: absolute;
+            top: 4%;
+            font-size: 130%;
+            margin-left: 8%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextCost{
+            position: absolute;
+            top: 3%;
+            font-size: 193%;
+            margin-left: 86%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextAspect{
+            position: absolute;
+            top: 11%;
+            font-size: 100%;
+            margin-left: 8%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextHalfDeck{
+            position: absolute;
+            top: 11%;
+            font-size: 100%;
+            width: 100%;
+            text-align: right;
+            right: 7%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextRulesText{
+            position: absolute;
+            width: 83%;
+            top: 55%;
+            left: 8.5%;
+            font-size: 90%;
+            text-align: justify;
+            color: black;
+            font-family: "Critter";
+        }
+        .topTextRarity{
+            position: absolute;
+            top: 91%;
+            font-size: 110%;
+            margin-left: 8%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextDeckVP{
+            position: absolute;
+            top: 84.5%;
+            font-size: 160%;
+            margin-left: 66.5%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextInnerCirclePV{
+            position: absolute;
+            top: 84.5%;
+            font-size: 160%;
+            margin-left: 82%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+    </style>
 
     <style>
         .aBotton {
@@ -115,10 +242,10 @@
 
         .contenedor {
             background-color: rgb(25, 24, 24);
-            margin-left: -13.9%;
-            margin-right: -13.88%;
             margin-top: -40px;
             margin-bottom: 2%;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
         .contenedor-menu {
