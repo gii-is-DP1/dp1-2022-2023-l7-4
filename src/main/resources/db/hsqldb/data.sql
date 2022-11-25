@@ -25,16 +25,16 @@ INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 
 
 INSERT INTO games(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,FALSE);
-
-INSERT INTO players(id,name,power,influence,username) VALUES (1, 'David', 0, 0, 'daviddhc');
-INSERT INTO players(id,name,power,influence,username) VALUES (2, 'Andres', 0, 0, 'anddomrui');
-
-
-
 INSERT INTO house(id,name,hex_color) VALUES (1,'Baerne','#5f605b');
 INSERT INTO house(id,name,hex_color) VALUES (2,'Mizzrym','#ff7133');
 INSERT INTO house(id,name,hex_color) VALUES (3,'Xorlarrin','#2f717f');
 INSERT INTO house(id,name,hex_color) VALUES (4,'Barrison del"armgo','#fc2e3c');
+
+INSERT INTO players(id,name,power,influence,username,house_id) VALUES (1, 'David', 0, 0, 'daviddhc',1);
+INSERT INTO players(id,name,power,influence,username,house_id) VALUES (2, 'Andres', 0, 0, 'anddomrui',2);
+
+
+
 
 
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');

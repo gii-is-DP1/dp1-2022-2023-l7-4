@@ -19,6 +19,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.type.TrueFalseType;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.house.House;
@@ -52,6 +53,10 @@ public class Player{
     @JoinColumn(name="game_id", nullable=true)
     private Game game;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="house_id",nullable = true)
+    private House house;
+
    
     @Column(columnDefinition = "integer default 40")
     @Min(0)
@@ -65,10 +70,6 @@ public class Player{
     @Min(0)
     private int trophyPV=0;
 
-    
-    /* @ManyToOne
-    @JoinColumn(name="game_id", nullable=false)
-    private Game game; */
     
     @Override
     public String toString() {
