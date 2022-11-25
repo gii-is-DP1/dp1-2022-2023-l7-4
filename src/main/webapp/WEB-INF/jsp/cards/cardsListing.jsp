@@ -99,28 +99,28 @@
                 <img src="/resources/images/cardModel.png" class="cardImage">
             </a>
                 <div class="topTextName">
-                    <c:out value="${card.name}" />
+                    <b><c:out value="${card.name}" /></b>
                 </div>
                 <div class="topTextCost">
-                    <c:out value="${card.cost} " />
+                    <b><c:out value="${card.cost} " /></b>
                 </div>
                 <div class="topTextAspect">
-                    <c:out value="${card.aspect.name} " />
+                    <b><c:out value="${card.aspect.name} " /></b>
                 </div>
                 <div class="topTextHalfDeck">
-                    <c:out value="${card.halfDeck.name} " />
+                    <b><c:out value="${card.halfDeck.name} " /></b>
                 </div>
                 <div class="topTextRulesText">
-                    <c:out value="${card.rulesText} " />
+                    <b><c:out value="${card.rulesText} " /></b>
                 </div>
                 <div class="topTextRarity">
-                    <text>Rarity: </text><c:out value="${card.rarity} " />
+                    <b><text>Rareza: </text><c:out value="${card.rarity} " /></b>
                 </div>
                 <div class="topTextDeckVP">
-                    <c:out value="${card.deckVP} " />
+                    <b><c:out value="${card.deckVP} " /></b>
                 </div>
                 <div class="topTextInnerCirclePV">
-                    <c:out value="${card.innerCirclePV} " />
+                    <b><c:out value="${card.innerCirclePV} " /></b>
                 </div>
         </div>
     </c:forEach>
@@ -149,7 +149,7 @@
         .topTextName{
             position: absolute;
             top: 4%;
-            font-size: 130%;
+            font-size: 127%;
             margin-left: 8%;
             color: aliceblue;
             font-family: "Critter";
@@ -165,7 +165,7 @@
         .topTextAspect{
             position: absolute;
             top: 11%;
-            font-size: 100%;
+            font-size: 103%;
             margin-left: 8%;
             color: aliceblue;
             font-family: "Critter";
@@ -173,7 +173,7 @@
         .topTextHalfDeck{
             position: absolute;
             top: 11%;
-            font-size: 100%;
+            font-size: 103%;
             width: 100%;
             text-align: right;
             right: 7%;
@@ -208,9 +208,9 @@
         }
         .topTextInnerCirclePV{
             position: absolute;
-            top: 84.5%;
+            top: 84.4%;
             font-size: 160%;
-            margin-left: 82%;
+            margin-left: 81.8%;
             color: aliceblue;
             font-family: "Critter";
         }
