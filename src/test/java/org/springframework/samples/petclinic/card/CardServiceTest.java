@@ -21,8 +21,8 @@ class CardServiceTest {
         Card card =this.cardService.getCardById(3);
         assertThat(card.getName()).startsWith("Adalid");
         assertThat(card.getCost()).isEqualTo(2);
-        assertThat(card.getStory()).startsWith("<<Codícia, avarícia y poder: tres idiomas que entiendo a la perfección>>");
-        assertThat(card.getRulesText()).startsWith("Elige una Opcion: + 2 Influencia | Al final del turno, asciende una carta jugada durante este turno");
+        assertThat(card.getStory()).startsWith("<<");
+        assertThat(card.getRulesText()).startsWith("Elige");
         assertThat(card.getDeckVP()).isEqualTo(1);
         assertThat(card.getInnerCirclePV()).isEqualTo(2);
         assertThat(card.getRarity()).isEqualTo(4);

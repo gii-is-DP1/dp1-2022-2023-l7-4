@@ -13,12 +13,14 @@ public interface PathRepository extends CrudRepository<Path,Integer>{
 
     @Query("SELECT path.id FROM Path path")
     List<Integer> findAllPathId();
-
+    
     @Query("select p from Path p")
     List<Path> findAll();
-    @Query("select p from Path p where p.firstCity = :city")
-    List<Path> getExitPathsFromCity(@Param("city") City city);
-
     
+    @Query("select p from Path p where p.firstCity = :city")
+    List<Path> findExitPathsFromCity(@Param("city") City city);
+    
+    @Query("select p from Path p where p.secondCity = :city")
+    List<Path> findIncomingPathsFromCity(@Param("city") City city);
     
 }

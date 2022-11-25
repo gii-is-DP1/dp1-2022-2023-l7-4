@@ -15,28 +15,28 @@ uri="http://www.springframework.org/security/tags"%>
     <form:form modelAttribute="card" action="/cards/all" method="get" class="box a"
                id="search-owner-form">
                 <div class="aBotton ">
-                        <button type="submit" class="btn btn-two"><div class="textbtn">Cartas</div></button>
+                        <button type="submit" class="special-btn btn-two"><div class="textbtn">Cartas</div></button>
                 </div>
     </form:form>
 
     <form:form modelAttribute="card" action="/cards/decks" method="get" class="box b"
                id="search-owner-form">
                 <div class="aBotton">
-                    <button type="submit" class="btn btn-two"><div class="textbtn">Mazos</div></button>
+                    <button type="submit" class="special-btn btn-two"><div class="textbtn">Mazos</div></button>
                 </div>
     </form:form>
 
     <form:form modelAttribute="card" action="/cards/all" method="get" class="box c"
                id="search-owner-form">
                 <div class="aBotton">
-                    <button type="submit" class="btn btn-two"><div class="textbtn">Crear carta</div></button>
+                    <button type="submit" class="special-btn btn-two"><div class="textbtn">Crear carta</div></button>
                 </div>
     </form:form>
 
     <form:form modelAttribute="card" action="/cards/decks" method="get" class="box d"
     id="search-owner-form">
     <div class="aBotton">
-         <button type="submit" class="btn btn-two"><div class="textbtn">Crear mazo</div></button>
+         <button type="submit" class="special-btn btn-two"><div class="textbtn">Crear mazo</div></button>
       </div>
 </form:form>
 </div>
@@ -143,7 +143,7 @@ uri="http://www.springframework.org/security/tags"%>
 
         .box-2 { background-color: #282121; }
 
-        .btn {
+        .special-btn {
             opacity: 90%;
             line-height: 50px;
             height: 50px;
@@ -183,7 +183,7 @@ uri="http://www.springframework.org/security/tags"%>
             height: 100%;
             z-index: 1;
             transition: all 0.5s;
-            border: 1px solid rgba(255, 255, 255, 0.086);
+            border: 2px solid rgba(255, 255, 255, 0.086);
             background-color: rgba(255, 255, 255, 0);
             border-radius: 10%;
 
@@ -197,7 +197,7 @@ uri="http://www.springframework.org/security/tags"%>
             height: 100%;
             z-index: 1;
             transition: all 0.5s;
-            border: 1px solid rgba(202, 189, 189, 0.123);
+            border: 2px rgba(202, 189, 189, 0.123);
             background-color: rgba(200, 177, 177, 0.122);
             border-radius: 10%;
 

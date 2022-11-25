@@ -9,9 +9,7 @@
 <petclinic:layout pageName="cards">
 <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZOS &nbsp|&nbsp CARTAS</h2> </div></div>   
 
-    <script>
-        console.log("ssss")
-    </script>
+
 <div class="filt-container">
     <div style="font-size: 25px; color: aliceblue; text-align: center;"><b>FILTRAR CARTAS</b></div>
     <br>
@@ -29,7 +27,7 @@
             </select>
         </div>
         <div class="aBotton">
-            <button type="submit" class="btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
+            <button type="submit" class="special-btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
         </div>
     </form> 
 </div>
@@ -139,7 +137,7 @@
             margin-top: 1px;
         }
 
-        .btn {
+        .special-btn {
             opacity: 90%;
             line-height: 50px;
             height: 40px;
@@ -175,7 +173,7 @@
             height: 100%;
             z-index: 1;
             transition: all 0.5s;
-            border: 1px solid rgba(255, 255, 255, 0.086);
+            border: 2px solid rgba(255, 255, 255, 0.086);
             background-color: rgba(255, 255, 255, 0);
             border-radius: 10%;
 
@@ -189,7 +187,7 @@
             height: 100%;
             z-index: 1;
             transition: all 0.5s;
-            border: 1px solid rgba(202, 189, 189, 0.123);
+            border: 2px solid rgba(202, 189, 189, 0.123);
             background-color: rgba(200, 177, 177, 0.122);
             border-radius: 10%;
 

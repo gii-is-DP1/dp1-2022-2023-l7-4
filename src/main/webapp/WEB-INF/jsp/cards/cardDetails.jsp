@@ -6,9 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <petclinic:layout pageName="saerching">
     <h2>Cartas </h2>
-    <script>
-        console.log("ssss")
-    </script>
+
     
     <table class="table table-striped">
         <tr>

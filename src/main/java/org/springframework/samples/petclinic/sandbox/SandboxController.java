@@ -1,17 +1,12 @@
 package org.springframework.samples.petclinic.sandbox;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionService;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -64,10 +59,10 @@ public class SandboxController {
     //TODO choose the zones in populate method
     @GetMapping(value = "/sandbox/populate")
     public String populate(){
-        System.out.println("llamada a /populate");
-        List<Integer> zoneList=List.of(1,2,3);
+
+        // List<Integer> zoneList=List.of(1,2,3);
         
-        this.positionService.populatePositions( cityService.getCities(),pathService.getPaths(), zoneList);
+        // this.positionService.populatePositions( cityService.getCities(),pathService.getPaths(), zoneList);
         return "redirect:/sandbox";
     }
 
