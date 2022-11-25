@@ -81,14 +81,16 @@ public class PositionService {
      {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void killTroop(Position position,Player player,Boolean forAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        //errores posibles, tipo incorrecto, jugador incorrecto(o vacio o eres tu)
         if(position.getPlayer()==null)
             throw new EmptyPositionException();
+
         else if(position.getPlayer().equals(player))
             throw new YourPositionException();
+
         else if(forAdjacencies & 
         !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
+
         player.setTrophyPV(player.getTrophyPV()+1);
         playerRepository.save(player);
         position.setPlayer(null);
@@ -113,8 +115,8 @@ public class PositionService {
     @Transactional
     public void movePiece(Position source,Position target) throws DataAccessException{
         //errores posibles, source vacio y/o target ocupado, source.getForSpy()!=target.getForSpy()
-        source.setPlayer(null);
         target.setPlayer(source.getPlayer());
+        source.setPlayer(null);
         save(source);
         save(target);
     }
@@ -137,11 +139,11 @@ public class PositionService {
         save(position);
     }
 
-    @Transactional(readOnly = true)//habría que utilizar directamente un id, pero afecta al calculo de adyacencias
+    @Transactional(readOnly = true)
     public List<Position> getPositionsFromPath(Path path){
         return positionRepository.findAllPositionByPathId(path.getId());
     }
-    public List<Position> getPositionsFromPathId(int path_id){//test realizado
+    public List<Position> getPositionsFromPathId(int path_id){
         return positionRepository.findAllPositionByPathId(path_id);
     }
 
@@ -150,20 +152,20 @@ public class PositionService {
         return positionRepository.findAllPositionByCityId(city_id);
     }
 
-    @Transactional(readOnly = true)//test realizado
+    @Transactional(readOnly = true)
     public List<Position> getFreePositions() throws DataAccessException{
         return positionRepository.findAllPositionByPlayerIsNull();
     }
-    @Transactional(readOnly = true)//test realizado
+    @Transactional(readOnly = true)
     public List<Position> getFreeTroopPositions() throws DataAccessException{
         return positionRepository.findAllPositionsByPlayerIsNullAndForSpyFalse();
     }
-    @Transactional(readOnly = true)//test realizado
+    @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositions() throws DataAccessException{
         return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
     }
     
-    @Transactional(readOnly = true) //test realizado
+    @Transactional(readOnly = true) 
     public Position findPositionById(Integer id) {
         return positionRepository.findById2(id);
     }
