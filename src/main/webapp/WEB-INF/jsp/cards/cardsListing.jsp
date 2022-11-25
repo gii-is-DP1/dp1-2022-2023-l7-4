@@ -41,7 +41,6 @@
             </spring:url>
             <a href="${fn:escapeXml(cardUrl)}">
                 <img src="/resources/images/cardsModel.png" class="cardImage">
-            </a>
                 <div class="topTextName">
                     <b><c:out value="${card.name}" /></b>
                 </div>
@@ -58,7 +57,14 @@
                     <b><c:out value="${card.rulesText} " /></b>
                 </div>
                 <div class="topTextRarity">
-                    <b><text>Rareza: </text><c:out value="${card.rarity} " /></b>
+                    <b>
+                        <text id="t${card.id}" style="font-size: 180%;">
+                            <script>
+                                var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
+                                document.getElementById("t${card.id}").innerHTML = rarity
+                            </script>
+                        </text>
+                    </b>
                 </div>
                 <div class="topTextDeckVP">
                     <b><c:out value="${card.deckVP} " /></b>
@@ -66,6 +72,7 @@
                 <div class="topTextInnerCirclePV">
                     <b><c:out value="${card.innerCirclePV} " /></b>
                 </div>
+            </a>
         </div>
     </c:forEach>
     </div>
@@ -136,11 +143,12 @@
         }
         .topTextRarity{
             position: absolute;
-            top: 91%;
+            top: 90%;
+            width: 100%;
             font-size: 110%;
-            margin-left: 8%;
             color: aliceblue;
             font-family: "Critter";
+            text-align: center;
         }
         .topTextDeckVP{
             position: absolute;
