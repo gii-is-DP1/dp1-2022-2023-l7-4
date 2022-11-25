@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
+import org.springframework.samples.petclinic.board.position.auxiliarEntitys.PairPosition;
 import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
 import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
@@ -19,6 +21,7 @@ import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +35,7 @@ public class PositionController {
 
     private String POSITIONS_LISTING_VIEW="positions/positionsListing";
     private final String CHOOSE_POSITION_FORM_VIEW="positions/chooseOnePositionForm";
-    //cambiar a place or kill piece form view
+    private final String CHOOSE_TWO_POSITIONS_FORM_VIEW="positions/chooseTwoPositionsForm";
 
     private PositionService positionService;
     private CityService cityService;
@@ -267,8 +270,35 @@ public class PositionController {
     }
 
     @GetMapping("{playerId}/move/troop")
-    public String 
-    
+    public String initMoveTroop(@PathVariable Integer playerId,ModelMap model){
+        List<Position> movableTroopPositions=positionService.getAdjacentTroopPositionsFromPlayer(playerId,true);
+        List<Position> freeTroopPositions=positionService.getFreeTroopPositions();
+        model.put("movablePosition",movableTroopPositions);
+        model.put("freePositions",freeTroopPositions);
+        return CHOOSE_TWO_POSITIONS_FORM_VIEW;
+    }
+
+    @PostMapping("{playerId}/move/troop")
+    public String proccessMoveTroop(@Valid PairPosition pairPosition, @PathVariable Integer playerId,
+    ModelMap model,BindingResult result){
+        if(result.hasErrors()){
+            model.put("pairPosition",pairPosition);
+            model.put("message", "Eliga correctamente la tropa a mover y su posición destino");
+            return CHOOSE_TWO_POSITIONS_FORM_VIEW;
+        }
+        else{
+            Position troopToMove=positionService.findPositionById(pairPosition.getPositionSourceId());
+            Player troopOwner=troopToMove.getPlayer();
+            Player playingPlayer=playerService.getPlayerById(playerId);
+            Position newPosition=positionService.findPositionById(pairPosition.getPositionTargetId());
+            positionService.movePiece(troopToMove, newPosition);
+            String msg="El jugador "+playingPlayer.getName()
+            +" ha movido la tropa del jugador "+troopOwner.getName()
+            +" de la posición "+troopToMove.getId()+" a la posición "+newPosition.getId();
+            model.put("message", msg);
+        }
+        return "redirect:/positions";
+    }
 
     @GetMapping(value = "/{id}/occupy")
     public String occupy(@PathVariable("id") Integer id) throws DataAccessException {
