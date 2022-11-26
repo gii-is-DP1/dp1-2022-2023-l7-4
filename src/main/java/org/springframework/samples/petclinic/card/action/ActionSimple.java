@@ -1,10 +1,17 @@
 package org.springframework.samples.petclinic.card.action;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import lombok.Getter;
@@ -14,13 +21,18 @@ import lombok.Setter;
 @Setter
 @Table(name = "action_simples")
 @Entity
-public class ActionSimple extends Action{
+public class ActionSimple{
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @NotNull
+    private Integer id;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "simple_action_name_enums")
     SimpleActionNameEnum simpleActionNameEnum;
 
     @Positive
+    @NotNull
     Integer value;
 
     @Enumerated(value = EnumType.STRING)
@@ -31,5 +43,7 @@ public class ActionSimple extends Action{
     @Column(name = "entity_enums")
     SimpleEntityEnum entityEnum;
 
+    @NotNull
     Boolean presence;
+
 }
