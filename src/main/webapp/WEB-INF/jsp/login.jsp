@@ -12,7 +12,7 @@
             <label for="password">password</label>
             <input type="password" id="password" class="input" name="password">
             <box-icon name='lock-alt' ></box-icon>
-            <a class="glyphicon glyphicon-eye-open" onclick="mostrarContrasena()"></a>
+            <a class="glyphicon glyphicon-eye-open" style="text-decoration: none; cursor: pointer;" onclick="mostrarContrasena()"></a>
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -33,6 +33,7 @@
     padding: 50px;
     box-shadow: 0 11px 17px 5px #5f4b8b;
     border-radius: 50px;
+    text-decoration: none;
 }
 
 #content > h1 {

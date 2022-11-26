@@ -6,19 +6,19 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="players">
+<petclinic:layout pageName="users">
     <h2>
         Change password
     </h2>
-    <form:form modelAttribute="player" class="form-horizontal" id="add-player-form">
+    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
 
         <div class="form-group has-feedback">
             <form:input class="form-control" path="name" type="hidden"/>
             <form:input class="form-control" path="email" type="hidden"/>
             <form:input class="form-control" path="birthdate" type="hidden"/>
-            <form:input class="form-control" path="user.username" type="hidden"/>
+            <form:input class="form-control" path="username" type="hidden"/>
             <div class="password">
-            <petclinic:inputField label="Password" name="user.password" type="password"/>
+            <petclinic:inputField label="Password" name="password" type="password"/>
             <a class="glyphicon glyphicon-eye-open" id="show-pass"onclick="mostrarContrasena()"></a>
         </div>
         </div>
@@ -42,7 +42,7 @@
     </style>
     <script>
         function mostrarContrasena(){
-      const tipo = document.getElementsByName("user.password");
+      const tipo = document.getElementsByName("password");
       if(tipo[0].type == "password"){
           tipo[0].type = "text";
       }else{
