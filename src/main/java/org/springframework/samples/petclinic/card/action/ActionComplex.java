@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.samples.petclinic.card.action.enums.ComplexConditionEnum;
+
 import lombok.Getter;
 import lombok.Setter;
 

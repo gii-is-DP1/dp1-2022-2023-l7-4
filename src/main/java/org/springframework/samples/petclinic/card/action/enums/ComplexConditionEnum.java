@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.card.action;
+package org.springframework.samples.petclinic.card.action.enums;
 
 public enum ComplexConditionEnum {
     CHOOSE,

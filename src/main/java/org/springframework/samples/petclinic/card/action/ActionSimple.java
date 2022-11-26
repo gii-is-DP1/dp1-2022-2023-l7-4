@@ -14,6 +14,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import org.springframework.samples.petclinic.card.action.enums.SimpleActionNameEnum;
+import org.springframework.samples.petclinic.card.action.enums.SimpleEntityEnum;
+import org.springframework.samples.petclinic.card.action.enums.SimpleEntityStatusEnum;
+
 import lombok.Getter;
 import lombok.Setter;
 

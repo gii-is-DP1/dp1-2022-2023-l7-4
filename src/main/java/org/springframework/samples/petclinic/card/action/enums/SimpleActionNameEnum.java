@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.card.action;
+package org.springframework.samples.petclinic.card.action.enums;
 
 public enum SimpleActionNameEnum {
     DEPLOY,
@@ -7,5 +7,8 @@ public enum SimpleActionNameEnum {
     ASSESSINATE,
     SUPPLANT,
     RETURN,
-    RESOURCES
+    RESOURCES,
+    MOVE;
+
+    
 }
