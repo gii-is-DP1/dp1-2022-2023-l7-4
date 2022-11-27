@@ -4,7 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-
 <petclinic:layout pageName="actions">
     <h2>Actions</h2>    
     <table id="actionsTable" class="table table-striped">
@@ -24,16 +23,19 @@
                     <c:out value="${action.isSimple== true? 'Yes':'No'}"/>
                 </td>
                 <td>
-                    <c:out value="${action.simpleActionEnum}"/>
+                    <c:out value="${action.simpleActionNameEnum}"/>
                 </td>
                 <td>
-                    <c:out value="${action.conditionEnum.name}"/>
+                    <c:out value="${action.complexConditionEnum}"/>
                 </td>
                 <td>
                     <c:out value="${action.value}"/>
                 </td>
                 <td>
                     <c:out value="${action.entityStatusEnum}"/>
+                </td>
+                <td>
+                    <c:out value="${action.entityEnum}"/>
                 </td>
                 <td>
                     <c:out value="${action.myActionSons}"/>
@@ -43,6 +45,9 @@
                 </td>
                 <td>
                     <c:out value="${action.presence}"/>
+                </td>
+                <td>
+                    <c:out value="${action}" escapeXml="false"/>
                 </td>
 
                 

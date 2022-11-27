@@ -26,7 +26,7 @@ public class ActionController {
 
     @GetMapping("")
     public ModelAndView showAllActions(){
-        ModelAndView result=new ModelAndView();
+        ModelAndView result=new ModelAndView(ACTION_LISTING);
         result.addObject("actions", actionService.getAllActions());
         return result;
     }

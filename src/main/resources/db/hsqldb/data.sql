@@ -101,12 +101,16 @@ INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,h
 
 --INSERT INTO action_simples(id,simple_action_name_enums,value,entity_status_enums,entity_enums,presence) VALUES (1,0,1,0,0,TRUE)
 
-INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (1,0,0,1,0,0,TRUE);
-INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (2,1,0,1,0,0,TRUE);
-INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (3,0,0,1,0,0,FALSE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (1,'CHOOSE','MOVE',1,'ENEMY','TROOP',TRUE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (2,'AND','KILL',2,'ENEMY','TROOP',TRUE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (3,'THEN','PLACE',1,'ALLIED','SPY',FALSE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (4,'AND','PLACE',1,'ALLIED','SPY',FALSE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (5,'THEN','RESOURCES',1,null,'POWER',FALSE);
 
 INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (1,2);
 INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (2,3);
+INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (1,4);
+INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (1,5);
 
 
 -- DATOS PARA PRUEBA, OJO, PARA LOS TEST, TENEIS QUE UTILIZAR LOS DATOS DE AQUI, NO VALEN LOS AUTOGENERADOS
