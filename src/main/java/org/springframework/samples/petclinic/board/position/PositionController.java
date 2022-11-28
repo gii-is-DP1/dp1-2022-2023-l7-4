@@ -67,22 +67,23 @@ public class PositionController {
         result.addObject("freePositions", positionService.getFreePositions());
         return result;
     }
-    @GetMapping("{playerId}/place/troop/{reachable}")
+    @GetMapping("{playerId}/place/troop/{reachable}/{num}")
     public ModelAndView initPlaceTroopForm(@PathVariable("reachable") Boolean reachable
-    ,@PathVariable("playerId") Integer playerId){
+    ,@PathVariable("playerId") Integer playerId,@PathVariable Integer num){
         ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
         if(reachable)
             result.addObject("availablePositions"
             , positionService.getAdjacentTroopPositionsFromPlayer(playerId,false));
         else
             result.addObject("availablePositions",positionService.getFreeTroopPositions());
+        result.addObject("num", num);
         return result;
     }
 
-    @PostMapping("{playerId}/place/troop/{reachable}")
+    @PostMapping("{playerId}/place/troop/{reachable}/{num}")
     public ModelAndView processPlaceTroopForm(@Valid Idposition idpos,BindingResult br,
     @PathVariable("reachable") Boolean reachable
-    ,@PathVariable("playerId") Integer playerId){
+    ,@PathVariable("playerId") Integer playerId,@PathVariable Integer num){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -95,8 +96,10 @@ public class PositionController {
                 Player player=this.playerService.getPlayerById(playerId);
                 this.positionService.occupyTroopPosition(position, player,reachable);
                 String msg="Posicion "+position.getId()+" ocupada por jugador "+player.getName();
-                res=showPositions();
-                res.addObject("message", msg);
+                num--; 
+                res=num<1?new ModelAndView("redirect:/positions")
+                :new ModelAndView("redirect:/positions/"+playerId+"/place/troop/"+reachable+"/"+num);
+                //res.addObject("message", msg);
             }catch(OccupiedPositionException e){
                 br.rejectValue("position","occupied","already occupy");
                 res=errorRes;
