@@ -8,6 +8,9 @@ INSERT INTO authorities(id,username,authority) VALUES (10,'daviddhc','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('anddomrui','hola3',TRUE, 'Andres', 'andres@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
+
 -- CITIES
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'EL LABERINTO',3,TRUE,1);
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
