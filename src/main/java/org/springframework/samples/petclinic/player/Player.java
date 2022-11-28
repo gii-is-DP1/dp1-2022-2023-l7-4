@@ -71,10 +71,6 @@ public class Player{
     
     @Override
     public String toString() {
-        return "Player [id=" + id + ", name=" + name 
-        + ", email=" + email + ", birthdate=" + birthdate 
-        + ", user=" + user + ", troops=" + troops 
-        + ", spies=" + spies + ", trophyPV=" + trophyPV
-                + "]";
+        return "ply_"+id +": "+ name;
     }
 }

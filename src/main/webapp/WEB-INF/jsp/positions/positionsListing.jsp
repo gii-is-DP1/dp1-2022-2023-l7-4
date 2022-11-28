@@ -23,6 +23,8 @@ window.onbeforeunload = function(e) {
         <thead>
         <tr>
             <th>Id</th>
+            <th>Controlled By</th>
+            <th>Totally Controlled By</th>
             <th>Capacity</th>
             <th>Zone</th>
             <th>VP</th>
@@ -34,6 +36,12 @@ window.onbeforeunload = function(e) {
             <tr>
                 <td>
                     <c:out value="${city.id}"/>
+                </td> 
+                <td>
+                    <c:out value="${city.whoControls()}"/>
+                </td>
+                <td>
+                    <c:out value="${city.whoTotallyControls()}"/>
                 </td>
                 <td>
                     <c:out value="${city.capacity}"/>

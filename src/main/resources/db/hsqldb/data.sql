@@ -25,7 +25,7 @@ INSERT INTO authorities(id,username,authority) VALUES (8,'daviddhc','player');
 
 
 -- CITIES
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'EL LABERINTO',3,TRUE,1);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (4,'EL LABERINTO',3,TRUE,1);
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'GRACKLSTUGH',6,FALSE,3);
 

@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name = "positions")
 @Entity
 public class Position{
-    // @NotBlank
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
@@ -39,7 +39,6 @@ public class Position{
         return player!=null;
     }
 
-    //RN- una posicion o pertenece a una ciudad o pertenece a un camino
 
     @ManyToOne(optional=true)
     @JoinColumn(name="city_id")
@@ -78,10 +77,7 @@ public class Position{
     public String toString() {
         return ""+id ;
     }
-    public void checkSector(Integer city_id,Integer path_id){
-        if(city_id!=null & path_id!=null)
-            throw new IllegalAccessError("No puedes asignar una posición a 2 sectores a la vez");
-    }
+
 
     public Position() {
         this.player= null;
