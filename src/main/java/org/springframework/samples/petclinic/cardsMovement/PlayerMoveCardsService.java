@@ -26,13 +26,6 @@ public class PlayerMoveCardsService {
 
 	//TODO Movimientos de cartas internas de market y de market a player
 
-	/**
-	 * Cuando empieza una partida los jugadores empiezan con 7 nobles y 3 soldados en su deck
-	 * @param game
-	 */
-	public void initCardsInPlayers(Game game) {
-		game.getPlayers().forEach(player -> initCardsInPlayer(game, player));
-	}
 
 	public void drawFromDeckToHand(Player player, Integer numberOfCard){
 		moveAndSave(player.getDeck(), player.getHand(), player);
@@ -87,17 +80,7 @@ public class PlayerMoveCardsService {
 		}
 	}
 
-	//TODO Poner los Ids de noble y soldado
-	private void initCardsInPlayer(Game game, Player player) {
-		Card noble = cardService.getCardById(41);
-		Card soldier = cardService.getCardById(42);
 
-		List<Card> deck = Collections.nCopies(7, noble);
-		deck.addAll(Collections.nCopies(3, soldier));
-
-		player.setDeck(deck);
-		playerService.savePlayer(player);
-	}
 
 	private Integer randomBetween(Integer min, Integer max) {
 		return (int) ((Math.random() * (max - min)) + min);
