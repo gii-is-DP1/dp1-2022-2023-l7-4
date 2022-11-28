@@ -106,6 +106,8 @@ INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_statu
 INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (3,'THEN','PLACE',1,'ALLIED','SPY',FALSE);
 INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (4,'AND','PLACE',1,'ALLIED','SPY',FALSE);
 INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (5,'THEN','RESOURCES',1,null,'POWER',FALSE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (6,null,'PLACE',1,'ALLIED','SPY',FALSE);
+
 
 INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (1,2);
 INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (2,3);

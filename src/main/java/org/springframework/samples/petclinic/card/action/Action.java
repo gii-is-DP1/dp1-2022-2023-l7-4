@@ -101,7 +101,7 @@ public class Action {
     //sin acabar
     public String chooseToString(Integer n){
         String res=n>1?"Elige "+n+" veces:":"Elige "+n+" vez: <br>";
-        res=res+"-"+getActionToString()+"<br>"; //\n aplica un salto de linea
+        res=res+"-"+getActionToString()+"<br>"; //<br> aplica un salto de linea si en el jsp esta puesto xmlexample=false
         if(!getIsSimple()){
             for(int i=0;i<myActionSons.size();i++){
                 res+="-"+myActionSons.get(i).toString()+"<br>";
