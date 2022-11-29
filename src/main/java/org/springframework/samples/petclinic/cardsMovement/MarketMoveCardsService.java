@@ -15,17 +15,18 @@ public class MarketMoveCardsService {
 	private GameService gameService;
 
 
-    public void moveCardToSellZone(@Valid Card card,@Valid Game game){
+    public void moveFromGameDeckToSellZone(@Valid Card card,@Valid Game game){
         List<Card> gameDeck = game.getGameDeck();
         if(gameDeck.isEmpty()){
             // TODO end of game in the next round. Turn.conditionToFinish = true
-        }
-        moveCardAndSave(card,gameDeck,game.getSellZone(),game);      
+        } else{
+        moveCardAndSave(card,gameDeck,game.getSellZone(),game);   
+        }   
     }
 
     public void devourCardFromSellZone(@Valid Card card,@Valid Game game){
         moveCardAndSave(card,game.getSellZone(),game.getDevoured(),game);
-        moveCardToSellZone(card, game);
+        moveFromGameDeckToSellZone(card, game);
     }
     
     
