@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -70,19 +71,34 @@ public class Player{
     @Min(0)
     private int trophyPV=0;
 
-    @ManyToMany
+    @ManyToMany()
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
     private List<Card> deck =  new ArrayList<>();
 
     @ManyToMany
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
     private List<Card> hand = new ArrayList<>(); 
 
     @ManyToMany
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
     private List<Card> played = new ArrayList<>(); 
 
     @ManyToMany
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
     private List<Card> discardPile = new ArrayList<>(); 
 
     @ManyToMany
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
     private List<Card> innerCircle = new ArrayList<>(); 
     
 
