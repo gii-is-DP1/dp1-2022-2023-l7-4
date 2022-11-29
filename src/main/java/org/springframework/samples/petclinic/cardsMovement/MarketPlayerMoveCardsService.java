@@ -16,27 +16,23 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MarketPlayerMoveCardsService {
+    
     @Autowired
     private PlayerService playerService;
 
-	@Autowired
-	private CardServiceRepo cardService;
-	
 	@Autowired
 	private GameService gameService;
 
 
     /**
-     * <pre>
      * takes a selected card form market and inserts into players hand
      * checks if card is in sellzone and if player has enough influence 
-     * </pre>
      * @param card
      * @param game
      * @param player
-     * @throws Exception
+     * @throws Exception if card is not in sellzone, if player has not enough influence
      */
-    private void buyCard(Card card, Player player) throws Exception{
+    public void buyCard(Card card, Player player) throws Exception{
         Game game = player.getGame();
         int playerInfluence =player.getInfluence();
         int cardCost= card.getCost();
