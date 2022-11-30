@@ -164,6 +164,16 @@ public class PositionService {
     public List<Position> getFreeSpyPositions() throws DataAccessException{
         return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
     }
+
+    @Transactional(readOnly = true)
+    public List<Position> getFreeSpyPositionsForPlayer(Integer player_id){
+        List<Position> spyPositionsFromPlayer=positionRepository.findAllPositionByPlayerIdAndForSpyTrue(player_id);
+        List<City> citiesWithSpiesOfPlayer=spyPositionsFromPlayer.stream().map(position->position.getCity())
+        .filter(city->city!=null).distinct().collect(Collectors.toList());
+        return getFreeSpyPositions().stream()
+        .filter(position->!citiesWithSpiesOfPlayer.contains(position.getCity())).collect(Collectors.toList());
+
+    }
     
     @Transactional(readOnly = true) 
     public Position findPositionById(Integer id) {
@@ -190,7 +200,13 @@ public class PositionService {
         List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
         return positions.stream().filter(pos->pos.getForSpy()==false).collect(Collectors.toList());
     }
-
+    @Transactional(readOnly = true)
+    public List<Position> getAdjacentSpyPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
+        List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
+        return positions.stream().filter(pos->pos.getForSpy()).collect(Collectors.toList());
+    }
+    //cuando se determine el id de player para las piezas blancas,
+    // añadir parámetro para indicar si buscas todos, los blancos o los de otro jugador
     @Transactional(readOnly = true)
     public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy,Boolean searchForAll){
         List<Position> res=null;

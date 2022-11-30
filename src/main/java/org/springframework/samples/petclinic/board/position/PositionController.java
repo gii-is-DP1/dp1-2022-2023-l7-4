@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.board.position;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -67,23 +68,25 @@ public class PositionController {
         result.addObject("freePositions", positionService.getFreePositions());
         return result;
     }
-    @GetMapping("{playerId}/place/troop/{reachable}/{num}")
+    //al poner num en negativo no se puede romper, pero hay que convertir los valores negativos en positivo
+    @GetMapping("{playerId}/place/troop/{reachable}/{numberOfRemainingMoves}")
     public ModelAndView initPlaceTroopForm(@PathVariable("reachable") Boolean reachable
-    ,@PathVariable("playerId") Integer playerId,@PathVariable Integer num){
+    ,@PathVariable("playerId") Integer playerId,@PathVariable Integer numberOfRemainingMoves){
         ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
         if(reachable)
             result.addObject("availablePositions"
             , positionService.getAdjacentTroopPositionsFromPlayer(playerId,false));
         else
             result.addObject("availablePositions",positionService.getFreeTroopPositions());
-        result.addObject("num", num);
+        //result.addObject("helper", "")
+        result.addObject("numberOfRemainingMoves", numberOfRemainingMoves);
         return result;
     }
 
-    @PostMapping("{playerId}/place/troop/{reachable}/{num}")
+    @PostMapping("{playerId}/place/troop/{reachable}/{numberOfRemainingMoves}")
     public ModelAndView processPlaceTroopForm(@Valid Idposition idpos,BindingResult br,
     @PathVariable("reachable") Boolean reachable
-    ,@PathVariable("playerId") Integer playerId,@PathVariable Integer num){
+    ,@PathVariable("playerId") Integer playerId,@PathVariable Integer numberOfRemainingMoves){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -96,9 +99,9 @@ public class PositionController {
                 Player player=this.playerService.getPlayerById(playerId);
                 this.positionService.occupyTroopPosition(position, player,reachable);
                 String msg="Posicion "+position.getId()+" ocupada por jugador "+player.getName();
-                num--; 
-                res=num<1?new ModelAndView("redirect:/positions")
-                :new ModelAndView("redirect:/positions/"+playerId+"/place/troop/"+reachable+"/"+num);
+                numberOfRemainingMoves--; 
+                res=numberOfRemainingMoves<1?new ModelAndView("redirect:/positions")
+                :new ModelAndView("redirect:/positions/"+playerId+"/place/troop/"+reachable+"/"+numberOfRemainingMoves);
                 //res.addObject("message", msg);
             }catch(OccupiedPositionException e){
                 br.rejectValue("position","occupied","already occupy");
@@ -116,16 +119,17 @@ public class PositionController {
 
     }
 
-    @GetMapping("{playerId}/place/spy")
-    public ModelAndView initPlaceSpyForm(@PathVariable("playerId") Integer playerId){
+    @GetMapping("{playerId}/place/spy/{numberOfRemainingMoves}")
+    public ModelAndView initPlaceSpyForm(@PathVariable("playerId") Integer playerId,@PathVariable Integer numberOfRemainingMoves){
         ModelAndView result=new ModelAndView(CHOOSE_POSITION_FORM_VIEW); 
-        result.addObject("availablePositions",positionService.getFreeSpyPositions());
+        result.addObject("availablePositions",positionService.getFreeSpyPositionsForPlayer(playerId));
+        result.addObject("numberOfRemainingMoves", numberOfRemainingMoves);
         return result;
     }
 
-    @PostMapping("{playerId}/place/spy")
+    @PostMapping("{playerId}/place/spy/{numberOfRemainingMoves}")
     public ModelAndView processPlaceSpyForm(@Valid Idposition idposition
-    ,BindingResult br,@PathVariable("playerId") Integer playerId){
+    ,BindingResult br,@PathVariable("playerId") Integer playerId,@PathVariable Integer numberOfRemainingMoves){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -136,9 +140,10 @@ public class PositionController {
                 Position position= positionService.findPositionById(idposition.getId());
                 Player player=this.playerService.getPlayerById(playerId);
                 this.positionService.occupySpyPosition(position, player);
-                String msg="Posicion "+position.getId()+" ocupada por jugador "+player.getName();
-                res=showPositions();
-                res.addObject("message", msg);
+                numberOfRemainingMoves--;
+                //al crear nuevos modelandview con redirect, evito que la url no se actualice
+                res=numberOfRemainingMoves<1?new ModelAndView("redirect:/positions"):
+                new ModelAndView("redirect:/positions/"+playerId+"/place/spy/"+numberOfRemainingMoves);
             }catch(MoreThanOnePlayerSpyInSameCity e){
                 br.rejectValue("position","more than one spy","only one player spy for one city");
                 res=errorRes;

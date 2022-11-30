@@ -24,6 +24,8 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
 
     List<Position> findAllPositionByPathId(int path_id);
 
+    List<Position> findAllPositionByPlayerIdAndForSpyTrue(Integer player_id);
+
 
     List<Position> findAllPositionByCityId(int city_id) throws DataAccessException;
 
@@ -34,7 +36,7 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
 
 
     @Query("SELECT p FROM Position p WHERE p.forSpy IS TRUE AND p.player.id = ?1 AND p.path IS NULL AND p.city.id = ?2")
-    List<Position> findAnySpyOfAPlayerInACity(int id1,int id2);
+    List<Position> findAnySpyOfAPlayerInACity(int player_id,int city_id);
 
     @Query("select p from Position p")
     List<Position> findAll();
