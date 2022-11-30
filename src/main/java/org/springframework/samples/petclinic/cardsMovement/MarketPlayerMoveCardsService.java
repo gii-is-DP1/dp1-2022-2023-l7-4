@@ -1,13 +1,8 @@
 package org.springframework.samples.petclinic.cardsMovement;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.card.Card;
-import org.springframework.samples.petclinic.card.CardServiceRepo;
 import org.springframework.samples.petclinic.checkers.CheckCardMovement;
-import org.springframework.samples.petclinic.checkers.Preconditions;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
@@ -42,7 +37,7 @@ public class MarketPlayerMoveCardsService {
         
         
         game.getSellZone().remove(card);
-        player.getHand().add(card);
+        player.getDiscardPile().add(card);
         player.setInfluence(playerInfluence-cardCost);
         gameService.saveGame(game);
         playerService.savePlayer(player);
