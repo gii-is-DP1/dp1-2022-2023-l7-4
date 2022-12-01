@@ -1,5 +1,9 @@
 package org.springframework.samples.petclinic.cardsMovement;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.checkers.CheckCardMovement;
@@ -34,13 +38,19 @@ public class MarketPlayerMoveCardsService {
 
         CheckCardMovement.sellZoneContainsCard(game.getSellZone(),card);
         CheckCardMovement.playerHasEnoughInfluenceToBuyCard(playerInfluence,cardCost);
-        
-        
-        game.getSellZone().remove(card);
-        player.getDiscardPile().add(card);
+ 
+        moveSelectedCard(card, game.getSellZone(), player.getDiscardPile(), player);
         player.setInfluence(playerInfluence-cardCost);
-        gameService.saveGame(game);
         playerService.savePlayer(player);
+        gameService.saveGame(game);
+    }
+
+
+
+    // private methods
+    private void moveSelectedCard(Card card, List<Card> source, List<Card> target, @Valid Player player) {
+        source.remove(card);
+        target.add(card);
     }
 
 
