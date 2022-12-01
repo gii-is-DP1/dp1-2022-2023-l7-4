@@ -180,10 +180,21 @@ public class PositionService {
         return positionRepository.findById2(id);
     }
     
-    @Transactional(readOnly = true)//test realizado
+    @Transactional(readOnly = true)
     public List<Position> getPlayerPositions(Integer player_id){
         return positionRepository.findAllPositionByPlayerId(player_id);
     }
+    //he puesto que busca por el jugador 0, pero si es otro jugador, hay que cambiar
+    @Transactional(readOnly = true)
+    public List<Position> getWhiteTroopsPositions(){
+        return positionRepository.findAllWhiteTroopPositions();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getEnemiesPlayersTroopPositionsOfPlayer(Integer player_id){
+        return positionRepository.findAllEnemiesPlayersTroopPositionsOfPlayer(player_id);
+    }
+
     @Transactional(readOnly = true)
     public List<Position> getAdjacentPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
         List<Position> myPos=getPlayerPositions(player_id);

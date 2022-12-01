@@ -40,4 +40,10 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
 
     @Query("select p from Position p")
     List<Position> findAll();
+
+    @Query("SELECT p FROM Position p WHERE p.player.id=1 AND p.forSpy IS FALSE")
+    List<Position> findAllWhiteTroopPositions();
+
+    @Query("SELECT p FROM Position p WHERE p.player.id !=1 AND p.forSpy IS TRUE AND p.player.id != ?1")
+    List<Position> findAllEnemiesPlayersTroopPositionsOfPlayer(Integer player_id);
 }
