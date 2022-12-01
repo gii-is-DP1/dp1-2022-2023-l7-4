@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.board.position;
 
 
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,16 +185,7 @@ public class PositionService {
     public List<Position> getPlayerPositions(Integer player_id){
         return positionRepository.findAllPositionByPlayerId(player_id);
     }
-    //he puesto que busca por el jugador 0, pero si es otro jugador, hay que cambiar
-    @Transactional(readOnly = true)
-    public List<Position> getWhiteTroopsPositions(){
-        return positionRepository.findAllWhiteTroopPositions();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Position> getEnemiesPlayersTroopPositionsOfPlayer(Integer player_id){
-        return positionRepository.findAllEnemiesPlayersTroopPositionsOfPlayer(player_id);
-    }
+    
 
     @Transactional(readOnly = true)
     public List<Position> getAdjacentPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
@@ -216,30 +208,47 @@ public class PositionService {
         List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
         return positions.stream().filter(pos->pos.getForSpy()).collect(Collectors.toList());
     }
-    //cuando se determine el id de player para las piezas blancas,
-    // añadir parámetro para indicar si buscas todos, los blancos o los de otro jugador
+    /**
+     * 
+     * <p>----------<p>
+     * Dado el id de un jugador, el tipo de pieza que buscas, si utilizas presencia y según el tipo de enemigo
+     * que buscas, esto generará todas las posiciones enemigas según un jugador
+     * @param player_id
+     * @param forSpy
+     * @param useAdjacency
+     * @param searchWhites : si es null, buscará todas las piezas enemigas, si no:
+     *      -true: buscará sólo piezas blancas
+     *      -false: buscará sólo piezas de otros jugadores que no sean blancas
+     */
     @Transactional(readOnly = true)
-    public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy,Boolean searchForAll){
+    public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy
+    ,Boolean useAdjacency,Boolean searchWhites){
         List<Position> res=null;
-        if(searchForAll)
+        if(useAdjacency)
             res= positionRepository
             .findAllEnemyPositionsByType(player_id,forSpy);
         else{
             res=getAdjacentPositionsFromPlayer(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
         }
+        if(searchWhites!=null)//si esto es null, entonces busca todos los enemigos, sino, 
+            res.stream()
+            .filter(pos->(searchWhites & pos.getPlayer().getId()==1)
+             || (!searchWhites & pos.getPlayer().getId()!=1)).collect(Collectors.toList());
         return res;
     }
 
     @Transactional(readOnly = true)
     public List<Position> getAllEnemyTroopsForPlayer(Integer player_id){
-        return getEnemyPositionsByType(player_id, false, true);
+        return getEnemyPositionsByType(player_id, false, true,null);
     }
 
     @Transactional(readOnly = true)
     public List<Position> getAllEnemySpiesForPlayer(Integer player_id){
-        return getEnemyPositionsByType(player_id, true, true);
+        return getEnemyPositionsByType(player_id, true, true,null);
     }
+
+
 
 
     /**
