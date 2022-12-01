@@ -81,6 +81,11 @@
 					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 					<span>Games</span>
 				</petclinic:menuItem>
+				<petclinic:menuItem active="${name eq 'actions'}" url="/actions"
+					title="actions">
+					<span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+					<span>Actions</span>
+				</petclinic:menuItem>
 			</ul>
 
 
@@ -90,7 +95,7 @@
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
 					<!-- <li><a href="<c:url value="/users/new" />">Register</a></li> -->
-					<li><a href="<c:url value="/player/new" />">Register as player</a></li>
+					<li><a href="<c:url value="/user/new" />">Register as player</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"

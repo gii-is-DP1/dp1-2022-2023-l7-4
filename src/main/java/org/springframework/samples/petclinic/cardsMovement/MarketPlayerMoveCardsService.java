@@ -1,13 +1,12 @@
 package org.springframework.samples.petclinic.cardsMovement;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.card.Card;
-import org.springframework.samples.petclinic.card.CardServiceRepo;
 import org.springframework.samples.petclinic.checkers.CheckCardMovement;
-import org.springframework.samples.petclinic.checkers.Preconditions;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
@@ -16,40 +15,42 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MarketPlayerMoveCardsService {
+    
     @Autowired
     private PlayerService playerService;
 
-	@Autowired
-	private CardServiceRepo cardService;
-	
 	@Autowired
 	private GameService gameService;
 
 
     /**
-     * <pre>
      * takes a selected card form market and inserts into players hand
      * checks if card is in sellzone and if player has enough influence 
-     * </pre>
      * @param card
      * @param game
      * @param player
-     * @throws Exception
+     * @throws Exception if card is not in sellzone, if player has not enough influence
      */
-    private void buyCard(Card card, Player player) throws Exception{
+    public void buyCard(Card card, Player player) throws Exception{
         Game game = player.getGame();
         int playerInfluence =player.getInfluence();
         int cardCost= card.getCost();
 
         CheckCardMovement.sellZoneContainsCard(game.getSellZone(),card);
         CheckCardMovement.playerHasEnoughInfluenceToBuyCard(playerInfluence,cardCost);
-        
-        
-        game.getSellZone().remove(card);
-        player.getHand().add(card);
+ 
+        moveSelectedCard(card, game.getSellZone(), player.getDiscardPile(), player);
         player.setInfluence(playerInfluence-cardCost);
-        gameService.saveGame(game);
         playerService.savePlayer(player);
+        gameService.saveGame(game);
+    }
+
+
+
+    // private methods
+    private void moveSelectedCard(Card card, List<Card> source, List<Card> target, @Valid Player player) {
+        source.remove(card);
+        target.add(card);
     }
 
 

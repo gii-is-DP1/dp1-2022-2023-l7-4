@@ -17,7 +17,7 @@ public class Preconditions {
      * @param args
      * @throws Exception
      */
-    public void FormattedError(String format, Object... args) throws Exception{
+    public void formattedError(String format, Object... args) throws Exception{
         if(!this.condition) throw new Exception(String.format(format,args));
     }
   /**
