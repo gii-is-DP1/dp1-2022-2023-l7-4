@@ -26,6 +26,9 @@ public class PlayerMoveCardsService {
 	}
 	
 	public void drawFromDeckToHand(Integer numberOfCard,Player player) throws Exception{
+		if(player.getDeck().size()<numberOfCard){
+			moveAllDiscardedToDeck(player);
+		}
 		moveNCardsRandomAndSave(numberOfCard, player.getDeck(), player.getHand(), player);
 	}
 
