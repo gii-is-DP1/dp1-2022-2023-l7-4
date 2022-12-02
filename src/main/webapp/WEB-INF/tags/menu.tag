@@ -68,18 +68,23 @@
 					<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
 					<span>Cartas y mazos</span>
 				</petclinic:menuItem>
-				
-				<sec:authorize url="/players">
-				<petclinic:menuItem active="${name eq 'players'}" url="/players/list"
-					title="players">
+				<sec:authorize url="/users">
+				<petclinic:menuItem active="${name eq 'users'}" url="/users/list"
+					title="users">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-					<span>Players</span>
+					<span>Users</span>
 				</petclinic:menuItem>
 			    </sec:authorize>
+
 				<petclinic:menuItem active="${name eq 'games'}" url="/games/list"
 					title="games">
 					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 					<span>Games</span>
+				</petclinic:menuItem>
+				<petclinic:menuItem active="${name eq 'actions'}" url="/actions"
+					title="actions">
+					<span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+					<span>Actions</span>
 				</petclinic:menuItem>
 			</ul>
 
@@ -90,7 +95,7 @@
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
 					<!-- <li><a href="<c:url value="/users/new" />">Register</a></li> -->
-					<li><a href="<c:url value="/player/new" />">Register as player</a></li>
+					<li><a href="<c:url value="/user/new" />">Register as player</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -126,7 +131,7 @@
 										<div class="col-lg-12">
 											<p>
 												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">My Profile</a>
-												<a href="<c:url value="/myprofile/changepassword" />" class="btn btn-danger btn-block">Change
+												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Change
 													Password</a>
 											</p>
 										</div>

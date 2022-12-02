@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.js"></script>
 <style>
 
 </style>
@@ -13,16 +14,14 @@
   <svg id="graph" style="background-color: rgb(39, 11, 65)"></svg>
   </div>
   <script>
-  
 
-    let x=[]
+    let cities=[]
     let y=[]
   </script>
 <c:forEach items="${cities}" var="city">
   <c:out value="${city.name}"/>
   <script>
-    // x['"${city.id}"']="${city.name}"
-    x.push({ 
+    cities.push({ 
       id: parseInt("${city.id}")  ,
       name: "${city.name}",
       zone: parseInt("${city.zone}"),
@@ -56,7 +55,6 @@
 
 
 <script>
-  console.log(x)
   console.log(y)
   let html = "<div><h2>Mapa Interactivo</h2></div>";
 
@@ -73,7 +71,7 @@
   const network = {}
 
 
-  network.nodes = x;
+  network.nodes = cities;
   network.links = y;
   const positionColor =null;
   const lineWidth = 4;
@@ -190,7 +188,7 @@
       var cityG = node.append("g").attr("class", (d)=>d.name);
      
   var image = cityG.append("svg:image")
-        .attr("xlink:href", "/resources/images/white_city.png")
+        .attr("xlink:href", (d)=>d.isStartingCity?"/resources/images/starting_city.png":"/resources/images/white_city.png")
         .attr("class", "img")
         .attr("id",function(d){"c"+d.id})
         .attr("x",  -60)
@@ -213,7 +211,7 @@
       .text(function(d) {
         return d.name;
       })
-      .attr('fill' , "black")
+      .attr('fill' ,  (d)=>{return d.isStartingCity?"#fff":"#000" })
   		.attr("text-anchor", "middle")
   		.attr("font-size", 10)
   		.attr('y', -20);
@@ -222,7 +220,7 @@
       .text(function(d) {
         return d.vp;
       })
-      .attr('fill' , (d)=>{d.isStartingCity?"#fff":"#000" })
+      .attr('fill' , (d)=>{return d.isStartingCity?"#fff":"#000" })
   		.attr("text-anchor", "middle")
   		.attr('x', 40)
       .attr("y",30);
@@ -238,13 +236,35 @@
       .force("center", d3.forceCenter(width / 2, height / 2)
       .strength(forceStrength));
 
-      positionsInCity(network.nodes,cityG)
-      async function positionsInCity(cities,cityG){
-        for (let index = 0; index < cities.length; index++) {
-          const city = cities[index];
-          await addPositionsToCity(city,cityG)  
-        } 
+      for (let i = 0; i < cities.length; i++) {
+        var city = cities[i]
+        var gg=".cityG"+city.id
+        var singlecity = d3.select(gg)
+        let capacity = city.capacity
+        for (let positionIndex = 0; positionIndex < capacity; positionIndex++) {
+          const color = city.isStartingCity?"#fff":"#000"  
+          var position = singlecity.append("circle")
+        .attr("r", positionRadius)
+        .attr("stroke" , lineColor)
+        .attr("stroke-width","1")
+        .attr("fill",color)
+        .attr("cx",(()=>{
+          let c = city.capacity
+          let r = positionRadius
+          let i = positionIndex
+          console.log(city.name)
+          console.log("c:"+c)
+          console.log("i"+i)
+          return (i*2*r)-((c-1)*r)
+          // return positionIndex*50
+
+        }))
+        .attr("cy",0)
+      
       }
+      }
+
+
   // var circle = circleG.append("circle") 
   //     .attr("r", circleRadius)
   //     .attr("fill", nodeColor); 

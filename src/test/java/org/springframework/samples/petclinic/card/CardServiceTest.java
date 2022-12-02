@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 class CardServiceTest {
 
     @Autowired
-    protected CardService cardService;
+    protected CardServiceRepo cardService;
 
     @Test
     public void shouldFindCardById() {

@@ -7,12 +7,15 @@
 
 <petclinic:layout pageName="game">
     <h2>Games</h2>
+    <a class="btn btn-default" href='<spring:url value="/games/find" htmlEscape="true"/>'>Find a game</a>
+    <a class="btn btn-default" href='<spring:url value="/games/create" htmlEscape="true"/>'>Crear una partida</a>
 
     <table id="gameTable" class="table table-striped">
         <thead>
         <tr>
             <th style="width: 150px;">Name</th>
             <th style="width: 200px;">Size</th>
+            <th style="width: 100px;"></th>
         </tr>
         </thead>
         <tbody>
@@ -27,6 +30,18 @@
                 <td>
                     <c:out value="${game.size}"/>
                 </td>
+                <td>
+                    <c:choose>
+                        <c:when test="${game.isFinished=='FALSE'}">
+                        <div id="greenball"></div>
+                        <br />
+                        </c:when>    
+                         <c:otherwise>
+                             <div id="redball"></div>
+                            <br />
+                        </c:otherwise>
+                    </c:choose>
+                </td>
 
                 
             </tr>
@@ -34,5 +49,21 @@
         </tbody>
     </table>
 
-    <a class="btn btn-default" href='<spring:url value="/games/find" htmlEscape="true"/>'>Find a game</a>
+    
 </petclinic:layout>
+<style>
+    #redball{
+        background-color: red;
+        width: 10px;
+        height: 10px;
+        box-shadow: 0px 0px 10px darkred;
+        border-radius: 50%;
+    }
+    #greenball{
+        background-color: green;
+        width: 10px;
+        height: 10px;
+        box-shadow: 0px 0px 10px darkgreen;
+        border-radius: 50%;
+    }
+</style>

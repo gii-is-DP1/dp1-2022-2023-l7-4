@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CardService {
+public class CardServiceRepo {
     
     CardRepository cardRepository;
 
     @Autowired
-    public CardService(CardRepository cardRepository){
+    public CardServiceRepo(CardRepository cardRepository){
         this.cardRepository = cardRepository;
     }
 

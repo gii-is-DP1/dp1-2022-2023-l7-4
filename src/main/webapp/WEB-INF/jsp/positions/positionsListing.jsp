@@ -23,6 +23,8 @@ window.onbeforeunload = function(e) {
         <thead>
         <tr>
             <th>Id</th>
+            <th>Controlled By</th>
+            <th>Totally Controlled By</th>
             <th>Capacity</th>
             <th>Zone</th>
             <th>VP</th>
@@ -34,6 +36,12 @@ window.onbeforeunload = function(e) {
             <tr>
                 <td>
                     <c:out value="${city.id}"/>
+                </td> 
+                <td>
+                    <c:out value="${city.whoControls()}"/>
+                </td>
+                <td>
+                    <c:out value="${city.whoTotallyControls()}"/>
                 </td>
                 <td>
                     <c:out value="${city.capacity}"/>
@@ -133,33 +141,33 @@ window.onbeforeunload = function(e) {
     <body>
 
         <div class="container-button">
-            <a href='<c:url value="/positions/1/place/troop/false"/>' >
+            <a href='<c:url value="/positions/1/place/troop/false/1"/>' >
                 <div class="aBotton">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 1</div></div>
                     </div>
 			</a><br>
-            <a href='<c:url value="/positions/2/place/troop/false"/>' >
+            <a href='<c:url value="/positions/2/place/troop/false/1"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 2</div></div>
                     </div>
 			</a><br>
-            <a href='<c:url value="/positions/1/place/troop/true"/>' >
+            <a href='<c:url value="/positions/1/place/troop/true/1"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 1 CON PRESENCIA</div></div>
                     </div>
 			    </a><br>
-            <a href='<c:url value="/positions/2/place/troop/true"/>' >
+            <a href='<c:url value="/positions/2/place/troop/true/1"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 2 CON PRESENCIA</div></div>
                     </div>
 			</a><br>
 
-            <a href='<c:url value="/positions/1/place/spy"/>' >
+            <a href='<c:url value="/positions/1/place/spy/1"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">COLOCAR ESPIA COMO JUGADOR 1</div></div>
                     </div>
             </a><br>
-            <a href='<c:url value="/positions/2/place/spy"/>' >
+            <a href='<c:url value="/positions/2/place/spy/1"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">COLOCAR ESPIA COMO JUGADOR 2</div></div>
                     </div>

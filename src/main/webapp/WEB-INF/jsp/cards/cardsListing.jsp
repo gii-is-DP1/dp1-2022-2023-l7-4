@@ -33,61 +33,140 @@
 </div>
 
 <br><br>
-    <table id="positionsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Coste</th>
-            <th>Historia</th>
-            <th>Acción de la carta</th>
-            <th>PV</th>
-            <th>PV en Círculo interno</th>
-            <th>Rareza</th>
-            <th>Aspecto</th>
-            <th>Mazo</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="card" items="${cards}" >
-            <tr>
-                <td>
-                    <c:out value="${card.id}"/>
-                </td>
-                <td>
-                    <spring:url value="/cards/{cardId}" var="cardUrl">
-                        <spring:param name="cardId" value="${card.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(cardUrl)}"><c:out value="${card.name}"/></a>
-                </td>
-                <td>
-                    <c:out value="${card.cost} "/>
-                </td>
-                <td>
-                    <c:out value="${card.story} "/>
-                </td>
-                <td>
-                    <c:out value="${card.rulesText} "/>
-                </td>
-                <td>
-                    <c:out value="${card.deckVP} "/>
-                </td>   
-                <td>
-                    <c:out value="${card.innerCirclePV} "/>
-                </td>   
-                <td>
-                    <c:out value="${card.rarity} "/>
-                </td>
-                <td>
-                    <c:out value="${card.aspect.name} "/>
-                </td>
-                <td>
-                    <c:out value="${card.halfDeck.name} "/>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+
+    <c:forEach var="card" items="${cards}" >
+        <div class="principalCard">
+            <spring:url value="/cards/{cardId}" var="cardUrl">
+                <spring:param name="cardId" value="${card.id}" />
+            </spring:url>
+            <a href="${fn:escapeXml(cardUrl)}">
+                <img src="/resources/images/cardsModel.png" class="cardImage">
+                <div class="topTextName">
+                    <b><c:out value="${card.name}" /></b>
+                </div>
+                <div class="topTextCost">
+                    <b><c:out value="${card.cost} " /></b>
+                </div>
+                <div class="topTextAspect">
+                    <b><c:out value="${card.aspect.name} " /></b>
+                </div>
+                <div class="topTextHalfDeck">
+                    <b><c:out value="${card.halfDeck.name} " /></b>
+                </div>
+                <div class="topTextRulesText">
+                    <b><c:out value="${card.rulesText} " /></b>
+                </div>
+                <div class="topTextRarity">
+                    <b>
+                        <text id="t${card.id}" style="font-size: 180%;">
+                            <script>
+                                var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
+                                document.getElementById("t${card.id}").innerHTML = rarity
+                            </script>
+                        </text>
+                    </b>
+                </div>
+                <div class="topTextDeckVP">
+                    <b><c:out value="${card.deckVP} " /></b>
+                </div>
+                <div class="topTextInnerCirclePV">
+                    <b><c:out value="${card.innerCirclePV} " /></b>
+                </div>
+            </a>
+        </div>
+    </c:forEach>
+    </div>
+
+    <style>
+        .centerBlock{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .principalCard{
+            width: 27%;
+            height: 52%;
+            margin-bottom: 2%;
+            margin-left: 5%;
+            position: relative;
+            display: inline-block;
+            
+        }
+        .cardImage {
+            width: 100%;
+            height: 100%;
+        }
+        .topTextName{
+            position: absolute;
+            top: 4%;
+            font-size: 127%;
+            margin-left: 8%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextCost{
+            position: absolute;
+            top: 3%;
+            font-size: 193%;
+            margin-left: 86%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextAspect{
+            position: absolute;
+            top: 10%;
+            font-size: 103%;
+            margin-left: 8%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextHalfDeck{
+            position: absolute;
+            top: 10%;
+            font-size: 103%;
+            width: 100%;
+            text-align: right;
+            right: 7%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextRulesText{
+            position: absolute;
+            width: 83%;
+            top: 55%;
+            left: 8.5%;
+            font-size: 90%;
+            text-align: justify;
+            color: black;
+            font-family: "Critter";
+        }
+        .topTextRarity{
+            position: absolute;
+            top: 90%;
+            width: 100%;
+            font-size: 110%;
+            color: aliceblue;
+            font-family: "Critter";
+            text-align: center;
+        }
+        .topTextDeckVP{
+            position: absolute;
+            top: 84.5%;
+            font-size: 160%;
+            margin-left: 66.5%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+        .topTextInnerCirclePV{
+            position: absolute;
+            top: 84.4%;
+            font-size: 160%;
+            margin-left: 81.8%;
+            color: aliceblue;
+            font-family: "Critter";
+        }
+    </style>
 
     <style>
         .aBotton {
@@ -115,10 +194,10 @@
 
         .contenedor {
             background-color: rgb(25, 24, 24);
-            margin-left: -13.9%;
-            margin-right: -13.88%;
             margin-top: -40px;
             margin-bottom: 2%;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
         .contenedor-menu {

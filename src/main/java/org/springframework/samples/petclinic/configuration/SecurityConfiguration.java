@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -35,24 +34,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
-				.antMatchers("/users/new").permitAll()
+				.antMatchers("/user/new","/js/**").permitAll()
+				.antMatchers("/login").permitAll()
 				.antMatchers("/session/**").permitAll()
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				
 				.antMatchers("/vets/**").authenticated()
-				.antMatchers("/users2/**").permitAll()
+				.antMatchers("/users/**").hasAnyAuthority("admin")
 				.antMatchers("/players/**").hasAnyAuthority("admin")
-				.antMatchers("/player/new").permitAll()
-				.antMatchers("/player/**").hasAnyAuthority("admin","player")
-				.antMatchers("/myprofile/**").hasAnyAuthority("admin","player")
+				.antMatchers("/player/**").permitAll()
+				.antMatchers("/myprofile/**").permitAll()
+				.antMatchers("/changepassword/**").permitAll()
 				.antMatchers("/games/**").hasAnyAuthority("admin","player")
 				.antMatchers("/positions/**").hasAnyAuthority("admin","player")
 				.antMatchers("/cards/**").hasAnyAuthority("admin","player")
 				.antMatchers("/sandbox/**").hasAnyAuthority("admin","player")
+				.antMatchers("/actions/**").hasAnyAuthority("admin","player")
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
-				 	/*.loginPage("/login")*/
+					.loginPage("/login")
+                    .permitAll()
+                    .defaultSuccessUrl("/")
+                    .failureUrl("/login?error=true")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
 				 	.failureUrl("/login-error")
 				.and()
 					.logout()
@@ -63,6 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // se sirve desde esta misma página.
                 http.csrf().ignoringAntMatchers("/h2-console/**");
                 http.headers().frameOptions().sameOrigin();
+				http.csrf().disable();
 	}
 
 	@Override

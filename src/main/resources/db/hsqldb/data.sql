@@ -1,31 +1,18 @@
--- USERS
-INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
+-- One admin user, named admin1 with passwor 4dm1n and authority admin
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 
-INSERT INTO users(username,password,enabled) VALUES ('anddomrui','hola3',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (2,'anddomrui','admin');
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('daviddhc','player1',TRUE,'David', 'daviddhc@gmail.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (10,'daviddhc','player');
 
-INSERT INTO users(username,password,enabled) VALUES ('javfercas3','secret1',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (3,'javfercas3','admin');
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('anddomrui','hola3',TRUE, 'Andres', 'andres@gmail.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 
-INSERT INTO users(username,password,enabled) VALUES ('davdelcar','admin2',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (4,'davdelcar','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('manotebar','manotebar',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'manotebar','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('javgaragu1','secret2',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (6,'javgaragu1','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('davzarort','anuel',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (7,'davzarort','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('daviddhc','player1',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (8,'daviddhc','player');
-
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 
 -- CITIES
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'EL LABERINTO',3,TRUE,1);
+INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (4,'EL LABERINTO',3,TRUE,1);
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
 INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'GRACKLSTUGH',6,FALSE,3);
 
@@ -36,13 +23,14 @@ INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 
 -- GAMES
 INSERT INTO games(id,date,name,size,is_finished) VALUES (1,'2002-04-08','Partida 1', 3,FALSE);
+INSERT INTO house(id,name,hex_color) VALUES (1,'Baerne','#5f605b');
+INSERT INTO house(id,name,hex_color) VALUES (2,'Mizzrym','#ff7133');
+INSERT INTO house(id,name,hex_color) VALUES (3,'Xorlarrin','#2f717f');
+INSERT INTO house(id,name,hex_color) VALUES (4,'Barrison del"armgo','#fc2e3c');
 
--- PLAYERS
-INSERT INTO players(id,name,email,birthdate,username) VALUES (1, 'David', 'daviddhc@gmail.com', '2002-04-08', 'daviddhc');
-INSERT INTO players(id,name,email,birthdate,username) VALUES (2, 'Andres', 'davidhc@gmail.com', '2002-04-08', 'anddomrui');
+INSERT INTO players(id,name,power,influence,username,house_id) VALUES (1, 'David', 0, 0, 'daviddhc',1);
+INSERT INTO players(id,name,power,influence,username,house_id) VALUES (2, 'Andres', 0, 0, 'anddomrui',2);
 
--- HOUSE
-INSERT INTO house(id,name,description,photo,hex_color) VALUES (1,'Targarian','None', 'none','#0000');
 
 -- HALFDEK
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');
@@ -97,3 +85,22 @@ INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,h
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (39,'Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2);
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES (40,'Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3);
 
+--INSERT INTO action_complexes(id,complex_condition_enums) VALUES (1,0);
+
+--INSERT INTO action_simples(id,simple_action_name_enums,value,entity_status_enums,entity_enums,presence) VALUES (1,0,1,0,0,TRUE)
+
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (1,'CHOOSE','MOVE',1,'ENEMY','TROOP',TRUE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (2,'AND','KILL',2,'ENEMY','TROOP',TRUE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (3,'THEN','PLACE',1,'ALLIED','SPY',FALSE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (4,'AND','PLACE',1,'ALLIED','SPY',FALSE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (5,'THEN','RESOURCES',1,null,'POWER',FALSE);
+INSERT INTO actions(id,condition_enum,simple_action_name_enum,value,entity_status_enum,entity_enum,presence) VALUES (6,null,'PLACE',1,'ALLIED','SPY',FALSE);
+
+
+INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (1,2);
+INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (2,3);
+INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (1,4);
+INSERT INTO father_son_actions(action_father_id,action_son_id) VALUES (1,5);
+
+
+-- DATOS PARA PRUEBA, OJO, PARA LOS TEST, TENEIS QUE UTILIZAR LOS DATOS DE AQUI, NO VALEN LOS AUTOGENERADOS
