@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.position;
+package org.springframework.samples.petclinic.map.position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.samples.petclinic.board.sector.city.City;
-import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.map.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.path.Path;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;

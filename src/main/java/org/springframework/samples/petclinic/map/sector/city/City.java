@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.sector.city;
+package org.springframework.samples.petclinic.map.sector.city;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,8 +16,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.samples.petclinic.board.position.Position;
-import org.springframework.samples.petclinic.board.sector.Sector;
+import org.springframework.samples.petclinic.map.position.Position;
+import org.springframework.samples.petclinic.map.sector.Sector;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;

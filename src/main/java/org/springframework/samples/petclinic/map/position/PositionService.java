@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.position;
+package org.springframework.samples.petclinic.map.position;
 
 
 import java.util.List;
@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
-import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
-import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
-import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
-import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
-import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
-import org.springframework.samples.petclinic.board.sector.city.City;
-import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.map.position.exceptions.EmptyPositionException;
+import org.springframework.samples.petclinic.map.position.exceptions.IncorrectPositionTypeException;
+import org.springframework.samples.petclinic.map.position.exceptions.MoreThanOnePlayerSpyInSameCity;
+import org.springframework.samples.petclinic.map.position.exceptions.NotEnoughPresence;
+import org.springframework.samples.petclinic.map.position.exceptions.OccupiedPositionException;
+import org.springframework.samples.petclinic.map.position.exceptions.YourPositionException;
+import org.springframework.samples.petclinic.map.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.path.Path;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;

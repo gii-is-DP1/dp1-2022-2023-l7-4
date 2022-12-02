@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.sector.city;
+package org.springframework.samples.petclinic.map.sector.city;
 
 import java.util.List;
 

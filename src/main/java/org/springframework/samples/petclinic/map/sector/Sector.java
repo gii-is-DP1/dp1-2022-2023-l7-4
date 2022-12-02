@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.sector;
+package org.springframework.samples.petclinic.map.sector;
 
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
