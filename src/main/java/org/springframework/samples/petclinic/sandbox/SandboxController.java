@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.sandbox;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.position.PositionService;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
@@ -37,8 +39,9 @@ public class SandboxController {
         var zones = List.of(1,2,3);
         var position = positionService.getPositions();
         if(position.isEmpty()){
-            positionService.populatePositions(cities, paths, zones);
-            positionService.getPositions().forEach(x->positionService.calculateAdjacents(x));
+            //TODO fix this
+            // positionService.populatePositions(cities, paths, zones);
+            // positionService.getPositions().forEach(x->positionService.calculateAdjacents(x));
         }
         position = positionService.getPositions();
         ModelAndView result=new ModelAndView(SANDBOX_LISTING_VIEW);

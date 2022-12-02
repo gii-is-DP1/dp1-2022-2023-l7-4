@@ -11,6 +11,4 @@ public interface ActionRepository extends CrudRepository<Action,Integer>{
     
     Action findActionById(Integer actionId);
 
-    @Query("SELECT a FROM Action a WHERE a.myActionSons IS EMPTY AND a.myActionFathers IS EMPTY")
-    List<Action> findAllBasicActions();
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="houses")
+@Table(name="house")
 public class House {
 
     @Id
