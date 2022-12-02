@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -67,9 +68,8 @@ public class Player{
     @Min(0)
     private int spies=5;
 
-    @Column(columnDefinition = "integer default 0")
-    @Min(0)
-    private int trophyPV=0;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "trophyHall")
+    private List<Player> trophyHall=new ArrayList<>();
 
     @ManyToMany()
     @JoinTable(
