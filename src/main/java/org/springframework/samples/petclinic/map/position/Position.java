@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -53,7 +54,8 @@ public class Position{
     private Boolean forSpy;
 
     @ManyToMany
-    @JoinColumn(name= "adj_id",unique = false)
+    @JoinTable(
+        inverseJoinColumns = @JoinColumn(name = "adjacent_id"))
     private List<Position> adjacents=null;
     
     public List<Position> getAdjacentsInternal(){
