@@ -2,11 +2,8 @@ package org.springframework.samples.petclinic.card.action;
 
 import java.util.List;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.card.CardRepository;
-import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
 
