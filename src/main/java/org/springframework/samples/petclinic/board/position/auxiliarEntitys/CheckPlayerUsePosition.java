@@ -73,6 +73,11 @@ public class CheckPlayerUsePosition {
         ", un jugador no puede seleccionar una posición ocupada por el mismo jugador");
     }
 
+    public static void playerHasntAnySpyInChoosedPosition(List<Position> playerSpiesInSameCityOfChoosedPosition) throws Exception {
+        Preconditions.check(playerSpiesInSameCityOfChoosedPosition.isEmpty())
+        .formattedError("No puedes tener más de 1 espía en la misma ciudad,elige de nuevo");
+    }
+
 
     
     

@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.board.position;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.CheckPlayerUsePosition;
@@ -19,14 +21,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerUsePositionService {
 
-    @Autowired
     private PositionRepository positionRepository;
 
-    @Autowired
     private PlayerRepository playerRepository;
 
-    @Autowired
     private CustomListingPositionService customListingPositionService;
+
+    //el constructor es necesario para la realización de los tests
+    @Autowired
+    public PlayerUsePositionService(PositionRepository positionRepository
+    ,PlayerRepository playerRepository,CustomListingPositionService customListingPositionService){
+        this.positionRepository=positionRepository;
+        this.playerRepository=playerRepository;
+        this.customListingPositionService=customListingPositionService;
+    }
 
     @Transactional//
     public void save(Position p) throws DataAccessException{
@@ -34,11 +42,10 @@ public class PlayerUsePositionService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void occupyTroopPosition(Position position,Player player,Boolean onlyAdjacentPositions)
+    public void occupyTroopPosition(@Valid Position position,@Valid Player player,Boolean onlyAdjacentPositions)
      throws DataAccessException,Exception{
         CheckPlayerUsePosition.playerHasChooseAEmptyPosition(position);
         CheckPlayerUsePosition.playerHasChooseACorrectTypeOfPosition(position, false);
-        CheckPlayerUsePosition.playerIsNotNull(player);
         if(onlyAdjacentPositions ){
             List<Position> playerPositions=customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),false);
             CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
@@ -50,11 +57,9 @@ public class PlayerUsePositionService {
 
     @Transactional(rollbackFor =
      Exception.class)
-    public void killTroop(Position position,Player player,Boolean onlyAdjacentPositions) throws DataAccessException
+    public void killTroop(@Valid Position position,@Valid Player player,Boolean onlyAdjacentPositions) throws DataAccessException
     ,Exception{
         
-        CheckPlayerUsePosition.playerIsNotNull(player);
-        CheckPlayerUsePosition.playerHasChooseAPosition(position);
         CheckPlayerUsePosition.playerHasChooseANotEmptyPosition(position);
         CheckPlayerUsePosition.playerHasChooseANotOwnedPosition(player, position);
 
@@ -70,23 +75,26 @@ public class PlayerUsePositionService {
         save(position);
     }
 
-    @Transactional(rollbackFor = {IncorrectPositionTypeException.class,MoreThanOnePlayerSpyInSameCity.class})
-    public void occupySpyPosition(Position position,Player player)
-     throws DataAccessException,IncorrectPositionTypeException,MoreThanOnePlayerSpyInSameCity{
-        if(position.getForSpy()==false){
-            throw new IncorrectPositionTypeException();
-        }else if(!positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId()).isEmpty())
-            throw new MoreThanOnePlayerSpyInSameCity();
+    @Transactional(rollbackFor = {Exception.class})
+    public void occupySpyPosition(@Valid Position position,@Valid Player player)
+     throws DataAccessException,Exception{
+        CheckPlayerUsePosition.playerHasChooseACorrectTypeOfPosition(position, true);
+        List<Position> playerSpiesInSameCityOfChoosedPosition=
+        positionRepository.findAnySpyOfAPlayerInACity(player.getId(),position.getCity().getId());
+        CheckPlayerUsePosition.playerHasntAnySpyInChoosedPosition(playerSpiesInSameCityOfChoosedPosition);
         player.setSpies(player.getSpies()-1);
         playerRepository.save(player);
         position.setPlayer(player);
         save(position);
     }
 
-    @Transactional(rollbackFor = NotEnoughPresence.class)
-    public void returnPiece(Position position,Player player) throws DataAccessException,NotEnoughPresence{
-        if(!customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
-            throw new NotEnoughPresence();
+    @Transactional(rollbackFor = Exception.class)
+    public void returnPiece(Position position,Player player) throws DataAccessException,Exception{
+        CheckPlayerUsePosition.playerHasChooseAPosition(position);
+        CheckPlayerUsePosition.playerIsNotNull(player);
+        List<Position> playerPositions=
+        customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true);
+        CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
         Player enemy=position.getPlayer();
         if(position.getForSpy()){
             enemy.setSpies(enemy.getSpies()+1);
@@ -99,9 +107,10 @@ public class PlayerUsePositionService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void movePiece(Position source,Position target) throws DataAccessException,Exception{
-        CheckPlayerUsePosition.playerHasChooseAPosition(target);
-        CheckPlayerUsePosition.playerHasChooseAPosition(source);
+    public void movePiece(@Valid Position source,@Valid Position target,@Valid Player player) throws DataAccessException,Exception{
+        List<Position> playerPositions=
+        customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true);
+        CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(source, playerPositions);
         CheckPlayerUsePosition.playerHasChooseTwoPositionsOfSameType(target, source);
         target.setPlayer(source.getPlayer());
         source.setPlayer(null);
@@ -110,16 +119,16 @@ public class PlayerUsePositionService {
     }
 
     @Transactional(rollbackFor =
-    {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
-    public void supplantTroop(Position position,Player player,Boolean onlyAdjacencies) throws DataAccessException
-    ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        if(position.getPlayer()==null)
-            throw new EmptyPositionException();
-        else if(position.getPlayer().equals(player))
-            throw new YourPositionException();
-        else if(onlyAdjacencies
-         & !customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
-            throw new NotEnoughPresence();
+    {Exception.class})
+    public void supplantTroop(@Valid Position position,@Valid Player player,Boolean onlyAdjacencies) throws DataAccessException
+    ,Exception{
+
+        CheckPlayerUsePosition.playerHasChooseANotOwnedPosition(player, position);
+        if(onlyAdjacencies){
+            List<Position> playerPositions=
+            customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true);
+            CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
+        }
         player.setTroops(player.getTroops()-1);
         player.getTrophyHall().add(position.getPlayer());
         playerRepository.save(player);
