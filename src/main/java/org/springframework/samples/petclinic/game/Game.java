@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,6 +23,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.map.GameMap;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
@@ -73,6 +75,8 @@ public class Game {
     @ManyToMany
     private List<Card> lolths = new ArrayList<>();
 
+    @ManyToOne
+    GameMap map;
     public void addPlayer(Player player) {
         getPlayersInternal().add(player);
         player.setGame(this);

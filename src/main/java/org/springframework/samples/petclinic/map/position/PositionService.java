@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.position;
+package org.springframework.samples.petclinic.map.position;
 
 
 import java.util.List;
@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
-import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
-import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
-import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
-import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
-import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
-import org.springframework.samples.petclinic.board.sector.city.City;
-import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.map.position.exceptions.EmptyPositionException;
+import org.springframework.samples.petclinic.map.position.exceptions.IncorrectPositionTypeException;
+import org.springframework.samples.petclinic.map.position.exceptions.MoreThanOnePlayerSpyInSameCity;
+import org.springframework.samples.petclinic.map.position.exceptions.NotEnoughPresence;
+import org.springframework.samples.petclinic.map.position.exceptions.OccupiedPositionException;
+import org.springframework.samples.petclinic.map.position.exceptions.YourPositionException;
+import org.springframework.samples.petclinic.map.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.path.Path;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -82,17 +82,17 @@ public class PositionService {
      {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void killTroop(Position position,Player player,Boolean forAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        if(position.getPlayer()==null)
+        Player Playertroop = position.getPlayer();
+        if(Playertroop==null)
             throw new EmptyPositionException();
 
-        else if(position.getPlayer().equals(player))
+        else if(Playertroop.equals(player))
             throw new YourPositionException();
 
         else if(forAdjacencies & 
         !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
-
-        player.setTrophyPV(player.getTrophyPV()+1);
+        player.getTrophyHall().add(Playertroop);
         playerRepository.save(player);
         position.setPlayer(null);
         save(position);
@@ -126,15 +126,16 @@ public class PositionService {
     {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void supplantTroop(Position position,Player player,Boolean onlyAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        if(position.getPlayer()==null)
+        Player playerTroop = position.getPlayer();
+        if(playerTroop==null)
             throw new EmptyPositionException();
-        else if(position.getPlayer().equals(player))
+        else if(playerTroop.equals(player))
             throw new YourPositionException();
         else if(onlyAdjacencies
          & !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
         player.setTroops(player.getTroops()-1);
-        player.setTrophyPV(player.getTrophyPV()+1);
+        player.getTrophyHall().add(playerTroop);
         playerRepository.save(player);
         position.setPlayer(player);
         save(position);
@@ -270,9 +271,8 @@ public class PositionService {
             populatePositionService.populatePositions(playableZones, cities, paths);
             positions = getPositions();
             positions.forEach(position -> adjacentPositionService.calculateAdjacents(position));
-
         }
-
+        //TODO positions must be initialized by a map(new model) and has to deploy unaligned troops in cities and paths
     }
 
     

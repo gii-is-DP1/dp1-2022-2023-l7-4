@@ -1,11 +1,11 @@
-package org.springframework.samples.petclinic.board.sector.path;
+package org.springframework.samples.petclinic.map.sector.path;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.city.City;
 import org.springframework.stereotype.Repository;
 
 @Repository

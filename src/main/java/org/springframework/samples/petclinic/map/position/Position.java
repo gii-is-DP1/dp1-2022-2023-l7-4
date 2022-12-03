@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.position;
+package org.springframework.samples.petclinic.map.position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.samples.petclinic.board.sector.city.City;
-import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.map.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.path.Path;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
@@ -51,7 +52,8 @@ public class Position{
     private Boolean forSpy;
 
     @ManyToMany
-    @JoinColumn(name= "adj_id",unique = false)
+    @JoinTable(
+        inverseJoinColumns = @JoinColumn(name = "adjacent_id"))
     private List<Position> adjacents=null;
     
     public List<Position> getAdjacentsInternal(){

@@ -1,9 +1,9 @@
-package org.springframework.samples.petclinic.board.sector.path;
+package org.springframework.samples.petclinic.map.sector.path;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.city.City;
 import org.springframework.stereotype.Service;
 
 @Service

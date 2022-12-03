@@ -15,18 +15,18 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.board.position.Position;
-import org.springframework.samples.petclinic.board.position.PositionRepository;
-import org.springframework.samples.petclinic.board.position.PositionService;
-import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
-import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
-import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
-import org.springframework.samples.petclinic.board.position.exceptions.NotEnoughPresence;
-import org.springframework.samples.petclinic.board.position.exceptions.OccupiedPositionException;
-import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
-import org.springframework.samples.petclinic.board.sector.city.City;
-import org.springframework.samples.petclinic.board.sector.city.CityRepository;
-import org.springframework.samples.petclinic.board.sector.path.PathRepository;
+import org.springframework.samples.petclinic.map.position.Position;
+import org.springframework.samples.petclinic.map.position.PositionRepository;
+import org.springframework.samples.petclinic.map.position.PositionService;
+import org.springframework.samples.petclinic.map.position.exceptions.EmptyPositionException;
+import org.springframework.samples.petclinic.map.position.exceptions.IncorrectPositionTypeException;
+import org.springframework.samples.petclinic.map.position.exceptions.MoreThanOnePlayerSpyInSameCity;
+import org.springframework.samples.petclinic.map.position.exceptions.NotEnoughPresence;
+import org.springframework.samples.petclinic.map.position.exceptions.OccupiedPositionException;
+import org.springframework.samples.petclinic.map.position.exceptions.YourPositionException;
+import org.springframework.samples.petclinic.map.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.city.CityRepository;
+import org.springframework.samples.petclinic.map.sector.path.PathRepository;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -180,7 +180,7 @@ public class PositionServiceTests {
         Player player2=new Player();
         player1.setId(1);
         player2.setId(2);
-        Integer expectPV=player2.getTrophyPV();
+        Integer expectPV=player2.getTrophyHall().size();
         Position position=new Position();
         position.setPlayer(player1);
         PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
@@ -192,7 +192,7 @@ public class PositionServiceTests {
             fail("No deberia salir ninguna excepción");
         } 
         assertThat(position.getIsOccupied()).isFalse();
-        assertThat(player2.getTrophyPV()).isEqualTo(expectPV+1);
+        assertThat(player2.getTrophyHall().size()).isEqualTo(expectPV+1);
     }
 
     @Test
@@ -201,7 +201,7 @@ public class PositionServiceTests {
         Player player2=new Player();
         player1.setId(1);
         player2.setId(2);
-        Integer expectPV=player2.getTrophyPV();
+        Integer expectPV=player2.getTrophyHall().size();
         Position wantedPosition=new Position();
         Position player2pos=new Position();
         player2pos.setPlayer(player2);
@@ -219,7 +219,7 @@ public class PositionServiceTests {
             fail("No deberia salir ninguna excepción");
         } 
         assertThat(wantedPosition.getIsOccupied()).isFalse();
-        assertThat(player2.getTrophyPV()).isEqualTo(expectPV+1);
+        assertThat(player2.getTrophyHall().size()).isEqualTo(expectPV+1);
     }
 
     @Test
@@ -303,7 +303,7 @@ public class PositionServiceTests {
         Player player2=new Player();
         player1.setId(1);
         player2.setId(2);
-        Integer expectPV=player2.getTrophyPV();
+        Integer expectPV=player2.getTrophyHall().size();
         Position position=new Position();
         position.setPlayer(player1);
         PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
@@ -315,7 +315,7 @@ public class PositionServiceTests {
             fail("No deberia salir ninguna excepción");
         } 
         assertThat(position.getPlayer().getId()).isEqualTo(player2.getId());
-        assertThat(player2.getTrophyPV()).isEqualTo(expectPV+1);
+        assertThat(player2.getTrophyHall().size()).isEqualTo(expectPV+1);
     }
     @Test
     public void testSupplantAdjTroop(){
@@ -323,7 +323,7 @@ public class PositionServiceTests {
         Player player2=new Player();
         player1.setId(1);
         player2.setId(2);
-        Integer expectPV=player2.getTrophyPV();
+        Integer expectPV=player2.getTrophyHall().size();
         Position wantedPosition=new Position();
         Position player2pos=new Position();
         player2pos.setPlayer(player2);
@@ -341,7 +341,7 @@ public class PositionServiceTests {
             fail("No deberia salir ninguna excepción");
         } 
         assertThat(wantedPosition.getPlayer().getId()).isEqualTo(player2.getId());
-        assertThat(player2.getTrophyPV()).isEqualTo(expectPV+1);
+        assertThat(player2.getTrophyHall().size()).isEqualTo(expectPV+1);
     }
 
     @Test

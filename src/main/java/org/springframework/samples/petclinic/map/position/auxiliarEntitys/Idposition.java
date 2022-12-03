@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.board.position.auxiliarEntitys;
+package org.springframework.samples.petclinic.map.position.auxiliarEntitys;
 
 import javax.validation.constraints.NotNull;
 

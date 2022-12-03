@@ -1,12 +1,12 @@
-package org.springframework.samples.petclinic.board.sector.path;
+package org.springframework.samples.petclinic.map.sector.path;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.samples.petclinic.board.sector.Sector;
-import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.Sector;
+import org.springframework.samples.petclinic.map.sector.city.City;
 
 import lombok.Getter;
 import lombok.Setter;
