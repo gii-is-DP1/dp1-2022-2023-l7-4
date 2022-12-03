@@ -271,9 +271,8 @@ public class PositionService {
             populatePositionService.populatePositions(playableZones, cities, paths);
             positions = getPositions();
             positions.forEach(position -> adjacentPositionService.calculateAdjacents(position));
-
         }
-
+        //TODO positions must be initialized by a map(new model) and has to deploy unaligned troops in cities and paths
     }
 
     

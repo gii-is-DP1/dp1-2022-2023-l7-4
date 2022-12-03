@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 import org.springframework.samples.petclinic.map.position.Position;
 import org.springframework.samples.petclinic.map.sector.Sector;
@@ -33,6 +34,7 @@ public class City extends Sector{
     @NotBlank
     private String name;
     
+    @Positive
     Integer zone;
 
     @NotBlank
