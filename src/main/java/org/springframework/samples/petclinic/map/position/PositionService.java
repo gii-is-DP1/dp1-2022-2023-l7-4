@@ -82,17 +82,17 @@ public class PositionService {
      {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void killTroop(Position position,Player player,Boolean forAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        if(position.getPlayer()==null)
+        Player Playertroop = position.getPlayer();
+        if(Playertroop==null)
             throw new EmptyPositionException();
 
-        else if(position.getPlayer().equals(player))
+        else if(Playertroop.equals(player))
             throw new YourPositionException();
 
         else if(forAdjacencies & 
         !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
-
-        player.setTrophyPV(player.getTrophyPV()+1);
+        player.getTrophyHall().add(Playertroop);
         playerRepository.save(player);
         position.setPlayer(null);
         save(position);
@@ -126,15 +126,16 @@ public class PositionService {
     {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void supplantTroop(Position position,Player player,Boolean onlyAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        if(position.getPlayer()==null)
+        Player playerTroop = position.getPlayer();
+        if(playerTroop==null)
             throw new EmptyPositionException();
-        else if(position.getPlayer().equals(player))
+        else if(playerTroop.equals(player))
             throw new YourPositionException();
         else if(onlyAdjacencies
          & !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
         player.setTroops(player.getTroops()-1);
-        player.setTrophyPV(player.getTrophyPV()+1);
+        player.getTrophyHall().add(playerTroop);
         playerRepository.save(player);
         position.setPlayer(player);
         save(position);
