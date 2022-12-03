@@ -21,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.house.House;
+import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;
@@ -29,11 +30,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "players")
-public class Player{
+public class Player extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
 
     @NotBlank
     String name;
@@ -67,38 +65,40 @@ public class Player{
     @Min(0)
     private int spies=5;
 
-    @Column(columnDefinition = "integer default 0")
-    @Min(0)
-    private int trophyPV=0;
+    @ManyToMany()
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="killed_player_id"))
+    private List<Player> trophyHall =  new ArrayList<>();
 
     @ManyToMany()
     @JoinTable(
         inverseJoinColumns=
-            @JoinColumn(name="CARD_ID"))
+            @JoinColumn(name="card_id"))
     private List<Card> deck =  new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
         inverseJoinColumns=
-            @JoinColumn(name="CARD_ID"))
+            @JoinColumn(name="card_id"))
     private List<Card> hand = new ArrayList<>(); 
 
     @ManyToMany
     @JoinTable(
         inverseJoinColumns=
-            @JoinColumn(name="CARD_ID"))
+            @JoinColumn(name="card_id"))
     private List<Card> played = new ArrayList<>(); 
 
     @ManyToMany
     @JoinTable(
         inverseJoinColumns=
-            @JoinColumn(name="CARD_ID"))
+            @JoinColumn(name="card_id"))
     private List<Card> discardPile = new ArrayList<>(); 
 
     @ManyToMany
     @JoinTable(
         inverseJoinColumns=
-            @JoinColumn(name="CARD_ID"))
+            @JoinColumn(name="card_id"))
     private List<Card> innerCircle = new ArrayList<>(); 
     
 
