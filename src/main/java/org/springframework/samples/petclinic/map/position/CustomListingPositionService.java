@@ -25,7 +25,7 @@ public class CustomListingPositionService {
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getAdjacentPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
+    public List<Position> getPresencePositions(Integer player_id,Boolean searchEnemies){
         List<Position> myPos=positionServiceRepo.getPlayerPositions(player_id);
         List<Position> adjacencies=myPos.stream().map(pos->pos.getAdjacents()).flatMap(List::stream)
         .distinct()
@@ -36,13 +36,13 @@ public class CustomListingPositionService {
         return adjacencies;
     }
     @Transactional(readOnly = true)
-    public List<Position> getAdjacentTroopPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
-        List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
+    public List<Position> getPresenceTroopPositions(Integer player_id,Boolean searchEnemies){
+        List<Position> positions=getPresencePositions(player_id, searchEnemies);
         return positions.stream().filter(pos->pos.getForSpy()==false).collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
-    public List<Position> getAdjacentSpyPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
-        List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
+    public List<Position> getPresenceSpyPositions(Integer player_id,Boolean searchEnemies){
+        List<Position> positions=getPresencePositions(player_id, searchEnemies);
         return positions.stream().filter(pos->pos.getForSpy()).collect(Collectors.toList());
     }
 
@@ -65,7 +65,7 @@ public class CustomListingPositionService {
         if(useAdjacency)
             res= positionServiceRepo.getAllEnemyPositionsOfPlayerByTypeOfPosition(player_id, forSpy);
         else{
-            res=getAdjacentPositionsFromPlayer(player_id, true);
+            res=getPresencePositions(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
         }
         if(searchWhites!=null)
