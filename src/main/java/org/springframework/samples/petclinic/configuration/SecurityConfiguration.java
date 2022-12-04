@@ -50,6 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/cards/**").hasAnyAuthority("admin","player")
 				.antMatchers("/sandbox/**").hasAnyAuthority("admin","player")
 				.antMatchers("/actions/**").hasAnyAuthority("admin","player")
+				.antMatchers("/currentgame/**").hasAnyAuthority("admin","player")
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
