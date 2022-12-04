@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
+import org.springframework.samples.petclinic.user.User;
+import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,8 @@ public class GameController {
     GameService gService;
 	@Autowired
 	PlayerService pService;
+	@Autowired
+	UserService uService;
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 
@@ -98,5 +102,24 @@ public class GameController {
 		model.put("selections", gService.getGames());
 		return "games/gameList";
 	}
+
+	/* @PostMapping(value = "/games/creating/add/{userId}")
+	public String postCreatingGameAddPlayer(@PathVariable("userId") int userId, GameForm gameForm, Map<String, Object> model) {
+		User addedUser = userService.findUser(userId).get();
+		
+		List<Integer> playerIds = gameForm.getUsers();
+		List<User> players = new ArrayList<User>();
+		for(Integer i:playerIds) {
+			players.add(userService.findUser(i).get());
+		}
+		
+		players.add(addedUser);
+		List<User> users = userService.findAll();
+		users.removeAll(players);
+		
+		model.put("users", users);
+		model.put("players", players);
+		return VIEWS_NEW_GAME;
+	} */
     
 }

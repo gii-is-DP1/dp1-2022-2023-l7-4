@@ -7,6 +7,8 @@
 
 <petclinic:layout pageName="game">
     <h2>Games</h2>
+    <a class="btn btn-default" href='<spring:url value="/games/find" htmlEscape="true"/>'>Find a game</a>
+    <a class="btn btn-default" href='<spring:url value="/games/create" htmlEscape="true"/>'>Crear una partida</a>
 
     <table id="gameTable" class="table table-striped">
         <thead>
@@ -47,7 +49,7 @@
         </tbody>
     </table>
 
-    <a class="btn btn-default" href='<spring:url value="/games/find" htmlEscape="true"/>'>Find a game</a>
+    
 </petclinic:layout>
 <style>
     #redball{

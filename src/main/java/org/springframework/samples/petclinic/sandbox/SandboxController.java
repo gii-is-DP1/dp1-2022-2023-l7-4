@@ -1,9 +1,9 @@
 package org.springframework.samples.petclinic.sandbox;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.position.PositionService;
-import org.springframework.samples.petclinic.board.sector.city.CityService;
-import org.springframework.samples.petclinic.board.sector.path.PathService;
+import org.springframework.samples.petclinic.map.position.PositionService;
+import org.springframework.samples.petclinic.map.sector.city.CityService;
+import org.springframework.samples.petclinic.map.sector.path.PathService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
