@@ -1,7 +1,6 @@
 package org.springframework.samples.petclinic.card.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.map.position.PositionController;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
