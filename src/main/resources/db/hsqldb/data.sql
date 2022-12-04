@@ -36,7 +36,7 @@ INSERT INTO maps_paths(map_id,path_id) VALUES
 
 
 -- GAMES
-INSERT INTO games(id,date,name,size,is_finished,map_id) VALUES (1,'2002-04-08','Partida 1', 3,FALSE,1);
+INSERT INTO games(id,date,name,size,map_id) VALUES (1,'2002-04-08','Partida 1', 3,1);
 
 
 

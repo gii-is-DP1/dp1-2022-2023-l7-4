@@ -27,6 +27,8 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     List<Position> findAllPositionByPlayerIdAndForSpyTrue(Integer player_id);
 
 
+
+
     List<Position> findAllPositionByCityId(int city_id) throws DataAccessException;
 
     List<Position> findAllPositionByPlayerId(Integer player_id);

@@ -11,4 +11,7 @@ public interface CityRepository extends CrudRepository<City,Integer>{
     @Query("select c from City c")
     List<City> findAll();
     
+    @Query("SELECT city FROM City city WHERE city.isStartingCity IS TRUE")
+    List<City> findAllStartingCities();
+    
 }
