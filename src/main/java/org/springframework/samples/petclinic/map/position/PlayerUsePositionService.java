@@ -47,7 +47,7 @@ public class PlayerUsePositionService {
         CheckPlayerUsePosition.playerHasChooseAEmptyPosition(position);
         CheckPlayerUsePosition.playerHasChooseACorrectTypeOfPosition(position, false);
         if(onlyAdjacentPositions ){
-            List<Position> playerPositions=customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),false);
+            List<Position> playerPositions=customListingPositionService.getPresencePositions(player.getId(),false);
             CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
         }
         player.setTroops(player.getTroops()-1);
@@ -65,7 +65,7 @@ public class PlayerUsePositionService {
 
         if(onlyAdjacentPositions ){
             List<Position> playerPositions=
-            customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true);
+            customListingPositionService.getPresencePositions(player.getId(),true);
             CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
         }
 
@@ -93,7 +93,7 @@ public class PlayerUsePositionService {
         CheckPlayerUsePosition.playerHasChooseAPosition(position);
         CheckPlayerUsePosition.playerIsNotNull(player);
         List<Position> playerPositions=
-        customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true);
+        customListingPositionService.getPresencePositions(player.getId(),true);
         CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
         Player enemy=position.getPlayer();
         if(position.getForSpy()){
@@ -109,7 +109,7 @@ public class PlayerUsePositionService {
     @Transactional(rollbackFor = Exception.class)
     public void movePiece(@Valid Position source,@Valid Position target,@Valid Player player) throws DataAccessException,Exception{
         List<Position> playerPositions=
-        customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true);
+        customListingPositionService.getPresencePositions(player.getId(),true);
         CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(source, playerPositions);
         CheckPlayerUsePosition.playerHasChooseTwoPositionsOfSameType(target, source);
         target.setPlayer(source.getPlayer());
@@ -126,7 +126,7 @@ public class PlayerUsePositionService {
         CheckPlayerUsePosition.playerHasChooseANotOwnedPosition(player, position);
         if(onlyAdjacencies){
             List<Position> playerPositions=
-            customListingPositionService.getAdjacentPositionsFromPlayer(player.getId(),true);
+            customListingPositionService.getPresencePositions(player.getId(),true);
             CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
         }
         player.setTroops(player.getTroops()-1);
