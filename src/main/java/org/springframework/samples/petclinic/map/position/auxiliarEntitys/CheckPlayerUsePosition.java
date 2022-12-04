@@ -1,8 +1,8 @@
-package org.springframework.samples.petclinic.board.position.auxiliarEntitys;
+package org.springframework.samples.petclinic.map.position.auxiliarEntitys;
 
 import java.util.List;
 
-import org.springframework.samples.petclinic.board.position.Position;
+import org.springframework.samples.petclinic.map.position.Position;
 import org.springframework.samples.petclinic.checkers.Preconditions;
 import org.springframework.samples.petclinic.player.Player;
 

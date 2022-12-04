@@ -136,7 +136,7 @@ public class PositionService {
          & !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
         player.setTroops(player.getTroops()-1);
-        player.setTrophyPV(player.getTrophyPV()+1);
+        player.getTrophyHall().add(position.getPlayer());
         playerRepository.save(player);
         position.setPlayer(player);
         save(position);

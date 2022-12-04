@@ -1,10 +1,10 @@
-package org.springframework.samples.petclinic.board.position;
+package org.springframework.samples.petclinic.map.position;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.map.sector.path.Path;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

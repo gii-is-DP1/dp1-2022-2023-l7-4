@@ -1,10 +1,10 @@
-package org.springframework.samples.petclinic.board.position;
+package org.springframework.samples.petclinic.map.position;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.city.City;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
