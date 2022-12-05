@@ -32,7 +32,7 @@
                 </td>
                 <td>
                     <c:choose>
-                        <c:when test="${game.isFinished=='FALSE'}">
+                        <c:when test="${game.finished=='FALSE'}">
                         <div id="greenball"></div>
                         <br />
                         </c:when>    

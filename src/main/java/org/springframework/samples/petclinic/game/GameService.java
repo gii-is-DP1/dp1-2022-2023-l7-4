@@ -25,11 +25,11 @@ public class GameService {
 
 	@Transactional
 	public Game getGameById(int id){
-		return grepo.findById(id);
+		return grepo.findById2(id);
 	}
 
     @Transactional
-	public void saveGame(Game game) throws DataAccessException {
+	public void save(Game game) throws DataAccessException {
 		grepo.save(game);
 	}	
 

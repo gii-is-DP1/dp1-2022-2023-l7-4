@@ -47,7 +47,7 @@ public class GameController {
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
-			this.gService.saveGame(game);
+			this.gService.save(game);
 			return "redirect:/games/" + game.getId();
 		}
 	}
@@ -65,7 +65,7 @@ public class GameController {
 			Player player= this.pService.getPlayerByUsername(name);
 			Game game = this.gService.getGameById(gameId);
 			game.addPlayer(player);
-			gService.saveGame(game);
+			gService.save(game);
 			player.setGame(game);
 			pService.savePlayer(player);
 			return "welcome";

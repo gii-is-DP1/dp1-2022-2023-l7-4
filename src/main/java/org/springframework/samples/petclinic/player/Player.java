@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -63,6 +63,10 @@ public class Player extends BaseEntity{
     @Min(0)
     private int spies=5;
 
+    @Column(columnDefinition = "integer default 0")
+    @Min(0)
+    private int markerVP=40;
+
     @ManyToMany()
     @JoinTable(
         inverseJoinColumns=
@@ -98,6 +102,21 @@ public class Player extends BaseEntity{
         inverseJoinColumns=
             @JoinColumn(name="card_id"))
     private List<Card> innerCircle = new ArrayList<>(); 
+
+
+    public Boolean isWhite(){
+        return !this.game.getPlayers().contains(this);
+    }
+
+    public Integer getTrophyHallVPs(){
+        return this.getTrophyHall().size();
+    }
+
+    public Integer getHandVPs(){
+        return this.getHand().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
+    }
+
+    
     
 
     

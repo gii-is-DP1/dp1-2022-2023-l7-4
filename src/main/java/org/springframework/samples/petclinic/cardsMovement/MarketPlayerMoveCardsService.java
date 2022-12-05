@@ -42,7 +42,7 @@ public class MarketPlayerMoveCardsService {
         moveSelectedCard(card, game.getSellZone(), player.getDiscardPile(), player);
         player.setInfluence(playerInfluence-cardCost);
         playerService.savePlayer(player);
-        gameService.saveGame(game);
+        gameService.save(game);
     }
 
 

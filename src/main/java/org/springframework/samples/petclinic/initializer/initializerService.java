@@ -53,10 +53,10 @@ public class initializerService {
 			game.getSellZone().add(removed);
 
 		}
-		gameService.saveGame(game);
+		gameService.save(game);
 	}
 
-
+	
 
 
 

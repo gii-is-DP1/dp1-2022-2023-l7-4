@@ -1,9 +1,7 @@
 package org.springframework.samples.petclinic.position;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +10,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.map.position.CustomListingPositionService;
-import org.springframework.samples.petclinic.map.position.PlayerUsePositionService;
-import org.springframework.samples.petclinic.map.position.Position;
-import org.springframework.samples.petclinic.map.position.PositionRepository;
+import org.springframework.samples.petclinic.board.position.CustomListingPositionService;
+import org.springframework.samples.petclinic.board.position.PlayerUsePositionService;
+import org.springframework.samples.petclinic.board.position.Position;
+import org.springframework.samples.petclinic.board.position.PositionRepository;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;

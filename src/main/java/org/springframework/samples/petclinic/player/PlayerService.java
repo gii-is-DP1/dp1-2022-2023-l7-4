@@ -12,14 +12,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerService {
 
-	@Autowired
+
+
+
     private PlayerRepository playerRepository;
 
-	@Autowired
+
     private UserService userService;
 
-	@Autowired
+
     private AuthoritiesService authoritiesService;
+
+
+
+	@Autowired
+	public PlayerService(PlayerRepository playerRepository,UserService userService
+	,AuthoritiesService authoritiesService){
+		this.playerRepository=playerRepository;
+		this.userService=userService;
+		this.authoritiesService=authoritiesService;
+	}
 
 
 	@Transactional(readOnly = true)
@@ -44,6 +56,8 @@ public class PlayerService {
 	public Player getPlayerByUsername(String username){
 		return playerRepository.findPlayerByUsername(username);
 	}
+
+
 
     @Transactional
 	public void savePlayer(Player player) throws DataAccessException {
