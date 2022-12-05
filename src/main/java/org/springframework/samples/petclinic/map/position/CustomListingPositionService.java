@@ -1,10 +1,12 @@
 package org.springframework.samples.petclinic.map.position;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.map.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.city.CityRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,9 @@ public class CustomListingPositionService {
 
     @Autowired
     private PositionServiceRepo positionServiceRepo;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositionsForPlayer(Integer player_id){
@@ -35,6 +40,22 @@ public class CustomListingPositionService {
         .collect(Collectors.toList());
         return adjacencies;
     }
+    @Transactional(readOnly = true)
+    public List<Position> getInitialPositions(){
+        List<City> startingCities=cityRepository.findAllStartingCities();
+        List<City> availableCities=new ArrayList<>(startingCities);
+        for(City city:startingCities){
+            for(Position position:city.getPositions()){
+                if(position.getIsOccupied() & !position.getPlayer().isWhite())
+                    availableCities.remove(city);
+                    break;
+            }
+        }
+        List<Position> availablePositions=new ArrayList<>();
+        availableCities.stream().map(city->city.getPositions()).forEach(positions->availablePositions.addAll(availablePositions));
+        return availablePositions;
+    }
+
     @Transactional(readOnly = true)
     public List<Position> getPresenceTroopPositions(Integer player_id,Boolean searchEnemies){
         List<Position> positions=getPresencePositions(player_id, searchEnemies);

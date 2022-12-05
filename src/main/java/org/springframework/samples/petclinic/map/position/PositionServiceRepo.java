@@ -66,5 +66,7 @@ public class PositionServiceRepo {
         return positionRepository
             .findAllEnemyPositionsByType(player_id,forSpy);
     }
+
+
     
 }
