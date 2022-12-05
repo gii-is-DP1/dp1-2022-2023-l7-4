@@ -4,8 +4,12 @@ package org.springframework.samples.petclinic.map.position;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.map.GameMap;
 import org.springframework.samples.petclinic.map.position.exceptions.EmptyPositionException;
 import org.springframework.samples.petclinic.map.position.exceptions.IncorrectPositionTypeException;
 import org.springframework.samples.petclinic.map.position.exceptions.MoreThanOnePlayerSpyInSameCity;
@@ -250,8 +254,7 @@ public class PositionService {
     }
 
 
-
-
+// TODO cambiar descripcion
     /**
      * Given the list of sectors (cities and paths) it calculates all the positions of the board based on
      * in the capacity of these and their relationships. Only positions associated with sectors are generated
@@ -260,19 +263,17 @@ public class PositionService {
      * Dada la lista de serctores(ciudades y caminos) calcula todas las posiciones del tablero basandose
      * en la capacidad de estos y sus relaciones. Solo se generan las posiciones asociadas a sectores 
      * dentro de las zonas de juego
-     * @param cities
-     * @param paths
-     * @param playableZones
+     * @param game
+
      */
 
-    public void initializePositions(List<Integer> playableZones,List<City> cities, List<Path> paths){
-        List<Position> positions = getPositions();
+    public void initializePositions(@Valid Game game){
+        List<Position> positions = positionRepository.findAllPositionsByGameID(game.getId());
         if(positions.isEmpty()){
-            populatePositionService.populatePositions(playableZones, cities, paths);
+            populatePositionService.populatePositions(game);
             positions = getPositions();
             positions.forEach(position -> adjacentPositionService.calculateAdjacents(position));
         }
-        //TODO positions must be initialized by a map(new model) and has to deploy unaligned troops in cities and paths
     }
 
     

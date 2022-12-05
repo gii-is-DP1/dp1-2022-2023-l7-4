@@ -1,11 +1,10 @@
-package org.springframework.samples.petclinic.playing;
+package org.springframework.samples.petclinic.play;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.map.Map;
 import org.springframework.samples.petclinic.map.MapTemplate;
 import org.springframework.samples.petclinic.map.position.AdjacentPositionService;
 import org.springframework.samples.petclinic.map.position.PositionService;
@@ -44,28 +43,28 @@ public class PositionController2 {
 
     }
 
-    @GetMapping("/{gameId}/player/{playerId}")
-    public ModelAndView showPositions(@PathVariable Integer gameId, @PathVariable Integer playerId){
-        Game game = gameService.getGameById(gameId);
-        if(game.isLoaded()){}
+    // @GetMapping("/{gameId}/player/{playerId}")
+    // public ModelAndView showPositions(@PathVariable Integer gameId, @PathVariable Integer playerId){
+    //     Game game = gameService.getGameById(gameId);
+    //     if(game.isLoaded()){}
 
-        else{
+    //     else{
             
-        }
-            MapTemplate mapTemplate = game.getMapTemplate();
-            game.setMap(Map.ofTemplate(mapTemplate));
-            List<City> cities= cityService.getCities();
-            List<Path> paths= pathService.getPaths();
-            List<Integer> zones= List.of(1,2,3);
+    //     }
+    //         MapTemplate mapTemplate = game.getMapTemplate();
+    //         game.setMap(Map.ofTemplate(mapTemplate));
+    //         List<City> cities= cityService.getCities();
+    //         List<Path> paths= pathService.getPaths();
+    //         List<Integer> zones= List.of(1,2,3);
             
-            positionService.initializePositions(zones,cities, paths);
-            ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
-            result.addObject("positions", positionService.getPositions());
-            result.addObject("cities", cityService.getCities());
-            result.addObject("paths", pathService.getPaths());
-            result.addObject("freePositions", positionService.getFreePositions());
-        return result;
-    }
+    //         positionService.initializePositions(zones,cities, paths);
+    //         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
+    //         result.addObject("positions", positionService.getPositions());
+    //         result.addObject("cities", cityService.getCities());
+    //         result.addObject("paths", pathService.getPaths());
+    //         result.addObject("freePositions", positionService.getFreePositions());
+    //     return result;
+    // }
 
 
   

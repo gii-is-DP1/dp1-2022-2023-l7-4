@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,8 +27,10 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.HalfDeck;
-import org.springframework.samples.petclinic.map.MapTemplate;
 import org.springframework.samples.petclinic.map.GameMap;
+import org.springframework.samples.petclinic.map.MapTemplate;
+import org.springframework.samples.petclinic.map.sector.city.City;
+import org.springframework.samples.petclinic.map.sector.path.Path;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
@@ -45,18 +48,28 @@ public class Game extends BaseEntity{
 
     @Temporal(TemporalType.DATE)
     Date date = new Date();
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer round=0;
+
+    @Min(1)
+    @Column(columnDefinition = "integer default 1")
+    private Integer turnPlayer=1;
     
     @Column(name="is_finished",columnDefinition = "boolean default false")
     Boolean finished = false;
     
+    @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
+
     @NotNull
-    Integer size=0;
+    @Column(columnDefinition = "integer default 2")
+    Integer size=2;
 
     @ManyToOne
     MapTemplate mapTemplate = new MapTemplate();
 
-    @ManyToOne
+    @OneToOne
     GameMap map = new GameMap();
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",fetch = FetchType.EAGER)
@@ -64,11 +77,11 @@ public class Game extends BaseEntity{
 
     @ManyToOne()
     @JoinColumn(name = "first_half_deck_id")
-    private HalfDeck firstHalfDeck;
+    private HalfDeck firstHalfDeck= new HalfDeck();
 
     @ManyToOne()
     @JoinColumn(name = "second_half_deck_id")
-    private HalfDeck secondHalfDeck;
+    private HalfDeck secondHalfDeck = new HalfDeck();
 
     @ManyToMany
     private List<Card> gameDeck = new ArrayList<>();
@@ -85,12 +98,6 @@ public class Game extends BaseEntity{
     @ManyToMany
     private List<Card> lolths = new ArrayList<>();
 
-    @Column(columnDefinition = "integer default 0")
-    private Integer round=0;
-
-    @NotNull
-    @Min(1)
-    private Integer turnPlayer;
 
     public void addPlayer(Player player) {
         getPlayers().add(player);
@@ -157,19 +164,21 @@ public class Game extends BaseEntity{
             .filter(city->city.whoTotallyControls().equals(player))
             .count();
         return numberOfTotalControlCities.intValue()*2;
-        
+    }    
     
     public Boolean isLoaded(){
-        return
-        !(
+
+            return !(
             this.map.getCities().isEmpty() |
-            this.map.getPaths().isEmpty()
-        );
+            this.map.getPaths().isEmpty());
+
+    }
+
+    public List<City> getCities(){
+        return this.map.getCities();
+    }
+    public List<Path> getPaths(){
+        return this.map.getPaths();
     }
 }
 
-    
-    
-
-
-}

@@ -25,7 +25,7 @@ public class GameService {
 
 	@Transactional
 	public Game getGameById(int id){
-		return grepo.findById(id);
+		return grepo.findById2(id);
 	}
 
     @Transactional

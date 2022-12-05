@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.playing;
+package org.springframework.samples.petclinic.play;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

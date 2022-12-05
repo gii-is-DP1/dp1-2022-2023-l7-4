@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.playing;
+package org.springframework.samples.petclinic.play;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.game.Game;
@@ -8,7 +8,6 @@ import org.springframework.samples.petclinic.map.position.PlayerUsePositionServi
 import org.springframework.samples.petclinic.map.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,18 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/game")
+@RequestMapping("games/play")
 public class PlayController {
+
+    private static final String ROUND_ZERO = null;
+
+    private static final String SCORE_BOARD = null;
 
     @Autowired
     private CustomListingPositionService customListingPositionService;
 
     @Autowired
-    private PlayerUsePositionService playerUsePositionService;
-
-    @Autowired
-    private PositionServiceRepo positionServiceRepo;
-
+    private PlayService playService;
     @Autowired
     private GameService gameService;
 
@@ -37,12 +36,16 @@ public class PlayController {
     public String showActualRound(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         String result=null;
-        if(game.getRound()==0)
-            result="redirect/:game/"+gameId+"/round0?player="+game.getCurrentPlayer().getId();
+        if(!game.isLoaded()) playService.loadGame(game);
+        if(game.getRound()==0){
+
+            result="redirect/:games/play/"+gameId+"/round0?player="+game.getCurrentPlayer().getId();
+            result="redirect/:welcome";
+        }
         else if(game.getFinished())
-            result="redirect/:game/"+gameId+"/scoreboard";
+            result="redirect/:games/play/"+gameId+"/scoreboard";
         else
-            result="redirect/:game/"+gameId+"/play?player="+game.getCurrentPlayer().getId();
+            result="redirect/:games/play/"+gameId+"/play?player="+game.getCurrentPlayer().getId();
         return result;
     }
 
@@ -60,7 +63,7 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         ModelAndView result= new ModelAndView(SCORE_BOARD);
         result.addObject("gamePlayers", game.getPlayers());
-        
+        return result;
     }
 
 

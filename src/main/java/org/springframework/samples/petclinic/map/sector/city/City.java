@@ -15,6 +15,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
+import org.springframework.samples.petclinic.map.GameMap;
 import org.springframework.samples.petclinic.map.position.Position;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
@@ -56,6 +57,9 @@ public class City extends BaseEntity{
 
     @ManyToOne
     private Player controllingPlayer;
+
+    @ManyToOne
+    private GameMap gameMap;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
     private List<Position> positions;
