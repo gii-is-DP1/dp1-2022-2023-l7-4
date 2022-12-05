@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameMapService {
     @Autowired
-    GameMapService gameMapServiceRepo;
+    GameMapRepository gameMapRepo;
     @Autowired
     CityService cityService;
     @Autowired
@@ -26,7 +26,7 @@ public class GameMapService {
     GameService gameService;
     
     public void save(GameMap gameMap){
-        gameMapServiceRepo.save(gameMap);
+        gameMapRepo.save(gameMap);
     }
 
     public void loadGameMap(Game game) {
@@ -42,7 +42,7 @@ public class GameMapService {
         GameMap gameMap = new GameMap();
         setPathsAndCitiesFromTemplate(gameMap,mapTemplate);
   
-        gameMapServiceRepo.save(gameMap);
+        gameMapRepo.save(gameMap);
         return gameMap;
     }
 
@@ -60,12 +60,14 @@ public class GameMapService {
         path.setPathReference(pathTemplate);
 
         City cityA = City.ofTemplate(pathTemplate.getFirstCityReference());
+        cityService.save(cityA);
         path.setFirstCity(cityA);
         if(!gameMap.getCities().contains(cityA)) gameMap.getCities().add(cityA);
             
 
         City cityB = City.ofTemplate(pathTemplate.getSecondCityReference());
-        path.setFirstCity(cityB);
+        cityService.save(cityB);
+        path.setSecondCity(cityB);
         if(!gameMap.getCities().contains(cityB)) gameMap.getCities().add(cityB);
         pathService.save(path);
 

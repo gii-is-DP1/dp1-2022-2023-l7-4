@@ -38,13 +38,13 @@ public class PlayController {
         if(!game.isLoaded()) playService.loadGame(game);
         if(game.getRound()==0){
 
-            result="redirect/:games/play/"+gameId+"/round0?player="+game.getCurrentPlayer().getId();
-            result="redirect/:welcome";
+            result="redirect:/games/play/"+gameId+"/round0?player="+game.getCurrentPlayer().getId();
+            result="welcome";
         }
         else if(game.getFinished())
-            result="redirect/:games/play/"+gameId+"/scoreboard";
+            result="redirect:/games/play/"+gameId+"/scoreboard";
         else
-            result="redirect/:games/play/"+gameId+"/play?player="+game.getCurrentPlayer().getId();
+            result="redirect:/games/play/"+gameId+"/play?player="+game.getCurrentPlayer().getId();
         return result;
     }
 
