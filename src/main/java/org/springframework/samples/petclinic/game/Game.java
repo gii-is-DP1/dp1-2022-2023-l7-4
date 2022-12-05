@@ -110,6 +110,7 @@ public class Game extends BaseEntity{
     
     public void setNextPlayer(){
        this.turnPlayer= (this.turnPlayer)%this.size+1;
+       if(this.turnPlayer==1) this.round++;
     }
 
     public Player getCurrentPlayer(){
