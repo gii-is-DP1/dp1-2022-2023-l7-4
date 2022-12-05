@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.city.CityTemplate;
@@ -28,27 +29,26 @@ import lombok.Setter;
 public class GameMap extends BaseEntity{
     
  
+    @ManyToOne
+    private MapTemplate mapTemplate;
+    
     @OneToOne
     private Game game;
-
+    
     @OneToMany
-    @JoinTable(
-    joinColumns = @JoinColumn(name = "map_id"),
-    inverseJoinColumns = @JoinColumn(name = "city_id"))
+    @JoinColumn(name = "city_id")
     private List<City> cities = new ArrayList<>();
 
     @OneToMany
-    @JoinTable(
-        joinColumns = @JoinColumn(name = "map_id"),
-        inverseJoinColumns = @JoinColumn(name = "path_id"))
+    @JoinColumn(name = "path_id")
     private List<Path> paths = new ArrayList<>();
 
 
     public String getName() {
-        return game.getMapTemplate().getName();
+        return mapTemplate.getName();
     }
     public String getDescription() {
-        return game.getMapTemplate().getDescription();
+        return mapTemplate.getDescription();
     }
 
 

@@ -1,9 +1,5 @@
 package org.springframework.samples.petclinic.board.map;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
@@ -17,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameMapService {
     @Autowired
-    GameMapService gameMapServiceRepo;
+    GameMapRepository gameMapRepo;
     @Autowired
     CityService cityService;
     @Autowired
@@ -26,7 +22,7 @@ public class GameMapService {
     GameService gameService;
     
     public void save(GameMap gameMap){
-        gameMapServiceRepo.save(gameMap);
+        gameMapRepo.save(gameMap);
     }
 
     public void loadGameMap(Game game) {
@@ -34,15 +30,14 @@ public class GameMapService {
         gameService.save(game);
     }
 
-    private GameMap newMapFromGame(Game game) {
-        return newGameMapFromMapTemplate(game.getMapTemplate());
-    }
 
-    private GameMap newGameMapFromMapTemplate(MapTemplate mapTemplate) {
+
+    private GameMap newMapFromGame(Game game) {
+        MapTemplate mapTemplate = game.getMapTemplate();
         GameMap gameMap = new GameMap();
+        gameMap.setGame(game);
         setPathsAndCitiesFromTemplate(gameMap,mapTemplate);
-  
-        gameMapServiceRepo.save(gameMap);
+        gameMapRepo.save(gameMap);
         return gameMap;
     }
 
@@ -60,12 +55,14 @@ public class GameMapService {
         path.setPathReference(pathTemplate);
 
         City cityA = City.ofTemplate(pathTemplate.getFirstCityReference());
+        cityService.save(cityA);
         path.setFirstCity(cityA);
         if(!gameMap.getCities().contains(cityA)) gameMap.getCities().add(cityA);
             
 
         City cityB = City.ofTemplate(pathTemplate.getSecondCityReference());
-        path.setFirstCity(cityB);
+        cityService.save(cityB);
+        path.setSecondCity(cityB);
         if(!gameMap.getCities().contains(cityB)) gameMap.getCities().add(cityB);
         pathService.save(path);
 

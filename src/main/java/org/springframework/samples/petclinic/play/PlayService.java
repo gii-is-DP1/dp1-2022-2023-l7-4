@@ -22,6 +22,7 @@ public class PlayService {
         gameMapService.loadGameMap(game);
         positionInitialiter.setPositions(game);
         // TODO load game deck
+        game.setLoaded(false);
     }
 
     

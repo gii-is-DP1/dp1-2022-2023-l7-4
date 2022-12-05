@@ -13,7 +13,7 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
 
     @Query
     List<Position> findAllPositionByPlayerIsNull();
-    @Query("SELECT city.name FROM City city WHERE city.id = :id")
+    @Query("SELECT city.cityTemplate.name FROM City city WHERE city.id = :id")
     String findCityNameBy(int id);
 
     List<Position> findAllPositionsByPlayerIsNullAndForSpyFalse();
@@ -49,6 +49,6 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     @Query("SELECT p FROM Position p WHERE p.player.id !=1 AND p.forSpy IS TRUE AND p.player.id != ?1")
     List<Position> findAllEnemiesPlayersTroopPositionsOfPlayer(Integer player_id);
     
-    @Query("SELECT p FROM Position p WHERE p.city.gameMap.game.id = ?1 AND p.city.gameMap.game.id = ?1")
+    @Query("SELECT p FROM Position p WHERE p.city.gameMap.game.id = ?1 AND p.path.gameMap.game.id = ?1")
     List<Position> findAllPositionsByGameID( Integer gameId);
 }
