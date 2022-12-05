@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.player;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.Map;
 

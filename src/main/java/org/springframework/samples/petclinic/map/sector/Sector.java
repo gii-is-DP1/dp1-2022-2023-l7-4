@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.map.sector;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -19,14 +18,7 @@ public class Sector extends BaseEntity {
 
     @NotBlank
     @Positive
-    private Integer capacity;
-
-    @Positive
-    @Column(name = "unaligned_count")
-    Integer unalignedCount;
-
-
-    
+    private Integer capacity=0;
 
     
 }

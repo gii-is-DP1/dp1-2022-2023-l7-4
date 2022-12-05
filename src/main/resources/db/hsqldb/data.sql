@@ -11,32 +11,30 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
-INSERT INTO cities(capacity,unaligned_count,name,vp_endgame_value,starting_city,zone) VALUES (4,2,'EL LABERINTO',3,TRUE,1);
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
-INSERT INTO cities(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'GRACKLSTUGH',6,FALSE,3);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (4,'EL LABERINTO',3,TRUE,1);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'GRACKLSTUGH',6,FALSE,3);
 
 -- PATHS
-INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (1,2,0);
-INSERT INTO paths(city_id_1,city_id_2,capacity,unaligned_count) VALUES (1,3,4,2);
-INSERT INTO paths(city_id_1,city_id_2,capacity) VALUES (2,3,2);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,0);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,4);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,2);
 
 -- MAPS
-INSERT INTO maps(name) VALUES ('default Map');
+INSERT INTO map_templates(name) VALUES ('default Map');
 
 --POPULATE MAPS
-INSERT INTO maps_cities(map_id,city_id) VALUES
+INSERT INTO map_templates_city_templates(map_id,city_id) VALUES
     (1,1),
     (1,2),
     (1,3);
 
-INSERT INTO maps_paths(map_id,path_id) VALUES
+INSERT INTO map_templates_path_templates(map_id,path_id) VALUES
     (1,1),
     (1,2),
     (1,3);
 
 
--- GAMES
-INSERT INTO games(id,date,name,size,is_finished,map_id) VALUES (1,'2002-04-08','Partida 1', 3,FALSE,1);
 
 
 
@@ -45,17 +43,21 @@ INSERT INTO house(id,name,hex_color) VALUES (1,'Baerne','#5f605b');
 INSERT INTO house(id,name,hex_color) VALUES (2,'Mizzrym','#ff7133');
 INSERT INTO house(id,name,hex_color) VALUES (3,'Xorlarrin','#2f717f');
 INSERT INTO house(id,name,hex_color) VALUES (4,'Barrison del"armgo','#fc2e3c');
+-- HALFDECK
+INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');
+INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
+INSERT INTO halfdecks(id,name,description) VALUES (3,'Inicial','Cartas iniciales de los jugadores');
+INSERT INTO halfdecks(id,name,description) VALUES (4,'Básica','Cartas básicas disponibles en el mercado de todas las partidas');
+
+-- GAMES
+INSERT INTO games(first_half_deck_id,second_half_deck_id,date,name,size,map_template_id) 
+VALUES (1,2,'2002-04-08','Partida 1', 3,1);
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 1000,1000,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'David', 'daviddhc',1000,1000,1,1);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'Andres', 'anddomrui',1000,1000,2,1);
 
 
--- HALFDEK
-INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');
-INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
-INSERT INTO halfdecks(id,name,description) VALUES (3,'Inicial','Cartas iniciales de los jugadores');
-INSERT INTO halfdecks(id,name,description) VALUES (4,'Básica','Cartas básicas disponibles en el mercado de todas las partidas');
 
 
 -- ASPECTS

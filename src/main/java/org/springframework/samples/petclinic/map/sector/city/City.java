@@ -1,10 +1,8 @@
 package org.springframework.samples.petclinic.map.sector.city;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -18,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 import org.springframework.samples.petclinic.map.position.Position;
-import org.springframework.samples.petclinic.map.sector.Sector;
+import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
@@ -29,26 +27,33 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "cities")
-public class City extends Sector{
+public class City extends BaseEntity{
+
+
+    @ManyToOne(optional = false)
+    CityTemplate cityReference= new CityTemplate(); 
+    //this contains all constant data.
+    Integer capacity = cityReference.getCapacity();
 
     @NotBlank
-    private String name;
+    private String name= cityReference.getName();
     
     @Positive
-    Integer zone;
+    Integer zone = cityReference.getZone();
 
     @NotBlank
     @Min(1) //RN-vpEndgameValue >0
     @Column(name="vp_endgame_value")
-    private Integer vpEndgameValue;
+    private Integer vpEndgameValue = cityReference.getVpEndgameValue();
 
     @NotBlank
     @Column(name="starting_city")
-    private Boolean isStartingCity;
+    private Boolean isStartingCity = cityReference.getIsStartingCity();
 
-    private Integer vpControlled;
-    private Integer ifluenceTotalControlled;
-    private Integer vpTotalControlled;
+    private Integer vpControlled = cityReference.getVpControlled();
+    private Integer influenceTotalControlled = cityReference.getInfluenceTotalControlled();
+    private Integer vpTotalControlled = cityReference.getVpTotalControlled();
+
     @ManyToOne
     private Player controllingPlayer;
     
@@ -118,8 +123,16 @@ public class City extends Sector{
             return null;
         
         }
-        @Override
+        public static City ofTemplate(CityTemplate reference){
+            City city = new City();
+            city.setCityReference(reference);
+            return city;
+        }
+
+
+        
+    @Override
     public String toString() {
-        return  name ;
+        return  getName() ;
     }
 }
