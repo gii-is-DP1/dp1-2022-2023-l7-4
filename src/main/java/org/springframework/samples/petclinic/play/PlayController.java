@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("games/play")
 public class PlayController {
 
-    private static final String ROUND_ZERO = null;
+    private static final String ROUND_ZERO = "playing/roundZero";
 
     private static final String SCORE_BOARD = null;
 
