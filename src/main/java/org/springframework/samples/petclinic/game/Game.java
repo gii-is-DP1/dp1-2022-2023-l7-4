@@ -76,11 +76,11 @@ public class Game extends BaseEntity{
     private List<Player> players = new ArrayList<>();
 
     @ManyToOne()
-    @JoinColumn(name = "first_half_deck_id")
+    @JoinColumn(name = "first_half_deck_id",columnDefinition = "integer default 1")
     private HalfDeck firstHalfDeck= new HalfDeck();
 
     @ManyToOne()
-    @JoinColumn(name = "second_half_deck_id")
+    @JoinColumn(name = "second_half_deck_id",columnDefinition = "integer default 2")
     private HalfDeck secondHalfDeck = new HalfDeck();
 
     @ManyToMany

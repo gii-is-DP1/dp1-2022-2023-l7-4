@@ -50,12 +50,16 @@ INSERT INTO halfdecks(id,name,description) VALUES (3,'Inicial','Cartas iniciales
 INSERT INTO halfdecks(id,name,description) VALUES (4,'Básica','Cartas básicas disponibles en el mercado de todas las partidas');
 
 -- GAMES
-INSERT INTO games(id,first_half_deck_id,second_half_deck_id,date,name,size,map_template_id) 
-VALUES (1,1,2,'2002-04-08','Partida 1', 3,1);
+INSERT INTO games(id,date,name,size,map_template_id) 
+    VALUES (1,'2002-04-08','Partida 1',3,1),
+     (2,'2002-04-09','Partida 2',2,1);
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 1000,1000,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'David', 'daviddhc',1000,1000,1,1);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'Andres', 'anddomrui',1000,1000,2,1);
+
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'Player3',1000,1000,1,2);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'Player4',1000,1000,2,2);
 
 
 

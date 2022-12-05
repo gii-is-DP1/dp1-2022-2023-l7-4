@@ -35,7 +35,10 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         System.out.println(game);
         String result=null;
-        if(!game.isLoaded()) playService.loadGame(game);
+        if(!game.isLoaded()) {
+            playService.loadGame(game);
+            game=gameService.getGameById(gameId);
+        }
         if(game.getRound()==0){
 
             result="redirect:/games/play/"+gameId+"/round0?player="+game.getCurrentPlayer().getId();

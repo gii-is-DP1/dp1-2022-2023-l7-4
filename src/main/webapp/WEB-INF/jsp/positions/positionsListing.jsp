@@ -53,7 +53,7 @@ window.onbeforeunload = function(e) {
                     <c:out value="${city.vpEndgameValue}"/>
                 </td>
                 <td>
-                    <c:out value="${city.isStartingCity}"/>
+                    <c:out value="${city.isStartingCity()}"/>
                 </td>
                 
                 

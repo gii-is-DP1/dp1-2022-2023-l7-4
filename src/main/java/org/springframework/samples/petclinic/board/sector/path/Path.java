@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.samples.petclinic.board.map.GameMap;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
@@ -20,6 +21,9 @@ public class Path extends BaseEntity{
     @ManyToOne
     PathTemplate pathReference;
 
+    @ManyToOne
+    private GameMap gameMap;
+    
     @ManyToOne
     @JoinColumn(name="city_id_1")
     private City firstCity;

@@ -1,9 +1,5 @@
 package org.springframework.samples.petclinic.board.map;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
@@ -34,14 +30,13 @@ public class GameMapService {
         gameService.save(game);
     }
 
-    private GameMap newMapFromGame(Game game) {
-        return newGameMapFromMapTemplate(game.getMapTemplate());
-    }
 
-    private GameMap newGameMapFromMapTemplate(MapTemplate mapTemplate) {
+
+    private GameMap newMapFromGame(Game game) {
+        MapTemplate mapTemplate = game.getMapTemplate();
         GameMap gameMap = new GameMap();
+        gameMap.setGame(game);
         setPathsAndCitiesFromTemplate(gameMap,mapTemplate);
-  
         gameMapRepo.save(gameMap);
         return gameMap;
     }

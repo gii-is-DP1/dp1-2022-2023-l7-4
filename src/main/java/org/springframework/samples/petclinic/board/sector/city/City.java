@@ -6,21 +6,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 import org.springframework.samples.petclinic.board.map.GameMap;
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,25 +30,10 @@ public class City extends BaseEntity{
     @ManyToOne(optional = false)
     CityTemplate cityTemplate= new CityTemplate(); 
     //this contains all constant data.
-    Integer capacity = cityTemplate.getCapacity();
 
-    @JsonIgnore
-    private String name= cityTemplate.getName();
-    
-    @JsonIgnore
-    Integer zone = cityTemplate.getZone();
 
-    @JsonIgnore
-    private Integer vpEndgameValue = cityTemplate.getVpEndgameValue();
+  
 
-    @JsonIgnore
-    private Boolean startingCity = cityTemplate.getStartingCity();
-    @JsonIgnore
-    private Integer vpControlled = cityTemplate.getVpControlled();
-    @JsonIgnore
-    private Integer influenceTotalControlled = cityTemplate.getInfluenceTotalControlled();
-    @JsonIgnore
-    private Integer vpTotalControlled = cityTemplate.getVpTotalControlled();
 
     @ManyToOne
     private Player controllingPlayer;
@@ -134,8 +113,19 @@ public class City extends BaseEntity{
             return city;
         }
 
-
         
+        public Integer getCapacity() {return cityTemplate.getCapacity();}
+        public String getName() {return cityTemplate.getName();}
+        public Integer getZone() {return cityTemplate.getZone();}
+        public Integer getVpControlled() {return cityTemplate.getVpControlled();}
+        public Integer getVpEndgameValue() {return cityTemplate.getVpEndgameValue();}
+        public Integer getInfluenceTotalControlled() {return cityTemplate.getInfluenceTotalControlled();}
+        public Integer getVpTotalControlled() {return cityTemplate.getVpTotalControlled();}
+        public Boolean isStartingCity(){
+            return cityTemplate.getStartingCity();
+        }
+        
+
     @Override
     public String toString() {
         return  getName() ;

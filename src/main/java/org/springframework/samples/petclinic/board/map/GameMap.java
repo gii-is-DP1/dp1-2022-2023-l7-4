@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.city.CityTemplate;
@@ -30,7 +31,10 @@ public class GameMap extends BaseEntity{
  
     @ManyToOne
     private MapTemplate mapTemplate;
-
+    
+    @OneToOne
+    private Game game;
+    
     @OneToMany
     @JoinColumn(name = "city_id")
     private List<City> cities = new ArrayList<>();
