@@ -21,7 +21,7 @@ import lombok.Setter;
 @Table(name = "maps")
 @Getter
 @Setter
-public class Map extends BaseEntity{
+public class GameMap extends BaseEntity{
     
     @ManyToOne
     MapTemplate mapTemplate;

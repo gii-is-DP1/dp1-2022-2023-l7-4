@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -27,8 +26,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.HalfDeck;
-import org.springframework.samples.petclinic.map.Map;
 import org.springframework.samples.petclinic.map.MapTemplate;
+import org.springframework.samples.petclinic.map.GameMap;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
@@ -48,7 +47,7 @@ public class Game extends BaseEntity{
     Date date = new Date();
     
     @Column(name="is_finished",columnDefinition = "boolean default false")
-    Boolean isFinished = false;
+    Boolean finished = false;
     
     Boolean loaded = false;
     @NotNull
@@ -58,7 +57,7 @@ public class Game extends BaseEntity{
     MapTemplate mapTemplate = new MapTemplate();
 
     @ManyToOne
-    Map map = new Map();
+    GameMap map = new GameMap();
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",fetch = FetchType.EAGER)
     private List<Player> players = new ArrayList<>();
@@ -93,8 +92,6 @@ public class Game extends BaseEntity{
     @Min(1)
     private Integer turnPlayer;
 
-    @ManyToOne
-    GameMap map;
     public void addPlayer(Player player) {
         getPlayers().add(player);
         player.setGame(this);
