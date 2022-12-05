@@ -33,6 +33,6 @@ public class MarketMoveCardsService {
     private void moveSelectedCardAndSave(Card card, List<Card> source, List<Card> target, @Valid Game game) {
         source.remove(card);
         target.add(card);
-        gameService.saveGame(game);
+        gameService.save(game);
     }
 }

@@ -29,7 +29,7 @@ public class GameService {
 	}
 
     @Transactional
-	public void saveGame(Game game) throws DataAccessException {
+	public void save(Game game) throws DataAccessException {
 		grepo.save(game);
 	}	
 

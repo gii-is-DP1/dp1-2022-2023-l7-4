@@ -1,23 +1,14 @@
 package org.springframework.samples.petclinic.play;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.board.position.AdjacentPositionService;
+import org.springframework.samples.petclinic.board.position.PositionService;
+import org.springframework.samples.petclinic.board.sector.city.CityService;
+import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.map.MapTemplate;
-import org.springframework.samples.petclinic.map.position.AdjacentPositionService;
-import org.springframework.samples.petclinic.map.position.PositionService;
-import org.springframework.samples.petclinic.map.sector.city.City;
-import org.springframework.samples.petclinic.map.sector.city.CityService;
-import org.springframework.samples.petclinic.map.sector.path.Path;
-import org.springframework.samples.petclinic.map.sector.path.PathService;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/games/game")

@@ -1,11 +1,9 @@
 package org.springframework.samples.petclinic.play;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.board.position.CustomListingPositionService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.map.position.CustomListingPositionService;
-import org.springframework.samples.petclinic.map.position.PlayerUsePositionService;
-import org.springframework.samples.petclinic.map.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +33,7 @@ public class PlayController {
     @GetMapping("{gameId}")
     public String showActualRound(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
+        System.out.println(game);
         String result=null;
         if(!game.isLoaded()) playService.loadGame(game);
         if(game.getRound()==0){

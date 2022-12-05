@@ -25,12 +25,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.samples.petclinic.board.map.GameMap;
+import org.springframework.samples.petclinic.board.map.MapTemplate;
+import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.HalfDeck;
-import org.springframework.samples.petclinic.map.GameMap;
-import org.springframework.samples.petclinic.map.MapTemplate;
-import org.springframework.samples.petclinic.map.sector.city.City;
-import org.springframework.samples.petclinic.map.sector.path.Path;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
@@ -70,7 +70,7 @@ public class Game extends BaseEntity{
     MapTemplate mapTemplate = new MapTemplate();
 
     @OneToOne
-    GameMap map = new GameMap();
+    GameMap gameMap = new GameMap();
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",fetch = FetchType.EAGER)
     private List<Player> players = new ArrayList<>();
@@ -154,31 +154,32 @@ public class Game extends BaseEntity{
     }
 
     private Integer getControlCityVP(Player player){
-        return this.map.getCities().stream()
+        return this.gameMap.getCities().stream()
         .filter(city->city.getControllingPlayer().equals(player))
         .collect(Collectors.summingInt(city->city.getVpEndgameValue()));
     }
 
     private Integer getTotalControlVP(Player player){
-        Long numberOfTotalControlCities=this.map.getCities().stream()
+        Long numberOfTotalControlCities=this.gameMap.getCities().stream()
             .filter(city->city.whoTotallyControls().equals(player))
             .count();
         return numberOfTotalControlCities.intValue()*2;
     }    
     
     public Boolean isLoaded(){
-
+        if(gameMap!=null) {
             return !(
-            this.map.getCities().isEmpty() |
-            this.map.getPaths().isEmpty());
+                this.gameMap.getCities().isEmpty() |
+                this.gameMap.getPaths().isEmpty());
+        }else return false;
 
     }
 
     public List<City> getCities(){
-        return this.map.getCities();
+        return this.gameMap.getCities();
     }
     public List<Path> getPaths(){
-        return this.map.getPaths();
+        return this.gameMap.getPaths();
     }
 }
 
