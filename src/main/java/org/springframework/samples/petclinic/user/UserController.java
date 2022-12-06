@@ -16,6 +16,9 @@
 package org.springframework.samples.petclinic.user;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -82,7 +85,35 @@ public class UserController {
 		model.put("selections", userService.getUsers());
 		return "users/usersList";
 	}
+	@GetMapping(value = "/users")
+	public String processFindForm(User user, BindingResult result, Map<String, Object> model) {
 
+		
+		if (user.getName()== null) {
+			user.setName("");
+		}
+		User result1 = this.userService.getUserByUsername(user.getName());
+		List<User> results= new ArrayList<User>();
+		results.add(result1);
+		
+		if (results.isEmpty()) {
+			result.rejectValue("username", "notFound", "not found");
+			return "users/findUser";
+		}
+		else if (results.size() == 1) {
+			user = results.iterator().next();
+			return "redirect:/users/" + user.getUsername();
+		}
+		else {
+			model.put("selections", results);
+			return "users/usersList";
+		}
+	}
+	@GetMapping(value = "/users/find")
+	public String initFindForm(Map<String, Object> model) {
+		model.put("user", new User());
+		return "users/findUser";
+	}
 	@GetMapping("/users/{username}")
 	public ModelAndView showUser(@PathVariable("username") String username) {
 		ModelAndView mav = new ModelAndView("users/userDetails");

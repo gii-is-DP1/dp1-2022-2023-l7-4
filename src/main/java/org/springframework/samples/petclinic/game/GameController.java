@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.game;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -9,6 +11,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
+import org.springframework.samples.petclinic.user.User;
+import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,20 +25,67 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class GameController {
     @Autowired
-    GameService gService;
+    GameService gameService;
 	@Autowired
-	PlayerService pService;
+	PlayerService playerService;
+	@Autowired
+	UserService userService;
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
+	private static final String VIEWS_NEWGAME_CREATE_FORM = "games/newGame";
     
     @GetMapping(value = "/games/create")
-	public String initCreationForm(Map<String, Object> model) {
-		Game game = new Game();
-		model.put("game", game);
-		return VIEWS_GAME_CREATE_FORM;
-    } 
+	public String initCreationForm(Map<String, Object> model, Principal currentUser) {
+		List<User> users = (List<User>) userService.getUsers();
+		User creatorsUser = userService.getUserByUsername(currentUser.getName());
+		users.remove(creatorsUser);
+
+		List<User> players = new ArrayList<>();
+		players.add(creatorsUser);
+
+		model.put("users", users);
+		model.put("players", players);
+		return VIEWS_NEWGAME_CREATE_FORM;
+    }
+
+	@PostMapping(value = "games/create/add/{userId}")
+	public String postCreatingGameAddPlayer(@PathVariable("userId") String userId, GameForm gameForm, Map<String, Object> model) {
+		User addedUser = userService.getUserByUsername(userId);
+		
+		List<String> playerIds = gameForm.getUsers();
+		List<User> players = new ArrayList<>();
+		for(String i:playerIds) {
+			players.add(userService.getUserByUsername(i));
+		}
+		
+		players.add(addedUser);
+		List<User> users = (List<User>) userService.getUsers();
+		users.removeAll(players);
+		
+		model.put("users", users);
+		model.put("players", players);
+		return VIEWS_NEWGAME_CREATE_FORM;
+	}
+	@PostMapping(value = "games/create/remove/{playerNum}")
+	public String creatingGameRemovePlayer(@PathVariable("playerNum") int playerNum, GameForm gameForm, Map<String, Object> model) {
+		List<String> playerIds = gameForm.getUsers();
+		List<User> players = new ArrayList<>();
+		for(String i:playerIds) {
+			players.add(userService.getUserByUsername(i));
+		}
+		
+		players.remove(playerNum);
+		
+		List<User> users = (List<User>) userService.getUsers();
+		users.removeAll(players);
+		
+		model.put("users", users);
+		model.put("players", players);
+		return VIEWS_NEWGAME_CREATE_FORM;
+	}
+	
 
     @PostMapping(value = "/games/create")
 	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model ) {
@@ -43,14 +94,14 @@ public class GameController {
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
-			this.gService.saveGame(game);
+			this.gameService.saveGame(game);
 			return "redirect:/games/" + game.getId();
 		}
 	}
 	@GetMapping("/games/{gameId}")
 		public ModelAndView showgame(@PathVariable("gameId") int gameId) {
 			ModelAndView mav = new ModelAndView("games/gameDetails");
-			mav.addObject(this.gService.getGameById(gameId));
+			mav.addObject(this.gameService.getGameById(gameId));
 
 			return mav;
 		}
@@ -58,12 +109,12 @@ public class GameController {
 	@GetMapping("/games/join/{gameId}")
 		public String joinGame(@PathVariable("gameId") int gameId, Principal user) {
 			String name= user.getName();
-			Player player= this.pService.getPlayerByUsername(name);
-			Game game = this.gService.getGameById(gameId);
+			Player player= this.playerService.getPlayerByUsername(name);
+			Game game = this.gameService.getGameById(gameId);
 			game.addPlayer(player);
-			gService.saveGame(game);
+			gameService.saveGame(game);
 			player.setGame(game);
-			pService.savePlayer(player);
+			playerService.savePlayer(player);
 			return "welcome";
 	}
 	@GetMapping(value = "/games/find")
@@ -78,7 +129,7 @@ public class GameController {
 		if (game.getName()== null) {
 			game.setName("");
 		}
-		Collection<Game> results = this.gService.getGameByName(game.getName());
+		Collection<Game> results = this.gameService.getGameByName(game.getName());
 		
 		if (results.isEmpty()) {
 			result.rejectValue("name", "notFound", "not found");
@@ -95,7 +146,7 @@ public class GameController {
 	}
 	@GetMapping(value = "/games/list")
 	public String proccesGameListing(Map<String, Object> model){
-		model.put("selections", gService.getGames());
+		model.put("selections", gameService.getGames());
 		return "games/gameList";
 	}
     

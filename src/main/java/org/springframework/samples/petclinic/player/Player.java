@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.player;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,18 +11,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-import org.hibernate.type.TrueFalseType;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.house.House;
-import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;
@@ -39,8 +38,12 @@ public class Player{
     @NotBlank
     String name;
     
+    @Column(columnDefinition = "integer default 0")
+    @Min(0)
     Integer power;
 
+    @Column(columnDefinition = "integer default 0")
+    @Min(0)
     Integer influence;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -68,12 +71,40 @@ public class Player{
     @Min(0)
     private int trophyPV=0;
 
+    @ManyToMany()
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
+    private List<Card> deck =  new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
+    private List<Card> hand = new ArrayList<>(); 
+
+    @ManyToMany
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
+    private List<Card> played = new ArrayList<>(); 
+
+    @ManyToMany
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
+    private List<Card> discardPile = new ArrayList<>(); 
+
+    @ManyToMany
+    @JoinTable(
+        inverseJoinColumns=
+            @JoinColumn(name="CARD_ID"))
+    private List<Card> innerCircle = new ArrayList<>(); 
+    
+
     
     @Override
     public String toString() {
-        return "Player [id=" + id + ", name=" + name + ", power=" + power + ", influence=" + influence 
-        + ", user=" + user + ", troops=" + troops 
-        + ", spies=" + spies + ", trophyPV=" + trophyPV
-                + "]";
+        return "ply_"+id +": "+ name;
     }
 }

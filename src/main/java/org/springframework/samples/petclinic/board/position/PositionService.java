@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.board.position;
 
 
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,14 +82,16 @@ public class PositionService {
      {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void killTroop(Position position,Player player,Boolean forAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        //errores posibles, tipo incorrecto, jugador incorrecto(o vacio o eres tu)
         if(position.getPlayer()==null)
             throw new EmptyPositionException();
+
         else if(position.getPlayer().equals(player))
             throw new YourPositionException();
+
         else if(forAdjacencies & 
         !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
+
         player.setTrophyPV(player.getTrophyPV()+1);
         playerRepository.save(player);
         position.setPlayer(null);
@@ -113,8 +116,8 @@ public class PositionService {
     @Transactional
     public void movePiece(Position source,Position target) throws DataAccessException{
         //errores posibles, source vacio y/o target ocupado, source.getForSpy()!=target.getForSpy()
-        source.setPlayer(null);
         target.setPlayer(source.getPlayer());
+        source.setPlayer(null);
         save(source);
         save(target);
     }
@@ -137,11 +140,11 @@ public class PositionService {
         save(position);
     }
 
-    @Transactional(readOnly = true)//habría que utilizar directamente un id, pero afecta al calculo de adyacencias
+    @Transactional(readOnly = true)
     public List<Position> getPositionsFromPath(Path path){
         return positionRepository.findAllPositionByPathId(path.getId());
     }
-    public List<Position> getPositionsFromPathId(int path_id){//test realizado
+    public List<Position> getPositionsFromPathId(int path_id){
         return positionRepository.findAllPositionByPathId(path_id);
     }
 
@@ -150,28 +153,40 @@ public class PositionService {
         return positionRepository.findAllPositionByCityId(city_id);
     }
 
-    @Transactional(readOnly = true)//test realizado
+    @Transactional(readOnly = true)
     public List<Position> getFreePositions() throws DataAccessException{
         return positionRepository.findAllPositionByPlayerIsNull();
     }
-    @Transactional(readOnly = true)//test realizado
+    @Transactional(readOnly = true)
     public List<Position> getFreeTroopPositions() throws DataAccessException{
         return positionRepository.findAllPositionsByPlayerIsNullAndForSpyFalse();
     }
-    @Transactional(readOnly = true)//test realizado
+    @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositions() throws DataAccessException{
         return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
     }
+
+    @Transactional(readOnly = true)
+    public List<Position> getFreeSpyPositionsForPlayer(Integer player_id){
+        List<Position> spyPositionsFromPlayer=positionRepository.findAllPositionByPlayerIdAndForSpyTrue(player_id);
+        List<City> citiesWithSpiesOfPlayer=spyPositionsFromPlayer.stream().map(position->position.getCity())
+        .filter(city->city!=null).distinct().collect(Collectors.toList());
+        return getFreeSpyPositions().stream()
+        .filter(position->!citiesWithSpiesOfPlayer.contains(position.getCity())).collect(Collectors.toList());
+
+    }
     
-    @Transactional(readOnly = true) //test realizado
+    @Transactional(readOnly = true) 
     public Position findPositionById(Integer id) {
         return positionRepository.findById2(id);
     }
     
-    @Transactional(readOnly = true)//test realizado
+    @Transactional(readOnly = true)
     public List<Position> getPlayerPositions(Integer player_id){
         return positionRepository.findAllPositionByPlayerId(player_id);
     }
+    
+
     @Transactional(readOnly = true)
     public List<Position> getAdjacentPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
         List<Position> myPos=getPlayerPositions(player_id);
@@ -188,29 +203,52 @@ public class PositionService {
         List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
         return positions.stream().filter(pos->pos.getForSpy()==false).collect(Collectors.toList());
     }
-
     @Transactional(readOnly = true)
-    public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy,Boolean searchForAll){
+    public List<Position> getAdjacentSpyPositionsFromPlayer(Integer player_id,Boolean searchEnemies){
+        List<Position> positions=getAdjacentPositionsFromPlayer(player_id, searchEnemies);
+        return positions.stream().filter(pos->pos.getForSpy()).collect(Collectors.toList());
+    }
+    /**
+     * 
+     * <p>----------<p>
+     * Dado el id de un jugador, el tipo de pieza que buscas, si utilizas presencia y según el tipo de enemigo
+     * que buscas, esto generará todas las posiciones enemigas según un jugador
+     * @param player_id
+     * @param forSpy
+     * @param useAdjacency
+     * @param searchWhites : si es null, buscará todas las piezas enemigas, si no:
+     *      -true: buscará sólo piezas blancas
+     *      -false: buscará sólo piezas de otros jugadores que no sean blancas
+     */
+    @Transactional(readOnly = true)
+    public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy
+    ,Boolean useAdjacency,Boolean searchWhites){
         List<Position> res=null;
-        if(searchForAll)
+        if(useAdjacency)
             res= positionRepository
             .findAllEnemyPositionsByType(player_id,forSpy);
         else{
             res=getAdjacentPositionsFromPlayer(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
         }
+        if(searchWhites!=null)//si esto es null, entonces busca todos los enemigos, sino, 
+            res.stream()
+            .filter(pos->(searchWhites & pos.getPlayer().getId()==1)
+             || (!searchWhites & pos.getPlayer().getId()!=1)).collect(Collectors.toList());
         return res;
     }
 
     @Transactional(readOnly = true)
     public List<Position> getAllEnemyTroopsForPlayer(Integer player_id){
-        return getEnemyPositionsByType(player_id, false, true);
+        return getEnemyPositionsByType(player_id, false, true,null);
     }
 
     @Transactional(readOnly = true)
     public List<Position> getAllEnemySpiesForPlayer(Integer player_id){
-        return getEnemyPositionsByType(player_id, true, true);
+        return getEnemyPositionsByType(player_id, true, true,null);
     }
+
+
 
 
     /**

@@ -3,132 +3,51 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) { 
-    var scrollpos = localStorage.getItem('scrollpos');
-    if (scrollpos) window.scrollTo(0, scrollpos);
-});
 
-window.onbeforeunload = function(e) {
-    localStorage.setItem('scrollpos', window.scrollY);
-};
-</script>
-
-<petclinic:layout pageName="positions">
-    <h2>Positions</h2>    
-    <table id="positionsTable" class="table table-striped">
-
-    <h2>Cities</h2>
-    <table id="citiesTable" class="table table-striped">
+<petclinic:layout pageName="actions">
+    <h2>Actions</h2>    
+    <table id="actionsTable" class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Controlled By</th>
-            <th>Totally Controlled By</th>
-            <th>Capacity</th>
-            <th>Zone</th>
-            <th>VP</th>
-            <th>isStartingCity</th>
+            
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${cities}" var="city">
+        <c:forEach items="${actions}" var="action">
             <tr>
                 <td>
-                    <c:out value="${city.id}"/>
-                </td> 
-                <td>
-                    <c:out value="${city.whoControls()}"/>
+                    <c:out value="${action.id}"/>
                 </td>
                 <td>
-                    <c:out value="${city.whoTotallyControls()}"/>
+                    <c:out value="${action.isSimple== true? 'Yes':'No'}"/>
                 </td>
                 <td>
-                    <c:out value="${city.capacity}"/>
+                    <c:out value="${action.simpleActionNameEnum}"/>
                 </td>
                 <td>
-                    <c:out value="${city.zone}"/>
+                    <c:out value="${action.complexConditionEnum}"/>
                 </td>
                 <td>
-                    <c:out value="${city.vpEndgameValue}"/>
+                    <c:out value="${action.value}"/>
                 </td>
                 <td>
-                    <c:out value="${city.isStartingCity}"/>
-                </td>
-                
-                
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    <h2>Paths</h2>
-    <table id="pathsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Capacity</th>
-            <th>CityA</th>
-            <th>CityB</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${paths}" var="path">
-            <tr>
-                <td>
-                    <c:out value="${path.id}"/>
+                    <c:out value="${action.entityStatusEnum}"/>
                 </td>
                 <td>
-                    <c:out value="${path.capacity}"/>
+                    <c:out value="${action.entityEnum}"/>
                 </td>
                 <td>
-                    <c:out value="${path.firstCity}"/>
+                    <c:out value="${action.myActionSons}"/>
                 </td>
                 <td>
-                    <c:out value="${path.secondCity}"/>
-                </td>
-                
-                
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    
-    <h2> All positions</h2>
-    <table id="positionsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Occupied</th>
-            <th>Player</th>
-            <th>Type</th>
-            <th>Path</th>
-            <th>City</th>
-            <th>Adjacencies</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${positions}" var="position">
-            <tr>
-                <td>
-                    <c:out value="${position.id}"/>
+                    <c:out value="${action.myActionFathers}"/>
                 </td>
                 <td>
-                    <c:out value="${position.isOccupied== true? 'Yes':'-'}"/>
+                    <c:out value="${action.presence}"/>
                 </td>
                 <td>
-                    <c:out value="${position.player.name}"/>
-                </td>
-                <td>
-                    <c:out value="${position.forSpy==true? 'Spy': 'Troop'}"/>
-                </td>
-                <td>
-                    <c:out value="${position.path}"/>
-                </td>
-                <td>
-                    <c:out value="${position.city}"/>
-                </td>
-                <td>
-                    <c:out value="${position.adjacents}"/>
+                    <c:out value="${action}" escapeXml="false"/>
                 </td>
 
                 
@@ -141,33 +60,33 @@ window.onbeforeunload = function(e) {
     <body>
 
         <div class="container-button">
-            <a href='<c:url value="/positions/1/place/troop/false/1"/>' >
+            <a href='<c:url value="/positions/1/place/troop/false"/>' >
                 <div class="aBotton">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 1</div></div>
                     </div>
 			</a><br>
-            <a href='<c:url value="/positions/2/place/troop/false/1"/>' >
+            <a href='<c:url value="/positions/2/place/troop/false"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 2</div></div>
                     </div>
 			</a><br>
-            <a href='<c:url value="/positions/1/place/troop/true/1"/>' >
+            <a href='<c:url value="/positions/1/place/troop/true"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 1 CON PRESENCIA</div></div>
                     </div>
 			    </a><br>
-            <a href='<c:url value="/positions/2/place/troop/true/1"/>' >
+            <a href='<c:url value="/positions/2/place/troop/true"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA COMO JUGADOR 2 CON PRESENCIA</div></div>
                     </div>
 			</a><br>
 
-            <a href='<c:url value="/positions/1/place/spy/1"/>' >
+            <a href='<c:url value="/positions/1/place/spy"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">COLOCAR ESPIA COMO JUGADOR 1</div></div>
                     </div>
             </a><br>
-            <a href='<c:url value="/positions/2/place/spy/1"/>' >
+            <a href='<c:url value="/positions/2/place/spy"/>' >
                 <div class="aBotton ">
                     <div class="especial-btn btn-two"><div class="textbtn">COLOCAR ESPIA COMO JUGADOR 2</div></div>
                     </div>

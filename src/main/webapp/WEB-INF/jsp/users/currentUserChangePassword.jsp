@@ -8,19 +8,15 @@
 
 <petclinic:layout pageName="users">
     <h2>
-        Change password
+        Edit my profile
     </h2>
     <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
-
         <div class="form-group has-feedback">
-            <form:input class="form-control" path="name" type="hidden"/>
-            <form:input class="form-control" path="email" type="hidden"/>
-            <form:input class="form-control" path="birthdate" type="hidden"/>
-            <form:input class="form-control" path="username" type="hidden"/>
-            <div class="password">
+            <petclinic:inputField label="Username" name="username" type="hidden"/>
             <petclinic:inputField label="Password" name="password" type="password"/>
-            <a class="glyphicon glyphicon-eye-open" id="show-pass"onclick="mostrarContrasena()"></a>
-        </div>
+            <petclinic:inputField label="Name" name="name" type="hidden"/>
+            <petclinic:inputField label="Email" name="email" type="hidden"/>
+            <petclinic:inputField label="Birthdate" name="birthdate" type="hidden"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -28,26 +24,4 @@
             </div>
         </div>
     </form:form>
-    <style>
-        #show-pass{
-            cursor: pointer;
-            text-decoration: none;
-            left: 96%;
-            top: 10px;
-            position: absolute;
-
-
-
-        }
-    </style>
-    <script>
-        function mostrarContrasena(){
-      const tipo = document.getElementsByName("password");
-      if(tipo[0].type == "password"){
-          tipo[0].type = "text";
-      }else{
-          tipo[0].type = "password";
-      }
-  }
-    </script>
 </petclinic:layout>
