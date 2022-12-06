@@ -42,7 +42,7 @@ public class CardController {
 	//Listing card
     @GetMapping("/all")
     public String showCards(){
-		return "redirect:/cards/filter?name=&deck=&page=1";
+		return "redirect:/cards/filter?name=&deck=&page=0";
     }
 
     @GetMapping("/filter")
@@ -54,7 +54,7 @@ public class CardController {
 		List<HalfDeck> HalfDecks = cardService.getAllHalfDecks();
 		Integer numberOfPages=numberOfTotalFilteredCards/6;
 		List<Integer> pages=new ArrayList<>();
-		for(int i=1;i<=numberOfPages;i++) pages.add(i);
+		for(int i=0;i<=numberOfPages;i++) pages.add(i);
 		result2.addObject("halfDecks", HalfDecks);
 
 		if(filteredCards.isEmpty()){
@@ -63,6 +63,7 @@ public class CardController {
 			result2.addObject("cards", filteredCards);
 		}
 		result2.addObject("pages",pages);
+		result2.addObject("numberOfPages",numberOfPages);
 		return result2;
     }
 	
