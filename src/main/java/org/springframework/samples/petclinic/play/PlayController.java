@@ -42,7 +42,6 @@ public class PlayController {
         if(game.getRound()==0){
 
             result="redirect:/games/play/"+gameId+"/round0?player="+game.getCurrentPlayer().getId();
-            result="welcome";
         }
         else if(game.getFinished())
             result="redirect:/games/play/"+gameId+"/scoreboard";
