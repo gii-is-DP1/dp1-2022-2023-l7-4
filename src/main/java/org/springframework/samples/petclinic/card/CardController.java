@@ -1,8 +1,12 @@
 package org.springframework.samples.petclinic.card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,23 +42,27 @@ public class CardController {
 	//Listing card
     @GetMapping("/all")
     public String showCards(){
-		return "redirect:/cards/filter?name=&deck=";
+		return "redirect:/cards/filter?name=&deck=&page=1";
     }
 
     @GetMapping("/filter")
-    public ModelAndView showFilterdCards(Card card,@RequestParam("name") String name, @RequestParam("deck") String deck, BindingResult result){
+    public ModelAndView showFilterdCards(Card card,@RequestParam("name") String name,@RequestParam("page") Integer page, @RequestParam("deck") String deck, BindingResult br){
         ModelAndView result2=new ModelAndView(CARDS_LISTING_VIEW);
-
-		List<Card> filteredCards = cardService.getCardsByNameAndByHalfDeck(name,deck);
+		Pageable pageable=PageRequest.of(page,6,Sort.by("id").ascending());
+		Integer numberOfTotalFilteredCards=cardService.getCardsByNameAndByHalfDeck(name, deck).size();
+		List<Card> filteredCards = cardService.getCardsByNameAndByHalfDeckPageable(name,deck,pageable);
 		List<HalfDeck> HalfDecks = cardService.getAllHalfDecks();
-
+		Integer numberOfPages=numberOfTotalFilteredCards/6;
+		List<Integer> pages=new ArrayList<>();
+		for(int i=1;i<=numberOfPages;i++) pages.add(i);
 		result2.addObject("halfDecks", HalfDecks);
 
 		if(filteredCards.isEmpty()){
-			result.rejectValue("name", "notFound", "not found");
+			br.rejectValue("name", "notFound", "not found");
 		}else{
 			result2.addObject("cards", filteredCards);
 		}
+		result2.addObject("pages",pages);
 		return result2;
     }
 	
@@ -85,4 +93,6 @@ public class CardController {
 		}
 		return result2;
     }
+
+	
 }

@@ -14,7 +14,7 @@
     <div style="font-size: 25px; color: aliceblue; text-align: center;"><b>FILTRAR CARTAS</b></div>
     <br>
 
-    <form action="/cards/filter">
+    <form action="/cards/filter?page=1">
         <label for="lname" style="color: aliceblue; margin-left:23px;font-size: 17px;">Nombre de la carta:&nbsp&nbsp</label>
         <input type="text" id="fname" name="name" value=${param.name}><br>
         <div style="color: aliceblue; margin-left:23px;font-size: 17px;"><b>Selecciona un mazo:</b></div>
@@ -26,10 +26,21 @@
                 </c:forEach>
             </select>
         </div>
+        <input type="text" name="page" value="1" hidden>
         <div class="aBotton">
             <button type="submit" class="special-btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
         </div>
     </form> 
+    <div style="color: aliceblue; margin-left:23px;font-size: 17px;"><b>Te encuentras en la página: ${param.page}</b></div>
+
+    <c:forEach var="nextPage" items="${pages}">
+        <a href='<c:url value="/cards/filter?name=${param.name}&deck=${param.deck}&page=${nextPage}"/>' >
+                <div class="aBotton ">
+                    <div class="especial-btn btn-two"><div class="textbtn">${nextPage}</div></div>
+                    </div>
+			</a><br>
+    </c:forEach>
+
 </div>
 
 <br><br>
