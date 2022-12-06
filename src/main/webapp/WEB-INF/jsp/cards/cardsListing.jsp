@@ -31,12 +31,13 @@
             <button type="submit" class="special-btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
         </div>
     </form> 
+    <br>
     <div style="color: aliceblue; margin-left:23px;font-size: 17px;"><b>Te encuentras en la página: ${param.page}</b></div>
 
     <c:forEach var="nextPage" items="${pages}">
         <a href='<c:url value="/cards/filter?name=${param.name}&deck=${param.deck}&page=${nextPage}"/>' >
-                <div class="aBotton ">
-                    <div class="especial-btn btn-two"><div class="textbtn">${nextPage}</div></div>
+                <div class="page-button">
+                    <div><div>${nextPage}</div></div>
                     </div>
 			</a><br>
     </c:forEach>
@@ -292,7 +293,10 @@
         transform: rotate(45deg);
         background-color: rgba(255, 255, 255, 0.105);
         border-radius: 10%;
+        }
 
+        .page-button{
+            background-color: aliceblue;
         }
     </style>
 </petclinic:layout>
