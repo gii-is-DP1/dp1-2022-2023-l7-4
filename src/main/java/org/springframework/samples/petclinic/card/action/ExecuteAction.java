@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.card.action;
 
-import org.springframework.samples.petclinic.map.position.Position;
+import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.player.Player;
 //THIS CLASS IS IN ALPHA VERSION, IT HAS NOTES OF METHODS THAT WILL BE IMPLENTED HERE OR SOMEWHERE ELSE

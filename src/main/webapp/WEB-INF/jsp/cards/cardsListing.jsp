@@ -26,10 +26,23 @@
                 </c:forEach>
             </select>
         </div>
+        <input type="text" name="page" value="0" hidden>
         <div class="aBotton">
             <button type="submit" class="special-btn btn-two"><div class="textbtn"><b>Buscar</b></div></button>
         </div>
     </form> 
+    <br>
+    <div style="color: aliceblue; margin-left:23px;font-size: 17px;"><b>Te encuentras en la página: ${param.page + 1} / ${numberOfPages + 1}</b></div>
+    
+
+    <c:forEach var="nextPage" items="${pages}">
+        <a href='<c:url value="/cards/filter?name=${param.name}&deck=${param.deck}&page=${nextPage}"/>' >
+                <div class="page-button">
+                    <div><div>${nextPage + 1}</div></div>
+                    </div>
+			</a><br>
+    </c:forEach>
+
 </div>
 
 <br><br>
@@ -281,7 +294,10 @@
         transform: rotate(45deg);
         background-color: rgba(255, 255, 255, 0.105);
         border-radius: 10%;
+        }
 
+        .page-button{
+            background-color: aliceblue;
         }
     </style>
 </petclinic:layout>
