@@ -12,7 +12,7 @@
     <c:forEach var="pageNumber" items="${pages}">
         <c:if test="${pageNumber>=currentPage-2 && pageNumber<=currentPage+2}" > 
             <a class="${currentPage==pageNumber?'active':''}"
-            href='${link}${currentPage}'>
+            href='${link}${pageNumber}'>
                 ${pageNumber}
             </a>
         </c:if>
