@@ -8,7 +8,7 @@
 <%@ taglib prefix="motero2k" tagdir="/WEB-INF/tags/motero2k" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
-    <link rel="stylesheet" href="/js/mystyle.css">
+    <link rel="stylesheet" href="/styles/tyrants.css">
 <body>
     <div class="contenedor">
         <div class="contenedor-menu">
