@@ -121,15 +121,15 @@
     </script>
 
     <style>
-    .popup-players {
-    width: 50%;
-    height: 200px;
-    justify-content: center;
-    position: fixed;
-    display: none; /* Hidden by default */
-    background-color: rgb(255, 0, 0); /* Fallback color */
-    background-color: rgba(255, 0, 0, 0.4); /* Black w/ opacity */
-   }
+        .popup-players {
+        width: 50%;
+        height: 200px;
+        justify-content: center;
+        position: fixed;
+        display: none; /* Hidden by default */
+        background-color: rgb(255, 0, 0); /* Fallback color */
+        background-color: rgba(255, 0, 0, 0.4); /* Black w/ opacity */
+        }
     </style>
 
 </petclinic:layout>

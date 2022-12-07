@@ -10,7 +10,7 @@
     <h2>
         New game
     </h2>
-    <form:form modelAttribute="game" class="form-horizontal" id="add-game-form">
+    <form:form modelAttribute="game" class="form-horizontal" id="add-game-form" >
         <div class="form-group has-feedback">
             <petclinic:inputField label="Name" name="name"/>
             <label class="col-sm-2 control-label">Size</label>
@@ -18,7 +18,12 @@
             <option value=2>2</option>
             <option value=3>3</option>
             <option value=4>4</option>
-          </select>
+            </select>
+            <label class="control-label">Half Decks<label>
+                <form:select path="gameHalfdecks">
+                    <form:options items="${halfDecks}" itemLabel="name" itemValue="id" />
+                </form:select>
+
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,7 +24,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.card.HalfDeck;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
@@ -57,6 +63,40 @@ public class Game {
 		}
 		return this.players;
 	}
+
+    @NotEmpty
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+    name = "GAMES_HALFDECK", 
+    joinColumns = @JoinColumn(name = "GAME_ID"), 
+    inverseJoinColumns = @JoinColumn(name = "HALFDECK_ID"))
+    private Set<HalfDeck> halfdecks = new HashSet<HalfDeck>();
+
+    protected Set<HalfDeck> getHalfdecksInternal() {
+		if (this.halfdecks == null) {
+			this.halfdecks = new HashSet<>();
+		}
+		return this.halfdecks;
+	}
+
+	protected void setHalfdecksInternal(Set<HalfDeck> halfdecks) {
+		this.halfdecks = halfdecks;
+	}
+
+    public int getNrOfhalfdecks() {
+		return getHalfdecksInternal().size();
+	}
+
+	public void addSpecialty(HalfDeck halfDeck) {
+		getHalfdecksInternal().add(halfDeck);
+	}
+
+    public List<HalfDeck> getHalfdecks(){
+        List<HalfDeck> sortedPets = new ArrayList<>(getHalfdecksInternal());
+		PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
+		return Collections.unmodifiableList(sortedPets);
+
+    }
     
     @ManyToMany
     private List<Card> gameDeck = new ArrayList<>();

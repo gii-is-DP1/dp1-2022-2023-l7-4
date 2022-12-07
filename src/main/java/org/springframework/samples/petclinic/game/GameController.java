@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.card.CardServiceRepo;
+import org.springframework.samples.petclinic.card.HalfDeck;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.User;
@@ -30,13 +32,24 @@ public class GameController {
 	PlayerService playerService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	CardServiceRepo cardServiceRepo;
+
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
 	private static final String VIEWS_NEWGAME_CREATE_FORM = "games/newGame";
     
-    @GetMapping(value = "/games/create")
+	@GetMapping(value = "/games/create")
+	public String initCreationGameForm(Map<String, Object> model){
+		List<HalfDeck> halfDecks = cardServiceRepo.getAllHalfDecks();
+		Game game = new Game();
+		model.put("game", game);
+		model.put("halfDecks", halfDecks);
+		return VIEWS_GAME_CREATE_FORM;
+	}
+    @GetMapping(value = "/games/create2")
 	public String initCreationForm(Map<String, Object> model, Principal currentUser) {
 		List<User> users = (List<User>) userService.getUsers();
 		User creatorsUser = userService.getUserByUsername(currentUser.getName());
@@ -50,7 +63,7 @@ public class GameController {
 		return VIEWS_NEWGAME_CREATE_FORM;
     }
 
-	@PostMapping(value = "games/create/add/{userId}")
+	@PostMapping(value = "/games/create/add/{userId}")
 	public String postCreatingGameAddPlayer(@PathVariable("userId") String userId, GameForm gameForm, Map<String, Object> model) {
 		User addedUser = userService.getUserByUsername(userId);
 		
@@ -68,10 +81,10 @@ public class GameController {
 		model.put("players", players);
 		return VIEWS_NEWGAME_CREATE_FORM;
 	}
-	@PostMapping(value = "games/create/remove/{playerNum}")
+	@PostMapping(value = "/games/create/remove/{playerNum}")
 	public String creatingGameRemovePlayer(@PathVariable("playerNum") int playerNum, GameForm gameForm, Map<String, Object> model) {
 		List<String> playerIds = gameForm.getUsers();
-		List<User> players = new ArrayList<>();
+		List<User> players = new ArrayList<User>();
 		for(String i:playerIds) {
 			players.add(userService.getUserByUsername(i));
 		}
@@ -85,12 +98,12 @@ public class GameController {
 		model.put("players", players);
 		return VIEWS_NEWGAME_CREATE_FORM;
 	}
-	
 
     @PostMapping(value = "/games/create")
 	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model ) {
 		if (result.hasErrors()) {
             model.put("game", game);
+			System.out.println(result);
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
