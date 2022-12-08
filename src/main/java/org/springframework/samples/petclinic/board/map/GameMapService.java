@@ -54,17 +54,18 @@ public class GameMapService {
         Path path = new Path();
         path.setPathReference(pathTemplate);
 
-        City cityA = City.ofTemplate(pathTemplate.getFirstCityReference());
+        City cityA = City.ofTemplate(pathTemplate.getFirstCityReference(),gameMap);
         cityService.save(cityA);
         path.setFirstCity(cityA);
         if(!gameMap.getCities().contains(cityA)) gameMap.getCities().add(cityA);
             
 
-        City cityB = City.ofTemplate(pathTemplate.getSecondCityReference());
+        City cityB = City.ofTemplate(pathTemplate.getSecondCityReference(),gameMap);
         cityService.save(cityB);
         path.setSecondCity(cityB);
         if(!gameMap.getCities().contains(cityB)) gameMap.getCities().add(cityB);
-        pathService.save(path);
+        path.setGameMap(gameMap);
+        //pathService.save(path);
 
         gameMap.getPaths().add(path);
         gameMap.getCities().add(cityA);
