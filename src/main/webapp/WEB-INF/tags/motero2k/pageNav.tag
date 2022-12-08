@@ -2,21 +2,22 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="currentPage" required="true" rtexprvalue="true" %>
-<%@ attribute name="hrefPrevious" required="true" rtexprvalue="true" %>
-<%@ attribute name="hrefPage" required="true" rtexprvalue="true" %>
-<%@ attribute name="hrefNext" required="true" rtexprvalue="true" %>
+<%@ attribute name="link" required="true" rtexprvalue="true" %>
 
-    <div class = 'pagination'>
-        <a href="${hrefPrevious}" >
-            &laquo;
-        </a>
-        <c:forEach var="pageNumber" items="${pages}">
-            <a class="${currentPage==pageNumber?'active':''}" href='<c:url value="/cards/filter?name=${param.name}&deck=${param.deck}&page=${pageNumber}"/>' >
+
+<div class=pagination>
+    <a href='${link}${currentPage-1}'>
+        &laquo;
+    </a>
+    <c:forEach var="pageNumber" items="${pages}">
+        <c:if test="${pageNumber>=currentPage-2 && pageNumber<=currentPage+2}" > 
+            <a class="${currentPage==pageNumber?'active':''}"
+            href='${link}${pageNumber}'>
                 ${pageNumber}
             </a>
-        </c:forEach>
-        <a href="${hrefNext}" >
-            &raquo;
-        </a>
-        <h2 >${hrefNext}<h2>
-    </div>
+        </c:if>
+    </c:forEach>
+    <a href='${link}${currentPage+1}''>
+        &raquo;
+    </a>
+</div>

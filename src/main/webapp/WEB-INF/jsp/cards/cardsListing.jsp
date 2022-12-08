@@ -57,7 +57,9 @@
         </h1>
     </div>
     <br>
-    <motero2k:pageNav currentPage="${currentPage}" hrefPrevious="" hrefPage="" hrefNext="aaaaaaaaaaa">
+    <motero2k:pageNav 
+        currentPage="${currentPage}" 
+        link="/cards/filter?name=${param.name}&deck=${param.deck}&page=" >
     </motero2k:pageNav>
     <br>
     <div class="parent">
@@ -119,23 +121,11 @@
         </div>
     </c:forEach>
     </div>
+    <motero2k:pageNav 
+    currentPage="${currentPage}" 
+    link="/cards/filter?name=${param.name}&deck=${param.deck}&page=" >
+    </motero2k:pageNav>
 
-    <div class=pagination>
-        <a class="${currentPage==pageNumber?'active':''}"
-            href='<c:url value="/cards/filter?name=${param.name}&deck=${param.deck}&page=${currentPage -1}"/>'>
-            &laquo;
-        </a>
-        <c:forEach var="pageNumber" items="${pages}">
-            <a class="${currentPage==pageNumber?'active':''}"
-                href='<c:url value="/cards/filter?name=${param.name}&deck=${param.deck}&page=${pageNumber}"/>'>
-                ${pageNumber}
-            </a>
-        </c:forEach>
-        <a class="${currentPage==pageNumber?'active':''}"
-        href='<c:url value="/cards/filter?name=${param.name}&deck=${param.deck}&page=${currentPage +1}"/>'>
-        &raquo;
-    </a>
-</div>
 
 </body>
 </html>

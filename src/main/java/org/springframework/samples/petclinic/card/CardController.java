@@ -50,7 +50,9 @@ public class CardController {
 		
 		Integer cardsByPage = 9;
 		Integer cardsCount = cardService.getCardsFilteredBy(name, deck).size();
-		Integer numOfPages=(cardsByPage>cardsCount) ? 1 : (cardsCount/cardsByPage);
+		// Integer numOfPages=(cardsByPage>cardsCount) ? 1 : (cardsCount/cardsByPage);
+		Integer numOfPages=(int)Math.ceil((double) cardsCount/cardsByPage);
+		numOfPages = numOfPages==0?1:numOfPages;
 		page = ((page<1) ? 1 :(page>numOfPages?numOfPages:page)); //inside range [1,numOfPages]
 		//o
 		List<Card> cardsInPage = cardService.getCardsByNameAndByHalfDeckPageable(name,deck,page,cardsByPage);
