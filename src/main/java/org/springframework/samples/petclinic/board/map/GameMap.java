@@ -45,7 +45,7 @@ public class GameMap extends BaseEntity{
 
 
     public String getName() {
-        return mapTemplate.getName();
+        return getMapTemplate().getName();
     }
     public String getDescription() {
         return mapTemplate.getDescription();

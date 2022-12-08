@@ -19,8 +19,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MapTemplate extends BaseEntity{
-    String name;
-    String description;
+
+    String name="";
+    String description="";
 
 
     @ManyToMany

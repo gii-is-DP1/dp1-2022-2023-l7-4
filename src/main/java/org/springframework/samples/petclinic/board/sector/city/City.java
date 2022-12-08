@@ -107,8 +107,9 @@ public class City extends BaseEntity{
             return null;
         
         }
-        public static City ofTemplate(CityTemplate template){
+        public static City ofTemplate(CityTemplate template,GameMap gameMap){
             City city = new City();
+            city.setGameMap(gameMap);
             city.setCityTemplate(template);
             return city;
         }

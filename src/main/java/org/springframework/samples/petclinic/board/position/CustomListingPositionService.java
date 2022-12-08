@@ -7,17 +7,28 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityRepository;
+import org.springframework.samples.petclinic.board.sector.path.PathRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomListingPositionService {
 
-    @Autowired
+    
     private PositionServiceRepo positionServiceRepo;
 
-    @Autowired
+    
     private CityRepository cityRepository;
+
+    private PathRepository pathRepository;
+
+    @Autowired
+    public CustomListingPositionService(PositionServiceRepo positionServiceRepo
+    ,CityRepository cityRepository,PathRepository pathRepository){
+        this.positionServiceRepo=positionServiceRepo;
+        this.cityRepository=cityRepository;
+        this.pathRepository=pathRepository;
+    }
 
     @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositionsForPlayer(Integer player_id){
