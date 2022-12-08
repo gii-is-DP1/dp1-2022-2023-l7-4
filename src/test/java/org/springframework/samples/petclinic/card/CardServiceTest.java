@@ -37,7 +37,7 @@ class CardServiceTest {
 
     @Test
     public void shouldFindCardByNameAndByHalfDeck() {
-        List<Card> cards = this.cardService.getCardsByNameAndByHalfDeck("Adalid", "Drow");
+        List<Card> cards = this.cardService.getCardsFilteredBy("Adalid", "Drow");
         assertThat(cards.size()).isEqualTo(1);
     }
 }

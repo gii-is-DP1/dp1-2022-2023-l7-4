@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.card;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +20,13 @@ public class CardServiceRepo {
 
     //Card
     @Transactional(readOnly = true)
-    public List<Card> getCardsByNameAndByHalfDeck(String name, String deck) {
+    public List<Card> getCardsFilteredBy(String name, String deck) {
         return cardRepository.findCardsByNameAndByHalfDeck(name, deck);
     }
 
     @Transactional(readOnly = true)
-    public List<Card> getCardsByNameAndByHalfDeckPageable(String name,String deck,Pageable pageable){
+    public List<Card> getCardsByNameAndByHalfDeckPageable(String name,String deck,Integer actualPage, Integer cardsByPage){
+        Pageable pageable = PageRequest.of(actualPage-1,cardsByPage);
         return cardRepository.findCardsByNameAndByHalfDeckPageable(name, deck, pageable);
     }
 
