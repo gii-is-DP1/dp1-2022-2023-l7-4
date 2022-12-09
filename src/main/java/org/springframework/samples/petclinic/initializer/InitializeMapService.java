@@ -23,10 +23,13 @@ public class InitializeMapService {
     private PathService pathService;
     @Autowired
     private GameService gameService;
+    @Autowired
+    private InitializePositionService positionInit;
 
     public Game loadGameMap(Game game) {
         if(game.getCities().size()==0){
             setPathsFromTemplate(game,game.getMapTemplate());
+            positionInit.setPositions(game);
             return gameService.getGameById(game.getId());
         }
         return game;

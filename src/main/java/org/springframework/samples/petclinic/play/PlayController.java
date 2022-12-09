@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("games/play")
+@RequestMapping("play")
 public class PlayController {
     
     private static final String ROUND_ZERO = "playing/roundZero";
@@ -54,30 +54,34 @@ public class PlayController {
     @GetMapping("{gameId}")
     public String showActualRound(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
-        System.out.println(game);
         String result=null;
+        
         if(!game.alreadyLoad()){
-            game = initializerService.loadGameMap(game);
-            positionInitialiter.setPositions(game);
+        game = initializerService.loadGameMap(game);
+        
         }
+
+        //     game = initializerService.loadGameMap(game);
+        //     positionInitialiter.setPositions(game);
+        // }
         if(game.getRound()==0){
-            result="redirect:/games/play/"+gameId+"/round0";
+            result="redirect:"+gameId+"/round/0";
         }
         else if(game.getFinished())
-            result="redirect:/games/play/"+gameId+"/scoreboard";
+            result="redirect:"+gameId+"/scoreboard";
         else
-            result="redirect:/games/play/"+gameId+"/play";
+            result="redirect:"+gameId+"/round/"+game.getRound();
         return result;
     }
 
-    @GetMapping("{gameId}/round0")
+
+    @GetMapping("{gameId}/round/0")
     public ModelAndView showInitialRound(@PathVariable Integer gameId){
         ModelAndView result=new ModelAndView(ROUND_ZERO);
         Game game=gameService.getGameById(gameId);
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
-        result.addObject("initialPositions", initialPositions);
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
         result.addObject("positions", initialPositions);
@@ -85,7 +89,7 @@ public class PlayController {
         return result;
     }
 
-    @PostMapping("{gameId}/round0")
+    @PostMapping("{gameId}/round/0")
     public ModelAndView processChoosedPositionInRoundZero(@Valid Idposition idpos,BindingResult br
     ,@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
@@ -98,7 +102,7 @@ public class PlayController {
             Position position= positionServiceRepo.findPositionById(idpos.getId());
             this.playerUsePositionService.occupyTroopPosition(position, player,false);
             gameService.saveAndNextPlayer(game);
-            result=new ModelAndView("redirect:/games/play/"+gameId);
+            result=new ModelAndView("redirect:/play/"+gameId);
         }catch(Exception e){
             br.rejectValue("position","occupied","already occupy");
             result=new ModelAndView(ROUND_ZERO,br.getModel());

@@ -105,7 +105,7 @@ public class Player extends BaseEntity{
 
 
     public Boolean isWhite(){
-        return !this.game.getPlayers().contains(this);
+        return this.id==0;
     }
 
     public Integer getTrophyHallVPs(){

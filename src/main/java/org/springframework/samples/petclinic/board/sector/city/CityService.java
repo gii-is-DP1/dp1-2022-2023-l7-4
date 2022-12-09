@@ -25,7 +25,6 @@ public class CityService {
     }
 
     public City getCity(Game game, CityTemplate cityTemplate) {
-        System.out.println(""+game.getId()+cityTemplate.getId()+"z".repeat(50));
         return cityRepository.findCityByGameAndCityTemplate(game.getId(),cityTemplate.getId());
     }
     
