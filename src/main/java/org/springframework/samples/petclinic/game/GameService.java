@@ -31,7 +31,12 @@ public class GameService {
 
 	public void save(Game game) throws DataAccessException {
 		grepo.saveAndFlush(game);
-	}	
+	}
+
+	public void saveAndNextPlayer(Game game) throws DataAccessException{
+		game.setNextPlayer();
+		save(game);
+	}
 
     
 }

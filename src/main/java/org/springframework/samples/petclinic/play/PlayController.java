@@ -96,7 +96,7 @@ public class PlayController {
         try{
             Position position= positionServiceRepo.findPositionById(idpos.getId());
             this.playerUsePositionService.occupyTroopPosition(position, player,false);
-            game.setNextPlayer();
+            gameService.saveAndNextPlayer(game);
             result=new ModelAndView("redirect:/games/play/"+gameId);
         }catch(Exception e){
             br.rejectValue("position","occupied","already occupy");
