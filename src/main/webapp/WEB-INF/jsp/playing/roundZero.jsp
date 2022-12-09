@@ -17,7 +17,7 @@
             </div>
             <div class="tophud-flex">
                 <div class="resume-div">
-                    <text class="resume-text">Selecciona una ubicación inicial ${i}</text>
+                    <text class="resume-text">Selecciona una ubicación inicial</text>
                 </div>
             </div>
             <div class="tophud-flex">

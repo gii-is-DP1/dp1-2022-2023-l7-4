@@ -109,7 +109,7 @@ public class Game extends BaseEntity{
     }
     
     public void setNextPlayer(){
-       this.turnPlayer= (this.turnPlayer)%this.size+1;
+       this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
        if(this.turnPlayer==1) this.round++;
     }
 
@@ -119,6 +119,10 @@ public class Game extends BaseEntity{
 
     public Boolean isFinished(){
         return getFinished();
+    }
+
+    public Boolean alreadyLoad(){
+        return getRound()!=0 | !getCurrentPlayer().equals(this.players.get(0));
     }
 
     public void finishGame(){

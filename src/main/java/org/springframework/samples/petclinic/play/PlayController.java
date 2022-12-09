@@ -56,8 +56,10 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         System.out.println(game);
         String result=null;
-        game = initializerService.loadGameMap(game);
-        positionInitialiter.setPositions(game);
+        if(!game.alreadyLoad()){
+            game = initializerService.loadGameMap(game);
+            positionInitialiter.setPositions(game);
+        }
         if(game.getRound()==0){
             result="redirect:/games/play/"+gameId+"/round0";
         }
@@ -76,7 +78,6 @@ public class PlayController {
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
         result.addObject("initialPositions", initialPositions);
-        result.addObject("i", initialPositions.size());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
         result.addObject("positions", initialPositions);
