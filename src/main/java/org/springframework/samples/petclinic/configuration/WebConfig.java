@@ -22,11 +22,9 @@ public class WebConfig implements WebMvcConfigurer {
 	@Autowired
 	GenericIdToEntityConverter idToEntityConverter;
     @Autowired
-    HalfDeckNameToHalfDecks halfDeckNameToHalfDecks;
 	
     @Override
     public void addFormatters(FormatterRegistry registry) {
-    	registry.addConverter(halfDeckNameToHalfDecks);
         registry.addConverter(idToEntityConverter);
     }
     

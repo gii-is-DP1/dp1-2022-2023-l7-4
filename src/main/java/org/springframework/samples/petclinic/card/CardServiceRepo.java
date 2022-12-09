@@ -39,6 +39,11 @@ public class CardServiceRepo {
     }
 
     @Transactional(readOnly = true)
+    public HalfDeck getAHalfDeckByCard(String name) {
+        return cardRepository.findAHalfDecksByName(name);
+    }
+
+    @Transactional(readOnly = true)
     public HalfDeck getHalfDeckById(Integer id){
         return cardRepository.findHalfDeckById();
     }

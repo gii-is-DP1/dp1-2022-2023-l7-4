@@ -70,16 +70,16 @@ public class Game {
     name = "GAMES_HALFDECK", 
     joinColumns = @JoinColumn(name = "GAME_ID"), 
     inverseJoinColumns = @JoinColumn(name = "HALFDECK_ID"))
-    private Set<HalfDeck> halfdecks = new HashSet<HalfDeck>();
+    private List<HalfDeck> halfdecks = new ArrayList<HalfDeck>();
 
-    protected Set<HalfDeck> getHalfdecksInternal() {
+    protected List<HalfDeck> getHalfdecksInternal() {
 		if (this.halfdecks == null) {
-			this.halfdecks = new HashSet<>();
+			this.halfdecks = new ArrayList<>();
 		}
 		return this.halfdecks;
 	}
 
-	protected void setHalfdecksInternal(Set<HalfDeck> halfdecks) {
+	protected void setHalfdecksInternal(List<HalfDeck> halfdecks) {
 		this.halfdecks = halfdecks;
 	}
 

@@ -20,9 +20,12 @@
             <option value=4>4</option>
             </select>
             <label class="control-label">Half Decks<label>
-                <form:select path="gameHalfdecks">
-                    <form:options items="${halfDecks}" itemLabel="name" itemValue="id" />
-                </form:select>
+                <form:select path="halfdecks" multiple="true">
+<form:option value="">Select Here ---></form:option>
+<c:forEach varStatus="loop" items="${halfDecks}" var="foo">
+<form:option value="${foo.name}" label="${foo.name}"></form:option>
+</c:forEach>
+</form:select>
 
         </div>
         <div class="form-group">

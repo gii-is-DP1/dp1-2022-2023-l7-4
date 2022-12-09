@@ -6,9 +6,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.samples.petclinic.card.CardServiceRepo;
 import org.springframework.samples.petclinic.card.HalfDeck;
 import org.springframework.samples.petclinic.player.Player;
@@ -19,7 +21,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -107,6 +111,12 @@ public class GameController {
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
+			List<HalfDeck> gHalfDecks = game.getHalfdecks();
+			List<String> gameHalfDecksname = new ArrayList<>();
+			for(HalfDeck h:gHalfDecks){
+				gameHalfDecksname.add(h.getName());
+			}
+			System.out.println(gameHalfDecksname);
 			this.gameService.saveGame(game);
 			return "redirect:/games/" + game.getId();
 		}
@@ -162,5 +172,19 @@ public class GameController {
 		model.put("selections", gameService.getGames());
 		return "games/gameList";
 	}
+@InitBinder
+protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+//do whatever
+/* "foos" is the name of the property that we want to register a custom editor to
+* you can set property name null and it means you want to register this editor for occurrences of Set class in * command object
+*/
+    binder.registerCustomEditor(List.class, "halfdecks", new CustomCollectionEditor(List.class) {
+@Override
+protected Object convertElement(Object element) {
+List<HalfDeck> halfDeck = cardServiceRepo.getHalfDeckByCard((String)element);
+return halfDeck;
+}
+});
+}
     
 }
