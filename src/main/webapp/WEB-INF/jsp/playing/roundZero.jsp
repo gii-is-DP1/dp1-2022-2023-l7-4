@@ -12,7 +12,7 @@
         <div class="tophud">
             <div class="tophud-flex">
                 <div class="player-div">
-                    <text class="player-text">JUGADOR 1</text>
+                    <text class="player-text">JUGADOR ${player.name}</text>
                 </div>
             </div>
             <div class="tophud-flex">
@@ -22,12 +22,21 @@
             </div>
             <div class="tophud-flex">
                 <div class="round-div">
-                    <text class="round-text">RONDA 0</text>
+                    <text class="round-text">RONDA ${round}</text>
                 </div>
             </div>
         </div>   
-        <motero2k:positionTable>   
-        </motero2k:positionTable>
+        <form:form modelAttribute="idposition">
+            <motero2k:positionTable>   
+            </motero2k:positionTable>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">CONFIRMAR</button>
+                </div>
+            </div>
+        </form:form>
+
+        
 
     </div>      
 </body>

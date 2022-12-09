@@ -123,8 +123,8 @@
                     <c:out value="${position.adjacents}"/>
                 </td>
                 <td>
-                    <input type="radio" id="radio-${pos.id}" name="id" value="${pos.id}" hidden/>
-                    <label for="radio-${pos.id}" class="btn btn-default">
+                    <input type="radio" id="radio-${position.id}" name="id" value="${position.id}" hidden/>
+                    <label for="radio-${position.id}" class="btn btn-default">
                                         ELIGEME
                     </label>
                 </td>

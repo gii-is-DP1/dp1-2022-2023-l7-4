@@ -13,6 +13,7 @@ public class PositionInGameService {
     @Autowired
     PositionRepository positionRepository;
 
+
     public List<Position> getInitialPositions(Game game) {
         return positionRepository.findAllInitial(game.getId());
     }

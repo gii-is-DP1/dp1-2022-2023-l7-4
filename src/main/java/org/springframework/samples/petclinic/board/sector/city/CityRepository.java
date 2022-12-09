@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 public interface CityRepository extends CrudRepository<City,Integer>{
     @Query("select c from City c")
     List<City> findAll();
-    
-    @Query("SELECT city FROM City city WHERE city.cityTemplate.startingCity IS TRUE")
-    List<City> findAllStartingCities();
+    //
+    @Query("SELECT city FROM City city WHERE city.cityTemplate.startingCity IS TRUE AND city.game.id = ?1")
+    List<City> findAllStartingCitiesByGameId(Integer game_id);
     @Query("select city from City city where (city.game.id = :game_id and city.cityTemplate.id = :ct_id)")
     City findCityByGameAndCityTemplate(@Param("game_id")Integer gameId, @Param("ct_id")Integer cityTemplateId);
     

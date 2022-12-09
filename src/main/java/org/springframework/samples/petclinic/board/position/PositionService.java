@@ -156,20 +156,20 @@ public class PositionService {
 
     @Transactional(readOnly = true)
     public List<Position> getFreePositions() throws DataAccessException{
-        return positionRepository.findAllPositionByPlayerIsNull();
+        return positionRepository.findFreePositionsByGameId(1);
     }
     @Transactional(readOnly = true)
     public List<Position> getFreeTroopPositions() throws DataAccessException{
-        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyFalse();
+        return positionRepository.findFreeTroopPositionsByGameId(1);
     }
     @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositions() throws DataAccessException{
-        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
+        return positionRepository.findFreeSpyPositionsByGameId(1);
     }
 
     @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositionsForPlayer(Integer player_id){
-        List<Position> spyPositionsFromPlayer=positionRepository.findAllPositionByPlayerIdAndForSpyTrue(player_id);
+        List<Position> spyPositionsFromPlayer=positionRepository.findSpyPositionsByPlayerIdAndByGameId(player_id,1);
         List<City> citiesWithSpiesOfPlayer=spyPositionsFromPlayer.stream().map(position->position.getCity())
         .filter(city->city!=null).distinct().collect(Collectors.toList());
         return getFreeSpyPositions().stream()
@@ -227,7 +227,7 @@ public class PositionService {
         List<Position> res=null;
         if(useAdjacency)
             res= positionRepository
-            .findAllEnemyPositionsByType(player_id,forSpy);
+            .findAllEnemyPositionsByPlayerIdAndByTypeAndByGameId(player_id,forSpy,1);
         else{
             res=getAdjacentPositionsFromPlayer(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());

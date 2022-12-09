@@ -73,7 +73,8 @@ public class PlayController {
         ModelAndView result=new ModelAndView(ROUND_ZERO);
         Game game=gameService.getGameById(gameId);
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
-        System.out.println(game);
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("round", game.getRound());
         result.addObject("initialPositions", initialPositions);
         result.addObject("i", initialPositions.size());
         result.addObject("cities", game.getCities());

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityRepository;
 import org.springframework.samples.petclinic.board.sector.path.PathRepository;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +32,11 @@ public class CustomListingPositionService {
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getFreeSpyPositionsForPlayer(Integer player_id){
-        List<Position> spyPositionsFromPlayer=positionServiceRepo.getSpyPositionsOfPlayer(player_id);
+    public List<Position> getFreeSpyPositionsForPlayer(Integer player_id,Game game){
+        List<Position> spyPositionsFromPlayer=positionServiceRepo.getSpyPositionsOfPlayer(player_id,game);
         List<City> citiesWithSpiesOfPlayer=spyPositionsFromPlayer.stream().map(position->position.getCity())
         .filter(city->city!=null).distinct().collect(Collectors.toList());
-        return positionServiceRepo.getFreeSpyPositions().stream()
+        return positionServiceRepo.getFreeSpyPositionsFromGame(game).stream()
         .filter(position->!citiesWithSpiesOfPlayer.contains(position.getCity())).collect(Collectors.toList());
 
     }
@@ -52,8 +53,8 @@ public class CustomListingPositionService {
         return adjacencies;
     }
     @Transactional(readOnly = true)
-    public List<Position> getInitialPositions(){
-        List<City> startingCities=cityRepository.findAllStartingCities();
+    public List<Position> getInitialPositionsOfGame(Game game){
+        List<City> startingCities=cityRepository.findAllStartingCitiesByGameId(game.getId());
         List<City> availableCities=new ArrayList<>(startingCities);
         for(City city:startingCities){
             for(Position position:city.getPositions()){
@@ -91,11 +92,11 @@ public class CustomListingPositionService {
      *      -false: buscará sólo piezas de otros jugadores que no sean blancas
      */
     @Transactional(readOnly = true)
-    public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy
-    ,Boolean useAdjacency,Boolean searchWhites){
+    public List<Position> getEnemyPositionsByTypeOfGame(Integer player_id,Boolean forSpy
+    ,Boolean useAdjacency,Boolean searchWhites,Game game){
         List<Position> res=null;
         if(useAdjacency)
-            res= positionServiceRepo.getAllEnemyPositionsOfPlayerByTypeOfPosition(player_id, forSpy);
+            res= positionServiceRepo.getAllEnemyPositionsOfPlayerByTypeOfPosition(player_id, forSpy,game);
         else{
             res=getPresencePositions(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
@@ -108,13 +109,13 @@ public class CustomListingPositionService {
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getAllEnemyTroopsForPlayer(Integer player_id){
-        return getEnemyPositionsByType(player_id, false, true,null);
+    public List<Position> getAllEnemyTroopsForPlayerOfGame(Integer player_id,Game game){
+        return getEnemyPositionsByTypeOfGame(player_id, false, true,null,game);
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getAllEnemySpiesForPlayer(Integer player_id){
-        return getEnemyPositionsByType(player_id, true, true,null);
+    public List<Position> getAllEnemySpiesForPlayerOfGame(Integer player_id,Game game){
+        return getEnemyPositionsByTypeOfGame(player_id, true, true,null,game);
     }
     
 }

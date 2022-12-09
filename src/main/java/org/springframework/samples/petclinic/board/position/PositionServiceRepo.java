@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +15,8 @@ public class PositionServiceRepo {
     @Autowired
     private PositionRepository positionRepository;
 
-    public List<Position> getPositions(){//
-        return (List<Position>)positionRepository.findAll();
+    public List<Position> getAllPositionsFromGame(Game game){//
+        return (List<Position>)positionRepository.findAllPositionsByGameId(game.getId());
     }
     
     
@@ -34,16 +35,16 @@ public class PositionServiceRepo {
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getFreePositions() throws DataAccessException{
-        return positionRepository.findAllPositionByPlayerIsNull();
+    public List<Position> getFreePositionsFromGame(Game game) throws DataAccessException{
+        return positionRepository.findFreePositionsByGameId(game.getId());
     }
     @Transactional(readOnly = true)
-    public List<Position> getFreeTroopPositions() throws DataAccessException{
-        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyFalse();
+    public List<Position> getFreeTroopPositionsFromGame(Game game) throws DataAccessException{
+        return positionRepository.findFreeTroopPositionsByGameId(game.getId());
     }
     @Transactional(readOnly = true)
-    public List<Position> getFreeSpyPositions() throws DataAccessException{
-        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
+    public List<Position> getFreeSpyPositionsFromGame(Game game) throws DataAccessException{
+        return positionRepository.findFreeSpyPositionsByGameId(game.getId());
     }
 
     @Transactional(readOnly = true) 
@@ -57,20 +58,20 @@ public class PositionServiceRepo {
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getSpyPositionsOfPlayer(Integer player_id){
-        return positionRepository.findAllPositionByPlayerIdAndForSpyTrue(player_id);
+    public List<Position> getSpyPositionsOfPlayer(Integer player_id,Game game){
+        return positionRepository.findSpyPositionsByPlayerIdAndByGameId(player_id,game.getId());
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getAllEnemyPositionsOfPlayerByTypeOfPosition(Integer player_id,Boolean forSpy){
+    public List<Position> getAllEnemyPositionsOfPlayerByTypeOfPosition(Integer player_id,Boolean forSpy,Game game){
         return positionRepository
-            .findAllEnemyPositionsByType(player_id,forSpy);
+            .findAllEnemyPositionsByPlayerIdAndByTypeAndByGameId(player_id,forSpy,game.getId());
     }
 
 
 
     public List<Position> getAllPositionsByGameID(Integer id) {
-        return positionRepository.findAllPositionsByGameID(id);
+        return positionRepository.findAllPositionsByGameId(id);
     }
 
 
