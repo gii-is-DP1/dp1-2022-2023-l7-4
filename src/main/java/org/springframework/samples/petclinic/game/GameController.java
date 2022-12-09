@@ -172,19 +172,16 @@ public class GameController {
 		model.put("selections", gameService.getGames());
 		return "games/gameList";
 	}
-@InitBinder
-protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-//do whatever
-/* "foos" is the name of the property that we want to register a custom editor to
-* you can set property name null and it means you want to register this editor for occurrences of Set class in * command object
-*/
-    binder.registerCustomEditor(List.class, "halfdecks", new CustomCollectionEditor(List.class) {
-@Override
-protected Object convertElement(Object element) {
-List<HalfDeck> halfDeck = cardServiceRepo.getHalfDeckByCard((String)element);
-return halfDeck;
-}
-});
-}
+
+	@InitBinder
+	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+		binder.registerCustomEditor(List.class, "halfdecks", new CustomCollectionEditor(List.class) {
+			@Override
+			protected Object convertElement(Object element) {
+				List<HalfDeck> halfDeck = cardServiceRepo.getHalfDeckByCard((String) element);
+				return halfDeck;
+			}
+		});
+	}
     
 }
