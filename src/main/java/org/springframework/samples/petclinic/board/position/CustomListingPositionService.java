@@ -55,16 +55,19 @@ public class CustomListingPositionService {
     @Transactional(readOnly = true)
     public List<Position> getInitialPositionsOfGame(Game game){
         List<City> startingCities=cityRepository.findAllStartingCitiesByGameId(game.getId());
-        List<City> availableCities=new ArrayList<>(startingCities);
+        List<City> availableCities=new ArrayList<>();
+        availableCities.addAll(startingCities);
         for(City city:startingCities){
             for(Position position:city.getPositions()){
-                if(position.isOccupied() & !position.getPlayer().isWhite())
+                if(position.isOccupied())
+                    //cuando se tengan jugadores cuyo id sea distinto de 1, poner condicion de evitar jugadores blancos
                     availableCities.remove(city);
                     break;
+                
             }
         }
         List<Position> availablePositions=new ArrayList<>();
-        availableCities.stream().map(city->city.getPositions()).forEach(positions->availablePositions.addAll(availablePositions));
+        availableCities.stream().map(city->city.getPositions()).forEach(positions->availablePositions.addAll(positions));
         return availablePositions;
     }
 
