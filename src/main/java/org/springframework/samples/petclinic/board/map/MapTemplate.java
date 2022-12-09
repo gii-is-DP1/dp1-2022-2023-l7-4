@@ -24,12 +24,6 @@ public class MapTemplate extends BaseEntity{
     String description="";
 
 
-    @ManyToMany
-    @JoinTable(
-        name = "map_templates_city_templates",
-        joinColumns = @JoinColumn(name = "map_template_id"),
-        inverseJoinColumns = @JoinColumn(name = "city_template_id"))
-    List<CityTemplate> cityTemplates;
 
     @ManyToMany
     @JoinTable(
