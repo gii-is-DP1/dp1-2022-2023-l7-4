@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -57,6 +58,6 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     @Query("SELECT p FROM Position p WHERE p.city.game.id = ?1 OR p.path.game.id = ?1")
     List<Position> findAllPositionsByGameId( Integer gameId);
     
-    @Query("SELECT p FROM Position p WHERE p.city.game.id = ?1 and p.city.cityTemplate.startingCity is true and p.forSpy is false")
-    List<Position> findAllInitial(Integer gameId);
+    @Query("SELECT p FROM Position p WHERE p.city.game.id = game_id and p.city.cityTemplate.startingCity is true and p.forSpy is false")
+    List<Position> findAllInitialForTroop(@Param("game_id") Integer gameId);
 }
