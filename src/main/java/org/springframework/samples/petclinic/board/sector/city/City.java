@@ -126,7 +126,7 @@ public class City extends BaseEntity{
             return cityTemplate.getStartingCity();
         }
         
-    public Boolean hasNoEnemyTroops(){
+    public Boolean hasNoPlayerTroops(){
         return this.positions.stream().allMatch(position->position.isOccupied()==false|| position.getPlayer().isWhite());
     }
     @Override
