@@ -38,13 +38,11 @@ public class InitializePositionService {
      */
 
     public void setPositions(@Valid Game game){
-        List<Position> positions = positionServiceRepo.getAllPositionsByGameID(game.getId());
 
-        if(positions.isEmpty()){
             populatePositionService.populatePositions(game);
-            positions = positionServiceRepo.getAllPositionsByGameID(game.getId());
+            List<Position> positions = positionServiceRepo.getAllPositionsByGameID(game.getId());
             positions.forEach(position -> adjacentPositionService.calculateAdjacents(position));
-        }
+
         
     }
 }

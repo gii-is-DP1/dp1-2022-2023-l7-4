@@ -58,6 +58,7 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     @Query("SELECT p FROM Position p WHERE p.city.game.id = ?1 OR p.path.game.id = ?1")
     List<Position> findAllPositionsByGameId( Integer gameId);
     
-    @Query("SELECT p FROM Position p WHERE p.city.game.id = game_id and p.city.cityTemplate.startingCity is true and p.forSpy is false")
-    List<Position> findAllInitialForTroop(@Param("game_id") Integer gameId);
+    @Query("SELECT p FROM Position p WHERE p.city.game.id != null and p.city.game.id = ?1 and p.city.cityTemplate.startingCity is true and p.forSpy is false")
+
+    List<Position> findAllInitialForTroop(Integer gameId);
 }

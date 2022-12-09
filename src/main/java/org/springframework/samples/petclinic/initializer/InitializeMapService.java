@@ -27,9 +27,10 @@ public class InitializeMapService {
     private InitializePositionService positionInit;
 
     public Game loadGameMap(Game game) {
-        if(game.getCities().size()==0){
+        if(!game.isLoaded()){
             setPathsFromTemplate(game,game.getMapTemplate());
             positionInit.setPositions(game);
+            game.setLoaded(true);
             return gameService.getGameById(game.getId());
         }
         return game;
@@ -80,7 +81,6 @@ public class InitializeMapService {
                 game.getPaths().add(path);
             }
         }
-        game.setLoaded(true);
         gameService.save(game);
     }
 
