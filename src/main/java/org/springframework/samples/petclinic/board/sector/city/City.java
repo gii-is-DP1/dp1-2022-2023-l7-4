@@ -11,8 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.samples.petclinic.board.map.GameMap;
 import org.springframework.samples.petclinic.board.position.Position;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
@@ -39,7 +39,7 @@ public class City extends BaseEntity{
     private Player controllingPlayer;
 
     @ManyToOne
-    private GameMap gameMap;
+    private Game game;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
     private List<Position> positions;
@@ -107,10 +107,10 @@ public class City extends BaseEntity{
             return null;
         
         }
-        public static City ofTemplate(CityTemplate template,GameMap gameMap){
+        public static City of(CityTemplate template,Game game){
             City city = new City();
-            city.setGameMap(gameMap);
             city.setCityTemplate(template);
+            city.setGame(game);
             return city;
         }
 

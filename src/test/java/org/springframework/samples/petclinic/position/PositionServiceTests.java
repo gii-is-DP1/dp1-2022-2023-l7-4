@@ -65,7 +65,7 @@ public class PositionServiceTests {
                         fail("No deberia salir error");
                     }    
                     assertThat(emptyPos.getPlayer().getId()).isEqualTo(player.getId());
-                    assertThat(emptyPos.getIsOccupied()).isTrue();
+                    assertThat(emptyPos.isOccupied()).isTrue();
                     assertThat(player.getTroops()).isEqualTo(numTroops-1);
     }
 
@@ -91,7 +91,7 @@ public class PositionServiceTests {
                     fail("No deberia salir error");
                 }    
         assertThat(emptyPos.getPlayer().getId()).isEqualTo(player.getId());
-        assertThat(emptyPos.getIsOccupied()).isTrue();
+        assertThat(emptyPos.isOccupied()).isTrue();
         assertThat(player.getTroops()).isEqualTo(numTroops-1);
             }
             
@@ -145,7 +145,7 @@ public class PositionServiceTests {
                             fail("No deberia dar ninguna excepción");
                         } 
             assertThat(emptyPos.getPlayer().getId()).isEqualTo(player.getId());
-            assertThat(emptyPos.getIsOccupied()).isTrue();
+            assertThat(emptyPos.isOccupied()).isTrue();
             assertThat(player.getSpies()).isEqualTo(numSpies-1);
     }
 
@@ -184,14 +184,14 @@ public class PositionServiceTests {
         Position position=new Position();
         position.setPlayer(player1);
         PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
-        assertThat(position.getIsOccupied()).isTrue();
+        assertThat(position.isOccupied()).isTrue();
         try {
             positionService.killTroop(position, player2, false);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             fail("No deberia salir ninguna excepción");
         } 
-        assertThat(position.getIsOccupied()).isFalse();
+        assertThat(position.isOccupied()).isFalse();
         assertThat(player2.getTrophyHall().size()).isEqualTo(expectPV+1);
     }
 
@@ -210,7 +210,7 @@ public class PositionServiceTests {
         PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player2.getId())).thenReturn(List.of(player2pos));
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player1.getId())).thenReturn(List.of(wantedPosition));
-        assertThat(wantedPosition.getIsOccupied()).isTrue();
+        assertThat(wantedPosition.isOccupied()).isTrue();
         assertThat(positionService.getAdjacentTroopPositionsFromPlayer(player2.getId(), true)).contains(wantedPosition);
         try {
             positionService.killTroop(wantedPosition, player2, true);
@@ -218,7 +218,7 @@ public class PositionServiceTests {
             // TODO Auto-generated catch block
             fail("No deberia salir ninguna excepción");
         } 
-        assertThat(wantedPosition.getIsOccupied()).isFalse();
+        assertThat(wantedPosition.isOccupied()).isFalse();
         assertThat(player2.getTrophyHall().size()).isEqualTo(expectPV+1);
     }
 
@@ -270,7 +270,7 @@ public class PositionServiceTests {
         PositionService positionService=new PositionService(positionRepository,playerRepository, null, null);
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player2.getId())).thenReturn(List.of(player2pos));
         Mockito.lenient().when(positionRepository.findAllPositionByPlayerId(player1.getId())).thenReturn(List.of(wantedPosition));
-        assertThat(wantedPosition.getIsOccupied()).isTrue();
+        assertThat(wantedPosition.isOccupied()).isTrue();
         assertThat(positionService.getAdjacentTroopPositionsFromPlayer(player2.getId(), true)).contains(wantedPosition);
         try {
             positionService.returnPiece(wantedPosition, player2);
@@ -278,7 +278,7 @@ public class PositionServiceTests {
             // TODO Auto-generated catch block
             fail("No deberia salir ninguna excepción");
         } 
-        assertThat(wantedPosition.getIsOccupied()).isFalse();
+        assertThat(wantedPosition.isOccupied()).isFalse();
         assertThat(player1.getTroops()).isEqualTo(expectTroops+1);
     }
 

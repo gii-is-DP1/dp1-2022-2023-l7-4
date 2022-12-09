@@ -27,14 +27,14 @@ public class MapTemplate extends BaseEntity{
     @ManyToMany
     @JoinTable(
         name = "map_templates_city_templates",
-        joinColumns = @JoinColumn(name = "map_id"),
-        inverseJoinColumns = @JoinColumn(name = "city_id"))
-    List<CityTemplate> citiesReferences;
+        joinColumns = @JoinColumn(name = "map_template_id"),
+        inverseJoinColumns = @JoinColumn(name = "city_template_id"))
+    List<CityTemplate> cityTemplates;
 
     @ManyToMany
     @JoinTable(
         name = "map_templates_path_templates",
-        joinColumns = @JoinColumn(name = "map_id"),
-        inverseJoinColumns = @JoinColumn(name = "path_id"))
-    List<PathTemplate> pathsReferences;
+        joinColumns = @JoinColumn(name = "map_template_id"),
+        inverseJoinColumns = @JoinColumn(name = "path_template_id"))
+    List<PathTemplate> pathTemplates;
 }

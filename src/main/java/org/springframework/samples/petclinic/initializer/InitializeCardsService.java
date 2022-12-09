@@ -16,7 +16,7 @@ import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class initializerService {
+public class InitializeCardsService {
 
 	@Autowired
     private PlayerService playerService;

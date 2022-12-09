@@ -20,15 +20,15 @@ public class PathTemplate extends Sector{
 
     @ManyToOne
     @JoinColumn(name="city_id_1")
-    private CityTemplate firstCityReference;
+    private CityTemplate firstCityTemplate;
 
     @ManyToOne
     @JoinColumn(name="city_id_2")
-    private CityTemplate secondCityReference;
+    private CityTemplate secondCityTemplate;
 
     @Override
     public String toString() {
-        return "P [ " + firstCityReference + " and " + secondCityReference + "]";
+        return "P [ " + firstCityTemplate + " and " + secondCityTemplate + "]";
     }
     
 

@@ -45,7 +45,7 @@ public class CustomListingPositionService {
         List<Position> myPos=positionServiceRepo.getPlayerPositions(player_id);
         List<Position> adjacencies=myPos.stream().map(pos->pos.getAdjacents()).flatMap(List::stream)
         .distinct()
-        .filter(adj_pos->adj_pos.getIsOccupied()==searchEnemies)
+        .filter(adj_pos->adj_pos.isOccupied()==searchEnemies)
         .filter(adj_pos->(!searchEnemies) || adj_pos.getPlayer().getId()!=player_id)//hago 2 filter distintos
         //para evitar NullPointerException en adj.getPlayer().getId()
         .collect(Collectors.toList());
@@ -57,7 +57,7 @@ public class CustomListingPositionService {
         List<City> availableCities=new ArrayList<>(startingCities);
         for(City city:startingCities){
             for(Position position:city.getPositions()){
-                if(position.getIsOccupied() & !position.getPlayer().isWhite())
+                if(position.isOccupied() & !position.getPlayer().isWhite())
                     availableCities.remove(city);
                     break;
             }

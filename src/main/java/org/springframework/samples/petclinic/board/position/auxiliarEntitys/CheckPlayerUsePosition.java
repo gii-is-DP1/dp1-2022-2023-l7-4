@@ -41,12 +41,12 @@ public class CheckPlayerUsePosition {
     }
 
     public static void playerHasChooseAEmptyPosition(Position position) throws Exception{
-        Preconditions.check(position.getIsOccupied()==false)
+        Preconditions.check(position.isOccupied()==false)
         .formattedError("No puedes elegir una posición ya ocupada por otro jugador");
     }
 
     public static void playerHasChooseANotEmptyPosition(Position position) throws Exception{
-        Preconditions.check(position.getIsOccupied()==true)
+        Preconditions.check(position.isOccupied()==true)
         .formattedError("No puedes elegir una posición ya ocupada por otro jugador");
     }
 

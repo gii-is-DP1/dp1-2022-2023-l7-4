@@ -4,11 +4,8 @@ package org.springframework.samples.petclinic.board.position;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.board.map.GameMap;
 import org.springframework.samples.petclinic.board.position.exceptions.EmptyPositionException;
 import org.springframework.samples.petclinic.board.position.exceptions.IncorrectPositionTypeException;
 import org.springframework.samples.petclinic.board.position.exceptions.MoreThanOnePlayerSpyInSameCity;
@@ -17,7 +14,6 @@ import org.springframework.samples.petclinic.board.position.exceptions.OccupiedP
 import org.springframework.samples.petclinic.board.position.exceptions.YourPositionException;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
-import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -54,7 +50,7 @@ public class PositionService {
         ,IncorrectPositionTypeException.class,NotEnoughPresence.class})
     public void occupyTroopPosition(Position position,Player player,Boolean onlyAdjacencies)
      throws DataAccessException,OccupiedPositionException,IncorrectPositionTypeException,NotEnoughPresence{
-        if(position.getIsOccupied())
+        if(position.isOccupied())
             throw new OccupiedPositionException();
         else if(position.getForSpy()){
             throw new IncorrectPositionTypeException();
@@ -197,7 +193,7 @@ public class PositionService {
         List<Position> myPos=getPlayerPositions(player_id);
         List<Position> adjacencies=myPos.stream().map(pos->pos.getAdjacents()).flatMap(List::stream)
         .distinct()
-        .filter(adj_pos->adj_pos.getIsOccupied()==searchEnemies)
+        .filter(adj_pos->adj_pos.isOccupied()==searchEnemies)
         .filter(adj_pos->(!searchEnemies) || adj_pos.getPlayer().getId()!=player_id)//hago 2 filter distintos
         //para evitar NullPointerException en adj.getPlayer().getId()
         .collect(Collectors.toList());

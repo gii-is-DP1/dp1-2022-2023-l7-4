@@ -12,6 +12,8 @@ import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
+import org.springframework.samples.petclinic.initializer.InitializeMapService;
+import org.springframework.samples.petclinic.initializer.InitializePositionService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,24 +26,26 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("games/play")
 public class PlayController {
-
+    
     private static final String ROUND_ZERO = "playing/roundZero";
-
+    
     private static final String SCORE_BOARD = null;
-
+    
     @Autowired
-    private CustomListingPositionService customListingPositionService;
-
+    private PositionInGameService positionInGameService;
+    
     @Autowired
     private PlayService playService;
     @Autowired
     private GameService gameService;
-
-
-
+    
+    @Autowired
+    InitializeMapService initializerService;
+    
     @Autowired
     private PlayerUsePositionService playerUsePositionService;
-
+    @Autowired
+    InitializePositionService positionInitialiter;
     @Autowired
     private PositionServiceRepo positionServiceRepo;
 
@@ -52,10 +56,8 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         System.out.println(game);
         String result=null;
-        if(!game.isLoaded()) {
-            playService.loadGame(game);
-            game=gameService.getGameById(gameId);
-        }
+        game = initializerService.loadGameMap(game);
+        positionInitialiter.setPositions(game);
         if(game.getRound()==0){
             result="redirect:/games/play/"+gameId+"/round0";
         }
@@ -69,13 +71,15 @@ public class PlayController {
     @GetMapping("{gameId}/round0")
     public ModelAndView showInitialRound(@PathVariable Integer gameId){
         ModelAndView result=new ModelAndView(ROUND_ZERO);
-        List<Position> initialPositions=customListingPositionService.getInitialPositions();
         Game game=gameService.getGameById(gameId);
-        System.out.println(gameId);
-        System.out.println(game.getGameMap());
+        List<Position> initialPositions=positionInGameService.getInitialPositions(game);
+        System.out.println(game);
         result.addObject("initialPositions", initialPositions);
         result.addObject("i", initialPositions.size());
-        result.addObject("map", game.getGameMap());
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("positions", initialPositions);
+
         return result;
     }
 

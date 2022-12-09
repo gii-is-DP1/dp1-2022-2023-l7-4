@@ -12,24 +12,24 @@ INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfe
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (4,'EL LABERINTO',3,TRUE,1);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,FALSE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'BUIYRANDYN',3,TRUE,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'GRACKLSTUGH',6,FALSE,3);
 
 -- PATHS
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,0);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,4);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,2);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,2);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,2);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,5);
 
 -- MAPS
 INSERT INTO map_templates(name) VALUES ('default Map');
 
 --POPULATE MAPS
-INSERT INTO map_templates_city_templates(map_id,city_id) VALUES
+INSERT INTO map_templates_city_templates(map_template_id,city_template_id) VALUES
     (1,1),
     (1,2),
     (1,3);
 
-INSERT INTO map_templates_path_templates(map_id,path_id) VALUES
+INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUES
     (1,1),
     (1,2),
     (1,3);
@@ -52,8 +52,8 @@ INSERT INTO halfdecks(id,name,description) VALUES (4,'Básica','Cartas básicas 
 
 -- GAMES
 INSERT INTO games(id,date,name,size,map_template_id) 
-    VALUES (1,'2002-04-08','Partida 1',3,1),
-     (2,'2002-04-09','Partida 2',2,1);
+    VALUES  (1,'2002-04-08','Partida 1',4,1),
+            (2,'2002-04-09','Partida 2',2,1);
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 1000,1000,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'David', 'daviddhc',1000,1000,1,1);

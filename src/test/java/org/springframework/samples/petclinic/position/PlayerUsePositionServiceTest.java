@@ -67,7 +67,7 @@ public class PlayerUsePositionServiceTest {
             fail("No deberia salir error");
         }
                     assertThat(emptyPosition.getPlayer().getId()).isEqualTo(player1.getId());
-                    assertThat(emptyPosition.getIsOccupied()).isTrue();
+                    assertThat(emptyPosition.isOccupied()).isTrue();
                     assertThat(player1.getTroops()).isEqualTo(numTroops-1);
     }
 

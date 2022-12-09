@@ -65,7 +65,7 @@ public class Position{
 		getAdjacentsInternal().addAll(positions);
 	}
     
-    public boolean getIsOccupied(){
+    public boolean isOccupied(){
         return player!=null;
     }
     public Boolean isInCity(){

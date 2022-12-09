@@ -29,6 +29,7 @@ window.onbeforeunload = function(e) {
             <th>Zone</th>
             <th>VP</th>
             <th>isStartingCity</th>
+            <th>pos</th>
         </tr>
         </thead>
         <tbody>
@@ -54,6 +55,9 @@ window.onbeforeunload = function(e) {
                 </td>
                 <td>
                     <c:out value="${city.isStartingCity()}"/>
+                </td>
+                <td>
+                    <c:out value="${city.getPositions()}"/>
                 </td>
                 
                 

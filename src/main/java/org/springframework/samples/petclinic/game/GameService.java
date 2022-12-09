@@ -28,9 +28,9 @@ public class GameService {
 		return grepo.findById2(id);
 	}
 
-    @Transactional
+
 	public void save(Game game) throws DataAccessException {
-		grepo.save(game);
+		grepo.saveAndFlush(game);
 	}	
 
     
