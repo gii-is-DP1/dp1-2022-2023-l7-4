@@ -6,12 +6,17 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GameService {
     @Autowired
     GameRepository grepo;
+
+    @Autowired
+	CityService cityService;
 
 	@Transactional
 	public Collection<Game> getGameByName(String name){
@@ -35,6 +40,10 @@ public class GameService {
 
 	public void saveAndNextPlayer(Game game) throws DataAccessException{
 		game.setNextPlayer();
+		for (City city:game.cities) {
+			city.setControllingPlayer(city.whoControls());
+			cityService.save(city);
+		}
 		save(game);
 	}
 

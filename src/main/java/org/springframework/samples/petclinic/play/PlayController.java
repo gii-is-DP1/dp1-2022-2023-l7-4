@@ -5,11 +5,12 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.position.CustomListingPositionService;
 import org.springframework.samples.petclinic.board.position.PlayerUsePositionService;
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
+import org.springframework.samples.petclinic.board.sector.city.CityService;
+import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.initializer.InitializeMapService;
@@ -36,6 +37,7 @@ public class PlayController {
     
     @Autowired
     private PlayService playService;
+    
     @Autowired
     private GameService gameService;
     
@@ -48,6 +50,12 @@ public class PlayController {
     InitializePositionService positionInitialiter;
     @Autowired
     private PositionServiceRepo positionServiceRepo;
+
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private PathService pathService;
 
 
 
@@ -79,12 +87,15 @@ public class PlayController {
     public ModelAndView showInitialRound(@PathVariable Integer gameId){
         ModelAndView result=new ModelAndView(ROUND_ZERO);
         Game game=gameService.getGameById(gameId);
+        Player player = game.getCurrentPlayer();
+
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
         result.addObject("positions", initialPositions);
+        result.addObject("pv", game.getPlayerScore(player));
 
         return result;
     }
