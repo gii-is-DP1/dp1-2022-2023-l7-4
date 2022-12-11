@@ -121,9 +121,9 @@ public class Game extends BaseEntity{
         return getFinished();
     }
 
-    public Boolean alreadyLoad(){
-        return getRound()!=0 | !getCurrentPlayer().equals(this.players.get(0));
-    }
+    /*public Boolean isNotLoaded(){
+        return (getRound()==0 && getCurrentPlayer().equals(this.players.get(0)));
+    }*/
 
     public void finishGame(){
         this.finished=true;
@@ -147,37 +147,34 @@ public class Game extends BaseEntity{
     public Integer getPlayerScore(Player player){
         Integer result=0;
         // TODO ARREGLAR NULL POINTER EXCEPTION
-        /*Integer controlVP=getControlCityVP(player);
-        Integer totalControlVP=getTotalControlVP(player);*/
+        Integer controlVP=getControlCityVP(player);
+        Integer totalControlVP=getTotalControlVP(player);
         Integer trophyHallVP=player.getTrophyHallVPs();
         Integer handVP=player.getHandVPs();
         Integer dicardPileVP=player.getDiscardPile().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer innerCircleVP=player.getInnerCircle().stream()
             .collect(Collectors.summingInt(card->card.getInnerCirclePV()));
-        result=/*controlVP+totalControlVP+*/trophyHallVP+handVP+dicardPileVP+deckVP+innerCircleVP;
+        result=controlVP+totalControlVP+trophyHallVP+handVP+dicardPileVP+deckVP+innerCircleVP;
         return result;
     }
 
     private Integer getControlCityVP(Player player){
         return this.cities.stream()
-        .filter(city->city.getControllingPlayer().equals(player))
+        .filter(city->city.whoControls()!=null && city.whoControls().equals(player))
         .collect(Collectors.summingInt(city->city.getVpEndgameValue()));
     }
 
     private Integer getTotalControlVP(Player player){
-        Long numberOfTotalControlCities=this.cities.stream()
-            .filter(city->city.whoTotallyControls().equals(player))
-            .count();
-        return numberOfTotalControlCities.intValue()*2;
+        return this.cities.stream()
+        .filter(city->city.whoTotallyControls()!=null && city.whoTotallyControls().equals(player))
+        .collect(Collectors.summingInt(city->city.getVpEndgameValue() + 2));
     }    
     
-    public Boolean isLoaded(){
-        return !(
-                this.cities.isEmpty() |
-                this.cities.isEmpty());
-
+    public Boolean isNotLoaded(){
+        return !getLoaded();
     }
+
     @Override
     public String toString() {
         return "Game [name=" + name + ", mapTemplate=" + mapTemplate + ", cities=" + cities + ", paths=" + paths

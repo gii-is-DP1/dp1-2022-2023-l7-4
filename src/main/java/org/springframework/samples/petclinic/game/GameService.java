@@ -40,10 +40,6 @@ public class GameService {
 
 	public void saveAndNextPlayer(Game game) throws DataAccessException{
 		game.setNextPlayer();
-		for (City city:game.cities) {
-			city.setControllingPlayer(city.whoControls());
-			cityService.save(city);
-		}
 		save(game);
 	}
 

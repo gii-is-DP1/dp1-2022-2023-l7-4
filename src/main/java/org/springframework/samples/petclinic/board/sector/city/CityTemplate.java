@@ -40,12 +40,6 @@ public class CityTemplate extends Sector{
 
     @Column(columnDefinition = "integer default 0")
     private Integer influenceTotalControlled=0;
-
-    @Column(columnDefinition = "integer default 0")
-    private Integer vpTotalControlled;
-
-    
-
     
     
 }

@@ -31,13 +31,6 @@ public class City extends BaseEntity{
     CityTemplate cityTemplate= new CityTemplate(); 
     //this contains all constant data.
 
-
-  
-
-
-    @ManyToOne
-    private Player controllingPlayer;
-
     @ManyToOne
     private Game game;
     
@@ -99,6 +92,7 @@ public class City extends BaseEntity{
             
             Player player = players.keySet().iterator().next();
 
+            //Check player has all troop positions available ocuppied
             if( players.get(player).intValue() != getCapacity()) return null;
 
             if(positions.stream().filter(ps-> ps.getForSpy())
@@ -120,7 +114,6 @@ public class City extends BaseEntity{
         public Integer getVpControlled() {return cityTemplate.getVpControlled();}
         public Integer getVpEndgameValue() {return cityTemplate.getVpEndgameValue();}
         public Integer getInfluenceTotalControlled() {return cityTemplate.getInfluenceTotalControlled();}
-        public Integer getVpTotalControlled() {return cityTemplate.getVpTotalControlled();}
         public Boolean isStartingCity(){
             return cityTemplate.getStartingCity();
         }

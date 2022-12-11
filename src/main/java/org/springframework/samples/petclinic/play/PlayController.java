@@ -29,6 +29,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class PlayController {
     
     private static final String ROUND_ZERO = "playing/roundZero";
+
+    private static final String ROUND_N = "playing/roundN";
     
     private static final String SCORE_BOARD = null;
     
@@ -63,15 +65,9 @@ public class PlayController {
     public String showActualRound(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         String result=null;
-        
-        if(!game.alreadyLoad()){
         game = initializerService.loadGameMap(game);
         
-        }
 
-        //     game = initializerService.loadGameMap(game);
-        //     positionInitialiter.setPositions(game);
-        // }
         if(game.getRound()==0){
             result="redirect:"+gameId+"/round/0";
         }
@@ -129,6 +125,21 @@ public class PlayController {
         return result;
     }
 
+    @GetMapping("{gameId}/round/{round}")
+    public ModelAndView showInitialRound(@PathVariable Integer gameId, @PathVariable Integer round){
+        ModelAndView result=new ModelAndView(ROUND_N);
+        Game game=gameService.getGameById(gameId);
+        Player player = game.getCurrentPlayer();
 
+        List<Position> initialPositions=positionInGameService.getInitialPositions(game);
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("round", game.getRound());
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("positions", initialPositions);
+        result.addObject("pv", game.getPlayerScore(player));
+
+        return result;
+    }
     
 }

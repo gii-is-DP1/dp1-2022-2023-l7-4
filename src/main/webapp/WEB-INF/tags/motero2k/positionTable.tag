@@ -4,8 +4,8 @@
 <%@ attribute name="positionss" required="false" rtexprvalue="true" %>
 
 
+
 <spring:url value="/resources/css/petclinic.css" var="petclinicCss"/>
-<link href="${petclinicCss}" rel="stylesheet"/>
 
 <h2>Cities</h2>
     <table id="citiesTable" class="table table-striped">

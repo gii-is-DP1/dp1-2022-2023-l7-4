@@ -29,9 +29,4 @@ public class PlayControllerTest {
     
     @Autowired
     private PositionServiceRepo positionServiceRepo;
-
-    @Test
-    public void test
-
-    
 }

@@ -117,7 +117,7 @@ window.onbeforeunload = function(e) {
                     <c:out value="${position.id}"/>
                 </td>
                 <td>
-                    <c:out value="${position.isOccupied== true? 'Yes':'-'}"/>
+                    <c:out value="${position.isOccupied()== true? 'Yes':'-'}"/>
                 </td>
                 <td>
                     <c:out value="${position.player.name}"/>
