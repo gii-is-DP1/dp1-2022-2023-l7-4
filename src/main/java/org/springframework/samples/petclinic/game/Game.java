@@ -146,15 +146,16 @@ public class Game extends BaseEntity{
 
     public Integer getPlayerScore(Player player){
         Integer result=0;
-        Integer controlVP=getControlCityVP(player);
-        Integer totalControlVP=getTotalControlVP(player);
+        // TODO ARREGLAR NULL POINTER EXCEPTION
+        /*Integer controlVP=getControlCityVP(player);
+        Integer totalControlVP=getTotalControlVP(player);*/
         Integer trophyHallVP=player.getTrophyHallVPs();
         Integer handVP=player.getHandVPs();
         Integer dicardPileVP=player.getDiscardPile().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer innerCircleVP=player.getInnerCircle().stream()
             .collect(Collectors.summingInt(card->card.getInnerCirclePV()));
-        result=controlVP+totalControlVP+trophyHallVP+handVP+dicardPileVP+deckVP+innerCircleVP;
+        result=/*controlVP+totalControlVP+*/trophyHallVP+handVP+dicardPileVP+deckVP+innerCircleVP;
         return result;
     }
 

@@ -101,7 +101,6 @@ public class City extends BaseEntity{
 
             if( players.get(player).intValue() != getCapacity()) return null;
 
-            
             if(positions.stream().filter(ps-> ps.getForSpy())
             .allMatch(p->player.equals(p.getPlayer()) || p.getPlayer() == null)) return player;
             return null;

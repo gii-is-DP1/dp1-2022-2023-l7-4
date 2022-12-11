@@ -85,7 +85,7 @@
                     <abbr title="Punto de victoria totales" style="display:flex; width: 100%; height: 100%;">
                         <div class="resource-image pv"></div>
                         <div class="resource-valor">
-                            0
+                            ${pv}
                         </div>
                     </abbr>
                 </div>
