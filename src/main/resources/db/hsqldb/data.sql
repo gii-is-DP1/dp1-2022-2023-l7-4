@@ -57,14 +57,14 @@ INSERT INTO games(id,date,name,size,map_template_id)
     VALUES  (1,'2002-04-08','Partida 1',4,1),
             (2,'2002-04-09','Partida 2',2,1);
 
-INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 1000,1000,0);
-INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 David G1', 'daviddhc',1000,1000,1,1);
-INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'P2 Andres G1', 'anddomrui',1000,1000,2,1);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'P3 G1',1000,1000,3,1);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 G1',1000,1000,4,1);
+INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
+INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 G1', 'daviddhc',10,10,1,1);
+INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'P2 G1', 'anddomrui',10,10,2,1);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'P3 G1',10,10,3,1);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 G1',10,10,4,1);
 
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 G2',1000,1000,1,2);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 G2',1000,1000,2,2);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 G2',10,10,1,2);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 G2',10,10,2,2);
 
 
 
