@@ -33,7 +33,7 @@
         <div class="game-flex">
             <div class="resource-layout">
                 <div class="resources-box">
-                    <abbr title="Usa puntos de influencia para comprar cartas en el mercado" style="display:flex; width: 100%; height: 100%;">
+                    <abbr title="Puntos de influencia: usa los puntos de influencia para comprar cartas del mercado" style="display:flex; width: 100%; height: 100%;">
                         <div class="resource-image influence"></div>
                         <div class="resource-valor">
                         ${player.influence}
@@ -41,7 +41,7 @@
                     </abbr>
                 </div>
                 <div class="resources-box">
-                    <abbr title="Usa puntos de poder realizar acciones básicas" style="display:flex; width: 100%; height: 100%;">
+                    <abbr title="Puntos de poder: utiliza los puntos de poder para realizar acciones básicas" style="display:flex; width: 100%; height: 100%;">
                         <div class="resource-image power"></div>
                         <div class="resource-valor">
                             ${player.power}
@@ -73,7 +73,7 @@
                     </abbr>
                 </div>
                 <div class="resources-box">
-                    <abbr title="Círculo interno (cartas ascendidas durante la partida)" style="display:flex; width: 100%; height: 100%;">
+                    <abbr title="Círculo interno: cartas ascendidas durante la partida" style="display:flex; width: 100%; height: 100%;">
                         <div class="resource-image innerCircle"></div>
                         <div class="resource-valor">
                             ${player.innerCircle.size()}
@@ -81,7 +81,7 @@
                     </abbr>
                 </div>
                 <div class="resources-box">
-                    <abbr title="Punto de victoria totales" style="display:flex; width: 100%; height: 100%;">
+                    <abbr title="Puntos de victoria totales" style="display:flex; width: 100%; height: 100%;">
                         <div class="resource-image vp"></div>
                         <div class="resource-valor">
                             ${pv}
