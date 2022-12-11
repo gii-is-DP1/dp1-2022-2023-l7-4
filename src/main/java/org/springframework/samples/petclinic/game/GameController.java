@@ -137,10 +137,9 @@ public class GameController {
 				player.setName(user.getName());
 				player.setUser(user);
 				playerService.savePlayer(player);
-				List<Player> players2 = new ArrayList<>();
-				players2.add(player);
-				List<Player> players = playerService.getPlayerByName(player.getName());
-				return players2;
+				List<Player> players = new ArrayList<>();
+				players.add(player);
+				return players;
 			}
 
 		});
