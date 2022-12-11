@@ -1,8 +1,10 @@
 package org.springframework.samples.petclinic.game;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -122,13 +124,6 @@ public class GameController {
 
 	@InitBinder
 	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-		binder.registerCustomEditor(List.class, "halfdecks", new CustomCollectionEditor(List.class) {
-			@Override
-			protected Object convertElement(Object element) {
-				List<HalfDeck> halfDeck = cardServiceRepo.getHalfDeckByCard((String) element);
-				return halfDeck;
-			}
-		});
 		binder.registerCustomEditor(List.class, "players", new CustomCollectionEditor(List.class) {
 			@Override
 			protected Object convertElement(Object element) {

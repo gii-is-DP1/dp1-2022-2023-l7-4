@@ -22,16 +22,20 @@
                 </select>
             </div>
                 <div>
-                    <label class="col-sm-2 control-label">Half Decks:</label>
-                    <form:select path="halfdecks">
-                        <form:option value="-" label="--Please Select" />
-                        <form:options items="${halfDecks}" itemValue="name" itemLabel="name" />
+                    <label class="control-label" style="margin-bottom: 0; margin-left: 0;">First HalfDeck:</label>
+                    <form:select path="firstHalfDeck.id">
+                        <form:options items="${halfDecks}" itemValue="id" itemLabel="name" />
+                    </form:select>
+                </div>
+                <div >
+                    <label class="control-label" style="margin-bottom: 0; margin-left: 200px;">Second HalfDeck:</label>
+                    <form:select path="secondHalfDeck.id">
+                        <form:options items="${halfDecks}" itemValue="id" itemLabel="name" />
                     </form:select>
                 </div>
             <div>
                 <label class="col-sm-2 control-label">Players</label>
                 <form:select path="players">
-                    <form:option value="-" label="--Please Select" />
                     <form:options items="${users}" itemValue="name" itemLabel="name" />
                 </form:select>
             </div>

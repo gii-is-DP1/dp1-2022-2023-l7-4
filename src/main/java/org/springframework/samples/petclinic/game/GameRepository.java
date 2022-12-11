@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface GameRepository extends CrudRepository<Game,Integer>{
 
-    @Query("SELECT game FROM Game game WHERE game.Name = ?1")
+    @Query("SELECT game FROM Game game WHERE game.name = ?1")
     public Collection<Game> findGameByName(String name);
     
    

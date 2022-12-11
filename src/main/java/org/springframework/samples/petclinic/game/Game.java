@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,6 +29,7 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.HalfDeck;
+import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
@@ -37,13 +39,10 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name="games")
-public class Game {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+public class Game extends BaseEntity{
 
     @NotEmpty
-    String Name;
+    String name;
 
     @NotNull
     Integer size;
@@ -63,40 +62,14 @@ public class Game {
 		}
 		return this.players;
 	}
+    
+    @ManyToOne()
+    @JoinColumn(name = "first_half_deck_id")
+    private HalfDeck firstHalfDeck;
 
-    @NotEmpty
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-    name = "GAMES_HALFDECK", 
-    joinColumns = @JoinColumn(name = "GAME_ID"), 
-    inverseJoinColumns = @JoinColumn(name = "HALFDECK_ID"))
-    private List<HalfDeck> halfdecks = new ArrayList<HalfDeck>();
-
-    protected List<HalfDeck> getHalfdecksInternal() {
-		if (this.halfdecks == null) {
-			this.halfdecks = new ArrayList<>();
-		}
-		return this.halfdecks;
-	}
-
-	protected void setHalfdecksInternal(List<HalfDeck> halfdecks) {
-		this.halfdecks = halfdecks;
-	}
-
-    public int getNrOfhalfdecks() {
-		return getHalfdecksInternal().size();
-	}
-
-	public void addSpecialty(HalfDeck halfDeck) {
-		getHalfdecksInternal().add(halfDeck);
-	}
-
-    public List<HalfDeck> getHalfdecks(){
-        List<HalfDeck> sortedPets = new ArrayList<>(getHalfdecksInternal());
-		PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
-		return Collections.unmodifiableList(sortedPets);
-
-    }
+    @ManyToOne()
+    @JoinColumn(name = "second_half_deck_id")
+    private HalfDeck secondHalfDeck;
     
     @ManyToMany
     private List<Card> gameDeck = new ArrayList<>();
@@ -128,5 +101,9 @@ public class Game {
 
     public void addPlayerInternal(Player player){
         getPlayersInternal().add(player);
+    }
+    public void addCurrentPlayer(Player player){
+        getPlayersInternal().add(0, player);
+        player.setGame(this);
     }
 }

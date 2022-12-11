@@ -62,7 +62,7 @@ public class GameService {
 		User user = userService.getUserByUsername(username);
 		player.setName(user.getName());
 		player.setUser(user);
-		game.addPlayer(player);
+		game.addCurrentPlayer(player);
 
 	}
 
