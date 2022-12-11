@@ -1,5 +1,4 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -67,7 +66,7 @@
                 </div>
                 <div class="resources-box">
                     <abbr title="Tropas enemigas asesinadas" style="display:flex; width: 100%; height: 100%;">
-                        <div class="resource-image trophyHall"></div>
+                        <div class="resource-image trophyHall2"></div>
                         <div class="resource-valor">
                             ${player.trophyHall.size()}
                         </div>
@@ -83,26 +82,28 @@
                 </div>
                 <div class="resources-box">
                     <abbr title="Punto de victoria totales" style="display:flex; width: 100%; height: 100%;">
-                        <div class="resource-image pv"></div>
+                        <div class="resource-image vp"></div>
                         <div class="resource-valor">
                             ${pv}
                         </div>
                     </abbr>
                 </div>
             </div>
+
             <div class="positions-round0">
                 <div class="position-scroll">
-                    <form:form modelAttribute="idposition">
-                        <motero2k:positionTable>   
-                        </motero2k:positionTable>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">CONFIRMAR</button>
-                             </div>
-                        </div>
-                    </form:form>
+                    <div class="position-totally">
+                        <form:form modelAttribute="idposition">
+                            <motero2k:positionTable>   
+                            </motero2k:positionTable>
+                        </form:form>
+                    </div>
                 </div>
             </div>
+            
         </div>
-    </div>      
+    </div>     
+  
 </body>
+
+
