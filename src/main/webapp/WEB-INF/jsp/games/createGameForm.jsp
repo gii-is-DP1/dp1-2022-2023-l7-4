@@ -27,6 +27,11 @@
                        <form:checkbox path="halfdecks" value="${halfdeck.name}" />${halfdeck.name}
                 </c:forEach>
         </div>
+        <label>Players</label>
+        <form:select path="players">
+            <form:option value="-" label="--Please Select" />
+            <form:options items="${users}" itemValue="name" itemLabel="name" />
+        </form:select>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-default" type="submit">Add game</button>

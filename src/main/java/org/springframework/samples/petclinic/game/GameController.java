@@ -39,84 +39,31 @@ public class GameController {
 	@Autowired
 	CardServiceRepo cardServiceRepo;
 
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
-	private static final String VIEWS_NEWGAME_CREATE_FORM = "games/newGame";
     
 	@GetMapping(value = "/games/create")
-	public String initCreationGameForm(Map<String, Object> model){
+	public String initCreationGameForm(Map<String, Object> model, Principal currentUser){
 		List<HalfDeck> halfDecks = cardServiceRepo.getAllHalfDecks();
 		Game game = new Game();
+		List<User> users = (List<User>) userService.getUsers();
+		users.remove(userService.getUserByUsername(currentUser.getName()));
 		model.put("game", game);
 		model.put("halfDecks", halfDecks);
+		model.put("users", users);
 		return VIEWS_GAME_CREATE_FORM;
-	}
-    @GetMapping(value = "/games/create2")
-	public String initCreationForm(Map<String, Object> model, Principal currentUser) {
-		List<User> users = (List<User>) userService.getUsers();
-		User creatorsUser = userService.getUserByUsername(currentUser.getName());
-		users.remove(creatorsUser);
-
-		List<User> players = new ArrayList<>();
-		players.add(creatorsUser);
-
-		model.put("users", users);
-		model.put("players", players);
-		return VIEWS_NEWGAME_CREATE_FORM;
-    }
-
-	@PostMapping(value = "/games/create/add/{userId}")
-	public String postCreatingGameAddPlayer(@PathVariable("userId") String userId, GameForm gameForm, Map<String, Object> model) {
-		User addedUser = userService.getUserByUsername(userId);
-		
-		List<String> playerIds = gameForm.getUsers();
-		List<User> players = new ArrayList<>();
-		for(String i:playerIds) {
-			players.add(userService.getUserByUsername(i));
-		}
-		
-		players.add(addedUser);
-		List<User> users = (List<User>) userService.getUsers();
-		users.removeAll(players);
-		
-		model.put("users", users);
-		model.put("players", players);
-		return VIEWS_NEWGAME_CREATE_FORM;
-	}
-	@PostMapping(value = "/games/create/remove/{playerNum}")
-	public String creatingGameRemovePlayer(@PathVariable("playerNum") int playerNum, GameForm gameForm, Map<String, Object> model) {
-		List<String> playerIds = gameForm.getUsers();
-		List<User> players = new ArrayList<User>();
-		for(String i:playerIds) {
-			players.add(userService.getUserByUsername(i));
-		}
-		
-		players.remove(playerNum);
-		
-		List<User> users = (List<User>) userService.getUsers();
-		users.removeAll(players);
-		
-		model.put("users", users);
-		model.put("players", players);
-		return VIEWS_NEWGAME_CREATE_FORM;
 	}
 
     @PostMapping(value = "/games/create")
-	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model ) {
+	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model,Principal currentUser ) {
 		if (result.hasErrors()) {
             model.put("game", game);
 			System.out.println(result);
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
-			List<HalfDeck> gHalfDecks = game.getHalfdecks();
-			List<String> gameHalfDecksname = new ArrayList<>();
-			for(HalfDeck h:gHalfDecks){
-				gameHalfDecksname.add(h.getName());
-			}
-			System.out.println(gameHalfDecksname);
+			gameService.addPlayerByUsername(game, currentUser.getName());
+			gameService.setGameAndHouseToPlayers(game);
 			this.gameService.saveGame(game);
 			return "redirect:/games/" + game.getId();
 		}
@@ -181,6 +128,21 @@ public class GameController {
 				List<HalfDeck> halfDeck = cardServiceRepo.getHalfDeckByCard((String) element);
 				return halfDeck;
 			}
+		});
+		binder.registerCustomEditor(List.class, "players", new CustomCollectionEditor(List.class) {
+			@Override
+			protected Object convertElement(Object element) {
+				Player player = new Player();
+				User user = userService.getUserByName((String) element);
+				player.setName(user.getName());
+				player.setUser(user);
+				playerService.savePlayer(player);
+				List<Player> players2 = new ArrayList<>();
+				players2.add(player);
+				List<Player> players = playerService.getPlayerByName(player.getName());
+				return players2;
+			}
+
 		});
 	}
     

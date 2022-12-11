@@ -55,11 +55,11 @@ public class Game {
     Boolean isFinished = false;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",fetch = FetchType.EAGER)
-    private Set<Player> players;
+    private List<Player> players;
 
-    protected Set<Player> getPlayersInternal() {
+    protected List<Player> getPlayersInternal() {
 		if (this.players == null) {
-			this.players = new HashSet<>();
+			this.players = new ArrayList<>();
 		}
 		return this.players;
 	}
@@ -121,4 +121,12 @@ public class Game {
             players.remove(player);
             player.setGame(null);
         }
+
+        public void removePlayerByName(String name){
+            
+        }
+
+    public void addPlayerInternal(Player player){
+        getPlayersInternal().add(player);
+    }
 }

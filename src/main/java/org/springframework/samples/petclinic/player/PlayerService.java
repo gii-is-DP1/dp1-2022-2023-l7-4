@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.player;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -31,7 +32,7 @@ public class PlayerService {
 	public void updatePlayersGames(Integer player, Integer game){
 		playerRepository.updatePlayersGames(player,game);}
 	@Transactional
-	public Collection<Player> getPlayerByName(String name){
+	public List<Player> getPlayerByName(String name){
 		return playerRepository.findPlayerByName(name);
 	}
 
@@ -47,12 +48,7 @@ public class PlayerService {
 
     @Transactional
 	public void savePlayer(Player player) throws DataAccessException {
-		
-		playerRepository.save(player);		
-		
-		userService.saveUser(player.getUser());
-		
-		authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
+		playerRepository.save(player);
 	}
 	
 	@Transactional
