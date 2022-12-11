@@ -10,7 +10,7 @@ uri="http://www.springframework.org/security/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="cards">
-    <link rel="stylesheet" href="/styles/menu.css">
+    <link rel="stylesheet" href="/resources/styles/tyrants.css">
 
     <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZO</h2> </div></div>   
     <div class="wrapper">

@@ -19,7 +19,7 @@
         </tr>
     </table>
 
-    <spring:url value="play/{gameId}" var="editUrl">
+    <spring:url value="/play/{gameId}" var="editUrl">
         <spring:param name="gameId" value="${game.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Entrar</a>

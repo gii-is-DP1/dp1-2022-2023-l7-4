@@ -19,21 +19,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MapTemplate extends BaseEntity{
-    String name;
-    String description;
+
+    String name="";
+    String description="";
 
 
-    @ManyToMany
-    @JoinTable(
-        name = "map_templates_city_templates",
-        joinColumns = @JoinColumn(name = "map_id"),
-        inverseJoinColumns = @JoinColumn(name = "city_id"))
-    List<CityTemplate> citiesReferences;
 
     @ManyToMany
     @JoinTable(
         name = "map_templates_path_templates",
-        joinColumns = @JoinColumn(name = "map_id"),
-        inverseJoinColumns = @JoinColumn(name = "path_id"))
-    List<PathTemplate> pathsReferences;
+        joinColumns = @JoinColumn(name = "map_template_id"),
+        inverseJoinColumns = @JoinColumn(name = "path_template_id"))
+    List<PathTemplate> pathTemplates;
 }

@@ -1,61 +1,121 @@
 package org.springframework.samples.petclinic.play;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.position.CustomListingPositionService;
+import org.springframework.samples.petclinic.board.position.PlayerUsePositionService;
+import org.springframework.samples.petclinic.board.position.Position;
+import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
+import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
+import org.springframework.samples.petclinic.board.sector.city.CityService;
+import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
+import org.springframework.samples.petclinic.initializer.InitializeMapService;
+import org.springframework.samples.petclinic.initializer.InitializePositionService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("games/play")
+@RequestMapping("play")
 public class PlayController {
-
+    
     private static final String ROUND_ZERO = "playing/roundZero";
 
+    private static final String ROUND_N = "playing/roundN";
+    
     private static final String SCORE_BOARD = null;
-
+    
     @Autowired
-    private CustomListingPositionService customListingPositionService;
-
+    private PositionInGameService positionInGameService;
+    
     @Autowired
     private PlayService playService;
+    
     @Autowired
     private GameService gameService;
+    
+    @Autowired
+    InitializeMapService initializerService;
+    
+    @Autowired
+    private PlayerUsePositionService playerUsePositionService;
+    @Autowired
+    InitializePositionService positionInitialiter;
+    @Autowired
+    private PositionServiceRepo positionServiceRepo;
+
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private PathService pathService;
+
+    
 
 
 
     @GetMapping("{gameId}")
     public String showActualRound(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
-        System.out.println(game);
         String result=null;
-        if(!game.isLoaded()) {
-            playService.loadGame(game);
-            game=gameService.getGameById(gameId);
-        }
-        if(game.getRound()==0){
+        game = initializerService.loadGameMap(game);
+        
 
-            result="redirect:/games/play/"+gameId+"/round0?player="+game.getCurrentPlayer().getId();
+        if(game.getRound()==0){
+            result="redirect:"+gameId+"/round/0";
         }
         else if(game.getFinished())
-            result="redirect:/games/play/"+gameId+"/scoreboard";
+            result="redirect:"+gameId+"/scoreboard";
         else
-            result="redirect:/games/play/"+gameId+"/play?player="+game.getCurrentPlayer().getId();
+            result="redirect:"+gameId+"/round/"+game.getRound();
         return result;
     }
 
-    @GetMapping("{gameId}/round0")
-    public ModelAndView showInitialRound(@PathVariable Integer gameId, @RequestParam("player") Integer playerId){
+
+    @GetMapping("{gameId}/round/0")
+    public ModelAndView showInitialRound(@PathVariable Integer gameId){
+        ModelAndView result=new ModelAndView(ROUND_ZERO);
+        Game game=gameService.getGameById(gameId);
+        Player player = game.getCurrentPlayer();
+
+        List<Position> initialPositions=positionInGameService.getInitialPositions(game);
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("round", game.getRound());
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("positions", initialPositions);
+        result.addObject("pv", game.getPlayerScore(player));
+
+        return result;
+    }
+
+    @PostMapping("{gameId}/round/0")
+    public ModelAndView processChoosedPositionInRoundZero(@Valid Idposition idpos,BindingResult br
+    ,@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         Player player=game.getCurrentPlayer();
-        ModelAndView result=new ModelAndView(ROUND_ZERO);
-        result.addObject("initialPositions", customListingPositionService.getInitialPositions());
+        ModelAndView result=null;
+        if(br.hasErrors()){
+            return new ModelAndView(ROUND_ZERO,br.getModel());
+        }
+        try{
+            Position position= positionServiceRepo.findPositionById(idpos.getId());
+            this.playerUsePositionService.occupyTroopPosition(position, player,false);
+            gameService.saveAndNextPlayer(game);
+            result=new ModelAndView("redirect:/play/"+gameId);
+        }catch(Exception e){
+            br.rejectValue("position","occupied","already occupy");
+            result=new ModelAndView(ROUND_ZERO,br.getModel());
+        }
         return result;
     }
 
@@ -67,6 +127,21 @@ public class PlayController {
         return result;
     }
 
+    @GetMapping("{gameId}/round/{round}")
+    public ModelAndView showInitialRound(@PathVariable Integer gameId, @PathVariable Integer round){
+        ModelAndView result=new ModelAndView(ROUND_N);
+        Game game=gameService.getGameById(gameId);
+        Player player = game.getCurrentPlayer();
 
+        List<Position> initialPositions=positionInGameService.getInitialPositions(game);
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("round", game.getRound());
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("positions", initialPositions);
+        result.addObject("pv", game.getPlayerScore(player));
+
+        return result;
+    }
     
 }

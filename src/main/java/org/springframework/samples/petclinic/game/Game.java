@@ -17,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,7 +24,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.samples.petclinic.board.map.GameMap;
 import org.springframework.samples.petclinic.board.map.MapTemplate;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
@@ -66,12 +64,14 @@ public class Game extends BaseEntity{
     @Column(columnDefinition = "integer default 2")
     Integer size=2;
 
-    @ManyToOne
+    @ManyToOne()
     MapTemplate mapTemplate = new MapTemplate();
 
-    @OneToOne
-    GameMap gameMap = new GameMap();
-    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    List<City> cities = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    List<Path> paths = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",fetch = FetchType.EAGER)
     private List<Player> players = new ArrayList<>();
 
@@ -109,7 +109,7 @@ public class Game extends BaseEntity{
     }
     
     public void setNextPlayer(){
-       this.turnPlayer= (this.turnPlayer)%this.size+1;
+       this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
        if(this.turnPlayer==1) this.round++;
     }
 
@@ -120,6 +120,10 @@ public class Game extends BaseEntity{
     public Boolean isFinished(){
         return getFinished();
     }
+
+    /*public Boolean isNotLoaded(){
+        return (getRound()==0 && getCurrentPlayer().equals(this.players.get(0)));
+    }*/
 
     public void finishGame(){
         this.finished=true;
@@ -142,6 +146,7 @@ public class Game extends BaseEntity{
 
     public Integer getPlayerScore(Player player){
         Integer result=0;
+        // TODO ARREGLAR NULL POINTER EXCEPTION
         Integer controlVP=getControlCityVP(player);
         Integer totalControlVP=getTotalControlVP(player);
         Integer trophyHallVP=player.getTrophyHallVPs();
@@ -155,32 +160,30 @@ public class Game extends BaseEntity{
     }
 
     private Integer getControlCityVP(Player player){
-        return this.gameMap.getCities().stream()
-        .filter(city->city.getControllingPlayer().equals(player))
+        return this.cities.stream()
+        .filter(city->city.whoControls()!=null && city.whoControls().equals(player))
         .collect(Collectors.summingInt(city->city.getVpEndgameValue()));
     }
 
     private Integer getTotalControlVP(Player player){
-        Long numberOfTotalControlCities=this.gameMap.getCities().stream()
-            .filter(city->city.whoTotallyControls().equals(player))
-            .count();
-        return numberOfTotalControlCities.intValue()*2;
+        return this.cities.stream()
+        .filter(city->city.whoTotallyControls()!=null && city.whoTotallyControls().equals(player))
+        .collect(Collectors.summingInt(city->city.getVpEndgameValue() + 2));
     }    
     
-    public Boolean isLoaded(){
-        if(gameMap!=null) {
-            return !(
-                this.gameMap.getCities().isEmpty() |
-                this.gameMap.getPaths().isEmpty());
-        }else return false;
-
+    public Boolean isNotLoaded(){
+        return !getLoaded();
     }
 
-    public List<City> getCities(){
-        return this.gameMap.getCities();
+    @Override
+    public String toString() {
+        return "Game [name=" + name + ", mapTemplate=" + mapTemplate + ", cities=" + cities + ", paths=" + paths
+                + ", gameDeck=" + gameDeck + "]";
     }
-    public List<Path> getPaths(){
-        return this.gameMap.getPaths();
-    }
+
+ 
+    
+
+    
 }
 

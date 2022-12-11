@@ -11,8 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.samples.petclinic.board.map.GameMap;
 import org.springframework.samples.petclinic.board.position.Position;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
@@ -31,15 +31,8 @@ public class City extends BaseEntity{
     CityTemplate cityTemplate= new CityTemplate(); 
     //this contains all constant data.
 
-
-  
-
-
     @ManyToOne
-    private Player controllingPlayer;
-
-    @ManyToOne
-    private GameMap gameMap;
+    private Game game;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
     private List<Position> positions;
@@ -99,17 +92,18 @@ public class City extends BaseEntity{
             
             Player player = players.keySet().iterator().next();
 
+            //Check player has all troop positions available ocuppied
             if( players.get(player).intValue() != getCapacity()) return null;
 
-            
             if(positions.stream().filter(ps-> ps.getForSpy())
             .allMatch(p->player.equals(p.getPlayer()) || p.getPlayer() == null)) return player;
             return null;
         
         }
-        public static City ofTemplate(CityTemplate template){
+        public static City of(CityTemplate template,Game game){
             City city = new City();
             city.setCityTemplate(template);
+            city.setGame(game);
             return city;
         }
 
@@ -120,12 +114,13 @@ public class City extends BaseEntity{
         public Integer getVpControlled() {return cityTemplate.getVpControlled();}
         public Integer getVpEndgameValue() {return cityTemplate.getVpEndgameValue();}
         public Integer getInfluenceTotalControlled() {return cityTemplate.getInfluenceTotalControlled();}
-        public Integer getVpTotalControlled() {return cityTemplate.getVpTotalControlled();}
         public Boolean isStartingCity(){
             return cityTemplate.getStartingCity();
         }
         
-
+    public Boolean hasNoPlayerTroops(){
+        return this.positions.stream().allMatch(position->position.isOccupied()==false|| position.getPlayer().isWhite());
+    }
     @Override
     public String toString() {
         return  getName() ;

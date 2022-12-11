@@ -11,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/games/game")
-public class PositionController2 {
+@RequestMapping("/games/play")
+public class PositionInGameController {
 
     private String POSITIONS_LISTING_VIEW="positions/positionsListing";
     private final String CHOOSE_POSITION_FORM_VIEW="positions/chooseOnePositionForm";
@@ -26,7 +26,7 @@ public class PositionController2 {
 
 
     @Autowired
-    public PositionController2(PositionService posServ,CityService city, PathService pService,PlayerService playerSer, AdjacentPositionService adjacentPositionService){
+    public PositionInGameController(PositionService posServ,CityService city, PathService pService,PlayerService playerSer, AdjacentPositionService adjacentPositionService){
         this.positionService=posServ;
         this.cityService=city;
         this.pathService= pService;

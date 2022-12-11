@@ -7,24 +7,36 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityRepository;
+import org.springframework.samples.petclinic.board.sector.path.PathRepository;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomListingPositionService {
 
-    @Autowired
+    
     private PositionServiceRepo positionServiceRepo;
 
-    @Autowired
+    
     private CityRepository cityRepository;
 
+    private PathRepository pathRepository;
+
+    @Autowired
+    public CustomListingPositionService(PositionServiceRepo positionServiceRepo
+    ,CityRepository cityRepository,PathRepository pathRepository){
+        this.positionServiceRepo=positionServiceRepo;
+        this.cityRepository=cityRepository;
+        this.pathRepository=pathRepository;
+    }
+
     @Transactional(readOnly = true)
-    public List<Position> getFreeSpyPositionsForPlayer(Integer player_id){
-        List<Position> spyPositionsFromPlayer=positionServiceRepo.getSpyPositionsOfPlayer(player_id);
+    public List<Position> getFreeSpyPositionsForPlayer(Integer player_id,Game game){
+        List<Position> spyPositionsFromPlayer=positionServiceRepo.getSpyPositionsOfPlayer(player_id,game);
         List<City> citiesWithSpiesOfPlayer=spyPositionsFromPlayer.stream().map(position->position.getCity())
         .filter(city->city!=null).distinct().collect(Collectors.toList());
-        return positionServiceRepo.getFreeSpyPositions().stream()
+        return positionServiceRepo.getFreeSpyPositionsFromGame(game).stream()
         .filter(position->!citiesWithSpiesOfPlayer.contains(position.getCity())).collect(Collectors.toList());
 
     }
@@ -34,25 +46,28 @@ public class CustomListingPositionService {
         List<Position> myPos=positionServiceRepo.getPlayerPositions(player_id);
         List<Position> adjacencies=myPos.stream().map(pos->pos.getAdjacents()).flatMap(List::stream)
         .distinct()
-        .filter(adj_pos->adj_pos.getIsOccupied()==searchEnemies)
+        .filter(adj_pos->adj_pos.isOccupied()==searchEnemies)
         .filter(adj_pos->(!searchEnemies) || adj_pos.getPlayer().getId()!=player_id)//hago 2 filter distintos
         //para evitar NullPointerException en adj.getPlayer().getId()
         .collect(Collectors.toList());
         return adjacencies;
     }
     @Transactional(readOnly = true)
-    public List<Position> getInitialPositions(){
-        List<City> startingCities=cityRepository.findAllStartingCities();
-        List<City> availableCities=new ArrayList<>(startingCities);
+    public List<Position> getInitialPositionsOfGame(Game game){
+        List<City> startingCities=cityRepository.findAllStartingCitiesByGameId(game.getId());
+        List<City> availableCities=new ArrayList<>();
+        availableCities.addAll(startingCities);
         for(City city:startingCities){
             for(Position position:city.getPositions()){
-                if(position.getIsOccupied() & !position.getPlayer().isWhite())
+                if(position.isOccupied())
+                    //cuando se tengan jugadores cuyo id sea distinto de 1, poner condicion de evitar jugadores blancos
                     availableCities.remove(city);
                     break;
+                
             }
         }
         List<Position> availablePositions=new ArrayList<>();
-        availableCities.stream().map(city->city.getPositions()).forEach(positions->availablePositions.addAll(availablePositions));
+        availableCities.stream().map(city->city.getPositions()).forEach(positions->availablePositions.addAll(positions));
         return availablePositions;
     }
 
@@ -80,11 +95,11 @@ public class CustomListingPositionService {
      *      -false: buscará sólo piezas de otros jugadores que no sean blancas
      */
     @Transactional(readOnly = true)
-    public List<Position> getEnemyPositionsByType(Integer player_id,Boolean forSpy
-    ,Boolean useAdjacency,Boolean searchWhites){
+    public List<Position> getEnemyPositionsByTypeOfGame(Integer player_id,Boolean forSpy
+    ,Boolean useAdjacency,Boolean searchWhites,Game game){
         List<Position> res=null;
         if(useAdjacency)
-            res= positionServiceRepo.getAllEnemyPositionsOfPlayerByTypeOfPosition(player_id, forSpy);
+            res= positionServiceRepo.getAllEnemyPositionsOfPlayerByTypeOfPosition(player_id, forSpy,game);
         else{
             res=getPresencePositions(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
@@ -97,13 +112,13 @@ public class CustomListingPositionService {
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getAllEnemyTroopsForPlayer(Integer player_id){
-        return getEnemyPositionsByType(player_id, false, true,null);
+    public List<Position> getAllEnemyTroopsForPlayerOfGame(Integer player_id,Game game){
+        return getEnemyPositionsByTypeOfGame(player_id, false, true,null,game);
     }
 
     @Transactional(readOnly = true)
-    public List<Position> getAllEnemySpiesForPlayer(Integer player_id){
-        return getEnemyPositionsByType(player_id, true, true,null);
+    public List<Position> getAllEnemySpiesForPlayerOfGame(Integer player_id,Game game){
+        return getEnemyPositionsByTypeOfGame(player_id, true, true,null,game);
     }
     
 }

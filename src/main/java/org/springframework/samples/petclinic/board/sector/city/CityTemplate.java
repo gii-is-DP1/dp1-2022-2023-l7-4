@@ -23,7 +23,8 @@ public class CityTemplate extends Sector{
     private String name="";
     
     @Positive
-    Integer zone=0;
+    @Column(columnDefinition = "integer default 0")
+    Integer zone;
 
     @NotBlank
     @Min(1) //RN-vpEndgameValue >0
@@ -34,12 +35,11 @@ public class CityTemplate extends Sector{
     @Column(name="starting_city",columnDefinition = "boolean default false")
     private Boolean startingCity=false;
 
+    @Column(columnDefinition = "integer default 0")
     private Integer vpControlled=0;
+
+    @Column(columnDefinition = "integer default 0")
     private Integer influenceTotalControlled=0;
-    private Integer vpTotalControlled=0;
-
-    
-
     
     
 }

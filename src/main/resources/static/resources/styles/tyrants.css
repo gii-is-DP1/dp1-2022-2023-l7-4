@@ -3,4 +3,6 @@
     - Disfrute de todos los css importando tan solo tyrants.css -> 
     <link rel="stylesheet" href="/styles/tyrants.css">
     Pegue este link en su jsp ;)*/
-@import "pageable.css"
+@import "pageable.css";
+@import "menu.css";
+@import "roundzero.css";

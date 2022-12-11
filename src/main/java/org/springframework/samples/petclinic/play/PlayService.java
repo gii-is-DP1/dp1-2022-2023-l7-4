@@ -1,9 +1,9 @@
 package org.springframework.samples.petclinic.play;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.map.GameMapService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
+import org.springframework.samples.petclinic.initializer.InitializeMapService;
 import org.springframework.samples.petclinic.initializer.InitializePositionService;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +14,12 @@ public class PlayService {
     @Autowired
     GameService gameService;
     @Autowired
-    GameMapService gameMapService;
+    InitializeMapService initializerService;
 
 
     public void loadGame(Game game) {
 
-        gameMapService.loadGameMap(game);
+        initializerService.loadGameMap(game);
         positionInitialiter.setPositions(game);
         // TODO load game deck
         game.setLoaded(false);
