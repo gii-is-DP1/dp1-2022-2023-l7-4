@@ -146,17 +146,21 @@ public class Game extends BaseEntity{
 
     public Integer getPlayerScore(Player player){
         Integer result=0;
-        // TODO ARREGLAR NULL POINTER EXCEPTION
         Integer controlVP=getControlCityVP(player);
         Integer totalControlVP=getTotalControlVP(player);
         Integer trophyHallVP=player.getTrophyHallVPs();
         Integer handVP=player.getHandVPs();
         Integer dicardPileVP=player.getDiscardPile().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
-        Integer innerCircleVP=player.getInnerCircle().stream()
-            .collect(Collectors.summingInt(card->card.getInnerCirclePV()));
+        Integer innerCircleVP= getInnerCircleVP(player);
         result=controlVP+totalControlVP+trophyHallVP+handVP+dicardPileVP+deckVP+innerCircleVP;
         return result;
+    }
+
+    //No hacer privada, la utilizo en un controlador, gracias :D
+    public Integer getInnerCircleVP(Player player){
+        return player.getInnerCircle().stream()
+        .collect(Collectors.summingInt(card->card.getInnerCirclePV()));
     }
 
     private Integer getControlCityVP(Player player){

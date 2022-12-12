@@ -90,7 +90,8 @@ public class PlayController {
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
         result.addObject("positions", initialPositions);
-        result.addObject("pv", game.getPlayerScore(player));
+        result.addObject("vp", game.getPlayerScore(player));
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
 
         return result;
     }
