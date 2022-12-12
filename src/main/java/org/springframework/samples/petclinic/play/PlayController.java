@@ -108,7 +108,7 @@ public class PlayController {
         try{
             Position position= positionServiceRepo.findPositionById(idpos.getId());
             this.playerUsePositionService.occupyTroopPosition(position, player,false);
-            gameService.saveAndNextPlayer(game);
+            gameService.nextPlayerAndSave(game);
             result=new ModelAndView("redirect:/play/"+gameId);
         }catch(Exception e){
             br.rejectValue("position","occupied","already occupy");
@@ -131,14 +131,32 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         Player player = game.getCurrentPlayer();
 
-        List<Position> initialPositions=positionInGameService.getInitialPositions(game);
+        List<Position> positions=positionServiceRepo.getAllPositionsFromGame(game);
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
+        result.addObject("gameId", gameId);
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
-        result.addObject("positions", initialPositions);
+        result.addObject("positions", positions);
         result.addObject("pv", game.getPlayerScore(player));
+        return result;
+    }
 
+    @PostMapping("{gameId}/round/{round}")
+    public ModelAndView processNextTurn(@PathVariable Integer gameId,@PathVariable Integer round
+    ,BindingResult br){
+        Game game=gameService.getGameById(gameId);
+        ModelAndView result=null;
+        if(br.hasErrors()){
+            return new ModelAndView(ROUND_N,br.getModel());
+        }
+        try{
+            gameService.nextPlayerAndSave(game);
+            result=new ModelAndView("redirect:/play/"+gameId);
+        }catch(Exception e){
+            br.rejectValue("game","error","something happen,try again");
+            result=new ModelAndView(ROUND_N,br.getModel());
+        }
         return result;
     }
     

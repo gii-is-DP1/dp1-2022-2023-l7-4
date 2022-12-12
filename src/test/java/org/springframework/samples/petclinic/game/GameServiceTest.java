@@ -1,5 +1,8 @@
 package org.springframework.samples.petclinic.game;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +22,8 @@ public class GameServiceTest {
 
     @Test
     public void testFindGamesByExistingName(){
-        
+        List<Game> gamesWithName=(List<Game>)this.gameService.getGameByName("Partida 1");
+        assertThat(gamesWithName.size()).isEqualTo(1);
     }
 
 

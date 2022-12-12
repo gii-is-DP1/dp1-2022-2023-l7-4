@@ -7,8 +7,13 @@ import org.springframework.samples.petclinic.board.position.CustomListingPositio
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.board.sector.city.CityTemplate;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
+
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,8 +31,11 @@ public class CustomListingPositionServiceTest {
     @Autowired
     protected CustomListingPositionService customListingPositionService;
 
-    @Mock
+    @Autowired
     private PositionServiceRepo positionServiceRepo;
+
+    @Autowired
+    private GameService gameService;
 
 
     private Player player1;
@@ -39,16 +47,35 @@ public class CustomListingPositionServiceTest {
     @BeforeEach
     void setup(){
         this.player1=new Player();
+        player1.setId(1);
         this.player2=new Player();
+        player2.setId(2);
         this.game=new Game();
-        City city1=new City();
+        game.setId(1);
+        CityTemplate cityTemplate1=new CityTemplate();
+        cityTemplate1.setId(1);
+        cityTemplate1.setStartingCity(true);
+        City city1= City.of(cityTemplate1,game);
         City city2=new City();
-        Position spyFromCity1=new Position();
+
+
+        Position spy1FromCity1=new Position();
+        spy1FromCity1.setForSpy(true);
+        Position spy2FromCity1=new Position();
+        spy2FromCity1.setForSpy(true);
+        Position spy1FromCity2=new Position();
+        spy1FromCity2.setForSpy(true);
+        Position spy2FromCity2=new Position();
+        spy2FromCity2.setForSpy(true);
         //List<Position> spyPlayerPositions=new ArrayList<>(List.of(position))
+        //positionServiceRepo.getSpyPositionsOfPlayer(player_id,game);
+        //positionServiceRepo.getFreeSpyPositionsFromGame(game)
     }
 
     @Test
-    public void testGetFreeSpyPositionsFromPlayer(){
+    public void testGetFreeSpyPositionsForPlayer(){
+        List<Position> freeSpyPositionsForPlayer=
+        this.customListingPositionService.getFreeSpyPositionsForPlayer(player1.getId(), game); 
 
         
     }
