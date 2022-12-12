@@ -13,8 +13,8 @@ import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.initializer.InitializeMapService;
 import org.springframework.samples.petclinic.initializer.InitializePositionService;
+import org.springframework.samples.petclinic.initializer.IntializeGame;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -38,13 +38,10 @@ public class PlayController {
     private PositionInGameService positionInGameService;
     
     @Autowired
-    private PlayService playService;
-    
-    @Autowired
     private GameService gameService;
     
     @Autowired
-    InitializeMapService initializerService;
+    IntializeGame gameInitializer;
     
     @Autowired
     private PlayerUsePositionService playerUsePositionService;
@@ -67,7 +64,7 @@ public class PlayController {
     public String showActualRound(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         String result=null;
-        game = initializerService.loadGameMap(game);
+        game = gameInitializer.loadGame(game);
         
 
         if(game.getRound()==0){

@@ -87,12 +87,6 @@
 					<span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
 					<span>Actions</span>
 				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'playing'}" url="/currentgame/play"
-					title="game">
-					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-					<span>Demo</span>
-				</petclinic:menuItem>
 	
 			</ul>
 
