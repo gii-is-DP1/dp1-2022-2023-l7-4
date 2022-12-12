@@ -27,13 +27,9 @@ public class InitializeMapService {
     private InitializePositionService positionInit;
 
     public Game loadGameMap(Game game) {
-        if(game.isNotLoaded()){
             setPathsFromTemplate(game,game.getMapTemplate());
             positionInit.setPositions(game);
-            game.setLoaded(true);
             return gameService.getGameById(game.getId());
-        }
-        return game;
     }
 
     private void setPathsFromTemplate(Game game,MapTemplate map) {

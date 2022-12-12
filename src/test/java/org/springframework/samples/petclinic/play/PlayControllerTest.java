@@ -60,10 +60,6 @@ public class PlayControllerTest {
     private PositionInGameService positionInGameService;
     
     @MockBean
-    private PlayService playService;
-    
-    
-    @MockBean
     InitializeMapService initializerService;
     
     @MockBean
