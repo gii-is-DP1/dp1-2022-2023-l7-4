@@ -75,7 +75,7 @@
                     <abbr title="Círculo interno: cartas ascendidas durante la partida">
                         <div class="resource-image innerCircle"></div>
                         <div class="resource-valor">
-                            ${player.innerCircle.size()}
+                            ${totalinnerCirclevp}
                         </div>
                     </abbr>
                 </div>
@@ -83,7 +83,7 @@
                     <abbr title="Puntos de victoria totales" >
                         <div class="resource-image vp"></div>
                         <div class="resource-valor">
-                            ${pv}
+                            ${vp}
                         </div>
                     </abbr>
                 </div>
