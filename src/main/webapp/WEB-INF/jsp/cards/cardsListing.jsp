@@ -8,7 +8,7 @@
 <%@ taglib prefix="motero2k" tagdir="/WEB-INF/tags/motero2k" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
-    <link rel="stylesheet" href="/resources/styles/tyrants.css">
+    <link rel="stylesheet" href="/resources/styles/cardlisting.css">
 <petclinic:layout pageName="cards">
     <div class="contenedor">
         <div class="contenedor-menu">
@@ -183,291 +183,49 @@
 </petclinic:layout>
 </html>
 
-
-
-
-    <style>
-        .parent {
-            display: flex;
-            flex-wrap: wrap;
+<style>
+    
+    .btn {
+        box-sizing: border-box;
+        -webkit-appearance: none;
+            -moz-appearance: none;
+                appearance: none;
+        background-color: transparent;
+        border: 2px solid #e74c3c;
+        border-radius: 0.6em;
+        color: #e74c3c;
+        cursor: pointer;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+ 
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1;
+        margin: 20px;
+        padding: 1.2em 2.8em;
+        text-decoration: none;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        }
+    .btn:hover, .btn:focus {
+        color: rgb(0, 0, 0);
+        outline: 0;
         }
 
-        .child {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 1 0 33%;
-            /* explanation below */
-            margin: 0px;
-        }
+.third {
+    width: 80%;
+    border-color: #1f323e;
+    justify-content: center;
+    color: #fff;
+    box-shadow: 0 0 40px 40px #9f5967 inset, 0 0 0 0 #9f5967;
+    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+    }
+    .third:hover {
+    box-shadow: 0 0 10px 0 #9f5967 inset, 0 0 10px 4px #9f5967;
+    }
 
 
-        .centerBlock {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /*CARTA*/
-        .principalCard {
-            /* width: 27%;
-            height: 52%; */
-            /* width: 23*0.7vw;
-            height: 23vw; */
-            /* margin-bottom: 2%; */
-            /* margin-left: 5%; */
-            height: 95%;
-            width: 85%;
-            position: relative;
-            /* display: inline-block; */
-
-        }
-
-        .cardImage {
-            width: 100%;
-            height: 100%;
-        }
-
-        .topTextName {
-            position: absolute;
-            top: 3%;
-            /* font-size: 127%; */
-            font-size: 1.25vmax;
-            margin-left: 8%;
-            color: aliceblue;
-            font-family: "Critter";
-        }
-
-        .topTextCost {
-            position: absolute;
-            top: 3%;
-            /* font-size: 193%; */
-            font-size: 1.5vmax;
-            margin-left: 86%;
-            color: aliceblue;
-            font-family: "Critter";
-        }
-
-        .topTextAspect {
-            position: absolute;
-            top: 10%;
-            /* font-size: 103%; */
-            font-size: 1.1vmax;
-            margin-left: 8%;
-            color: aliceblue;
-            font-family: "Critter";
-        }
-
-        .topTextHalfDeck {
-            position: absolute;
-            top: 10%;
-            /* font-size: 103%; */
-            font-size: 1.1vmax;
-            width: 100%;
-            text-align: right;
-            right: 7%;
-            color: aliceblue;
-            font-family: "Critter";
-        }
-
-        .topTextRulesText {
-            position: absolute;
-            width: 83%;
-            top: 55%;
-            left: 8.5%;
-            /* font-size: 90%; */
-            font-size: 0.8vmax;
-            text-align: justify;
-            color: black;
-            font-family: "Critter";
-        }
-
-        .topTextRarity {
-            position: absolute;
-            top: 90%;
-            width: 100%;
-            /* font-size: 110%; */
-            font-size: 1vmax;
-            color: aliceblue;
-            font-family: "Critter";
-            text-align: center;
-        }
-
-        .topTextDeckVP {
-            position: absolute;
-            top: 84.5%;
-            font-size: 160%;
-            font-size: 1.5vmax;
-            margin-left: 66.5%;
-            color: aliceblue;
-            font-family: "Critter";
-        }
-
-        .topTextInnerCirclePV {
-            position: absolute;
-            top: 84.4%;
-            font-size: 160%;
-            font-size: 1.5vmax;
-            margin-left: 81.8%;
-            color: aliceblue;
-            font-family: "Critter";
-        }
-    </style>
-
-    <style>
-        .textmenu {
-            color: aliceblue;
-            margin-top: 3px;
-        }
-
-        .contenedor {
-            background-color: rgb(25, 24, 24);
-            margin-top: -40px;
-            margin-bottom: 2%;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-
-        .contenedor-menu {
-            display: flex;
-            justify-content: space-around;
-            height: 30px;
-            margin: 0 auto;
-        }
-
-        .pagination-box{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .card-not-found{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .filter-bigbox{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .filter-box{
-            width: 60%;
-            height: 100%;
-            border-radius: 5vmax;
-            border-color: darkgoldenrod;
-            border-style: double;
-            border-width: 0.4vmax;
-            background-image: url(/resources/images/round0-background.jpg);
-            background-position: center;
-            background-size:cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .filter-method{
-            display: flex;
-            width: 69%;
-            height: 100%;
-            flex-direction: column;
-            padding: 5%;
-        }
-        .filter-search{
-            display: flex;
-            height: 100%;
-            width: 30%;
-            align-items: flex-end;
-        }
-        .nameanddeck-filter-box{
-            display: flex;
-            flex-direction: row;
-        }
-        .filter-tittle{
-            font-size: 1.7vmax;
-            color: aliceblue;
-        }
-        .filter-cardanddeck-text{
-            font-size: 1.3vmax;
-            color: aliceblue;
-        }
-        .filter-resume-box{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .filtered-box{
-            font-size: 1vmax;
-            display: flex;
-            align-items: center;
-            background-color: rgb(168, 193, 214);
-            border-color: #2c243d;
-            border-style: solid;
-            border-width: 0.18vmax;
-            padding: 1.5%;
-            border-radius: 0.5vmax;
-        }
-        .x-button{
-            color: #8e385e;
-        }
-        .x-button2{
-            color: #8e385e;
-            margin-left: 0.3vmax;
-        }
-        .filtered-in-box{
-            width: 58%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-    </style>
-
-    <style>
-            .btn {
-                box-sizing: border-box;
-                -webkit-appearance: none;
-                    -moz-appearance: none;
-                        appearance: none;
-                background-color: transparent;
-                border: 2px solid #e74c3c;
-                border-radius: 0.6em;
-                color: #e74c3c;
-                cursor: pointer;
-                display: -webkit-box;
-                display: -webkit-flex;
-                display: -ms-flexbox;
-         
-                font-size: 1rem;
-                font-weight: 400;
-                line-height: 1;
-                margin: 20px;
-                padding: 1.2em 2.8em;
-                text-decoration: none;
-                text-align: center;
-                text-transform: uppercase;
-                font-weight: 700;
-                }
-            .btn:hover, .btn:focus {
-                color: rgb(0, 0, 0);
-                outline: 0;
-                }
-
-        .third {
-            width: 80%;
-            border-color: #1f323e;
-            justify-content: center;
-            color: #fff;
-            box-shadow: 0 0 40px 40px #9f5967 inset, 0 0 0 0 #9f5967;
-            -webkit-transition: all 150ms ease-in-out;
-            transition: all 150ms ease-in-out;
-            }
-            .third:hover {
-            box-shadow: 0 0 10px 0 #9f5967 inset, 0 0 10px 4px #9f5967;
-            }
-
-    </style>
+</style>
