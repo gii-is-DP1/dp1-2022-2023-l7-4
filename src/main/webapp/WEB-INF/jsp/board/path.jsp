@@ -8,6 +8,8 @@
 
 
 <petclinic:layout pageName="paths">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
     <h2>
         <c:if test="${path['new']}">New </c:if> path
     </h2>

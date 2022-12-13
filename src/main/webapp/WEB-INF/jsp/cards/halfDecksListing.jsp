@@ -6,10 +6,13 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="/resources/styles/cardlisting.css">
-<link rel="stylesheet" href="/resources/styles/tyrants.css">
+
 
 <petclinic:layout pageName="halfDecks">
+    <link rel="stylesheet" href="/resources/styles/cardlisting.css">
+    <link rel="stylesheet" href="/resources/styles/tyrants.css">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
     <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZOS &nbsp|&nbsp MAZOS</h2> </div></div>   
 
 

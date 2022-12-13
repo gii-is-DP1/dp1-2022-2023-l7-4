@@ -3,7 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+
 <petclinic:layout pageName="positions">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
     <h2>Positions</h2>
     <script>
         $(document).ready(function () {

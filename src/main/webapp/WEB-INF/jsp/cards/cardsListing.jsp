@@ -9,7 +9,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
     <link rel="stylesheet" href="/resources/styles/cardlisting.css">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
+
+    
+
 
 <petclinic:layout pageName="cards">
     <div class="contenedor">
@@ -17,6 +21,10 @@
             <h2 class="textmenu">CARTAS Y MAZOS &nbsp|&nbsp CARTAS</h2>
         </div>
     </div>
+
+   
+
+    <!--<audio autoplay loop src="/resources/rules/demons.mp3"></audio>-->
 
     <form action="/cards/filter">
         <div class="filter-bigbox">
@@ -186,7 +194,6 @@
 </html>
 
 <style>
-    
     .btn {
         box-sizing: border-box;
         -webkit-appearance: none;

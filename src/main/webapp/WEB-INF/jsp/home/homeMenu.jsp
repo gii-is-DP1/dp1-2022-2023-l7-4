@@ -12,6 +12,8 @@ uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="home">
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
 
     <div class="wrapper">
     <form:form modelAttribute="card" action="/games/list" method="get" class="box a"
