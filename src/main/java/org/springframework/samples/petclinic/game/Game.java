@@ -87,7 +87,7 @@ public class Game extends BaseEntity{
     Integer size=2;
 
     @ManyToOne()
-    MapTemplate mapTemplate = new MapTemplate();
+    MapTemplate mapTemplate ;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     List<City> cities = new ArrayList<>();
@@ -161,6 +161,19 @@ public class Game extends BaseEntity{
         map.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()));
         return map;
     }
+
+        public void removePlayerByName(String name){
+            
+        }
+
+    public void addPlayerInternal(Player player){
+        getPlayersInternal().add(player);
+    }
+    public void addCurrentPlayer(Player player){
+        getPlayersInternal().add(0, player);
+        player.setGame(this);
+    }
+       
 
     public Player getWinner(){
         return getQualifying().firstKey();

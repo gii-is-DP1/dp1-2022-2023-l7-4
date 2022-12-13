@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import org.springframework.samples.petclinic.board.map.MapTemplate;
 import org.springframework.samples.petclinic.card.CardServiceRepo;
 import org.springframework.samples.petclinic.card.HalfDeck;
 import org.springframework.samples.petclinic.player.Player;

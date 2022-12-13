@@ -25,7 +25,7 @@ INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,1);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,1);
 
 -- MAPS
-INSERT INTO map_templates(name) VALUES ('default Map');
+INSERT INTO map_templates(id,name) VALUES (1,'default Map');
 
 --POPULATE MAPS
 

@@ -20,7 +20,8 @@
                     <option value=3>3</option>
                     <option value=4>4</option>
                 </select>
-            </div>
+            </div> 
+            
                 <div>
                     <label class="control-label" style="margin-bottom: 0; margin-left: 0;">First HalfDeck:</label>
                     <form:select path="firstHalfDeck.id">
@@ -33,12 +34,14 @@
                         <form:options items="${halfDecks}" itemValue="id" itemLabel="name" />
                     </form:select>
                 </div>
+               
             <div>
                 <label class="col-sm-2 control-label">Players</label>
                 <form:select path="players">
                     <form:options items="${users}" itemValue="name" itemLabel="name" />
                 </form:select>
             </div>
+            <petclinic:inputField label="Map" name="mapTemplate" />
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button class="btn btn-default" type="submit">Add game</button>
