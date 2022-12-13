@@ -5,6 +5,8 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="actions">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
     <h2>Actions</h2>    
     <table id="compoundTable" class="table table-striped">
         <thead>

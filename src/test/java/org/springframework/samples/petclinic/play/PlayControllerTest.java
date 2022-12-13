@@ -34,6 +34,7 @@ import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.initializer.InitializeMapService;
 import org.springframework.samples.petclinic.initializer.InitializePositionService;
+import org.springframework.samples.petclinic.initializer.IntializeGame;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -74,6 +75,9 @@ public class PlayControllerTest {
     @MockBean
     private PathService pathService;
 
+    @MockBean
+    IntializeGame gameInitializer;
+
     private Game game;
 
     @BeforeEach
@@ -107,7 +111,8 @@ public class PlayControllerTest {
     public void testShowRoundZero() throws Exception{
         mockMvc.perform(get("/play/{gameId}/round/0",TEST_GAME_ID))
         .andExpect(status().isOk())
-        .andExpect(view().name("playing/roundZero"));
+        .andExpect(view().name("playing/roundZero"))
+        .andExpect(model().attribute("player", is(game.getPlayers().get(0))));
     }
 
     @WithMockUser(value="spring")
@@ -116,9 +121,7 @@ public class PlayControllerTest {
         mockMvc.perform(post("/play/{gameId}/round/0",TEST_GAME_ID)
         .with(csrf()).param("idposition", "1"))
         .andExpect(status().is2xxSuccessful())
-        .andExpect(view().name("playing/roundZero"))
-        .andExpect(model().attribute("game", hasProperty("turnPlayer",is(2))));
-        
+        .andExpect(view().name("playing/roundZero"));        
     }
 
     

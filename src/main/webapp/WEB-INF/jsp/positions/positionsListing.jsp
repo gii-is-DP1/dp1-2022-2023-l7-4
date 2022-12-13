@@ -3,6 +3,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
 <script>
     document.addEventListener("DOMContentLoaded", function(event) { 
     var scrollpos = localStorage.getItem('scrollpos');

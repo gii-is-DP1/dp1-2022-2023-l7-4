@@ -92,10 +92,10 @@
             <div class="positions-round0">
                 <div class="position-scroll">
                     <div class="position-totally">
-                        <form:form modelAttribute="idposition">
-                            <motero2k:positionTable>   
-                            </motero2k:positionTable>
-                        </form:form>
+                            
+                        <form action="/play/${gameId}/round/${round}" method="post">
+                            <input type="submit" value="PASAR TURNO">
+                        </form>
                     </div>
                 </div>
             </div>

@@ -35,9 +35,10 @@
 
 <style>
 	.bodybackground {
-		background-image: url(/resources/images/body_background.png);
+		background-image: url(/resources/images/background-menu.jpg);
 		background-size: cover;
 		background-position: center;
+		background-attachment: fixed;
 	}
 </style>
 </html>
