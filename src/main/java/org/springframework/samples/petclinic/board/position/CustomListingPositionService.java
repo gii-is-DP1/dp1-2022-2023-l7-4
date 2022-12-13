@@ -15,12 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CustomListingPositionService {
 
-    
+    @Autowired
     private PositionServiceRepo positionServiceRepo;
 
-    
+    @Autowired
     private CityRepository cityRepository;
 
+    @Autowired
     private PathRepository pathRepository;
 
     @Autowired
