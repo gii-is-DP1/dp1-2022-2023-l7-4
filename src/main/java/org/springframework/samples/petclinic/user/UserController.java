@@ -118,10 +118,12 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{username}/delete")
-	public String deleteUser(@PathVariable("username") String username){
+	public ModelAndView deleteUser(@PathVariable("username") String username){
+		ModelAndView mav = new ModelAndView("users/deleteUser");
+		mav.addObject(userService.getUserByUsername(username));
 		userService.deleteUser(username);
 		System.out.println("Player " + username + " was deleted");
-		return "redirect:/users/list";
+		return mav;
 	}
 	@GetMapping("/myprofile")
 	public String currentUserProfile(Principal user, Model model){

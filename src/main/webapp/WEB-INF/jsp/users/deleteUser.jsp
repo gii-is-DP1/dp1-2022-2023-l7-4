@@ -6,6 +6,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="players">
-    <h2>Player deleted</h2>
+<petclinic:layout pageName="users">
+    <h2>User <c:out style="color: blueviolet;" value="${user.name}"/> was deleted</h2>
 </petclinic:layout>

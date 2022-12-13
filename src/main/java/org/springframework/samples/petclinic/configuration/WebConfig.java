@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,10 +21,10 @@ public class WebConfig implements WebMvcConfigurer {
 	
 	@Autowired
 	GenericIdToEntityConverter idToEntityConverter;
+    @Autowired
 	
     @Override
     public void addFormatters(FormatterRegistry registry) {
-    	
         registry.addConverter(idToEntityConverter);
     }
     
@@ -41,5 +42,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/js/**").addResourceLocations("/js/");
         registry.addResourceHandler("/styles/**").addResourceLocations("/styles/");
 
+    }
+
+    @Override
+    public void configurePathMatch(PathMatchConfigurer matcher) {
+        matcher.setUseRegisteredSuffixPatternMatch(true);
     }
 }

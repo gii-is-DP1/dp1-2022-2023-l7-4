@@ -36,11 +36,11 @@ public class Player extends BaseEntity{
     
     @Column(columnDefinition = "integer default 0")
     @Min(0)
-    Integer power;
+    Integer power = 0;
 
     @Column(columnDefinition = "integer default 0")
     @Min(0)
-    Integer influence;
+    Integer influence = 0;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "username", referencedColumnName = "username")

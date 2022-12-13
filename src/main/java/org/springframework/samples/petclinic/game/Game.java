@@ -1,6 +1,9 @@
 package org.springframework.samples.petclinic.game;
 
 import java.util.ArrayList;
+
+import java.util.Collections;
+
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +16,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -23,6 +31,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 
 import org.springframework.samples.petclinic.board.map.MapTemplate;
 import org.springframework.samples.petclinic.board.sector.city.City;
@@ -43,6 +55,7 @@ public class Game extends BaseEntity{
 
     @NotEmpty
     String name= "";
+    
 
     @Temporal(TemporalType.DATE)
     Date date = new Date();
@@ -55,6 +68,15 @@ public class Game extends BaseEntity{
     private Integer turnPlayer=1;
     
     @Column(name="is_finished",columnDefinition = "boolean default false")
+    Boolean isFinished = false;
+
+    protected List<Player> getPlayersInternal() {
+		if (this.players == null) {
+			this.players = new ArrayList<>();
+		}
+		return this.players;
+	}
+    
     Boolean finished = false;
     
     @Column(columnDefinition = "boolean default false")
@@ -65,7 +87,7 @@ public class Game extends BaseEntity{
     Integer size=2;
 
     @ManyToOne()
-    MapTemplate mapTemplate = new MapTemplate();
+    MapTemplate mapTemplate ;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     List<City> cities = new ArrayList<>();
@@ -139,6 +161,19 @@ public class Game extends BaseEntity{
         map.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()));
         return map;
     }
+
+        public void removePlayerByName(String name){
+            
+        }
+
+    public void addPlayerInternal(Player player){
+        getPlayersInternal().add(player);
+    }
+    public void addCurrentPlayer(Player player){
+        getPlayersInternal().add(0, player);
+        player.setGame(this);
+    }
+       
 
     public Player getWinner(){
         return getQualifying().firstKey();
