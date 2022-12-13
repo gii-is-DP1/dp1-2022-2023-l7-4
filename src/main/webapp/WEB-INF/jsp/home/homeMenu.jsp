@@ -22,8 +22,8 @@ uri="http://www.springframework.org/security/tags"%>
     </form:form>
 
     <form:form modelAttribute="card" action="/resources/rules/tyrants-of-the-underdark-reglas-es.pdf" method="get" class="box b"
-               id="search-owner-form">
-                <div class="aBotton">
+               id="search-owner-form" target="_blank">
+                <div class="aBotton" >
                     <button type="submit" class="special-btn btn-two size-btn1"><div class="textbtn">Reglas</div></button>
                 </div>
     </form:form>
