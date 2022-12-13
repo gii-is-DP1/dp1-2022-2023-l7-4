@@ -56,6 +56,7 @@ public class GameService {
 		List<Player> playerAux = new ArrayList<>(players);
 		players.removeAll(playerAux);
 		List<House> houses = houseService.getHouses();
+		houses.remove(0);
 		playerAux.forEach(p -> p.setGame(game));
 		int i = 0;
 		for(Player p:playerAux){
