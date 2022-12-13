@@ -107,8 +107,8 @@ public class CustomListingPositionService {
         }
         if(searchWhites!=null)
             res.stream()
-            .filter(pos->(searchWhites & pos.getPlayer().getId()==1)
-             || (!searchWhites & pos.getPlayer().getId()!=1)).collect(Collectors.toList());
+            .filter(pos->(searchWhites & pos.getPlayer().getId()==0)
+             || (!searchWhites & pos.getPlayer().getId()!=0)).collect(Collectors.toList());
         return res;
     }
 

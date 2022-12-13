@@ -93,12 +93,27 @@ public class CustomListingPositionServiceTest {
         spy2FromCity2.setCity(city2);
         city1.setPositions(List.of(spy1FromCity1,spy2FromCity1));
         city2.setPositions(List.of(spy1FromCity2,spy2FromCity2));
+        Position troop1FromCity1=new Position();
+        troop1FromCity1.setId(5);
+        troop1FromCity1.setCity(city1);
+        Position troop2FromCity1=new Position();
 
-        //List<Position> spyPlayerPositions=new ArrayList<>(List.of(position))
-        //positionServiceRepo.getSpyPositionsOfPlayer(player_id,game);
-        //positionServiceRepo.getFreeSpyPositionsFromGame(game)
-        Mockito.lenient().when(positionServiceRepo.getSpyPositionsOfPlayer(player1.getId(), game)).thenReturn(new ArrayList<>(List.of(spy1FromCity1)));
-        Mockito.lenient().when(positionServiceRepo.getFreeSpyPositionsFromGame(game)).thenReturn(new ArrayList<>(List.of(spy2FromCity1,spy1FromCity2,spy2FromCity2)));
+
+        troop2FromCity1.setId(6);
+        troop2FromCity1.setCity(city1);
+        troop1FromCity1.setAdjacents(List.of(spy1FromCity1,spy2FromCity1,troop2FromCity1));
+        troop2FromCity1.setAdjacents(List.of(spy1FromCity1,spy2FromCity1,troop1FromCity1));
+        spy1FromCity1.setAdjacents(List.of(spy2FromCity1,troop1FromCity1,troop2FromCity1));
+        spy2FromCity1.setAdjacents(List.of(spy1FromCity1,troop1FromCity1,troop2FromCity1));
+        troop1FromCity1.setPlayer(player2);
+        Player white=new Player();
+        white.setId(0);
+        troop2FromCity1.setPlayer(white);
+        Mockito.lenient().when(positionServiceRepo.getSpyPositionsOfPlayer(player1.getId(), game))
+        .thenReturn(new ArrayList<>(List.of(spy1FromCity1)));
+        Mockito.lenient().when(positionServiceRepo.getFreeSpyPositionsFromGame(game))
+        .thenReturn(new ArrayList<>(List.of(spy2FromCity1,spy1FromCity2,spy2FromCity2)));
+        Mockito.lenient().when(positionServiceRepo.getPlayerPositions(player1.getId())).thenReturn(List.of(spy1FromCity1));
         customListingPositionService=new CustomListingPositionService(positionServiceRepo,cityRepository,pathRepository);
     }
 
@@ -108,7 +123,63 @@ public class CustomListingPositionServiceTest {
         List<Position> freeSpyPositionsForPlayer=
         this.customListingPositionService.getFreeSpyPositionsForPlayer(player1.getId(), game);
         assertThat(freeSpyPositionsForPlayer.size()).isEqualTo(2);
+        for(Position position:freeSpyPositionsForPlayer){
+            assertThat(position.getForSpy());
+            assertThat(position.isOccupied()==false);
+        }
         
+    }
+
+    @Test
+    public void testGetPresencePositionsSearchingFreePositions(){
+        List<Position> playerPositions=this.positionServiceRepo.getPlayerPositions(player1.getId());
+        List<Position> freeAdjacentPositionsOfPlayer=
+        this.customListingPositionService.getPresencePositions(player1.getId(), false);
+        assertThat(freeAdjacentPositionsOfPlayer).isNotEmpty();
+        for(Position position:freeAdjacentPositionsOfPlayer){
+            assertThat(position.isOccupied()==false);
+            assertThat(position.getAdjacents().containsAll(playerPositions));
+        }
+    }
+
+    @Test
+    public void testGetPresencePositionsSearchingEnemies(){
+        List<Position> playerPositions=this.positionServiceRepo.getPlayerPositions(player1.getId());
+        List<Position> freeAdjacentPositionsOfPlayer=
+        this.customListingPositionService.getPresencePositions(player1.getId(), true);
+        assertThat(freeAdjacentPositionsOfPlayer).isNotEmpty();
+        for(Position position:freeAdjacentPositionsOfPlayer){
+            assertThat(position.isOccupied());
+            assertThat(position.getPlayer()).isNotEqualTo(player1);
+            assertThat(position.getAdjacents().containsAll(playerPositions));
+        }
+    }
+
+    @Test
+    public void testGetWhiteAdjacentTroopsPositionsOfPlayer(){
+        List<Position> playerPositions=this.positionServiceRepo.getPlayerPositions(player1.getId());
+        List<Position> whiteAdjacentPositionsOfPlayer=
+        this.customListingPositionService
+        .getEnemyPositionsByTypeOfGame(player1.getId(), false, false, true, game);
+        assertThat(whiteAdjacentPositionsOfPlayer).isNotEmpty();
+        for(Position position:whiteAdjacentPositionsOfPlayer){
+            assertThat(position.isOccupied());
+            assertThat(position.getPlayer().isWhite());
+            assertThat(position.getAdjacents().containsAll(playerPositions));
+        }
+    }
+    @Test
+    public void testGetAnotherPlayerAdjacentTroopsPositionsOfPlayer(){
+        List<Position> playerPositions=this.positionServiceRepo.getPlayerPositions(player1.getId());
+        List<Position> anotherPlayerAdjacentPositionsOfPlayer=
+        this.customListingPositionService
+        .getEnemyPositionsByTypeOfGame(player1.getId(), false, false, false, game);
+        assertThat(anotherPlayerAdjacentPositionsOfPlayer).isNotEmpty();
+        for(Position position:anotherPlayerAdjacentPositionsOfPlayer){
+            assertThat(position.isOccupied());
+            assertThat(position.getPlayer().isWhite()==false);
+            assertThat(position.getAdjacents().containsAll(playerPositions));
+        }
     }
 
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.checkers.Preconditions;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.player.Player;
 
 public class CheckPlayerUsePosition {
@@ -76,6 +77,13 @@ public class CheckPlayerUsePosition {
     public static void playerHasntAnySpyInChoosedPosition(List<Position> playerSpiesInSameCityOfChoosedPosition) throws Exception {
         Preconditions.check(playerSpiesInSameCityOfChoosedPosition.isEmpty())
         .formattedError("No puedes tener más de 1 espía en la misma ciudad,elige de nuevo");
+    }
+
+    public static void playerIsPlayingInTheirTurn(Player player) throws Exception{
+        Game game=player.getGame();
+        Preconditions.check(game.getCurrentPlayer().equals(player))
+        .formattedError("Cada jugador debe jugar en su turno");
+
     }
 
 
