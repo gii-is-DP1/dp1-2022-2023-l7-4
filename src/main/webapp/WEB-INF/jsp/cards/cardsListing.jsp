@@ -9,6 +9,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
     <link rel="stylesheet" href="/resources/styles/cardlisting.css">
+    <link rel="stylesheet" href="/resources/styles/tyrants.css">
+
 <petclinic:layout pageName="cards">
     <div class="contenedor">
         <div class="contenedor-menu">
