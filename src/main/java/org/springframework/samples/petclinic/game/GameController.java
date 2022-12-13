@@ -67,6 +67,7 @@ public class GameController {
 			gameService.addPlayerByUsername(game, currentUser.getName());
 			gameService.setGameAndHouseToPlayers(game);
 			this.gameService.saveGame(game);
+
 			return "redirect:/games/" + game.getId();
 		}
 	}

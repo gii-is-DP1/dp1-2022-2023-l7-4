@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -35,9 +36,7 @@ public class Position{
     @JoinColumn(name="player_id")
     private Player player;
 
-    public boolean getIsOccupied(){
-        return player!=null;
-    }
+
 
 
     @ManyToOne(optional=true)
@@ -53,7 +52,8 @@ public class Position{
     private Boolean forSpy;
 
     @ManyToMany
-    @JoinColumn(name= "adj_id",unique = false)
+    @JoinTable(
+        inverseJoinColumns = @JoinColumn(name = "adjacent_id"))
     private List<Position> adjacents=null;
     
     public List<Position> getAdjacentsInternal(){
@@ -64,7 +64,10 @@ public class Position{
     public void addAdjacents(List<Position> positions) {
 		getAdjacentsInternal().addAll(positions);
 	}
-
+    
+    public boolean isOccupied(){
+        return player!=null;
+    }
     public Boolean isInCity(){
         return city!=null;
     }

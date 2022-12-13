@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.card;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,24 +40,34 @@ public class CardController {
 	//Listing card
     @GetMapping("/all")
     public String showCards(){
-		return "redirect:/cards/filter?name=&deck=";
+		return "redirect:/cards/filter?name=&deck=&page=1";
     }
 
     @GetMapping("/filter")
-    public ModelAndView showFilterdCards(Card card,@RequestParam("name") String name, @RequestParam("deck") String deck, BindingResult result){
-        ModelAndView result2=new ModelAndView(CARDS_LISTING_VIEW);
-
-		List<Card> filteredCards = cardService.getCardsByNameAndByHalfDeck(name,deck);
+    public ModelAndView showFilterdCards(Card card,@RequestParam("name") String name,
+	@RequestParam("page") Integer page, @RequestParam("deck") String deck){
+        ModelAndView mav=new ModelAndView(CARDS_LISTING_VIEW);
+		
+		Integer cardsByPage = 9;
+		Integer cardsCount = cardService.getCardsFilteredBy(name, deck).size();
+		// Integer numOfPages=(cardsByPage>cardsCount) ? 1 : (cardsCount/cardsByPage);
+		Integer numOfPages=(int)Math.ceil((double) cardsCount/cardsByPage);
+		numOfPages = numOfPages==0?1:numOfPages;
+		page = ((page<1) ? 1 :(page>numOfPages?numOfPages:page)); //inside range [1,numOfPages]
+		//o
+		List<Card> cardsInPage = cardService.getCardsByNameAndByHalfDeckPageable(name,deck,page,cardsByPage);
 		List<HalfDeck> HalfDecks = cardService.getAllHalfDecks();
-
-		result2.addObject("halfDecks", HalfDecks);
-
-		if(filteredCards.isEmpty()){
-			result.rejectValue("name", "notFound", "not found");
-		}else{
-			result2.addObject("cards", filteredCards);
-		}
-		return result2;
+		List<Integer> pages=IntStream.rangeClosed(1, numOfPages).boxed().collect(Collectors.toList());
+		
+		if(cardsInPage.isEmpty()) 
+			mav.addObject("notFound", true);
+		else 
+			mav.addObject("cards", cardsInPage);
+		mav.addObject("halfDecks", HalfDecks);
+		mav.addObject("pages",pages);
+		mav.addObject("numberOfPages",numOfPages);
+		mav.addObject("currentPage",page);
+		return mav;
     }
 	
 	 @GetMapping("/{cardId}")
@@ -85,4 +97,6 @@ public class CardController {
 		}
 		return result2;
     }
+
+	
 }

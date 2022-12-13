@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.board.position;
 
 
 import java.util.List;
-
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +37,11 @@ public class PositionService {
     }
 
 
-    public List<Position> getPositions(){
+    public List<Position> getPositions(){//
         return (List<Position>)positionRepository.findAll();
     }
     
-    @Transactional
+    @Transactional//
     public void save(Position p) throws DataAccessException{
         positionRepository.save(p);
     }
@@ -51,7 +50,7 @@ public class PositionService {
         ,IncorrectPositionTypeException.class,NotEnoughPresence.class})
     public void occupyTroopPosition(Position position,Player player,Boolean onlyAdjacencies)
      throws DataAccessException,OccupiedPositionException,IncorrectPositionTypeException,NotEnoughPresence{
-        if(position.getIsOccupied())
+        if(position.isOccupied())
             throw new OccupiedPositionException();
         else if(position.getForSpy()){
             throw new IncorrectPositionTypeException();
@@ -82,17 +81,18 @@ public class PositionService {
      {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void killTroop(Position position,Player player,Boolean forAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        if(position.getPlayer()==null)
+        Player Playertroop = position.getPlayer();
+        if(Playertroop==null)
             throw new EmptyPositionException();
 
-        else if(position.getPlayer().equals(player))
+        else if(Playertroop.equals(player))
             throw new YourPositionException();
 
         else if(forAdjacencies & 
         !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
 
-        player.setTrophyPV(player.getTrophyPV()+1);
+        player.getTrophyHall().add(position.getPlayer());
         playerRepository.save(player);
         position.setPlayer(null);
         save(position);
@@ -126,15 +126,16 @@ public class PositionService {
     {EmptyPositionException.class,YourPositionException.class,NotEnoughPresence.class})
     public void supplantTroop(Position position,Player player,Boolean onlyAdjacencies) throws DataAccessException
     ,EmptyPositionException,YourPositionException,NotEnoughPresence{
-        if(position.getPlayer()==null)
+        Player playerTroop = position.getPlayer();
+        if(playerTroop==null)
             throw new EmptyPositionException();
-        else if(position.getPlayer().equals(player))
+        else if(playerTroop.equals(player))
             throw new YourPositionException();
         else if(onlyAdjacencies
          & !getAdjacentPositionsFromPlayer(player.getId(),true).contains(position))
             throw new NotEnoughPresence();
         player.setTroops(player.getTroops()-1);
-        player.setTrophyPV(player.getTrophyPV()+1);
+        player.getTrophyHall().add(position.getPlayer());
         playerRepository.save(player);
         position.setPlayer(player);
         save(position);
@@ -155,20 +156,20 @@ public class PositionService {
 
     @Transactional(readOnly = true)
     public List<Position> getFreePositions() throws DataAccessException{
-        return positionRepository.findAllPositionByPlayerIsNull();
+        return positionRepository.findFreePositionsByGameId(1);
     }
     @Transactional(readOnly = true)
     public List<Position> getFreeTroopPositions() throws DataAccessException{
-        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyFalse();
+        return positionRepository.findFreeTroopPositionsByGameId(1);
     }
     @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositions() throws DataAccessException{
-        return positionRepository.findAllPositionsByPlayerIsNullAndForSpyTrue();
+        return positionRepository.findFreeSpyPositionsByGameId(1);
     }
 
     @Transactional(readOnly = true)
     public List<Position> getFreeSpyPositionsForPlayer(Integer player_id){
-        List<Position> spyPositionsFromPlayer=positionRepository.findAllPositionByPlayerIdAndForSpyTrue(player_id);
+        List<Position> spyPositionsFromPlayer=positionRepository.findSpyPositionsByPlayerIdAndByGameId(player_id,1);
         List<City> citiesWithSpiesOfPlayer=spyPositionsFromPlayer.stream().map(position->position.getCity())
         .filter(city->city!=null).distinct().collect(Collectors.toList());
         return getFreeSpyPositions().stream()
@@ -192,7 +193,7 @@ public class PositionService {
         List<Position> myPos=getPlayerPositions(player_id);
         List<Position> adjacencies=myPos.stream().map(pos->pos.getAdjacents()).flatMap(List::stream)
         .distinct()
-        .filter(adj_pos->adj_pos.getIsOccupied()==searchEnemies)
+        .filter(adj_pos->adj_pos.isOccupied()==searchEnemies)
         .filter(adj_pos->(!searchEnemies) || adj_pos.getPlayer().getId()!=player_id)//hago 2 filter distintos
         //para evitar NullPointerException en adj.getPlayer().getId()
         .collect(Collectors.toList());
@@ -226,7 +227,7 @@ public class PositionService {
         List<Position> res=null;
         if(useAdjacency)
             res= positionRepository
-            .findAllEnemyPositionsByType(player_id,forSpy);
+            .findAllEnemyPositionsByPlayerIdAndByTypeAndByGameId(player_id,forSpy,1);
         else{
             res=getAdjacentPositionsFromPlayer(player_id, true);
             res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
@@ -250,30 +251,6 @@ public class PositionService {
 
 
 
-
-    /**
-     * Given the list of sectors (cities and paths) it calculates all the positions of the board based on
-     * in the capacity of these and their relationships. Only positions associated with sectors are generated
-     * inside the play areas
-     * <p>----------<p>
-     * Dada la lista de serctores(ciudades y caminos) calcula todas las posiciones del tablero basandose
-     * en la capacidad de estos y sus relaciones. Solo se generan las posiciones asociadas a sectores 
-     * dentro de las zonas de juego
-     * @param cities
-     * @param paths
-     * @param playableZones
-     */
-
-    public void initializePositions(List<Integer> playableZones,List<City> cities, List<Path> paths){
-        List<Position> positions = getPositions();
-        if(positions.isEmpty()){
-            populatePositionService.populatePositions(playableZones, cities, paths);
-            positions = getPositions();
-            positions.forEach(position -> adjacentPositionService.calculateAdjacents(position));
-
-        }
-
-    }
 
     
 

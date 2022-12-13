@@ -1,11 +1,13 @@
 package org.springframework.samples.petclinic.board.position;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,18 +23,24 @@ public class PopulatePositionService {
     /**
      * Given the list of sectors (cities and paths) it calculates all the positions of the board based on
      * in the capacity of these and their relationships. Only positions associated with sectors are generated
-     * inside the play areas
+     * inside the play areas (calculated by game size)
+     * 2pl = zone 2
+     * 3pl = zone 2,3
+     * 4pl = zone 1,2,3
      * <p>----------<p>
-     * Dada la lista de serctores(ciudades y caminos) calcula todas las posiciones del tablero basandose
+     * Dada la lista de sectores(ciudades y caminos) calcula todas las posiciones del tablero basandose
      * en la capacidad de estos y sus relaciones. Solo se generan las posiciones asociadas a sectores 
-     * dentro de las zonas de juego
-     * @param playableZones
-     * @param cities
-     * @param paths
+     * dentro de las zonas de juego (calculado por el size de partida)
+     * @param game
+
      */
-    public void populatePositions(List<Integer> playableZones,List<City> cities,List<Path> paths){
-        populateCities(cities,playableZones);
-        populatePaths(paths,playableZones);
+    public void populatePositions(Game game){
+        List<Integer> playableZones = new ArrayList<>();
+        playableZones.add(2); //center, always playable
+        if(game.getSize()>=3) playableZones.add(3);
+        if(game.getSize()==4) playableZones.add(1);
+        populateCities(game.getCities(),playableZones);
+        populatePaths(game.getPaths(),playableZones);
 
     }
 

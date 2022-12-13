@@ -3,6 +3,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
 <script>
     document.addEventListener("DOMContentLoaded", function(event) { 
     var scrollpos = localStorage.getItem('scrollpos');
@@ -29,6 +31,7 @@ window.onbeforeunload = function(e) {
             <th>Zone</th>
             <th>VP</th>
             <th>isStartingCity</th>
+            <th>pos</th>
         </tr>
         </thead>
         <tbody>
@@ -53,7 +56,10 @@ window.onbeforeunload = function(e) {
                     <c:out value="${city.vpEndgameValue}"/>
                 </td>
                 <td>
-                    <c:out value="${city.isStartingCity}"/>
+                    <c:out value="${city.isStartingCity()}"/>
+                </td>
+                <td>
+                    <c:out value="${city.getPositions()}"/>
                 </td>
                 
                 
@@ -113,7 +119,7 @@ window.onbeforeunload = function(e) {
                     <c:out value="${position.id}"/>
                 </td>
                 <td>
-                    <c:out value="${position.isOccupied== true? 'Yes':'-'}"/>
+                    <c:out value="${position.isOccupied()== true? 'Yes':'-'}"/>
                 </td>
                 <td>
                     <c:out value="${position.player.name}"/>

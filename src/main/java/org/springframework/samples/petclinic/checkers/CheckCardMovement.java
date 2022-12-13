@@ -20,7 +20,7 @@ public class CheckCardMovement {
  
         Preconditions.check(mustBeTrue)
         .formattedError("Card %s not found in sell zone", card);
-    }
+        }
 
     public static void playerHasEnoughInfluenceToBuyCard(int playerInfluence,int cardCost) throws Exception{
         

@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.board.sector;
 
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 
@@ -16,12 +17,8 @@ public class Sector extends BaseEntity {
 
 
     @NotBlank
-    private Integer capacity;
-
-    
-
-
-    
+    @Positive
+    private Integer capacity=0;
 
     
 }

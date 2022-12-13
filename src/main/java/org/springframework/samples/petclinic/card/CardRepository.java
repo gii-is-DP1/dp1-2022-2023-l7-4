@@ -1,11 +1,11 @@
 package org.springframework.samples.petclinic.card;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 
 @Repository
@@ -13,6 +13,9 @@ public interface CardRepository extends CrudRepository<Card, Integer> {
     //Card
     @Query("SELECT c FROM Card c WHERE LOWER(c.name) LIKE LOWER(concat('%',:name,'%')) AND c.halfDeck.name LIKE concat('%',:deck,'%')")
     List<Card> findCardsByNameAndByHalfDeck(String name, String deck);
+
+    @Query("SELECT c FROM Card c WHERE LOWER(c.name) LIKE LOWER(concat('%',:name,'%')) AND c.halfDeck.name LIKE concat('%',:deck,'%')")
+    List<Card> findCardsByNameAndByHalfDeckPageable(String name, String deck,Pageable pageable);
 
     @Query("SELECT c FROM Card c WHERE c.id = ?1")
     Card findCardById(Integer id);

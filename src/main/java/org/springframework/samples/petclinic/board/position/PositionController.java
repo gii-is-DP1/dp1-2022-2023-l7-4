@@ -3,7 +3,6 @@ package org.springframework.samples.petclinic.board.position;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -56,11 +55,6 @@ public class PositionController {
 
     @GetMapping("")
     public ModelAndView showPositions(){
-        List<City> cities= cityService.getCities();
-        List<Path> paths= pathService.getPaths();
-        List<Integer> zones= List.of(1,2,3);
-        
-        positionService.initializePositions(zones,cities, paths);
         ModelAndView result=new ModelAndView(POSITIONS_LISTING_VIEW);
         result.addObject("positions", positionService.getPositions());
         result.addObject("cities", cityService.getCities());

@@ -5,8 +5,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.samples.petclinic.board.sector.Sector;
 import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +17,13 @@ import lombok.Setter;
 @Setter
 @Table(name = "paths")
 @Entity
-public class Path extends Sector{
+public class Path extends BaseEntity{
+    @ManyToOne
+    PathTemplate pathReference;
 
+    @ManyToOne
+    private Game game;
+    
     @ManyToOne
     @JoinColumn(name="city_id_1")
     private City firstCity;
@@ -31,5 +37,19 @@ public class Path extends Sector{
         return "P [ " + firstCity + " and " + secondCity + "]";
     }
     
+
+    public Integer getCapacity(){
+        return this.pathReference.getCapacity();
+    }
+
+
+    public static Path of(Game game) {
+        Path path = new Path();
+        path.setGame(game);
+        return path;
+    }
+
+
+
 
 }

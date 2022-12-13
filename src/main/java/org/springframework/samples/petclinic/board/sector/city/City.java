@@ -1,23 +1,19 @@
 package org.springframework.samples.petclinic.board.sector.city;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
 import org.springframework.samples.petclinic.board.position.Position;
-import org.springframework.samples.petclinic.board.sector.Sector;
+import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
@@ -28,27 +24,15 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "cities")
-public class City extends Sector{
+public class City extends BaseEntity{
 
-    @NotBlank
-    private String name;
-    
-    Integer zone;
 
-    @NotBlank
-    @Min(1) //RN-vpEndgameValue >0
-    @Column(name="vp_endgame_value")
-    private Integer vpEndgameValue;
+    @ManyToOne(optional = false)
+    CityTemplate cityTemplate= new CityTemplate(); 
+    //this contains all constant data.
 
-    @NotBlank
-    @Column(name="starting_city")
-    private Boolean isStartingCity;
-
-    private Integer vpControlled;
-    private Integer ifluenceTotalControlled;
-    private Integer vpTotalControlled;
     @ManyToOne
-    private Player controllingPlayer;
+    private Game game;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
     private List<Position> positions;
@@ -108,16 +92,37 @@ public class City extends Sector{
             
             Player player = players.keySet().iterator().next();
 
+            //Check player has all troop positions available ocuppied
             if( players.get(player).intValue() != getCapacity()) return null;
 
-            
             if(positions.stream().filter(ps-> ps.getForSpy())
             .allMatch(p->player.equals(p.getPlayer()) || p.getPlayer() == null)) return player;
             return null;
         
         }
-        @Override
+        public static City of(CityTemplate template,Game game){
+            City city = new City();
+            city.setCityTemplate(template);
+            city.setGame(game);
+            return city;
+        }
+
+        
+        public Integer getCapacity() {return cityTemplate.getCapacity();}
+        public String getName() {return cityTemplate.getName();}
+        public Integer getZone() {return cityTemplate.getZone();}
+        public Integer getVpControlled() {return cityTemplate.getVpControlled();}
+        public Integer getVpEndgameValue() {return cityTemplate.getVpEndgameValue();}
+        public Integer getInfluenceTotalControlled() {return cityTemplate.getInfluenceTotalControlled();}
+        public Boolean isStartingCity(){
+            return cityTemplate.getStartingCity();
+        }
+        
+    public Boolean hasNoPlayerTroops(){
+        return this.positions.stream().allMatch(position->position.isOccupied()==false|| position.getPlayer().isWhite());
+    }
+    @Override
     public String toString() {
-        return  name ;
+        return  getName() ;
     }
 }

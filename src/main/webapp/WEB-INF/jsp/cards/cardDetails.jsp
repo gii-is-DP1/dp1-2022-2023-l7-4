@@ -4,7 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <petclinic:layout pageName="saerching">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
     <h2>Cartas </h2>
 
     

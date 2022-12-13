@@ -8,11 +8,16 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+
 import org.springframework.samples.petclinic.house.House;
 import org.springframework.samples.petclinic.house.HouseService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
+
+import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.board.sector.city.CityService;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +28,9 @@ public class GameService {
 	UserService userService;
     @Autowired
     GameRepository grepo;
+
+    @Autowired
+	CityService cityService;
 
 	@Transactional
 	public Collection<Game> getGameByName(String name){
@@ -36,9 +44,8 @@ public class GameService {
 
 	@Transactional
 	public Game getGameById(int id){
-		return grepo.findById(id);
+		return grepo.findById2(id);
 	}
-
     @Transactional
 	public void saveGame(Game game) throws DataAccessException {
 		grepo.save(game);
@@ -63,7 +70,16 @@ public class GameService {
 		player.setName(user.getName());
 		player.setUser(user);
 		game.addCurrentPlayer(player);
+	}
 
+
+	public void save(Game game) throws DataAccessException {
+		grepo.saveAndFlush(game);
+	}
+
+	public void nextPlayerAndSave(Game game) throws DataAccessException{
+		game.setNextPlayer();
+		save(game);
 	}
 
     

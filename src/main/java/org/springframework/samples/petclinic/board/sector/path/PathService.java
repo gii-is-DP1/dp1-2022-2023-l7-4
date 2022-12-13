@@ -25,5 +25,9 @@ public class PathService {
     };
     public List<Path> getIncomingPathsFromCity(City city){
         return pathRepository.findIncomingPathsFromCity(city);
+    }
+
+    public void save(Path path) {
+        pathRepository.save(path);
     };
 }
