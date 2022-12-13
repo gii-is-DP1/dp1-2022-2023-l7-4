@@ -11,6 +11,8 @@ uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="cards">
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
 
     <div class="contenedor"><div class="contenedor-menu"> <h2 class="textmenu">CARTAS Y MAZO</h2> </div></div>   
     <div class="wrapper">

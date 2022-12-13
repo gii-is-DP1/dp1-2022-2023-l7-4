@@ -1,0 +1,18 @@
+body::-webkit-scrollbar {
+    width: 1em;
+    height: 1em;
+    background: #e3e3e398;
+}
+
+body::-webkit-scrollbar-track {
+    background: #6a3d8d98;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #5f4b8b;
+    border: 0.25em solid #e3e3e398;
+    border-radius: 100vw;
+}
+body::-webkit-scrollbar-thumb:hover {
+background: hsl(120 100% 10% / 1);
+} 
