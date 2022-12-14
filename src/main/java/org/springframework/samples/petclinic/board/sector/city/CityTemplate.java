@@ -27,14 +27,14 @@ public class CityTemplate extends Sector{
     Integer zone;
 
     @NotBlank
-    @Min(1) //RN-vpEndgameValue >0
+    @Min(0) 
     @Column(name="vp_endgame_value")
     private Integer vpEndgameValue=0;
 
     @NotBlank
     @Column(name="starting_city",columnDefinition = "boolean default false")
     private Boolean startingCity=false;
-
+    
     @Column(columnDefinition = "integer default 0")
     private Integer vpControlled=0;
 
