@@ -54,7 +54,6 @@ public class PlayerUsePositionService {
     public void killTroop(@Valid Position position,@Valid Player player,Boolean onlyAdjacentPositions) throws DataAccessException
     ,Exception{
         
-        CheckPlayerUsePosition.playerHasChooseANotEmptyPosition(position);
         CheckPlayerUsePosition.playerHasChooseANotOwnedPosition(player, position);
 
         if(onlyAdjacentPositions ){
@@ -83,9 +82,7 @@ public class PlayerUsePositionService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void returnPiece(Position position,Player player) throws DataAccessException,Exception{
-        CheckPlayerUsePosition.playerHasChooseAPosition(position);
-        CheckPlayerUsePosition.playerIsNotNull(player);
+    public void returnPiece(@Valid Position position,@Valid Player player) throws DataAccessException,Exception{
         List<Position> playerPositions=
         customListingPositionService.getPresencePositions(player.getId(),true);
         CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);

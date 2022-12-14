@@ -18,7 +18,7 @@ class CardServiceTest {
 
     @Test
     public void shouldFindCardById() {
-        Card card =this.cardService.getCardById(3);
+        Card card =this.cardService.getCardById(7);
         assertThat(card.getName()).startsWith("Adalid");
         assertThat(card.getCost()).isEqualTo(2);
         assertThat(card.getStory()).startsWith("<<");
