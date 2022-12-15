@@ -28,7 +28,7 @@ public interface CardRepository extends CrudRepository<Card, Integer> {
     List<HalfDeck> findHalfDecksByName(String name);
 
      @Query("SELECT h FROM HalfDeck h WHERE h.id = ?1")
-    HalfDeck findHalfDeckById();
+    HalfDeck findHalfDeckById(Integer id);
 
     //Modulo de creación de cartas: Card save(Card p);
 }

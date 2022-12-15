@@ -65,7 +65,7 @@ public class Player extends BaseEntity{
 
     @Column(columnDefinition = "integer default 0")
     @Min(0)
-    private int markerVP=40;
+    private int markerVP=0;
 
     @ManyToMany()
     @JoinTable(
@@ -116,12 +116,21 @@ public class Player extends BaseEntity{
         return this.getHand().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
     }
 
-    
-    
-
-    
     @Override
     public String toString() {
-        return "ply_"+id +": "+ name;
+        return user.getUsername();
+    }
+
+    public static Player of(User user){
+        Player player = new Player();
+        player.setUser(user);
+        return player;   
+    }
+
+    public static Player ofUser(User user) {
+        Player player = new Player();
+        player.setUser(user);
+        player.setName(user.getName());
+        return player;
     }
 }

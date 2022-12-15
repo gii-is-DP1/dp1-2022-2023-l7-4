@@ -1,10 +1,12 @@
 package org.springframework.samples.petclinic.card;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +49,13 @@ public class CardServiceRepo {
     }
     @Transactional(readOnly = true)
     public HalfDeck getHalfDeckById(Integer id){
-        return cardRepository.findHalfDeckById();
+        return cardRepository.findHalfDeckById(id);
+    }
+
+    public List<HalfDeck> getAvailableHalfDecks(Game game) {
+        return getAllHalfDecks().stream()
+        .filter(deck-> deck != game.getFirstHalfDeck() && deck != game.getSecondHalfDeck())
+        .collect(Collectors.toList());
     }
 
     

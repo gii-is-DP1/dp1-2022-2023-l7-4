@@ -2,6 +2,9 @@
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('manotebar','manotebar',TRUE,'Manuel', 'manotebar@gmail.com', '2000-10-20');
+INSERT INTO authorities(id,username,authority) VALUES (3,'manotebar','admin');
+
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('daviddhc','player1',TRUE,'David', 'daviddhc@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (10,'daviddhc','player');
 
@@ -15,7 +18,7 @@ INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VA
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'DOS Ini Z2',3,TRUE,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'TRES blanca Z2',3,FALSE,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'CUATRO Ini Z3',6,TRUE,3);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'CINCO Ini Z3',6,TRUE,3);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'CINCO Ini Z1',6,TRUE,1);
 
 -- PATHS
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,1);
@@ -25,7 +28,9 @@ INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,1);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,1);
 
 -- MAPS
-INSERT INTO map_templates(id,name) VALUES (1,'default Map');
+INSERT INTO map_templates(name) VALUES ('default Map');
+INSERT INTO map_templates(name) VALUES ('small Map');
+INSERT INTO map_templates(name) VALUES ('medium Map');
 
 --POPULATE MAPS
 
@@ -34,7 +39,18 @@ INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUE
     (1,2),
     (1,3),
     (1,4),
-    (1,5);
+    (1,5),
+
+    (2,1),
+    (2,2),
+    (2,3),
+
+    (3,1),
+    (3,2),
+    (3,3),
+    (3,4);
+
+
 
 
 

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.samples.petclinic.card.HalfDeckFormatter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -21,7 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
 	
 	@Autowired
 	GenericIdToEntityConverter idToEntityConverter;
-    @Autowired
+
+
 	
     @Override
     public void addFormatters(FormatterRegistry registry) {

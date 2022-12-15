@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.board.map;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,4 +40,25 @@ public class MapTemplate extends BaseEntity{
         joinColumns = @JoinColumn(name = "map_template_id"),
         inverseJoinColumns = @JoinColumn(name = "path_template_id"))
     List<PathTemplate> pathTemplates;
+
+
+    // TODO Hacer en .stream()
+    public Integer getNumberStartingCities(){
+        Set<CityTemplate> cities = new HashSet<>(); 
+        pathTemplates.forEach(p -> {
+            CityTemplate firstCity = p.getFirstCityTemplate();
+            if (firstCity.isStartingCity()) cities.add(firstCity);
+            CityTemplate secondCity = p.getSecondCityTemplate();
+            if (secondCity.isStartingCity()) cities.add(secondCity);
+        });
+        return cities.size();
+    }
+
+
+    @Override
+    public String toString() {
+        return name+": for "+getNumberStartingCities()+ " players";
+    }
+
+    
 }

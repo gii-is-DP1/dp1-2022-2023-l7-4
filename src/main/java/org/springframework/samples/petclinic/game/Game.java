@@ -67,9 +67,6 @@ public class Game extends BaseEntity{
     @Column(columnDefinition = "integer default 1")
     private Integer turnPlayer=1;
     
-    @Column(name="is_finished",columnDefinition = "boolean default false")
-    Boolean isFinished = false;
-
     protected List<Player> getPlayersInternal() {
 		if (this.players == null) {
 			this.players = new ArrayList<>();
@@ -77,6 +74,7 @@ public class Game extends BaseEntity{
 		return this.players;
 	}
     
+    @Column(columnDefinition = "boolean default false")
     Boolean finished = false;
     
     @Column(columnDefinition = "boolean default false")
@@ -99,11 +97,11 @@ public class Game extends BaseEntity{
 
     @ManyToOne()
     @JoinColumn(name = "first_half_deck_id",columnDefinition = "integer default 1")
-    private HalfDeck firstHalfDeck= new HalfDeck();
+    private HalfDeck firstHalfDeck= null;
 
     @ManyToOne()
     @JoinColumn(name = "second_half_deck_id",columnDefinition = "integer default 2")
-    private HalfDeck secondHalfDeck = new HalfDeck();
+    private HalfDeck secondHalfDeck = null;
 
     @ManyToMany
     private List<Card> gameDeck = new ArrayList<>();
@@ -213,13 +211,16 @@ public class Game extends BaseEntity{
     public Boolean isNotLoaded(){
         return !getLoaded();
     }
-
     @Override
     public String toString() {
-        return "Game [name=" + name + ", mapTemplate=" + mapTemplate + ", cities=" + cities + ", paths=" + paths
-                + ", gameDeck=" + gameDeck + "]";
+        return "Game [name=" + name + ", date=" + date + ", round=" + round + ", turnPlayer=" + turnPlayer
+                + ", finished=" + finished + ", loaded=" + loaded + ", size=" + size + ", mapTemplate=" + mapTemplate
+                + ", cities=" + cities + ", paths=" + paths + ", players=" + players + ", firstHalfDeck="
+                + firstHalfDeck + ", secondHalfDeck=" + secondHalfDeck + ", gameDeck=" + gameDeck + ", sellZone="
+                + sellZone + ", devoured=" + devoured + ", houseGuards=" + houseGuards + ", lolths=" + lolths + "]";
     }
 
+    
  
     
 

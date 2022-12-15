@@ -17,10 +17,13 @@ package org.springframework.samples.petclinic.user;
 
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +41,7 @@ public class UserService {
 	@Autowired
 	private AuthoritiesService authoritiesService;
 
-	@Autowired
+	
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
@@ -70,4 +73,13 @@ public class UserService {
 		userRepository.deleteById(username);
 
 	}
+
+	public List<User> getUsersList() {
+		return (List<User>) userRepository.findAll();
+	}
+
+    public List<User> getAvailableUsers(Game game) {
+		List<User> usersInGame = game.getPlayers().stream().map(player -> player.getUser()).collect(Collectors.toList());
+        return getUsersList().stream().filter(user-> ! usersInGame.contains(user)).collect(Collectors.toList());
+    }
 }

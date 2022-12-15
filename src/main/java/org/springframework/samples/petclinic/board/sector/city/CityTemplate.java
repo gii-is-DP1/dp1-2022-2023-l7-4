@@ -41,5 +41,7 @@ public class CityTemplate extends Sector{
     @Column(columnDefinition = "integer default 0")
     private Integer influenceTotalControlled=0;
     
-    
+    public Boolean isStartingCity (){
+        return this.startingCity;
+    }
 }

@@ -1,10 +1,8 @@
 package org.springframework.samples.petclinic.game;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,17 +12,18 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.samples.petclinic.board.map.MapTemplate;
+import org.springframework.samples.petclinic.board.map.MapTemplateService;
 import org.springframework.samples.petclinic.card.CardServiceRepo;
 import org.springframework.samples.petclinic.card.HalfDeck;
+import org.springframework.samples.petclinic.card.HalfDeckFormatter;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,24 +39,71 @@ public class GameController {
 	@Autowired
 	UserService userService;
 	@Autowired
-	CardServiceRepo cardServiceRepo;
+	CardServiceRepo cardService;
+
+	@Autowired
+	MapTemplateService mapTemplateService;
+	
 
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
     
-	@GetMapping(value = "/games/create")
-	public String initCreationGameForm(Map<String, Object> model, Principal currentUser){
-		List<HalfDeck> halfDecks = cardServiceRepo.getAllHalfDecks();
-		Game game = new Game();
-		List<User> users = (List<User>) userService.getUsers();
-		users.remove(userService.getUserByUsername(currentUser.getName()));
-		model.put("game", game);
-		model.put("halfDecks", halfDecks);
-		model.put("users", users);
-		return VIEWS_GAME_CREATE_FORM;
+
+	@InitBinder("halfDeck")
+	public void initPetBinder(WebDataBinder dataBinder) {
+		dataBinder.addCustomFormatter(new HalfDeckFormatter(cardService));
 	}
 
-    @PostMapping(value = "/games/create")
+	@PostMapping(value = "/games/create/plus")
+	public String plus(Map<String, Object> model,Game game){
+		List<HalfDeck> availableDecks = cardService.getAvailableHalfDecks(game);
+		List<MapTemplate> availableMaps = mapTemplateService.getAvailableMaps(game);
+		List<User> availableUsers = userService.getAvailableUsers(game);
+
+		model.put("availableDecks", availableDecks);
+		model.put("availableMaps", availableMaps);
+		model.put("availableUsers", availableUsers);
+		System.out.println(game);
+		return VIEWS_GAME_CREATE_FORM;
+	}
+	@GetMapping(value = "/games/creating")
+	public String redirection(Map<String, Object> model) {
+     
+     return VIEWS_GAME_CREATE_FORM;
+ }
+	@GetMapping(value = "/games/create")
+	public String initCreationGameForm(Map<String, Object> model, Principal currentUser){
+		List<HalfDeck> halfDecks = cardService.getAllHalfDecks();
+
+		HalfDeck drow = halfDecks.get(0);
+		HalfDeck dragons = halfDecks.get(1);
+		MapTemplate defautlMap = mapTemplateService.defaultMap();
+
+		Game game = new Game();
+		game.setFirstHalfDeck(drow);
+		game.setSecondHalfDeck(dragons);
+		game.setName("Mi nueva partida");
+		game.setMapTemplate(defautlMap);
+	
+		List<User> availableUsers = userService.getUsersList();
+		User loggedUser = userService.getUserByUsername(currentUser.getName());
+		availableUsers.remove(loggedUser);
+		
+		Player player1 = Player.of(loggedUser);
+		game.getPlayers().add(player1);
+		
+		System.out.println(game);
+		
+		model.put("availableUsers", availableUsers);
+		model.put("game", game);
+		return  VIEWS_GAME_CREATE_FORM;
+	}
+
+
+
+
+	//confirmar juego TODO SALVAR TODOS LOS JUGADORES AÑADIENDO EL GAME Y DESPUES SALVAR EL GAME
+	@PostMapping(value = "/games/create/confirm")
 	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model,Principal currentUser ) {
 		if (result.hasErrors()) {
             model.put("game", game);
@@ -65,13 +111,18 @@ public class GameController {
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
-			gameService.addPlayerByUsername(game, currentUser.getName());
-			gameService.setGameAndHouseToPlayers(game);
-			this.gameService.saveGame(game);
+			playerService.setHouses(game);
+			var players = game.getPlayers();
+			game.setPlayers(null);
+			gameService.saveGame(game);
+			game.setPlayers(players);
+			playerService.savePlayers(game);
 
 			return "redirect:/games/" + game.getId();
 		}
 	}
+
+
 	@GetMapping("/games/{gameId}")
 		public ModelAndView showgame(@PathVariable("gameId") int gameId) {
 			ModelAndView mav = new ModelAndView("games/gameDetails");
@@ -91,6 +142,7 @@ public class GameController {
 			playerService.savePlayer(player);
 			return "welcome";
 	}
+
 	@GetMapping(value = "/games/find")
 	public String initFindForm(Map<String, Object> model) {
 		model.put("game", new Game());
