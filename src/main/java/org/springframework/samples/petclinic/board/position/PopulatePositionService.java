@@ -6,17 +6,22 @@ import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.sector.city.City;
+import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PopulatePositionService {
     private PositionRepository positionRepository;
-
+    CityService cityService;
+    PathService pathService;
     @Autowired
-    private PopulatePositionService(PositionRepository posRepo){
+    private PopulatePositionService(PositionRepository posRepo,CityService cityService,PathService pathService){
         this.positionRepository=posRepo;
+        this.cityService=cityService;
+        this.pathService=pathService;
     }
 
     
@@ -35,54 +40,40 @@ public class PopulatePositionService {
 
      */
     public void populatePositions(Game game){
-        List<Integer> playableZones = new ArrayList<>();
-        playableZones.add(2); //center, always playable
-        if(game.getSize()>=3) playableZones.add(3);
-        if(game.getSize()==4) playableZones.add(1);
-        populateCities(game.getCities(),playableZones);
-        populatePaths(game.getPaths(),playableZones);
+        populateCities(game.getCities());
+        populatePaths(game.getPaths());
 
     }
 
 
-    private void populateCities(List<City> cities, List<Integer> playableZones) {
-        cities.forEach(city-> populateCity(city,playableZones));
+    private void populateCities(List<City> cities) {
+        cities.forEach(city-> populateCity(city));
     }
-    private void populatePaths(List<Path> paths, List<Integer> playableZones) {
-            paths.forEach(path -> populatePath(path,playableZones));
+    private void populatePaths(List<Path> paths) {
+            paths.forEach(path -> populatePath(path));
 
     }
 
 
 
-    private void populateCity(City city, List<Integer> playableZones) {
-        if (cityIsPlayable(city,playableZones)){
+    private void populateCity(City city) {
             IntStream.range(0, city.getCapacity()).forEach(x->saveNewPositionLinkedTo(city));
             IntStream.range(0, 4).forEach(x->saveNewSpyPositionLinkedTo(city));
-
-        }
+            cityService.save(city);
     }
-    private void populatePath(Path path, List<Integer> playableZones) {
-        if (pathIsPlayable(path,playableZones)){
+    private void populatePath(Path path) {
             for(int i = 0; i< path.getCapacity();i++){
                 Position p = new Position();
                 p.setPath(path);
                 positionRepository.save(p);
             }
-            
-        }
+
+
     }
 
 
     
-    private Boolean cityIsPlayable(City city, List<Integer> playableZones) {
-        return playableZones.contains(city.getZone());
-    }
-    private Boolean pathIsPlayable(Path path, List<Integer> playableZones) {
-        Boolean firstCityIsPlayable = playableZones.contains(path.getFirstCity().getZone());
-        Boolean secondCityIsPlayable = playableZones.contains(path.getSecondCity().getZone());
-        return firstCityIsPlayable && secondCityIsPlayable;
-    }
+
 
 
     private void saveNewPositionLinkedTo(City city) {

@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.board.position;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -15,9 +17,6 @@ public class PositionServiceRepo {
     @Autowired
     private PositionRepository positionRepository;
 
-    public List<Position> getAllPositionsFromGame(Game game){//
-        return (List<Position>)positionRepository.findAllPositionsByGameId(game.getId());
-    }
     
     
 
@@ -69,9 +68,11 @@ public class PositionServiceRepo {
     }
 
 
-
-    public List<Position> getAllPositionsByGameID(Integer id) {
-        return positionRepository.findAllPositionsByGameId(id);
+    
+    public List<Position> getAllPositionsByGame(Game game){
+        return positionRepository.findAll().stream()
+        .filter(p-> p.getCity() != null && p.getCity().getGame() == game || p.getPath() != null && p.getPath().getGame() == game)
+        .collect(Collectors.toList());
     }
 
 

@@ -26,11 +26,13 @@ INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,1);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,1);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,1);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,1);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,5,1);-- GIVES ERROR
 
 -- MAPS
-INSERT INTO map_templates(name) VALUES ('default Map');
-INSERT INTO map_templates(name) VALUES ('small Map');
-INSERT INTO map_templates(name) VALUES ('medium Map');
+INSERT INTO map_templates(name) VALUES ('default Map 4');
+INSERT INTO map_templates(name) VALUES ('small Map 2');
+INSERT INTO map_templates(name) VALUES ('medium Map 3');
+INSERT INTO map_templates(name) VALUES ('Bad made medium Map 3no -> 2 yes');
 
 --POPULATE MAPS
 
@@ -48,7 +50,10 @@ INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUE
     (3,1),
     (3,2),
     (3,3),
-    (3,4);
+    (3,4),
+
+    (4,1),
+    (4,6);
 
 
 
@@ -66,12 +71,14 @@ INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','El mazo Drow presen
 INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
 INSERT INTO halfdecks(id,name,description) VALUES (3,'Inicial','Cartas iniciales de los jugadores');
 INSERT INTO halfdecks(id,name,description) VALUES (4,'Básica','Cartas básicas disponibles en el mercado de todas las partidas');
+INSERT INTO halfdecks(id,name,description) VALUES (5,'Mazo vacio de pruebas','Mazo de testing, no tiene cartas');
+INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo vacio','Mazo de testing, no tiene cartas');
 
 
 -- GAMES
-INSERT INTO games(id,date,name,size,map_template_id) 
-    VALUES  (1,'2002-04-08','Partida 1',4,1),
-            (2,'2002-04-09','Partida 2',2,1);
+INSERT INTO games(id,date,name,map_template_id) 
+    VALUES  (1,'2002-04-08','Partida 1',1),
+            (2,'2002-04-09','Partida 2',1);
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 G1', 'daviddhc',10,10,1,1);

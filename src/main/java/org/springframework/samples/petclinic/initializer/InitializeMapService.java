@@ -35,10 +35,7 @@ public class InitializeMapService {
     private void setPathsFromTemplate(Game game,MapTemplate map) {
         
         List<CityTemplate> done = new ArrayList<>(); // to delete duplicates;
-        List<Integer> playableZones = new ArrayList<>();
-        playableZones.add(2); //center, always playable
-        if(game.getSize()>=3) playableZones.add(3);
-        if(game.getSize()==4) playableZones.add(1);
+        List<Integer> playableZones = game.getPlayableZones();
 
         for (PathTemplate pathTemplate : map.getPathTemplates()) {
             if(pathIsInPlayableZones(pathTemplate,playableZones)){

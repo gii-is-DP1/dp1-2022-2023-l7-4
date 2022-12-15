@@ -1,8 +1,11 @@
 package org.springframework.samples.petclinic.board.map;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +18,7 @@ import javax.persistence.Table;
 
 import org.springframework.samples.petclinic.board.sector.city.CityTemplate;
 import org.springframework.samples.petclinic.board.sector.path.PathTemplate;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
@@ -42,22 +46,52 @@ public class MapTemplate extends BaseEntity{
     List<PathTemplate> pathTemplates;
 
 
-    // TODO Hacer en .stream()
-    public Integer getNumberStartingCities(){
+
+    public Integer startingCityCount(Integer playerCount){
+        List<Integer> playableZones = new ArrayList<>();
+
+        playableZones.add(2);
+  
+        if(playerCount>=3) playableZones.add(3);
+        if(playerCount==4) playableZones.add(1);
+
         Set<CityTemplate> cities = new HashSet<>(); 
         pathTemplates.forEach(p -> {
             CityTemplate firstCity = p.getFirstCityTemplate();
-            if (firstCity.isStartingCity()) cities.add(firstCity);
             CityTemplate secondCity = p.getSecondCityTemplate();
-            if (secondCity.isStartingCity()) cities.add(secondCity);
-        });
-        return cities.size();
-    }
+            if(playableZones.contains(firstCity.getZone()) && playableZones.contains(secondCity.getZone())){
 
+                if (firstCity.isStartingCity()) cities.add(firstCity);
+                if (secondCity.isStartingCity() ) cities.add(secondCity);
+            }
+        });
+        System.out.println(getName()+" ct "+cities.size());
+        return cities.size();
+        
+        // List<Integer> playableZones = game.getPlayableZones();
+        // Predicate<PathTemplate> bothCitiesPlayable = 
+        //     pathT->  playableZones.contains(pathT.getFirstCityTemplate().getZone()) && playableZones.contains(pathT.getSecondCityTemplate().getZone())
+        // ;
+        // Integer ct= pathTemplates.stream()
+        // .filter(bothCitiesPlayable)
+        // .flatMap(path-> Stream.of(path.getFirstCityTemplate(),path.getSecondCityTemplate()))
+        // .filter(cityT-> cityT.isStartingCity())
+        // .collect(Collectors.toSet()).size();
+        // System.out.println(game.getMapTemplate().getName()+" ct "+ct);
+        //     return ct;
+    }
+    public Integer maxStartingCityCount(){
+        Integer ct= pathTemplates.stream()
+        .flatMap(path-> Stream.of(path.getFirstCityTemplate(),path.getSecondCityTemplate()))
+        .filter(cityT-> cityT.isStartingCity())
+        .collect(Collectors.toSet()).size();
+        System.out.println(" max "+ct);
+            return ct;
+    }
 
     @Override
     public String toString() {
-        return name+": for "+getNumberStartingCities()+ " players";
+        return name;
     }
 
     

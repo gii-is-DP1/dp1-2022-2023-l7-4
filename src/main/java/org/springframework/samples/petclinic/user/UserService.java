@@ -79,7 +79,7 @@ public class UserService {
 	}
 
     public List<User> getAvailableUsers(Game game) {
-		List<User> usersInGame = game.getPlayers().stream().map(player -> player.getUser()).collect(Collectors.toList());
+		List<User> usersInGame = game.getPlayers().stream().filter(p->p!=null).map(player -> player.getUser()).collect(Collectors.toList());
         return getUsersList().stream().filter(user-> ! usersInGame.contains(user)).collect(Collectors.toList());
     }
 }

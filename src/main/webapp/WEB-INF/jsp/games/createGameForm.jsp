@@ -11,9 +11,11 @@
 
     <div style="background-color: aliceblue; padding: 20px;">
         <h2>Nuevo juego</h2>
+        <a onclick="showPopUp('restrictions')" href="JavaScript:void(0)" class="gameButton">Mostrar normas de creacion</a>
+        <br>
         <form:form modelAttribute="game" class="form-horizontal" id="game-form" method="post" action="/games/create/plus">
             <label class="control-label" style="margin-bottom: 0; margin-left: 0;">Nombre del juego:</label>
-        <input type="text" name="name" value="${game.name}" style="margin: 10px;">
+        <input type="text" name="name" value="${game.name}" style="margin: 10px;" >
         
         <input id="selected-map" type="hidden" name="mapTemplate" value="${game.mapTemplate.id}">
         <input id="selected-deck-1" type="hidden" name="firstHalfDeck" value="${game.firstHalfDeck.id}">
@@ -34,7 +36,7 @@
                         <a onclick="removeDeck(1)" href="JavaScript:void(0)">${game.firstHalfDeck.name}</a>
                     </c:when>
                     <c:otherwise>
-                        <a onclick="showPopUp('decks1PopUp')" href="JavaScript:void(0)" class="playerName">Elegir</a>
+                        <a onclick="showPopUp('decks1PopUp')" href="JavaScript:void(0)" class="gameButton">Elegir</a>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -47,7 +49,7 @@
                         <a onclick="removeDeck(2)" href="JavaScript:void(0)">${game.secondHalfDeck.name}</a>
                     </c:when>
                     <c:otherwise>
-                        <a onclick="showPopUp('decks2PopUp')" href="JavaScript:void(0)" class="playerName">Elegir</a>
+                        <a onclick="showPopUp('decks2PopUp')" href="JavaScript:void(0)" class="gameButton">Elegir</a>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -59,18 +61,18 @@
 
                         <c:choose>
                             <c:when test="${counter.index == 0}">
-                                <a onclick="alert('no te puedes quitar a ti mismo')" href="JavaScript:void(0)" class="playerName">${player.user.name}</a>
+                                <a onclick="alert('no te puedes quitar a ti mismo')" href="JavaScript:void(0)" >${player.user.name}</a>
                             </c:when>
                         <c:otherwise>
-                            <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)" class="playerName">${player.user.name}</a>
+                            <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)" >${player.user.name}</a>
                         </c:otherwise>
                         </c:choose>  
                 
                 </div>
             </c:forEach>
                 <div style="margin-left: 20px;">
-                    <c:if test="${game.players.size() < 4}">
-                        <a onclick="showPopUp('usersPopUp')" href="JavaScript:void(0)" class="playerName">Elegir otro jugador</a>
+                    <c:if test="${!(game.players.size()  == 4 || game.mapTemplate!=null && game.players.size() >= game.mapTemplate.startingCityCount(game.players.size()+1))}">
+                        <a onclick="showPopUp('usersPopUp')" href="JavaScript:void(0)" class="gameButton">Elegir otro jugador</a>
                     </c:if>
                 </div>
             </div>
@@ -82,7 +84,7 @@
                         <a onclick="removeMap()" href="JavaScript:void(0)">${game.mapTemplate}</a>
                     </c:when>
                     <c:otherwise>
-                        <a onclick="showPopUp('mapsPopUp')" href="JavaScript:void(0)" class="playerName">Elegir un mapa</a>
+                        <a onclick="showPopUp('mapsPopUp')" href="JavaScript:void(0)" class="gameButton">Elegir un mapa</a>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -91,10 +93,10 @@
             <c:choose>
                     <c:when test="${game.mapTemplate != null && game.name != null && game.players.size() >= 2 && game.firstHalfDeck != null && game.secondHalfDeck != null}">
 
-                        <a onclick="createGame('restrictions')" href="JavaScript:void(0)" class="btn btn-default" style="margin: 25px">Crear Juego</a>
+                        <a onclick="createGame('restrictions')" href="JavaScript:void(0)" class="gameButton" style="margin: 25px; background-color: green">Crear Juego</a>
                     </c:when>
                     <c:otherwise>
-                        <a onclick="showPopUp('restrictions')" href="JavaScript:void(0)" class="playerName">Mostrar normas de creacion</a>
+                       
                     </c:otherwise>
                 </c:choose>
 
@@ -137,11 +139,15 @@
             </div>
             <div class="popup" id="restrictions">
                 <a onclick="dontShowPopUp('restrictions')" class="x">x</a>
-                <pre>Para crear la partida necesitas:
+                <pre class="ls">Para crear la partida necesitas:
         Nombre de partida    
         Dos Mazos seleccionados
         Entre 2 y 4 jugadores
-        Un mapa seleccionado (mientras menos jugadores mas mapas podras seleccionar)
+        Un mapa seleccionado
+            como minimo debe tener una ciudad 
+            inicial por jugador
+            (mientras menos jugadores mas mapas
+             podras seleccionar)
                 </pre>
             </div>
         </div>
@@ -150,13 +156,18 @@
 
 <style>
     .popup {
-        background-color: aliceblue;
+        background-color: rgba(231, 238, 245,0.5);
         height: 80%;
-        width: 80%;
+        width: 85%;
         overflow-y: scroll;
         visibility: hidden;
-        position: absolute;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         display: flex;
+        border: 3px;
+        border-radius: 10px;
         font-size: 2vmax;
     }
     .popup .x {
@@ -174,6 +185,28 @@
         align-items: center;
         justify-content: center;
     }
+
+        .gameButton {
+            background-color: #601484;
+            border: 3px;
+            border-radius: 10px;
+            color: white;
+            padding: 5px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .gameError {
+            border: 3px;
+            border-radius: 5px;
+            border-color: red;
+        }
+        a {
+            color : green;
+        }
+    
 </style>
 
 

@@ -80,9 +80,6 @@ public class Game extends BaseEntity{
     @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
 
-    @NotNull
-    @Column(columnDefinition = "integer default 2")
-    Integer size=2;
 
     @ManyToOne()
     MapTemplate mapTemplate ;
@@ -211,10 +208,21 @@ public class Game extends BaseEntity{
     public Boolean isNotLoaded(){
         return !getLoaded();
     }
+    public Integer getSize(){
+        return players.size();
+    }
+    public List<Integer> getPlayableZones(){
+        List<Integer> zones = new ArrayList<>();
+        zones.add(2);
+        int playerCount = players.size();
+        if(playerCount>=3) zones.add(3);
+        if(playerCount==4) zones.add(1);
+        return zones;
+    }
     @Override
     public String toString() {
         return "Game [name=" + name + ", date=" + date + ", round=" + round + ", turnPlayer=" + turnPlayer
-                + ", finished=" + finished + ", loaded=" + loaded + ", size=" + size + ", mapTemplate=" + mapTemplate
+                + ", finished=" + finished + ", loaded=" + loaded + ", mapTemplate=" + mapTemplate
                 + ", cities=" + cities + ", paths=" + paths + ", players=" + players + ", firstHalfDeck="
                 + firstHalfDeck + ", secondHalfDeck=" + secondHalfDeck + ", gameDeck=" + gameDeck + ", sellZone="
                 + sellZone + ", devoured=" + devoured + ", houseGuards=" + houseGuards + ", lolths=" + lolths + "]";

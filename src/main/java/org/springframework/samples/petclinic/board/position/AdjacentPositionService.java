@@ -31,6 +31,7 @@ public class AdjacentPositionService {
      * @param position 
      */
     public void calculateAdjacents(Position position){
+    
         List<Position> adjacents = new ArrayList<>();
         if(position.isInCity()){
             adjacents = adjacentsToPositonInCity(position);

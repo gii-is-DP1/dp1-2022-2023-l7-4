@@ -54,7 +54,8 @@ public class CardServiceRepo {
 
     public List<HalfDeck> getAvailableHalfDecks(Game game) {
         return getAllHalfDecks().stream()
-        .filter(deck-> deck != game.getFirstHalfDeck() && deck != game.getSecondHalfDeck())
+        .filter(deck-> deck != game.getFirstHalfDeck() && deck != game.getSecondHalfDeck()
+        && deck.getId()!= 3 && deck.getId()!= 4 )
         .collect(Collectors.toList());
     }
 

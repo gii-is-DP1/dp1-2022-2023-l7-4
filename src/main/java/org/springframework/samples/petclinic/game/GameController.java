@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -15,7 +16,6 @@ import org.springframework.samples.petclinic.board.map.MapTemplate;
 import org.springframework.samples.petclinic.board.map.MapTemplateService;
 import org.springframework.samples.petclinic.card.CardServiceRepo;
 import org.springframework.samples.petclinic.card.HalfDeck;
-import org.springframework.samples.petclinic.card.HalfDeckFormatter;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.User;
@@ -23,7 +23,6 @@ import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,28 +48,21 @@ public class GameController {
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
     
 
-	@InitBinder("halfDeck")
-	public void initPetBinder(WebDataBinder dataBinder) {
-		dataBinder.addCustomFormatter(new HalfDeckFormatter(cardService));
-	}
 
 	@PostMapping(value = "/games/create/plus")
 	public String plus(Map<String, Object> model,Game game){
 		List<HalfDeck> availableDecks = cardService.getAvailableHalfDecks(game);
 		List<MapTemplate> availableMaps = mapTemplateService.getAvailableMaps(game);
+		game.getPlayers().removeIf(Objects::isNull);
 		List<User> availableUsers = userService.getAvailableUsers(game);
-
+		
 		model.put("availableDecks", availableDecks);
 		model.put("availableMaps", availableMaps);
 		model.put("availableUsers", availableUsers);
 		System.out.println(game);
 		return VIEWS_GAME_CREATE_FORM;
 	}
-	@GetMapping(value = "/games/creating")
-	public String redirection(Map<String, Object> model) {
-     
-     return VIEWS_GAME_CREATE_FORM;
- }
+
 	@GetMapping(value = "/games/create")
 	public String initCreationGameForm(Map<String, Object> model, Principal currentUser){
 		List<HalfDeck> halfDecks = cardService.getAllHalfDecks();

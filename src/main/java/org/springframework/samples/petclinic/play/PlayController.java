@@ -131,7 +131,7 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         Player player = game.getCurrentPlayer();
 
-        List<Position> positions=positionServiceRepo.getAllPositionsFromGame(game);
+        List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
         result.addObject("gameId", gameId);

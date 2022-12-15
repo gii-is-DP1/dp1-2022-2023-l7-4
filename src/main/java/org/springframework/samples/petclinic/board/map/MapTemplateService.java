@@ -26,14 +26,11 @@ public class MapTemplateService {
         return mapTemplateRepository.findMapTemplateById(id);
     }
 
-    public List<MapTemplate> findAllByPlayerCount(Game game) {
-        Integer numberOfPlayers= game.getPlayers().size();
-        return findAll().stream().filter(map -> map.getNumberStartingCities()==numberOfPlayers).collect(Collectors.toList());
-    }
+
 
     public List<MapTemplate> getAvailableMaps(Game game) {
         return findAll().stream()
-        .filter(map-> map != game.getMapTemplate() && game.getPlayers().size() <= map.getNumberStartingCities())
+        .filter(map-> map != game.getMapTemplate() && game.getPlayers().size() <= map.startingCityCount(game.getSize()))
         .collect(Collectors.toList());
     }
 }
