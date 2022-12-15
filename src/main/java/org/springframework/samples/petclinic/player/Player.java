@@ -118,7 +118,7 @@ public class Player extends BaseEntity{
 
     @Override
     public String toString() {
-        return user.getUsername();
+        return name;
     }
 
     public static Player of(User user){

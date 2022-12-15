@@ -86,6 +86,7 @@ public class PlayController {
 
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
         result.addObject("player", game.getCurrentPlayer());
+        result.addObject("turn", game.getTurnPlayer());
         result.addObject("round", game.getRound());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
@@ -134,6 +135,7 @@ public class PlayController {
         List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
+        result.addObject("turn", game.getTurnPlayer());
         result.addObject("gameId", gameId);
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());

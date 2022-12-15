@@ -12,7 +12,7 @@
         <div class="tophud">
             <div class="tophud-box tophud-b1">
                 <div class="player-div">
-                    JUGADOR ${player.name} - ${player.user.name}
+                    JUGADOR${turn} - ${player.name}
                 </div>
             </div>
             <div class="tophud-box tophud-b2">

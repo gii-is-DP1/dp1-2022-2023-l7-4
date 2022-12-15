@@ -14,7 +14,7 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'UNO Ini Z2',3,TRUE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'UNO Ini Z2',3,TRUE,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'DOS Ini Z2',3,TRUE,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'TRES blanca Z2',3,FALSE,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'CUATRO Ini Z3',6,TRUE,3);
