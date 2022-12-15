@@ -79,12 +79,14 @@ public class PopulatePositionService {
     private void saveNewPositionLinkedTo(City city) {
         Position p = new Position();
         p.setCity(city);
+        city.getPositions().add(p);
         positionRepository.save(p);
     }
     private void saveNewSpyPositionLinkedTo(City city) {
         Position p = new Position();
         p.setCity(city);
         p.setForSpy(true);
+        city.getPositions().add(p);
         positionRepository.save(p);
     }
     

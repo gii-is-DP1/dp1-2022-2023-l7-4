@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.board.sector.city;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.game.Game;
@@ -27,7 +29,10 @@ public class CityService {
     public City getCity(Game game, CityTemplate cityTemplate) {
         return cityRepository.findCityByGameAndCityTemplate(game.getId(),cityTemplate.getId());
     }
-    
+
+    public City getCityByGameAndTemplate(Game game, CityTemplate cityTemplate) {
+        return getCities().stream().filter(c -> c.getGame()==game && c.getCityTemplate()==cityTemplate).findFirst().get();
+    }
 
     
 }

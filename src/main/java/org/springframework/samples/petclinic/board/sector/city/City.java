@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.board.sector.city;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class City extends BaseEntity{
     private Game game;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
-    private List<Position> positions;
+    private List<Position> positions= new ArrayList<>();
     
 
     /**
