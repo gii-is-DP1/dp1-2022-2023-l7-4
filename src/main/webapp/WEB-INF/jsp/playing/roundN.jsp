@@ -94,8 +94,8 @@
                     <div class="position-totally">
                         <h1>WORK IN PROGRESS</h1>
 
-                        <form action="/play/${gameId}/round/${round}" method="post">
-                            <input type="submit" value="PASAR TURNO" hidden>
+                        <form action="/play/${gameId}/round/${round}/next" method="get">
+                            <input type="submit" value="PASAR TURNO" >
                         </form>
                     </div>
                 </div>
