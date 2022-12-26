@@ -146,21 +146,11 @@ public class PlayController {
         return result;
     }
 
-    @PostMapping("{gameId}/round/{round}")
-    public ModelAndView processNextTurn(@PathVariable Integer gameId,@PathVariable Integer round
-    ,BindingResult br){
+    @GetMapping("{gameId}/round/{round}/next")
+    public ModelAndView processNextTurn(@PathVariable Integer gameId,@PathVariable Integer round){
         Game game=gameService.getGameById(gameId);
-        ModelAndView result=null;
-        if(br.hasErrors()){
-            return new ModelAndView(ROUND_N,br.getModel());
-        }
-        try{
-            gameService.nextPlayerAndSave(game);
-            result=new ModelAndView("redirect:/play/"+gameId);
-        }catch(Exception e){
-            br.rejectValue("game","error","something happen,try again");
-            result=new ModelAndView(ROUND_N,br.getModel());
-        }
+        gameService.nextPlayerAndSave(game);
+        ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
         return result;
     }
     
