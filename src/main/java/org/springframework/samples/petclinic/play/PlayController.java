@@ -104,7 +104,7 @@ public class PlayController {
         Player player=game.getCurrentPlayer();
         ModelAndView result=null;
         if(br.hasErrors()){
-            return new ModelAndView(ROUND_ZERO,br.getModel());
+            result=new ModelAndView("redirect:/play/"+gameId);
         }
         try{
             Position position= positionServiceRepo.findPositionById(idpos.getId());
@@ -112,8 +112,9 @@ public class PlayController {
             gameService.nextPlayerAndSave(game);
             result=new ModelAndView("redirect:/play/"+gameId);
         }catch(Exception e){
-            br.rejectValue("position","occupied","already occupy");
-            result=new ModelAndView(ROUND_ZERO,br.getModel());
+            // br.rejectValue("position","occupied","already occupy");
+            // result=new ModelAndView(ROUND_ZERO,br.getModel());
+            result=new ModelAndView("redirect:/play/"+gameId);
         }
         return result;
     }
