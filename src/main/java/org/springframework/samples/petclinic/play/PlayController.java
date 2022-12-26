@@ -152,5 +152,6 @@ public class PlayController {
         ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
         return result;
     }
+    //m
     
 }
