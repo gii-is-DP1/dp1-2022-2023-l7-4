@@ -23,6 +23,11 @@
                 </div>
             </div>
             <div class="tophud-box tophud-b3">
+                <div style="margin-top: 1vmax;">
+                    <form action="/play/${gameId}/round/${round}/next" method="get">
+                        <input type="submit" value="PASAR TURNO" style="width: 10vmax; height: 1.5vmax; font-size: 1vmax; margin-right: 2vmax;">
+                    </form>
+                </div>
                 <div class="round-div">
                     RONDA ${round}
                 </div>
@@ -92,10 +97,7 @@
             <div class="positions-round0">
                 <div class="position-scroll">
                     <div class="position-totally">
-
-                        <form action="/play/${gameId}/round/${round}/next" method="get">
-                            <input type="submit" value="PASAR TURNO" >
-                        </form>
+                        <h1>WORK IN PROGRESS</h1>
                     </div>
                 </div>
                 <a href='/play/${gameId}/round/${round}/placeTroop?reachable=true&price=true&numberOfMoves=1' >

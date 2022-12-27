@@ -21,7 +21,7 @@ public class PlayerMoveCardsService {
 
 
 
-	public void draw5CardFromDeckToHand(Integer numberOfCard, @Valid Player player) throws Exception{
+	public void draw5CardsFromDeckToHand(@Valid Player player) throws Exception{
 		drawFromDeckToHand(5, player);
 	}
 	
