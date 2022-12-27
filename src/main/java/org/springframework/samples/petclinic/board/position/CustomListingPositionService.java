@@ -99,7 +99,7 @@ public class CustomListingPositionService {
     public List<Position> getEnemyPositionsByTypeOfGame(Integer player_id,Boolean forSpy
     ,Boolean useAdjacency,Boolean searchWhites,Game game){
         List<Position> res=null;
-        if(useAdjacency)
+        if(!useAdjacency)
             res= positionServiceRepo.getAllEnemyPositionsOfPlayerByTypeOfPosition(player_id, forSpy,game);
         else{
             res=getPresencePositions(player_id, true);
@@ -107,8 +107,8 @@ public class CustomListingPositionService {
         }
         if(searchWhites!=null)
             res.stream()
-            .filter(pos->(searchWhites & pos.getPlayer().getId()==0)
-             || (!searchWhites & pos.getPlayer().getId()!=0)).collect(Collectors.toList());
+            .filter(pos->(searchWhites & pos.getPlayer().isWhite())
+             || (!searchWhites & !pos.getPlayer().isWhite())).collect(Collectors.toList());
         return res;
     }
 

@@ -41,7 +41,7 @@ public class InitializePositionService {
 
             populatePositionService.populatePositions(game);
             List<Position> positions = positionServiceRepo.getAllPositionsByGame(game);
-            System.out.println(game.getId()+"f".repeat(122));
+            System.out.println(positions.size()+" positions generated in "+ game.getName());
             positions.forEach(position -> adjacentPositionService.calculateAdjacents(position));
 
         
