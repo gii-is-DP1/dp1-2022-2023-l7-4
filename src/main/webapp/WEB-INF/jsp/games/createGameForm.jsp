@@ -153,7 +153,7 @@
                 </div>
             </div>
             <div class="popup" id="decks2PopUp">
-                <a onclick="dontShowPopUp('decksPopUp')" class="x">x</a>
+                <a onclick="dontShowPopUp('decks2PopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableDecks}" var="deck">
                         <a onClick="addDeck(2,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>

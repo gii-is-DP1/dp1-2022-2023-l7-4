@@ -43,6 +43,7 @@ import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.HalfDeck;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.VictoryPoints;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -150,7 +151,7 @@ public class Game extends BaseEntity{
     public SortedMap<Player,Integer> getQualifying(){
         SortedMap<Player,Integer> map= new TreeMap<>();
         for(Player player:this.players){
-            Integer result=getPlayerScore(player);
+            Integer result=getPlayerScore(player).getTotalVP();
             map.put(player,result);
         }
         map.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()));
@@ -174,7 +175,7 @@ public class Game extends BaseEntity{
         return getQualifying().firstKey();
     }
 
-    public Integer getPlayerScore(Player player){
+    /* public Integer getPlayerScore(Player player){
         Integer result=0;
         Integer controlVP=getControlCityVP(player);
         Integer totalControlVP=getTotalControlVP(player);
@@ -185,7 +186,27 @@ public class Game extends BaseEntity{
         Integer innerCircleVP= getInnerCircleVP(player);
         result=controlVP+totalControlVP+trophyHallVP+handVP+dicardPileVP+deckVP+innerCircleVP;
         return result;
+    } */
+    public VictoryPoints getPlayerScore(Player player){
+        VictoryPoints vp= new VictoryPoints();
+        Integer controlVP=getControlCityVP(player);
+        Integer totalControlVP=getTotalControlVP(player);
+        Integer trophyHallVP=player.getTrophyHallVPs();
+        Integer handVP=player.getHandVPs();
+        Integer dicardPileVP=player.getDiscardPile().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
+        Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
+        Integer innerCircleVP= getInnerCircleVP(player);
+        vp.setControlVP(controlVP);
+        vp.setDeckVP(deckVP);
+        vp.setDicardPileVP(dicardPileVP);
+        vp.setInnerCircleVP(innerCircleVP);
+        vp.setTotalControlVP(totalControlVP);
+        vp.setTrophyHallVP(trophyHallVP);
+        vp.setHandVP(handVP);
+        return vp;
+        
     }
+
 
     //No hacer privada, la utilizo en un controlador, gracias :D
     public Integer getInnerCircleVP(Player player){

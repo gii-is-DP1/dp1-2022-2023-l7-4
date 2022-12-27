@@ -91,8 +91,10 @@ public class PlayController {
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
         result.addObject("positions", initialPositions);
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
+        System.out.println(game.getPlayerScore(player).getControlVP());
 
         return result;
     }
@@ -141,8 +143,10 @@ public class PlayController {
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
         result.addObject("positions", positions);
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
+        System.out.println(game.getPlayerScore(player).getControlVP());
         return result;
     }
 

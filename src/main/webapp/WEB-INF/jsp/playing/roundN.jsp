@@ -81,11 +81,25 @@
                 </div>
                 <div class="resources-box">
                     <abbr title="Puntos de victoria totales" style="display:flex; width: 100%; height: 100%;">
-                        <div class="resource-image vp"></div>
+                        <a onclick="showPopUp('VpPopUp')" href="JavaScript:void(0)" class="resource-image vp"></a>
+                        <!-- <div class="resource-image vp"></div> -->
                         <div class="resource-valor">
-                            ${vp}
+                            ${totalVp}
                         </div>
                     </abbr>
+                </div>
+            </div>
+            <div class="popup" id="VpPopUp">
+                
+                <a onclick="dontShowPopUp('VpPopUp')" href="JavaScript:void(0)" class="x">x</a>
+                <div class="ls">
+                    <p>Puntos por control simple: ${vp.controlVP}</p>
+                    <p>Puntos por control total: ${vp.totalControlVP}</p>
+                    <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
+                    <p>Puntos en mano: ${vp.handVP}</p>
+                    <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
+                    <p>Puntos en mazo: ${vp.deckVP}</p>
+                    <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                 </div>
             </div>
 
@@ -105,5 +119,61 @@
     </div>     
   
 </body>
+
+<style>
+     .popup {
+        background-color: rgba(231, 238, 245,0.5);
+        height: 80%;
+        width: 85%;
+        visibility: hidden;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        border: 3px;
+        border-radius: 10px;
+        font-size: 2vmax;
+    }
+    .popup .ls{
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+    .popup .x {
+        margin-left: 10px;
+        color: black;
+        user-select: none;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        align-self: flex-start;
+    }
+    p{
+        margin: 10px;
+
+    }
+    #icon{
+        width: 50px;
+        height: 50px;
+        color: red;
+
+    }
+</style>
+<script>
+    function showPopUp(popup) {
+        var overlay = document.getElementById(popup);
+        overlay.style.visibility = "visible";
+        overlay.style.opacity = 1;
+    }
+       function dontShowPopUp(popup) {
+        var overlay = document.getElementById(popup);
+        overlay.style.visibility = "hidden";
+        overlay.style.opacity = 0;
+    }
+</script>
 
 
