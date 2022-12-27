@@ -12,19 +12,23 @@ public class IntializeGame {
     @Autowired
     GameService gameService;
     @Autowired
-    InitializeMapService initializerService;
+    InitializeMapService mapInitializer;
+    @Autowired
+    InitializeCardsService cardIntializer;
 
 
     public Game loadGame(Game game) {
-        if(game.isNotLoaded()){
-            game = initializerService.loadGameMap(game);
-            
-            // TODO load game deck from first and second halfdeck + initial decks + basics market cards
+        try {
+            if (game.isNotLoaded()) {
+                game = mapInitializer.loadGameMap(game);
 
+                game = cardIntializer.loadCards(game);
 
-
-            game.setLoaded(true);
-            gameService.save(game);
+                game.setLoaded(true);
+                gameService.save(game);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return game;
     }
