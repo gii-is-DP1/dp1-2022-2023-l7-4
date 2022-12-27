@@ -17,7 +17,9 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.player.Player;
+import org.springframework.security.access.method.P;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,8 +38,8 @@ public class Position{
     @JoinColumn(name="player_id")
     private Player player;
 
-    
-
+    @ManyToOne
+    Game game;
 
     @ManyToOne(optional=true)
     @JoinColumn(name="city_id")
@@ -82,9 +84,12 @@ public class Position{
     }
 
 
-    public Position() {
-        this.player= null;
-        this.forSpy=false;
+    public static Position of(Game game) {
+        Position p = new Position();
+        p.player= null;
+        p.setForSpy(false);
+        p.setGame(game);
+        return p;
     }
 
     
