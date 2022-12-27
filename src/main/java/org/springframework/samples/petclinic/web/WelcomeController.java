@@ -1,16 +1,20 @@
 package org.springframework.samples.petclinic.web;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class WelcomeController {
+
 	
-		private final String HOMEMENU="home/homeMenu";
+	
+		private final String HOMEMENU="welcome";
 
 		@GetMapping("")
-		public ModelAndView showHomeMenu(){
+		public ModelAndView showHomeMenu(Principal userPrincipal){
 			ModelAndView result=new ModelAndView(HOMEMENU);
 			return result;
 		}
