@@ -96,6 +96,12 @@
                         <form action="/play/${gameId}/round/${round}/next" method="get">
                             <input type="submit" value="PASAR TURNO" >
                         </form>
+                        <a href='/play/${gameId}/round/${round}/killTroop?reachable=false&price=true&onlyWhite=&numberOfMoves=1' >
+                            
+                                <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA - PRECIO: 3 DE PODER</div></div>
+  
+                        </a>
+                            </div>
                     </div>
                 </div>
                 <a href='/play/${gameId}/round/${round}/placeTroop?reachable=true&price=true&numberOfMoves=1' >
@@ -103,12 +109,7 @@
                     <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA - PRECIO: 1 DE PODER</div></div>
                     </div>
 			</a><br>
-            <a href='/play/${gameId}/round/${round}/killTroop?reachable=false&price=true&onlyWhite=&numberOfMoves=1' >
-                <div class="aBotton">
-                    <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA - PRECIO: 3 DE PODER</div></div>
-                    </div>
-			</a>
-                </div>
+            
             </div>
             
         </div>

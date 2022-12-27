@@ -248,7 +248,7 @@ public class PlayController {
             try{
                 Position position= positionServiceRepo.findPositionById(idposition.getId());
                 Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
-                CheckPlayerUsePosition.playerHasChooseACorrectTypeOfEnemy(player, position, onlyWhite);
+                //CheckPlayerUsePosition.playerHasChooseACorrectTypeOfEnemy(player, position, onlyWhite);
                 if(price){
                     this.pricedPositionService.killEnemyTroopWithPrice(player, position);
                 }
