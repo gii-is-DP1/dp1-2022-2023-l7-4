@@ -5,9 +5,12 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.board.position.CustomListingPositionService;
 import org.springframework.samples.petclinic.board.position.PlayerUsePositionService;
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
+import org.springframework.samples.petclinic.board.position.PricedPositionService;
+import org.springframework.samples.petclinic.board.position.auxiliarEntitys.CheckPlayerUsePosition;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -33,6 +37,8 @@ public class PlayController {
     private static final String ROUND_N = "playing/roundN";
     
     private static final String SCORE_BOARD = null;
+
+    private static final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
     
     @Autowired
     private PositionInGameService positionInGameService;
@@ -47,6 +53,15 @@ public class PlayController {
     private PlayerUsePositionService playerUsePositionService;
     @Autowired
     InitializePositionService positionInitialiter;
+
+    @Autowired
+    private CustomListingPositionService customListingPositionService;
+
+
+    @Autowired
+    private PricedPositionService pricedPositionService;
+
+
     @Autowired
     private PositionServiceRepo positionServiceRepo;
 
@@ -57,6 +72,15 @@ public class PlayController {
     private PathService pathService;
 
     
+    public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("round", game.getRound());
+        result.addObject("turn", game.getTurnPlayer());
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
+    }
 
 
 
@@ -85,15 +109,9 @@ public class PlayController {
         Player player = game.getCurrentPlayer();
 
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
-        result.addObject("player", game.getCurrentPlayer());
-        result.addObject("turn", game.getTurnPlayer());
-        result.addObject("round", game.getRound());
-        result.addObject("cities", game.getCities());
-        result.addObject("paths", game.getPaths());
+        putPlayerDataInModel(game, player, result);
         result.addObject("positions", initialPositions);
-        result.addObject("vp", game.getPlayerScore(player));
-        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
-
+        
         return result;
     }
 
@@ -128,21 +146,13 @@ public class PlayController {
     }
 
     @GetMapping("{gameId}/round/{round}")
-    public ModelAndView showInitialRound(@PathVariable Integer gameId, @PathVariable Integer round){
+    public ModelAndView showRoundN(@PathVariable Integer gameId, @PathVariable Integer round){
         ModelAndView result=new ModelAndView(ROUND_N);
         Game game=gameService.getGameById(gameId);
         Player player = game.getCurrentPlayer();
-
         List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
-        result.addObject("player", game.getCurrentPlayer());
-        result.addObject("round", game.getRound());
-        result.addObject("turn", game.getTurnPlayer());
-        result.addObject("gameId", gameId);
-        result.addObject("cities", game.getCities());
-        result.addObject("paths", game.getPaths());
+        putPlayerDataInModel(game, player, result);
         result.addObject("positions", positions);
-        result.addObject("vp", game.getPlayerScore(player));
-        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
         return result;
     }
 
@@ -152,6 +162,110 @@ public class PlayController {
         gameService.nextPlayerAndSave(game);
         ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
         return result;
+    }
+    //?reachable={reachable}&price={price}&numberOfMoves={numberOfMoves}
+    @GetMapping("{gameId}/round/{round}/placeTroop")
+    public ModelAndView initPlaceTroopForm(@PathVariable Integer gameId,
+    @RequestParam("reachable") Boolean reachable
+    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves){
+        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        Game game=this.gameService.getGameById(gameId);
+        Player actualPlayer=game.getCurrentPlayer();
+        putPlayerDataInModel(game, actualPlayer, result);
+        if(reachable==true)
+            result.addObject("positions"
+            , customListingPositionService.getPresenceTroopPositions(actualPlayer.getId(),false));
+        else
+            result.addObject("positions",positionServiceRepo.getFreeTroopPositionsFromGame(game));
+        result.addObject("numberOfMoves", numberOfMoves);
+        return result;
+    }
+
+    @PostMapping("{gameId}/round/{round}/placeTroop")
+    public ModelAndView processPlaceTroopForm(@Valid Idposition idposition,@PathVariable Integer gameId,
+    @RequestParam("reachable") Boolean reachable
+    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves, BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }else{
+            try{
+                Position position= positionServiceRepo.findPositionById(idposition.getId());
+                Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
+                if(price){
+                    this.pricedPositionService.placeTroopWithPrice(player, position);
+                }
+                else{
+                    this.playerUsePositionService.occupyTroopPosition(position, player,reachable);
+                }
+                numberOfMoves--; 
+                res=numberOfMoves<1?new ModelAndView("redirect:/play/"+gameId)
+                :new ModelAndView("redirect:/play/"+gameId+"/placeTroop?reachable="+reachable+"&price="+price+"&numberOfMoves="+numberOfMoves);
+                //res.addObject("message", msg);
+            }catch(Exception e){
+                br.rejectValue("position","occupied","already occupy");
+                res=errorRes;
+            }
+            
+        }
+        return res;
+    }
+
+    @GetMapping("{gameId}/round/{round}/killTroop")
+    public ModelAndView initKillTroopForm(@PathVariable Integer gameId,
+    @RequestParam("reachable") Boolean reachable
+    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves
+    ,@RequestParam("onlyWhite") Boolean onlyWhite){
+        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        Game game=this.gameService.getGameById(gameId);
+        Player actualPlayer=game.getCurrentPlayer();
+        putPlayerDataInModel(game, actualPlayer, result);
+        result.addObject("positions",
+        customListingPositionService
+        .getEnemyPositionsByTypeOfGame(actualPlayer.getId(),false, reachable, onlyWhite, game));
+        result.addObject("number",
+         positionServiceRepo.getFreePositionsFromGame(game));
+        result.addObject("onlyWhite", onlyWhite==null);
+        result.addObject("numberOfMoves", numberOfMoves);
+        return result;
+    }
+
+    @PostMapping("{gameId}/round/{round}/killTroop")
+    public ModelAndView processKillTroopForm(@Valid Idposition idposition ,@PathVariable Integer gameId,
+    @RequestParam("reachable") Boolean reachable
+    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves
+    ,@RequestParam("onlyWhite") Boolean onlyWhite,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }else{
+            try{
+                Position position= positionServiceRepo.findPositionById(idposition.getId());
+                Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
+                CheckPlayerUsePosition.playerHasChooseACorrectTypeOfEnemy(player, position, onlyWhite);
+                if(price){
+                    this.pricedPositionService.killEnemyTroopWithPrice(player, position);
+                }
+                else{
+                    this.playerUsePositionService.killTroop(position, player, reachable);
+                }
+                numberOfMoves--; 
+                res=numberOfMoves<1?new ModelAndView("redirect:/play/"+gameId)
+                :new ModelAndView("redirect:/play/"+gameId+"/killTroop?reachable="+reachable+"&price="+price+"&numberOfMoves="+numberOfMoves);
+                //res.addObject("message", msg);
+            }catch(Exception e){
+                br.rejectValue("position","not correct","you cant choose this position");
+                res=errorRes;
+            }
+            
+        }
+        return res;
     }
     
 }

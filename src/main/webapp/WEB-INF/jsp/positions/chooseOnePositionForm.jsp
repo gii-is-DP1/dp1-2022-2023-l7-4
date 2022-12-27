@@ -26,6 +26,7 @@
         </tr>
         </thead>
         <tbody>
+            
         <c:forEach items="${availablePositions}" var="pos">
             <tr>
                 <td>
@@ -51,6 +52,7 @@
                     <c:out value="${pos.adjacents}"/>
                 </td>
                 <td>
+                
                 <form:form modelAttribute="idposition" id="${pos.id}">
                     <input type="hidden" name="id" value="${pos.id}"/>
                     <div class="form-group">

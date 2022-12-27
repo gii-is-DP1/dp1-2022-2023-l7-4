@@ -92,17 +92,125 @@
             <div class="positions-round0">
                 <div class="position-scroll">
                     <div class="position-totally">
-                        <h1>WORK IN PROGRESS</h1>
 
                         <form action="/play/${gameId}/round/${round}/next" method="get">
                             <input type="submit" value="PASAR TURNO" >
                         </form>
                     </div>
                 </div>
+                <a href='/play/${gameId}/round/${round}/placeTroop?reachable=true&price=true&numberOfMoves=1' >
+                <div class="aBotton">
+                    <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA - PRECIO: 1 DE PODER</div></div>
+                    </div>
+			</a><br>
+            <a href='/play/${gameId}/round/${round}/killTroop?reachable=false&price=true&onlyWhite=&numberOfMoves=1' >
+                <div class="aBotton">
+                    <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA - PRECIO: 3 DE PODER</div></div>
+                    </div>
+			</a>
+                </div>
             </div>
             
         </div>
-    </div>     
+    </div>
+    <style>
+        .textbtn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 100%;
+        }
+        @import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
+
+        .body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        font-family: 'Open Sans Condensed', sans-serif;
+        }
+
+        .box-2 { background-color: #282121; }
+
+        .especial-btn {
+            opacity: 90%;
+            line-height: 50px;
+            height: 50px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+        }
+        .container-button{
+            margin-left: 0%;
+        }
+
+        /*Botton*/
+        .btn-two {
+            color: rgb(197, 172, 63);
+            transition: all 0.5s;
+            position: relative;	
+            background-color: #282121;
+            font-size: 20px;
+            border-radius: 10%;
+        }
+        .btn-two span {
+            z-index: 2;	
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 10%;
+            
+        }
+        .btn-two::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transition: all 0.5s;
+            border: 1px solid rgba(255, 255, 255, 0.086);
+            background-color: rgba(255, 255, 255, 0);
+            border-radius: 10%;
+
+        }
+        .btn-two::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transition: all 0.5s;
+            border: 1px solid rgba(202, 189, 189, 0.123);
+            background-color: rgba(200, 177, 177, 0.122);
+            border-radius: 10%;
+
+        }
+        .btn-two:hover::before {
+        transform: rotate(-45deg);
+        background-color: rgba(255, 255, 255, 0.105);
+        border-radius: 10%;
+
+        }
+        .btn-two:hover::after {
+        transform: rotate(45deg);
+        background-color: rgba(255, 255, 255, 0.105);
+        border-radius: 10%;
+
+        }
+        .aBotton{
+            text-align: center;
+        }
+
+    </style>     
   
 </body>
 
