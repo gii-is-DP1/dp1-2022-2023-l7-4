@@ -75,6 +75,12 @@ public class PositionServiceRepo {
         .collect(Collectors.toList());
     }
 
+    public List<Position> filteredByGame(List<Position> positions,Game game){
+        return positions.stream()
+        .filter(p-> p.getCity() != null && p.getCity().getGame() == game || p.getPath() != null && p.getPath().getGame() == game)
+        .collect(Collectors.toList());
+    }
+
 
     
 }

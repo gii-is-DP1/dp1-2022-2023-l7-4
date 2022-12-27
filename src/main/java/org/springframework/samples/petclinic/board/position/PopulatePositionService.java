@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.board.position;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -63,7 +62,7 @@ public class PopulatePositionService {
     }
     private void populatePath(Path path) {
             for(int i = 0; i< path.getCapacity();i++){
-                Position p = new Position();
+                Position p = Position.of(path.getGame());
                 p.setPath(path);
                 positionRepository.save(p);
             }
@@ -77,13 +76,13 @@ public class PopulatePositionService {
 
 
     private void saveNewPositionLinkedTo(City city) {
-        Position p = new Position();
+        Position p = Position.of(city.getGame());
         p.setCity(city);
         city.getPositions().add(p);
         positionRepository.save(p);
     }
     private void saveNewSpyPositionLinkedTo(City city) {
-        Position p = new Position();
+        Position p = Position.of(city.getGame());
         p.setCity(city);
         p.setForSpy(true);
         city.getPositions().add(p);

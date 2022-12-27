@@ -160,7 +160,7 @@ public class CustomListingPositionServiceTest {
         List<Position> playerPositions=this.positionServiceRepo.getPlayerPositions(player1.getId());
         List<Position> whiteAdjacentPositionsOfPlayer=
         this.customListingPositionService
-        .getEnemyPositionsByTypeOfGame(player1.getId(), false, false, true, game);
+        .getEnemyPositionsByTypeOfGame(player1.getId(), false, true, true, game);
         assertThat(whiteAdjacentPositionsOfPlayer).isNotEmpty();
         for(Position position:whiteAdjacentPositionsOfPlayer){
             assertThat(position.isOccupied());
@@ -173,7 +173,7 @@ public class CustomListingPositionServiceTest {
         List<Position> playerPositions=this.positionServiceRepo.getPlayerPositions(player1.getId());
         List<Position> anotherPlayerAdjacentPositionsOfPlayer=
         this.customListingPositionService
-        .getEnemyPositionsByTypeOfGame(player1.getId(), false, false, false, game);
+        .getEnemyPositionsByTypeOfGame(player1.getId(), false, true, false, game);
         assertThat(anotherPlayerAdjacentPositionsOfPlayer).isNotEmpty();
         for(Position position:anotherPlayerAdjacentPositionsOfPlayer){
             assertThat(position.isOccupied());

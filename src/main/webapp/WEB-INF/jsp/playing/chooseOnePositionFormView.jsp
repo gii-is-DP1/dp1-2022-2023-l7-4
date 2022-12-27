@@ -88,17 +88,19 @@
                     </abbr>
                 </div>
             </div>
-
             <div class="positions-round0">
                 <c:out>MOVIMIENTOS RESTANTES = ${numberOfMoves}</c:out>
+                <c:out>ONLYWHITE ES ${onlyWhite}</c:out> 
+                <c:out>${number}</c:out>
                 <div class="position-scroll">
                     <div class="position-totally">
                         <form:form modelAttribute="idposition">
-                            <motero2k:positionTable>   
+                            <motero2k:positionTable>
                             </motero2k:positionTable>
                         </form:form>
                     </div>
                 </div>
+                
             </div>
             
         </div>

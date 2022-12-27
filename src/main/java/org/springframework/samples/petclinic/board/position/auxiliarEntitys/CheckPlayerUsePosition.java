@@ -78,12 +78,21 @@ public class CheckPlayerUsePosition {
         Preconditions.check(playerSpiesInSameCityOfChoosedPosition.isEmpty())
         .formattedError("No puedes tener más de 1 espía en la misma ciudad,elige de nuevo");
     }
-
+    //NO IMPLEMENTADO
     public static void playerIsPlayingInTheirTurn(Player player) throws Exception{
         Game game=player.getGame();
         Preconditions.check(game.getCurrentPlayer().equals(player))
         .formattedError("Cada jugador debe jugar en su turno");
+    }
 
+    public static void playerHasChooseACorrectTypeOfEnemy(Player player, Position position,Boolean onlyWhite) throws Exception{
+        Player enemy=position.getPlayer();
+        if(onlyWhite !=null & onlyWhite)
+            Preconditions.check(enemy.isWhite())
+            .formattedError("Cada jugador debe jugar en su turno");
+        else if(onlyWhite!=false)
+            Preconditions.check(!enemy.equals(player) & !enemy.isWhite())
+        .formattedError("Cada jugador debe jugar en su turno");
     }
 
 
