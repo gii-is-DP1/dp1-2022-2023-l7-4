@@ -8,6 +8,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <petclinic:layout pageName="games">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+
     <div class="create-box">
         
         <!--CAJA IZQUIERDA -> Nuevo juego, reglas, nombre, mapa, primer mazo y segundo mazo-->
@@ -27,7 +29,7 @@
                 <div class="new-name-box new-name-text">
                     <form:form modelAttribute="game" class="form-horizontal" id="game-form" method="post" action="/games/create/plus">
                         <label class="name">Nombre del juego:</label>
-                        <input type="text" name="name" value="${game.name}" style="width: 9vmax;" >
+                        <input type="text" name="name" value="${game.name}" style="width: 9vmax; border-radius: 0.5vmax;" >
                         
                         <input id="selected-map" type="hidden" name="mapTemplate" value="${game.mapTemplate.id}">
                         <input id="selected-deck-1" type="hidden" name="firstHalfDeck" value="${game.firstHalfDeck.id}">
@@ -68,7 +70,7 @@
                         <div style="font-size: 1.2vmax; width: 50%; color: aliceblue;"><b>Primer mazo:</b></div>&nbsp
                         <c:choose>
                             <c:when test="${game.firstHalfDeck != null}">
-                                <div style="width: 49%; margin-bottom: -2px; display: flex; justify-content: center; align-items: center;">
+                                <div style="width: 49%; margin-bottom: -2px; display: flex; justify-content: center; align-items: center;font-size: 1vmax;">
                                     <a onclick="removeDeck(1)" href="JavaScript:void(0)">${game.firstHalfDeck.name}</a>
                                     &nbsp<a onclick="removeDeck(1)" href="JavaScript:void(0)"  style="color: red;">x</a>
                                 </div>
@@ -84,7 +86,7 @@
                         <div style="font-size: 1.2vmax; width: 60%; color: aliceblue;"><b>Segundo mazo:</b></div>&nbsp
                         <c:choose>
                             <c:when test="${game.secondHalfDeck != null}">
-                                <div style="width: 44%; margin-bottom: -2px; display: flex; justify-content: center; align-items: center;">
+                                <div style="width: 44%; margin-bottom: -2px; display: flex; justify-content: center; align-items: center; font-size: 1vmax;">
                                     <a onclick="removeDeck(2)" href="JavaScript:void(0)">${game.secondHalfDeck.name}</a>
                                     &nbsp<a onclick="removeDeck(2)" href="JavaScript:void(0)"  style="color: red;">x</a>
 
@@ -102,37 +104,43 @@
 
         
         <!--Lista de jugadores seleccionados-->
-        <div>
-            <label class="control-label" style="margin-bottom: 0; margin-left: 0;">Players:</label>
-            <c:forEach var="player" items="${game.players}" varStatus="counter">
+        <div class="righ-box">
+            <div class="players-tittle-box">
+                <div style="margin-right: 3px;"><b>JUGADORES</b></div>
+            </div>
+            <div class="players-big-box">
+                <c:forEach var="player" items="${game.players}" varStatus="counter">
+                    <div class="unique-player-selected-box">
+                        <div><b>Jugador ${counter.index +1}:&nbsp</b></div>
+                        <c:choose>
+                            <c:when test="${counter.index == 0}">
+                                <a onclick="alert('no te puedes quitar a ti mismo')"
+                                    href="JavaScript:void(0)" class="username-text-color">${player.user.name}</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)" class="username-text-color">${player.user.name}</a>
+                            </c:otherwise>
+                        </c:choose>
+            
+                    </div>
+                </c:forEach>
                 <div style="margin-left: 20px;">
-                    <label class="control-label" style="margin-bottom: 0; margin-left: 0;">Player ${counter.index +1}:</label>
-        
-                    <c:choose>
-                        <c:when test="${counter.index == 0}">
-                            <a onclick="alert('no te puedes quitar a ti mismo')"
-                                href="JavaScript:void(0)">${player.user.name}</a>
-                        </c:when>
-                        <c:otherwise>
-                            <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)">${player.user.name}</a>
-                        </c:otherwise>
-                    </c:choose>
-        
+                    <c:if
+                        test="${!(game.players.size()  == 4 || game.mapTemplate!=null && game.players.size() >= game.mapTemplate.startingCityCount(game.players.size()+1))}">
+                        <a onclick="showPopUp('usersPopUp')" href="JavaScript:void(0)" class="gameButton" style="margin-top: 1vmax;">Añadir otro jugador</a>
+                    </c:if>
                 </div>
-            </c:forEach>
-            <div style="margin-left: 20px;">
-                <c:if
-                    test="${!(game.players.size()  == 4 || game.mapTemplate!=null && game.players.size() >= game.mapTemplate.startingCityCount(game.players.size()+1))}">
-                    <a onclick="showPopUp('usersPopUp')" href="JavaScript:void(0)" class="gameButton">Elegir otro jugador</a>
-                </c:if>
             </div>
         </div>
+
 
             <div class="popup" id="usersPopUp">
                 <a onclick="dontShowPopUp('usersPopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableUsers}" var="user">
-                        <a onClick="addPlayer('${user.username}')" href="JavaScript:void(0)">${user.username}</a>
+                        <div class="popup-content-box">
+                            <a onClick="addPlayer('${user.username}')" href="JavaScript:void(0)">${user.username}</a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
@@ -140,7 +148,9 @@
                 <a onclick="dontShowPopUp('mapsPopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableMaps}" var="map">
-                        <a onClick="addMap('${map.id}')" href="JavaScript:void(0)">${map}</a>
+                        <div class="popup-content-box">
+                            <a onClick="addMap('${map.id}')" href="JavaScript:void(0)">${map}</a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
@@ -148,7 +158,9 @@
                 <a onclick="dontShowPopUp('decks1PopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableDecks}" var="deck">
-                        <a onClick="addDeck(1,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>
+                        <div class="popup-content-box">
+                            <a onClick="addDeck(1,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
@@ -156,7 +168,9 @@
                 <a onclick="dontShowPopUp('decksPopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableDecks}" var="deck">
-                        <a onClick="addDeck(2,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>
+                        <div class="popup-content-box">
+                            <a onClick="addDeck(2,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
@@ -351,6 +365,54 @@
         justify-content: center;
     }
 
+    .create-box .righ-box{
+        margin-top: 1vmax;
+        margin-bottom: 1vmax;
+        margin-right: 1vmax;
+        width: 44%;
+        background-color: #601484;
+        border-radius: 0.5vmax;
+    }
+    .righ-box .players-tittle-box{
+        margin-top: 0.5vmax;
+        margin-left: 1vmax;
+        width: 100%;
+        height: 15%;
+        font-size: 1.7vmax;
+        color: aliceblue;
+        display: flex;
+        align-items: center;
+    }   
+
+    .righ-box .username-text-color{
+        color: #601484;
+    }
+
+    .righ-box .players-big-box{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content:start;
+        margin-left: 1vmax;
+        margin-right: 1vmax;
+        margin-bottom: 1vmax;
+        height: 78%;
+        width: 94%;
+        background-color: rgb(221, 192, 219);
+        font-size: 1vmax;
+        border-radius: 0.5vmax;
+    }
+    .righ-box .unique-player-selected-box{
+        width: 90%;
+        display: flex;
+        padding-left: 1vmax;
+        align-items: center;
+        background-color:rgb(175, 121, 190);
+        height: 16.5%;
+        margin-top: 1vmax;
+        border-radius: 0.5vmax;
+    }
+
 
 
 
@@ -380,6 +442,7 @@
         height: 40px;
         position: absolute;
         align-self: flex-start;
+        margin-left: 10px;
     }
     .popup .ls{
         display: flex;
@@ -389,6 +452,17 @@
         justify-content: center;
     }
 
+    .popup .popup-content-box{
+        width: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #601484;
+        border-width:2px;
+        border-color: black;
+        border-style: solid;
+        margin: 3px;
+    }
         .gameButton {
             background-color: #601484;
             border-radius: 1vmax;
