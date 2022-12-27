@@ -36,7 +36,7 @@ public class Position{
     @JoinColumn(name="player_id")
     private Player player;
 
-
+    
 
 
     @ManyToOne(optional=true)

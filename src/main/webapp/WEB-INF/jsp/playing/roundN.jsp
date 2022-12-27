@@ -100,9 +100,15 @@
                 </div>
                 <a href='/play/${gameId}/round/${round}/placeTroop?reachable=true&price=true&numberOfMoves=1' >
                 <div class="aBotton">
-                    <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA - PRECIO: 2 DE PODER</div></div>
+                    <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA - PRECIO: 1 DE PODER</div></div>
                     </div>
 			</a><br>
+            <a href='/play/${gameId}/round/${round}/killTroop?reachable=false&price=true&onlyWhite=&numberOfMoves=1' >
+                <div class="aBotton">
+                    <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA - PRECIO: 3 DE PODER</div></div>
+                    </div>
+			</a>
+                </div>
             </div>
             
         </div>

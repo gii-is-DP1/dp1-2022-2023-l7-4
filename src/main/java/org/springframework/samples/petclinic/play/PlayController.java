@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.board.position.PlayerUsePositionSer
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.position.PricedPositionService;
+import org.springframework.samples.petclinic.board.position.auxiliarEntitys.CheckPlayerUsePosition;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
@@ -71,6 +72,15 @@ public class PlayController {
     private PathService pathService;
 
     
+    public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("round", game.getRound());
+        result.addObject("turn", game.getTurnPlayer());
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
+    }
 
 
 
@@ -99,15 +109,9 @@ public class PlayController {
         Player player = game.getCurrentPlayer();
 
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
-        result.addObject("player", game.getCurrentPlayer());
-        result.addObject("turn", game.getTurnPlayer());
-        result.addObject("round", game.getRound());
-        result.addObject("cities", game.getCities());
-        result.addObject("paths", game.getPaths());
+        putPlayerDataInModel(game, player, result);
         result.addObject("positions", initialPositions);
-        result.addObject("vp", game.getPlayerScore(player));
-        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
-
+        
         return result;
     }
 
@@ -147,15 +151,8 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         Player player = game.getCurrentPlayer();
         List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
-        result.addObject("player", game.getCurrentPlayer());
-        result.addObject("round", game.getRound());
-        result.addObject("turn", game.getTurnPlayer());
-        result.addObject("gameId", gameId);
-        result.addObject("cities", game.getCities());
-        result.addObject("paths", game.getPaths());
+        putPlayerDataInModel(game, player, result);
         result.addObject("positions", positions);
-        result.addObject("vp", game.getPlayerScore(player));
-        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
         return result;
     }
 
@@ -174,15 +171,8 @@ public class PlayController {
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Game game=this.gameService.getGameById(gameId);
         Player actualPlayer=game.getCurrentPlayer();
-        result.addObject("player", game.getCurrentPlayer());
-        result.addObject("round", game.getRound());
-        result.addObject("turn", game.getTurnPlayer());
-        result.addObject("gameId", gameId);
-        result.addObject("cities", game.getCities());
-        result.addObject("paths", game.getPaths());
-        result.addObject("vp", game.getPlayerScore(actualPlayer));
-        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
-        if(reachable)
+        putPlayerDataInModel(game, actualPlayer, result);
+        if(reachable==true)
             result.addObject("positions"
             , customListingPositionService.getPresenceTroopPositions(actualPlayer.getId(),false));
         else
@@ -217,6 +207,60 @@ public class PlayController {
                 //res.addObject("message", msg);
             }catch(Exception e){
                 br.rejectValue("position","occupied","already occupy");
+                res=errorRes;
+            }
+            
+        }
+        return res;
+    }
+
+    @GetMapping("{gameId}/round/{round}/killTroop")
+    public ModelAndView initKillTroopForm(@PathVariable Integer gameId,
+    @RequestParam("reachable") Boolean reachable
+    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves
+    ,@RequestParam("onlyWhite") Boolean onlyWhite){
+        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        Game game=this.gameService.getGameById(gameId);
+        Player actualPlayer=game.getCurrentPlayer();
+        putPlayerDataInModel(game, actualPlayer, result);
+        result.addObject("positions",
+        customListingPositionService
+        .getEnemyPositionsByTypeOfGame(actualPlayer.getId(),false, reachable, onlyWhite, game));
+        result.addObject("number",
+         positionServiceRepo.getFreePositionsFromGame(game));
+        result.addObject("onlyWhite", onlyWhite==null);
+        result.addObject("numberOfMoves", numberOfMoves);
+        return result;
+    }
+
+    @PostMapping("{gameId}/round/{round}/killTroop")
+    public ModelAndView processKillTroopForm(@Valid Idposition idposition ,@PathVariable Integer gameId,
+    @RequestParam("reachable") Boolean reachable
+    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves
+    ,@RequestParam("onlyWhite") Boolean onlyWhite,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }else{
+            try{
+                Position position= positionServiceRepo.findPositionById(idposition.getId());
+                Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
+                CheckPlayerUsePosition.playerHasChooseACorrectTypeOfEnemy(player, position, onlyWhite);
+                if(price){
+                    this.pricedPositionService.killEnemyTroopWithPrice(player, position);
+                }
+                else{
+                    this.playerUsePositionService.killTroop(position, player, reachable);
+                }
+                numberOfMoves--; 
+                res=numberOfMoves<1?new ModelAndView("redirect:/play/"+gameId)
+                :new ModelAndView("redirect:/play/"+gameId+"/killTroop?reachable="+reachable+"&price="+price+"&numberOfMoves="+numberOfMoves);
+                //res.addObject("message", msg);
+            }catch(Exception e){
+                br.rejectValue("position","not correct","you cant choose this position");
                 res=errorRes;
             }
             
