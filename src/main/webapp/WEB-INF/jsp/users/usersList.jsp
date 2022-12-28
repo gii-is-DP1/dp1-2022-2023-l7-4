@@ -7,6 +7,7 @@
 
 <petclinic:layout pageName="users">
     <h2>Users</h2>
+    <link rel="stylesheet" href="/resources/styles/tyrants.css">
 
     <table id="usersTable" class="table table-striped">
         <thead>
@@ -52,3 +53,4 @@
 
     <a class="btn btn-default" href='<spring:url value="/users/find" htmlEscape="true"/>'>Find a user</a>
 </petclinic:layout>
+

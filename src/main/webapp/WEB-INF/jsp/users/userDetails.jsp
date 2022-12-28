@@ -5,7 +5,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="users">
-
+    <link rel="stylesheet" href="/resources/styles/tyrants.css">
     <h2>User Information</h2>
 
 
