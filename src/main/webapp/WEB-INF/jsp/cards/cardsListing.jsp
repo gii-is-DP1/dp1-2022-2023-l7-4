@@ -14,6 +14,8 @@
 
     
 
+    
+
 
 <petclinic:layout pageName="cards">
     <div class="contenedor">
@@ -125,8 +127,7 @@
                 <spring:url value="/cards/{cardId}" var="cardUrl">
                     <spring:param name="cardId" value="${card.id}" />
                 </spring:url>
-                <a href="${fn:escapeXml(cardUrl)}">
-                    <img src="/resources/images/cardsModel.png" class="cardImage">
+                    <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')">
                     <div class="topTextName">
                         <b>
                             <c:out value="${card.name}" />
@@ -172,11 +173,70 @@
                             <c:out value="${card.innerCirclePV} " />
                         </b>
                     </div>
-                </a>
+            </div>
+        </div>
+    </c:forEach>
+    <c:forEach var="card" items="${cards}">
+        <div class="popup" id="CardPopUp${card.id}">
+                <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">x</a>
+                <div class="popup-content-box">
+                <div class="principalCard" style="width: 35rem; height: 50rem;">
+                <spring:url value="/cards/{cardId}" var="cardUrl">
+                    <spring:param name="cardId" value="${card.id}" />
+                </spring:url>
+                    <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')">
+                    <div class="topTextName">
+                        <b>
+                            <c:out value="${card.name}" />
+                        </b>
+                    </div>
+                    <div class="topTextCost">
+                        <b>
+                            <c:out value="${card.cost} " />
+                        </b>
+                    </div>
+                    <div class="topTextAspect">
+                        <b>
+                            <c:out value="${card.aspect.name} " />
+                        </b>
+                    </div>
+                    <div class="topTextHalfDeck">
+                        <b>
+                            <c:out value="${card.halfDeck.name} " />
+                        </b>
+                    </div>
+                    <div class="topTextRulesText">
+                        <b>
+                            <c:out value="${card.rulesText} " />
+                        </b>
+                    </div>
+                    <div class="topTextRarity">
+                        <b>
+                            <text id="t${card.id}" style="font-size: 180%;">
+                                <script>
+                                    var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
+                                    document.getElementById("t${card.id}").innerHTML = rarity
+                                </script>
+                            </text>
+                        </b>
+                    </div>
+                    <div class="topTextDeckVP">
+                        <b>
+                            <c:out value="${card.deckVP} " />
+                        </b>
+                    </div>
+                    <div class="topTextInnerCirclePV">
+                        <b>
+                            <c:out value="${card.innerCirclePV} " />
+                        </b>
+                    </div>
+                </div>
             </div>
         </div>
     </c:forEach>
     </div>
+
+    
 
 
     <div class="pagination-box">
@@ -191,6 +251,20 @@
 
 </body>
 </petclinic:layout>
+<script>
+    function showPopUp(popup) {
+       var overlay = document.getElementById(popup);
+       console.log(overlay);
+       overlay.style.visibility= "visible";
+       overlay.style.opacity = 1;
+   }
+
+   function dontShowPopUp(popup) {
+       var overlay = document.getElementById(popup);
+       overlay.style.visibility = "hidden";
+       overlay.style.opacity = 0;
+   }
+</script>
 </html>
 
 <style>
@@ -236,5 +310,43 @@
     box-shadow: 0 0 10px 0 #9f5967 inset, 0 0 10px 4px #9f5967;
     }
 
+    
+.popup {
+    background-color: rgba(231, 238, 245,0.5);
+    height: 80%;
+    width: 85%;
+    overflow-y: scroll;
+    visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    border: 3px;
+    border-radius: 10px;
+    font-size: 2vmax;
+}
+.popup .x {
+    color: red;
+    user-select: none;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    align-self: flex-start;
+    margin-left: 10px;
+}
+
+.popup-content-box{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3px;
+}
+.xdiv{
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+}
 
 </style>
