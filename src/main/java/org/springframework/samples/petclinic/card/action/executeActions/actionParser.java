@@ -5,15 +5,15 @@ import org.springframework.samples.petclinic.card.action.Action;
 import org.springframework.samples.petclinic.card.action.ActionService;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 
-public class actionParser {
+ public class ActionParser {
     
-    @Autowired
-    ActionService aService;
-    public String redirector (Integer cardId){
-    Action accion = aService.getActionByCardId(cardId);
+   /* @Autowired
+    ActionService actionService;
+    public static String redirector (Integer cardId){
+    Action accion = actionService.getActionByCardId(cardId);
     if(accion.getActionName() == ActionName.INFLUENCE){
         return null;
     }
         return null;
-    }
-}
+    } */
+} 

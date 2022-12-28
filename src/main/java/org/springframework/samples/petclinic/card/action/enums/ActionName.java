@@ -21,7 +21,7 @@ public enum ActionName {
     RETURN_PLAYER_PIECE,
     //TROOPS
     DEPLOY_OWN_TROOP,
-    DELOY_WHITE_TROOP_KILLED_BY_ANYONE,
+    DEPLOY_WHITE_TROOP_KILLED_BY_ANYONE,
     CHOOSE_PLAYER_WITH_TROOPS_IN_SITE, //Needs the site of placed spy
     CHOOSE_PLAYER, // any enemy player (show trophy halls)
     DEPLOY_RESURRECTED_TROOP_FROM_PLAYER, //NEEDS the player
