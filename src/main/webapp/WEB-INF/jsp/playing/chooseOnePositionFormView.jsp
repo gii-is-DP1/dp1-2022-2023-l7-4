@@ -89,9 +89,7 @@
                 </div>
             </div>
             <div class="positions-round0">
-                <c:out>MOVIMIENTOS RESTANTES = ${numberOfMoves}</c:out>
-                <c:out>ONLYWHITE ES ${onlyWhite}</c:out> 
-                <c:out>${number}</c:out>
+               <c:out>${special}</c:out> 
                 <div class="position-scroll">
                     <div class="position-totally">
                         <form:form modelAttribute="idposition">

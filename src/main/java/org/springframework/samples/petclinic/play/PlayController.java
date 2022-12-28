@@ -157,13 +157,15 @@ public class PlayController {
     }
 
     @GetMapping("{gameId}/round/{round}/next")
-    public ModelAndView processNextTurn(@PathVariable Integer gameId,@PathVariable Integer round){
+    public ModelAndView processNextTurn(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         gameService.nextPlayerAndSave(game);
         ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
         return result;
     }
-    //?reachable={reachable}&price={price}&numberOfMoves={numberOfMoves}
+
+    /*
+    //ESTO ES PARA GUARDARLO PARA OTRAS OCASIONES
     @GetMapping("{gameId}/round/{round}/placeTroop")
     public ModelAndView initPlaceTroopForm(@PathVariable Integer gameId,
     @RequestParam("reachable") Boolean reachable
@@ -270,5 +272,6 @@ public class PlayController {
         }
         return res;
     }
+     */
     
 }
