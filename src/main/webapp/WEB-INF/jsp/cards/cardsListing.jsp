@@ -127,7 +127,7 @@
                 <spring:url value="/cards/{cardId}" var="cardUrl">
                     <spring:param name="cardId" value="${card.id}" />
                 </spring:url>
-                    <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')">
+                    <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
                     <div class="topTextName">
                         <b>
                             <c:out value="${card.name}" />
@@ -178,7 +178,8 @@
     </c:forEach>
     <c:forEach var="card" items="${cards}">
         <div class="popup" id="CardPopUp${card.id}">
-                <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">x</a>
+        <div class="popup-content">
+                <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
                 <div class="popup-content-box">
                 <div class="principalCard" style="width: 35rem; height: 50rem;">
                 <spring:url value="/cards/{cardId}" var="cardUrl">
@@ -233,6 +234,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </c:forEach>
     </div>
 
@@ -310,13 +312,23 @@
     box-shadow: 0 0 10px 0 #9f5967 inset, 0 0 10px 4px #9f5967;
     }
 
+.popup{
+    position: fixed; /* Stay in place */
+    left: 0;
+    visibility: hidden;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+}
     
-.popup {
-    background-color: rgba(231, 238, 245,0.5);
+.popup-content {
+    background-color: rgba(242, 231, 245, 0.5);
     height: 80%;
     width: 85%;
-    overflow-y: scroll;
-    visibility: hidden;
+    overflow: auto;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -327,10 +339,12 @@
     font-size: 2vmax;
 }
 .popup .x {
-    color: red;
+    color: rgb(255, 0, 0);
     user-select: none;
     width: 40px;
     height: 40px;
+    text-decoration: none;
+    cursor: pointer;
     position: absolute;
     align-self: flex-start;
     margin-left: 10px;
