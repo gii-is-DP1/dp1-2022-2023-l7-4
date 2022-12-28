@@ -6,6 +6,7 @@
 
 <petclinic:layout pageName="actions">
     <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+    <link rel="stylesheet" href="/resources/styles/tyrants.css">
 
     <h2>Actions</h2>    
     <table id="compoundTable" class="table table-striped">

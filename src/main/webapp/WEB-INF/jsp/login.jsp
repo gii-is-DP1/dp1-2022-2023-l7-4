@@ -14,6 +14,9 @@
             <box-icon name='lock-alt' ></box-icon>
             <a class="glyphicon glyphicon-eye-open" style="text-decoration: none; cursor: pointer;" onclick="mostrarContrasena()"></a>
         </div>
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2%;">
+            <p>Don't have an account? <a href="/user/new">Register</a></p>
+        </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
     

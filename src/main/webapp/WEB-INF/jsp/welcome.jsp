@@ -6,7 +6,8 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
-<div class="mainmenu"><h1>Bienvenido ${username}</h1>
+<div class="mainmenu">
+    <img src="/resources/images/logo-menu.png" alt="">
     <a href="/games/list">Jugar</a>
     <div class="botmenu">
         <a href="">Mapas</a>
@@ -20,9 +21,8 @@
         margin: auto;
         width: 60%;
         height: 60%;
-        background-image: url(/resources/images/home_back.png);
-        background-position:0px -650px;
-        background-size:cover;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url(/resources/images/welcome.jpg);;
+        background-size: cover;
         background-repeat: no-repeat;
         -webkit-box-shadow: 0px 27px 20px -20px rgba(0,0,0,0.51);
         -moz-box-shadow: 0px 27px 20px -20px rgba(0,0,0,0.51);
@@ -33,10 +33,8 @@
         align-items: center;
         flex-direction: column;
     }
-    .mainmenu h1{
+    .mainmenu img{
         margin: 5%;
-        color: white;
-        font-size: xx-large;
 
     }
     .mainmenu a{

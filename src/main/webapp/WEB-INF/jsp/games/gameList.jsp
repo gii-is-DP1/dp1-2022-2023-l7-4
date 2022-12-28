@@ -7,6 +7,7 @@
 
 <petclinic:layout pageName="game">
     <h2>Games</h2>
+    <link rel="stylesheet" href="/resources/styles/tyrants.css">
     <a class="btn btn-default" href='<spring:url value="/games/find" htmlEscape="true"/>'>Find a game</a>
     <a class="btn btn-default" href='<spring:url value="/games/create" htmlEscape="true"/>'>Crear una partida</a>
 
