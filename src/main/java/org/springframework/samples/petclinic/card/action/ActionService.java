@@ -31,6 +31,10 @@ public class ActionService {
         return actionRepository.findActionById(id);
     }
 
+    public Action getActionByCardId(Integer cardId) {
+        return actionRepository.findActionByCardId(cardId);
+    }
+
     
 
     
