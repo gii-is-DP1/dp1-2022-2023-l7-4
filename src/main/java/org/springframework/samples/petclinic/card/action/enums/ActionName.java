@@ -61,9 +61,9 @@ public enum ActionName {
     DEVORE_MARKET_CARD_AND_THIS_REPLACES,
     DEVORE_HAND_CARD,
     //JOINER
-    XOR,
+    CHOOSE,
     THEN,
-    OR,
+    ALL,
     ;
 
     
