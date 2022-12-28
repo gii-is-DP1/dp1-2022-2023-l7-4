@@ -123,6 +123,27 @@
                                 </div>
                                 <div class="card-box">
 
+
+                        <form action="/play/${gameId}/round/${round}/next" method="get">
+                            <input type="submit" value="PASAR TURNO" >
+                        </form>
+                        
+                    </div>
+                </div>
+                
+            
+            </div>
+            <a href='/play/${gameId}/round/${round}/basicPlaceTroop' >
+                DESPLEGAR TROPA - 1 DE PODER
+            </a><br>
+            <a href='/play/${gameId}/round/${round}/basicKillTroop' >
+                MATAR TROPA ENEMIGA - 3 DE PODER
+            </a><br>
+            <a href='/play/${gameId}/round/${round}/basicKillTroop' >
+                DEVOLVER ESPÍA ENEMIGO - 3 DE PODER
+            </a>
+            
+
                                 </div>
                             </div>
                             <div class="top-market-cards">
@@ -204,6 +225,7 @@
 
 
             </div>
+
         </div>
     </div>
 </body>

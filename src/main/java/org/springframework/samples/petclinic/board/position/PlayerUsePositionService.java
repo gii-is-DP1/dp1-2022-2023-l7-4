@@ -53,7 +53,6 @@ public class PlayerUsePositionService {
      Exception.class)
     public void killTroop(@Valid Position position,@Valid Player player,Boolean onlyAdjacentPositions) throws DataAccessException
     ,Exception{
-        
         CheckPlayerUsePosition.playerHasChooseANotOwnedPosition(player, position);
 
         if(onlyAdjacentPositions ){

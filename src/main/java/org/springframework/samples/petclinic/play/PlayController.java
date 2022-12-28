@@ -165,13 +165,15 @@ public class PlayController {
     }
 
     @GetMapping("{gameId}/round/{round}/next")
-    public ModelAndView processNextTurn(@PathVariable Integer gameId,@PathVariable Integer round){
+    public ModelAndView processNextTurn(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         gameService.nextPlayerAndSave(game);
         ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
         return result;
     }
-    //?reachable={reachable}&price={price}&numberOfMoves={numberOfMoves}
+
+    /*
+    //ESTO ES PARA GUARDARLO PARA OTRAS OCASIONES
     @GetMapping("{gameId}/round/{round}/placeTroop")
     public ModelAndView initPlaceTroopForm(@PathVariable Integer gameId,
     @RequestParam("reachable") Boolean reachable
@@ -200,7 +202,8 @@ public class PlayController {
     @PostMapping("{gameId}/round/{round}/placeTroop")
     public ModelAndView processPlaceTroopForm(@Valid Idposition idposition,@PathVariable Integer gameId,
     @RequestParam("reachable") Boolean reachable
-    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves, BindingResult br){
+    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves,
+    @PathVariable Integer round, BindingResult br){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -219,7 +222,7 @@ public class PlayController {
                 }
                 numberOfMoves--; 
                 res=numberOfMoves<1?new ModelAndView("redirect:/play/"+gameId)
-                :new ModelAndView("redirect:/play/"+gameId+"/placeTroop?reachable="+reachable+"&price="+price+"&numberOfMoves="+numberOfMoves);
+                :new ModelAndView("redirect:/play/"+gameId+"/round/"+round+"/placeTroop?reachable="+reachable+"&price="+price+"&numberOfMoves="+numberOfMoves);
                 //res.addObject("message", msg);
             }catch(Exception e){
                 br.rejectValue("position","occupied","already occupy");
@@ -250,10 +253,10 @@ public class PlayController {
     }
 
     @PostMapping("{gameId}/round/{round}/killTroop")
-    public ModelAndView processKillTroopForm(@Valid Idposition idposition ,@PathVariable Integer gameId,
+    public ModelAndView processKillTroopForm(@Valid Idposition idposition,@PathVariable Integer gameId,
     @RequestParam("reachable") Boolean reachable
-    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves
-    ,@RequestParam("onlyWhite") Boolean onlyWhite,BindingResult br){
+    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves,
+    @PathVariable Integer round, BindingResult br,@RequestParam("onlyWhite") Boolean onlyWhite){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -262,9 +265,10 @@ public class PlayController {
             res.addObject("message", br.getAllErrors().toString());
         }else{
             try{
-                Position position= positionServiceRepo.findPositionById(idposition.getId());
+                Position position= this.positionServiceRepo.findPositionById(idposition.getId());
+
                 Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
-                CheckPlayerUsePosition.playerHasChooseACorrectTypeOfEnemy(player, position, onlyWhite);
+                //CheckPlayerUsePosition.playerHasChooseACorrectTypeOfEnemy(player, position, onlyWhite);
                 if(price){
                     this.pricedPositionService.killEnemyTroopWithPrice(player, position);
                 }
@@ -273,15 +277,17 @@ public class PlayController {
                 }
                 numberOfMoves--; 
                 res=numberOfMoves<1?new ModelAndView("redirect:/play/"+gameId)
-                :new ModelAndView("redirect:/play/"+gameId+"/killTroop?reachable="+reachable+"&price="+price+"&numberOfMoves="+numberOfMoves);
+                :new ModelAndView("redirect:/play/"+gameId+"/round/"+round+"killTroop?reachable="+reachable+"&price="+price+
+                "&onlyWhite="+onlyWhite+"&numberOfMoves="+numberOfMoves);
                 //res.addObject("message", msg);
             }catch(Exception e){
-                br.rejectValue("position","not correct","you cant choose this position");
+                br.rejectValue("idposition","occupied","already occupy");
                 res=errorRes;
             }
             
         }
         return res;
     }
+     */
     
 }

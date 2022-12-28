@@ -24,9 +24,9 @@ public class PricedPositionService {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public void placeTroopWithPrice(Player player,Position position) throws Exception{
+    public void placeTroopWithPrice(Player player,Position position,Boolean isSpecialCase) throws Exception{
         CheckPlayerUsePosition.playerHasEnoughtPowerToPlaceTroop(player);
-        playerUsePositionService.occupyTroopPosition(position, player, true);
+        playerUsePositionService.occupyTroopPosition(position, player, !isSpecialCase);
         player.setPower(player.getPower()-1);
         playerRepository.save(player);
     }
