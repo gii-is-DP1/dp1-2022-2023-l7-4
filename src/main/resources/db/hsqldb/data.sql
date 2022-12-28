@@ -94,9 +94,9 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
     
     (1,1,'INFLUENCE',2),
     (2,1,'PROMOTE_OWN_PLAYED_CARD',1),
-    (3,1,'SUPPLANT_WHITE_TROOP',null),
+    (3,3,'SUPPLANT_WHITE_TROOP',null),
     (4,1,'POWER',3),
-    (5,1,'XOR',null);
+    (5,1,'CHOOSE',null);
 
 --CARD ACTIONS
 INSERT INTO actions(id,iterations,action_name,value) VALUES 
@@ -107,7 +107,7 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
     (103,1,'POWER',2),--Guardia
     (104,null,null,null),--Name of Card
     (105,null,null,null),--Name of Card
-    (106,null,null,null),--Name of Card
+    (106,1,'CHOOSE',null),--Name of Card
     (107,null,null,null),--Name of Card
     (108,null,null,null),--Name of Card
     (109,null,null,null),--Name of Card
@@ -149,7 +149,10 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
 
 INSERT INTO subactions(action_id,subaction_id) VALUES 
     (5,1), --Name of Card if is the top of the tree
-    (5,2);
+    (5,2),
+    (106,2),
+    (106,3),
+    ;
 
 
 -- ASPECTS
