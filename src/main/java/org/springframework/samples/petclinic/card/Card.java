@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.samples.petclinic.card.action.Action;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +40,8 @@ public class Card {
 
     @NotBlank
     private String story;
+    @ManyToOne
+    private Action action;
 
     @NotBlank
     @Length(min = 0, max = 500)
