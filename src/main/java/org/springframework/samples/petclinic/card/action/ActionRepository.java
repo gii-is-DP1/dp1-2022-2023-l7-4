@@ -9,7 +9,7 @@ public interface ActionRepository extends CrudRepository<Action,Integer>{
     
     Action findActionById(Integer actionId);
 
-    @Query("SELECT card.action FROM CARD card WHERE card.id =?1")
+    @Query("SELECT card.action FROM Card card WHERE card.id =?1")
     Action findActionByCardId(Integer cardId);
 
 }
