@@ -22,8 +22,8 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     @Query("SELECT position FROM Position position WHERE position.player IS NULL AND position.forSpy IS TRUE AND position.game.id = ?1")
     List<Position> findFreeSpyPositionsByGameId(Integer game_id);
 
-    @Query("SELECT position FROM Position position WHERE position.id = :id")
-	public Position findById2(@Param("id") int id);
+    @Query("SELECT position FROM Position position WHERE position.id = ?1")
+	Position findById2(int id);
 
     List<Position> findAllPositionByPathId(int path_id);
 
