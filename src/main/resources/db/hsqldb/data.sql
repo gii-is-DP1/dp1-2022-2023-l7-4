@@ -92,11 +92,19 @@ INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,iterations,action_name,value) VALUES 
     
-    (1,1,'INFLUENCE',2),
-    (2,1,'PROMOTE_OWN_PLAYED_CARD',1),
-    (3,3,'SUPPLANT_WHITE_TROOP',null),
-    (4,1,'POWER',3),
-    (5,1,'CHOOSE',null);
+    (1,1,'RETURN_PLAYER_PIECE',null),
+    (2,1,'PROMOTE_OWN_PLAYED_CARD',null),
+    (3,1,'INFLUENCE',2),
+    (4,1,'KILL_ENEMY_TROOP',null),
+    (5,1,'POWER',2),
+    (6,2,'PLACE_OWN_SPY',null),
+    (7,1,'RETURN_OWN_SPY',null),
+    (8,4,'DEPLOY_OWN_TROOP',null),
+    (9,1,'SUPPLANT_WHITE_TROOP',null),
+    (10,1,'DEPLOY_OWN_TROOP',null),
+    (11,1,'KILL_WHITE_TROOP',null),
+    (12,2,'MOVE_ENEMY_TROOP',null),
+    (13,1,'PLACE_OWN_SPY',null);
 
 --CARD ACTIONS
 INSERT INTO actions(id,iterations,action_name,value) VALUES 
@@ -105,23 +113,23 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
     (101,1,'INFLUENCE',1),--Noble
     (102,1,'INFLUENCE',2),--Lolth
     (103,1,'POWER',2),--Guardia
-    (104,null,null,null),--Name of Card
-    (105,null,null,null),--Name of Card
-    (106,1,'CHOOSE',null),--Name of Card
-    (107,null,null,null),--Name of Card
-    (108,null,null,null),--Name of Card
-    (109,null,null,null),--Name of Card
-    (110,null,null,null),--Name of Card
-    (111,null,null,null),--Name of Card
-    (112,null,null,null),--Name of Card
-    (113,null,null,null),--Name of Card
-    (114,null,null,null),--Name of Card
-    (115,null,null,null),--Name of Card
-    (116,null,null,null),--Name of Card
-    (117,null,null,null),--Name of Card
-    (118,null,null,null),--Name of Card
-    (119,null,null,null),--Name of Card
-    (120,null,null,null),--Name of Card
+    (104,3,'DEPLOY_OWN_TROOP',null),--Cuadrilla de mercenarios
+    (105,1,'PLACE_OWN_SPY',null),--Maestra de espías
+    (106,1,'CHOOSE',null),--Adalid
+    (107,1,'CHOOSE',null),--Inquisidora
+    (108,1,'CHOOSE',null),--Guardia Negro
+    (109,1,'SUPPLANT_WHITE_TROOP',null),--Rastreadora de avanzadilla
+    (110,2,'KILL_WHITE_TROOP',null),--Explorador del UnderDark
+    (111,1,'THEN',null),--Elegida de Lolth
+    (112,1,'POWER',3),--Cazarrecompensas
+    (113,1,'SUPPLANT_WHITE_TROOP',null),--Doppelganger
+    (114,1,'CHOOSE',null),--Maestros de Sorcere
+    (115,1,'CHOOSE',null),--Maestro de Melee-Magthere
+    (116,1,'POWER',1),--Infiltrador
+    (117,3,'CHOOSE',null),--Maestro de armas
+    (118,2,'KILL_ENEMY_TROOP',null),--Filo letal
+    (119,1,'THEN',null),--Miembro del consejo
+    (120,1,'CHOOSE',null),--Hilador de conjuros
     (121,null,null,null),--Name of Card
     (122,null,null,null),--Name of Card
     (123,null,null,null),--Name of Card
@@ -148,8 +156,26 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
     ;
 
 INSERT INTO subactions(action_id,subaction_id) VALUES 
-    (5,1), --Name of Card if is the top of the tree
-    (5,2)
+    (106,2),
+    (106,3),
+    (107,3),
+    (107,4),
+    (108,5),
+    (108,4),
+    (111,1), --Name of Card if is the top of the tree
+    (111,2),
+    (114,6),
+    (114,7),
+    (115,8),
+    (115,9),
+    (117,10),
+    (117,11),
+    (119,12),
+    (119,2),
+    (120,10),
+    (120,13),
+    (120,7)
+    
     ;
 
 
