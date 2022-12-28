@@ -102,6 +102,8 @@ public class Game extends BaseEntity{
     private HalfDeck secondHalfDeck = null;
 
     @ManyToMany
+    @JoinTable(name = "games_cards_in_deck",
+        inverseJoinColumns = @JoinColumn(name = "card_in_deck_id"))
     private List<Card> gameDeck = new ArrayList<>();
     
     @ManyToMany
