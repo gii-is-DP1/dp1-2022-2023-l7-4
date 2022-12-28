@@ -162,28 +162,27 @@
                         </div>
                         <div class="basics-actions-box">
                             <div class="deploy-troop-box">
-
+                                <a href='/play/${gameId}/round/${round}/basicPlaceTroop' >
+                                    DESPLEGAR TROPA - 1 DE PODER
+                                </a>
                             </div>
                             <div class="kill-troop-box">
-
+                                <a href='/play/${gameId}/round/${round}/basicKillTroop' >
+                                    MATAR TROPA ENEMIGA - 3 DE PODER
+                                </a>
                             </div>
                             <div class="return-spy-box">
-
+                                <a href='/play/${gameId}/round/${round}/basicReturnEnemySpy' >
+                                    DEVOLVER ESPÍA ENEMIGO - 3 DE PODER
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="map-box">
-
+                    <motero2k:positionTable>
+                    </motero2k:positionTable>
                 </div>
-
-                    <!--<a href='/play/${gameId}/round/${round}/placeTroop?reachable=true&price=true&numberOfMoves=1'>
-                        <div>DESPLEGAR TROPA - PRECIO: 1 DE PODER</div>
-                    </a>
-                    <br>
-                    <a href='/play/${gameId}/round/${round}/killTroop?reachable=false&price=true&onlyWhite=&numberOfMoves=1'>
-                        <div>MATAR TROPA - PRECIO: 3 DE PODER</div>
-                    </a>-->
             </div>
 
                 <!--POPUPS AQUI!!!-->
@@ -286,11 +285,10 @@ p{
     .playing-box-roundN .map-box{
         width: 50%;
         display: flex;
-        align-items: center;
         justify-content: center;
-        flex-direction: column;
         height: 100%;
         background-color: aquamarine;
+        overflow-y: scroll;
     }
     .card-action-box .market-box{
         width: 100%;
@@ -421,3 +419,7 @@ p{
         background-color:darkslateblue;
     }
 </style>
+
+
+
+

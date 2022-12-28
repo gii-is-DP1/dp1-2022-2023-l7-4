@@ -11,19 +11,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PositionRepository extends CrudRepository<Position,Integer>{
 
-    @Query("SELECT position FROM Position position WHERE position.player IS NULL AND (position.city.game.id != null AND position.city.game.id = ?1 )")
+    @Query("SELECT position FROM Position position WHERE position.player IS NULL AND position.game.id = ?1")
     List<Position> findFreePositionsByGameId(Integer game_id);
     @Query("SELECT city.cityTemplate.name FROM City city WHERE city.id = :id")
     String findCityNameBy(int id);
 
-    @Query("SELECT position FROM Position position WHERE position.player IS NULL AND position.forSpy IS FALSE AND (position.city.game.id = ?1 OR position.path.game.id = ?1)")
+    @Query("SELECT position FROM Position position WHERE position.player IS NULL AND position.forSpy IS FALSE AND position.game.id = ?1")
     List<Position> findFreeTroopPositionsByGameId(Integer game_id);
 
-    @Query("SELECT position FROM Position position WHERE position.player IS NULL AND position.forSpy IS TRUE AND (position.city.game.id = ?1 OR position.path.game.id = ?1)")
+    @Query("SELECT position FROM Position position WHERE position.player IS NULL AND position.forSpy IS TRUE AND position.game.id = ?1")
     List<Position> findFreeSpyPositionsByGameId(Integer game_id);
 
-    @Query("SELECT position FROM Position position WHERE position.id = :id")
-	public Position findById2(@Param("id") int id);
+    @Query("SELECT position FROM Position position WHERE position.id = ?1")
+	Position findById2(int id);
 
     List<Position> findAllPositionByPathId(int path_id);
 
@@ -50,7 +50,7 @@ public interface PositionRepository extends CrudRepository<Position,Integer>{
     @Query("select p from Position p")
     List<Position> findAll();
 
-    @Query("SELECT position FROM Position position WHERE position.player.id =0 AND position.forSpy IS FALSE AND (position.city.game.id = ?1 OR position.path.game.id = ?1)")
+    @Query("SELECT position FROM Position position WHERE position.player.id =0 AND position.forSpy IS FALSE AND position.game.id = ?1")
     List<Position> findAllWhiteTroopPositionsByGameId(Integer game_id);
 
     @Query("SELECT p FROM Position p WHERE p.player.id !=0 AND p.forSpy IS TRUE AND p.player.id != ?1")

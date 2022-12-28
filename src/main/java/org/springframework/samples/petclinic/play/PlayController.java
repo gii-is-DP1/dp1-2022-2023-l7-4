@@ -160,124 +160,13 @@ public class PlayController {
     }
 
     @GetMapping("{gameId}/round/{round}/next")
-    public ModelAndView processNextTurn(@PathVariable Integer gameId,@PathVariable Integer round){
+    public ModelAndView processNextTurn(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         gameService.nextPlayerAndSave(game);
         ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
         return result;
     }
-    //?reachable={reachable}&price={price}&numberOfMoves={numberOfMoves}
-    @GetMapping("{gameId}/round/{round}/placeTroop")
-    public ModelAndView initPlaceTroopForm(@PathVariable Integer gameId,
-    @RequestParam("reachable") Boolean reachable
-    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves){
-        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
-        Game game=this.gameService.getGameById(gameId);
-        Player actualPlayer=game.getCurrentPlayer();
-        result.addObject("player", game.getCurrentPlayer());
-        result.addObject("round", game.getRound());
-        result.addObject("turn", game.getTurnPlayer());
-        result.addObject("gameId", gameId);
-        result.addObject("cities", game.getCities());
-        result.addObject("paths", game.getPaths());
-        result.addObject("vp", game.getPlayerScore(actualPlayer));
-        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVP());
-        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
-        if(reachable)
-            result.addObject("positions"
-            , customListingPositionService.getPresenceTroopPositions(actualPlayer.getId(),false));
-        else
-            result.addObject("positions",positionServiceRepo.getFreeTroopPositionsFromGame(game));
-        result.addObject("numberOfMoves", numberOfMoves);
-        return result;
-    }
 
-    @PostMapping("{gameId}/round/{round}/placeTroop")
-    public ModelAndView processPlaceTroopForm(@Valid Idposition idposition,@PathVariable Integer gameId,
-    @RequestParam("reachable") Boolean reachable
-    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves, BindingResult br){
-        ModelAndView res=null;
-        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
-        if(br.hasErrors()){
-            res=errorRes;
-            res.addObject("message", "Ha ocurrido un error");
-            res.addObject("message", br.getAllErrors().toString());
-        }else{
-            try{
-                Position position= positionServiceRepo.findPositionById(idposition.getId());
-                Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
-                if(price){
-                    this.pricedPositionService.placeTroopWithPrice(player, position);
-                }
-                else{
-                    this.playerUsePositionService.occupyTroopPosition(position, player,reachable);
-                }
-                numberOfMoves--; 
-                res=numberOfMoves<1?new ModelAndView("redirect:/play/"+gameId)
-                :new ModelAndView("redirect:/play/"+gameId+"/placeTroop?reachable="+reachable+"&price="+price+"&numberOfMoves="+numberOfMoves);
-                //res.addObject("message", msg);
-            }catch(Exception e){
-                br.rejectValue("position","occupied","already occupy");
-                res=errorRes;
-            }
-            
-        }
-        return res;
-    }
-
-    @GetMapping("{gameId}/round/{round}/killTroop")
-    public ModelAndView initKillTroopForm(@PathVariable Integer gameId,
-    @RequestParam("reachable") Boolean reachable
-    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves
-    ,@RequestParam("onlyWhite") Boolean onlyWhite){
-        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
-        Game game=this.gameService.getGameById(gameId);
-        Player actualPlayer=game.getCurrentPlayer();
-        putPlayerDataInModel(game, actualPlayer, result);
-        result.addObject("positions",
-        customListingPositionService
-        .getEnemyPositionsByTypeOfGame(actualPlayer.getId(),false, reachable, onlyWhite, game));
-        result.addObject("number",
-         positionServiceRepo.getFreePositionsFromGame(game));
-        result.addObject("onlyWhite", onlyWhite==null);
-        result.addObject("numberOfMoves", numberOfMoves);
-        return result;
-    }
-
-    @PostMapping("{gameId}/round/{round}/killTroop")
-    public ModelAndView processKillTroopForm(@Valid Idposition idposition ,@PathVariable Integer gameId,
-    @RequestParam("reachable") Boolean reachable
-    ,@RequestParam("price") Boolean price ,@RequestParam("numberOfMoves") Integer numberOfMoves
-    ,@RequestParam("onlyWhite") Boolean onlyWhite,BindingResult br){
-        ModelAndView res=null;
-        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
-        if(br.hasErrors()){
-            res=errorRes;
-            res.addObject("message", "Ha ocurrido un error");
-            res.addObject("message", br.getAllErrors().toString());
-        }else{
-            try{
-                Position position= positionServiceRepo.findPositionById(idposition.getId());
-                Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
-                CheckPlayerUsePosition.playerHasChooseACorrectTypeOfEnemy(player, position, onlyWhite);
-                if(price){
-                    this.pricedPositionService.killEnemyTroopWithPrice(player, position);
-                }
-                else{
-                    this.playerUsePositionService.killTroop(position, player, reachable);
-                }
-                numberOfMoves--; 
-                res=numberOfMoves<1?new ModelAndView("redirect:/play/"+gameId)
-                :new ModelAndView("redirect:/play/"+gameId+"/killTroop?reachable="+reachable+"&price="+price+"&numberOfMoves="+numberOfMoves);
-                //res.addObject("message", msg);
-            }catch(Exception e){
-                br.rejectValue("position","not correct","you cant choose this position");
-                res=errorRes;
-            }
-            
-        }
-        return res;
-    }
     @GetMapping("{gameId}/card-action/{cardId}")
     public String playCard (@PathVariable Integer gameId,@PathVariable Integer cardId){
         return null;
