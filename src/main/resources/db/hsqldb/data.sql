@@ -149,9 +149,7 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
 
 INSERT INTO subactions(action_id,subaction_id) VALUES 
     (5,1), --Name of Card if is the top of the tree
-    (5,2),
-    (106,2),
-    (106,3),
+    (5,2)
     ;
 
 
