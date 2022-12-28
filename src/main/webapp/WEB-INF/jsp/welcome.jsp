@@ -6,27 +6,71 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
-    <h2><fmt:message key="welcome"/></h2>
-    <div class="row">
-        <h2>Proyect ${title}</h2>
-        <p><h2>Group ${group}</h2></p>
-        <p><ul>
-        <c:forEach items="${persons}" var= "person">
-            <li>${person.firstName} ${person.lastName}</li> 
-        </c:forEach>
-    </ul></p>
+<div class="mainmenu"><h1>Bienvenido ${username}</h1>
+    <a href="/games/list">Jugar</a>
+    <div class="botmenu">
+        <a href="">Mapas</a>
+        <a href="">Reglas</a>
+        <a href="/cards/all">Cartas</a>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <spring:url value="/resources/images/pets.png" htmlEscape="true" var="petsImage"/>
-            
-            <img class="img-responsive" src="${petsImage}"/>
-            
-            
-        </div>
-        <div>
-            <spring:url value="/resources/images/pewpew.jpg" htmlEscape="true" var="chiefImage"/>
-            <img class="img-responsive" src="${chiefImage}"/>
-        </div>
-    </div>
+</div>
 </petclinic:layout>
+<style>
+    .mainmenu{
+        margin: auto;
+        width: 60%;
+        height: 60%;
+        background-image: url(/resources/images/home_back.png);
+        background-position:0px -650px;
+        background-size:cover;
+        background-repeat: no-repeat;
+        -webkit-box-shadow: 0px 27px 20px -20px rgba(0,0,0,0.51);
+        -moz-box-shadow: 0px 27px 20px -20px rgba(0,0,0,0.51);
+        box-shadow: 0px 27px 20px -20px rgba(0,0,0,0.51);
+        border-radius: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .mainmenu h1{
+        margin: 5%;
+        color: white;
+        font-size: xx-large;
+
+    }
+    .mainmenu a{
+        color: white;
+        margin: auto;
+        margin-bottom: 50px;
+        width: 250px;
+        height: 100px;
+        display: flex;
+        font-size: 5rem;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        border-radius: 10px;
+        border-width: 3px;
+        border-style: solid;
+        border-color: black;
+        background: rgb(95,75,139);
+    }
+    .botmenu{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+
+    }
+    .botmenu a{
+        margin: auto;
+        font-size: 2rem;
+        width: 150px;
+        height: 50px;
+        background: black;
+        margin-bottom: 50px;
+    }
+</style>

@@ -8,6 +8,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <petclinic:layout pageName="games">
+    <link rel="stylesheet" href="/resources/styles/scrollbody.css">
+    <link rel="stylesheet" href="/resources/styles/creategame.css">
+
+
     <div class="create-box">
         
         <!--CAJA IZQUIERDA -> Nuevo juego, reglas, nombre, mapa, primer mazo y segundo mazo-->
@@ -27,7 +31,7 @@
                 <div class="new-name-box new-name-text">
                     <form:form modelAttribute="game" class="form-horizontal" id="game-form" method="post" action="/games/create/plus">
                         <label class="name">Nombre del juego:</label>
-                        <input type="text" name="name" value="${game.name}" style="width: 9vmax;" >
+                        <input type="text" name="name" value="${game.name}" style="width: 9vmax; border-radius: 0.5vmax;" >
                         
                         <input id="selected-map" type="hidden" name="mapTemplate" value="${game.mapTemplate.id}">
                         <input id="selected-deck-1" type="hidden" name="firstHalfDeck" value="${game.firstHalfDeck.id}">
@@ -68,7 +72,7 @@
                         <div style="font-size: 1.2vmax; width: 50%; color: aliceblue;"><b>Primer mazo:</b></div>&nbsp
                         <c:choose>
                             <c:when test="${game.firstHalfDeck != null}">
-                                <div style="width: 49%; margin-bottom: -2px; display: flex; justify-content: center; align-items: center;">
+                                <div style="width: 49%; margin-bottom: -2px; display: flex; justify-content: center; align-items: center;font-size: 1vmax;">
                                     <a onclick="removeDeck(1)" href="JavaScript:void(0)">${game.firstHalfDeck.name}</a>
                                     &nbsp<a onclick="removeDeck(1)" href="JavaScript:void(0)"  style="color: red;">x</a>
                                 </div>
@@ -84,7 +88,7 @@
                         <div style="font-size: 1.2vmax; width: 60%; color: aliceblue;"><b>Segundo mazo:</b></div>&nbsp
                         <c:choose>
                             <c:when test="${game.secondHalfDeck != null}">
-                                <div style="width: 44%; margin-bottom: -2px; display: flex; justify-content: center; align-items: center;">
+                                <div style="width: 44%; margin-bottom: -2px; display: flex; justify-content: center; align-items: center; font-size: 1vmax;">
                                     <a onclick="removeDeck(2)" href="JavaScript:void(0)">${game.secondHalfDeck.name}</a>
                                     &nbsp<a onclick="removeDeck(2)" href="JavaScript:void(0)"  style="color: red;">x</a>
 
@@ -102,37 +106,43 @@
 
         
         <!--Lista de jugadores seleccionados-->
-        <div>
-            <label class="control-label" style="margin-bottom: 0; margin-left: 0;">Players:</label>
-            <c:forEach var="player" items="${game.players}" varStatus="counter">
+        <div class="righ-box">
+            <div class="players-tittle-box">
+                <div style="margin-right: 3px;"><b>JUGADORES</b></div>
+            </div>
+            <div class="players-big-box">
+                <c:forEach var="player" items="${game.players}" varStatus="counter">
+                    <div class="unique-player-selected-box">
+                        <div><b>Jugador ${counter.index +1}:&nbsp</b></div>
+                        <c:choose>
+                            <c:when test="${counter.index == 0}">
+                                <a onclick="alert('no te puedes quitar a ti mismo')"
+                                    href="JavaScript:void(0)" class="username-text-color">${player.user.name}</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)" class="username-text-color">${player.user.name}</a>
+                            </c:otherwise>
+                        </c:choose>
+            
+                    </div>
+                </c:forEach>
                 <div style="margin-left: 20px;">
-                    <label class="control-label" style="margin-bottom: 0; margin-left: 0;">Player ${counter.index +1}:</label>
-        
-                    <c:choose>
-                        <c:when test="${counter.index == 0}">
-                            <a onclick="alert('no te puedes quitar a ti mismo')"
-                                href="JavaScript:void(0)">${player.user.name}</a>
-                        </c:when>
-                        <c:otherwise>
-                            <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)">${player.user.name}</a>
-                        </c:otherwise>
-                    </c:choose>
-        
+                    <c:if
+                        test="${!(game.players.size()  == 4 || game.mapTemplate!=null && game.players.size() >= game.mapTemplate.startingCityCount(game.players.size()+1))}">
+                        <a onclick="showPopUp('usersPopUp')" href="JavaScript:void(0)" class="gameButton" style="margin-top: 1vmax;">Añadir otro jugador</a>
+                    </c:if>
                 </div>
-            </c:forEach>
-            <div style="margin-left: 20px;">
-                <c:if
-                    test="${!(game.players.size()  == 4 || game.mapTemplate!=null && game.players.size() >= game.mapTemplate.startingCityCount(game.players.size()+1))}">
-                    <a onclick="showPopUp('usersPopUp')" href="JavaScript:void(0)" class="gameButton">Elegir otro jugador</a>
-                </c:if>
             </div>
         </div>
+
 
             <div class="popup" id="usersPopUp">
                 <a onclick="dontShowPopUp('usersPopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableUsers}" var="user">
-                        <a onClick="addPlayer('${user.username}')" href="JavaScript:void(0)">${user.username}</a>
+                        <div class="popup-content-box">
+                            <a onClick="addPlayer('${user.username}')" href="JavaScript:void(0)">${user.username}</a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
@@ -140,7 +150,9 @@
                 <a onclick="dontShowPopUp('mapsPopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableMaps}" var="map">
-                        <a onClick="addMap('${map.id}')" href="JavaScript:void(0)">${map}</a>
+                        <div class="popup-content-box">
+                            <a onClick="addMap('${map.id}')" href="JavaScript:void(0)">${map}</a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
@@ -148,15 +160,19 @@
                 <a onclick="dontShowPopUp('decks1PopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableDecks}" var="deck">
-                        <a onClick="addDeck(1,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>
+                        <div class="popup-content-box">
+                            <a onClick="addDeck(1,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
             <div class="popup" id="decks2PopUp">
-                <a onclick="dontShowPopUp('decksPopUp')" class="x">x</a>
+                <a onclick="dontShowPopUp('decks2PopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableDecks}" var="deck">
-                        <a onClick="addDeck(2,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>
+                        <div class="popup-content-box">
+                            <a onClick="addDeck(2,'${deck.id}')" href="JavaScript:void(0)">${deck.name}</a>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
@@ -190,227 +206,6 @@
         </c:otherwise>
     </c:choose>
 </petclinic:layout>
-
-<style>
-    .create-box{
-        background-image: url(/resources/images/round0-background.jpg);
-        background-position: center;
-        background-size:cover;        
-        display: flex;
-        flex-direction: row;
-        border-radius: 1vmax;
-        height: 100%;
-        width: 100%;
-    }
-    .create-box .left-box{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 55%;
-        height: 100%;
-    }
-    .left-box .new-game-and-rules-box{
-        display: flex;
-        flex-direction: row;
-        height: 33%;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .left-box .new-game-box{
-        display: flex;
-        background-color: #601484;
-        width: 60%;
-        height: 100%;
-        align-items: center;
-        justify-content: center;
-        margin-top: 1vmax;
-        margin-left: 1vmax;
-        margin-right: 1vmax;
-        border-radius: 0.5vmax;
-
-    }
-    .left-box .new-game-text{
-        padding: 0.5vmax;
-        display: flex;
-        font-size: 1.8vmax;
-        color: aliceblue;
-        text-align: center;
-    }
-    .left-box .rules-box{
-        background-color: aliceblue;
-        border-radius: 1vmax;
-        padding: 0.4vmax 0.9vmax;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        cursor: pointer;
-        font-size: 1vmax;
-        width: 39%;
-        margin-top: 1vmax;
-        margin-right: 1vmax;
-    }
-    .rules-box .vio{
-        color:#601484;
-        margin-bottom: 0px;
-    }
-    .left-box .new-name-and-map-box{
-        display: flex;
-        flex-direction: row;
-        height: 33%;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .left-box .new-name-box{
-        display: flex;
-        background-color: #601484;
-        width: 58%;
-        height: 100%;
-        align-items: center;
-        justify-content: center;
-        margin: 1vmax;
-        border-radius: 0.5vmax;
-    }
-    .left-box.left-box .new-name-text{
-        padding: 0.5vmax;
-        display: flex;
-        font-size: 1vmax;
-        color: aliceblue;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        padding: 1.25vmax;
-    }
-    .new-name-text .name{
-        font-size: 1.2vmax;
-        margin-bottom: 0%;
-    }
-    .left-box .new-map-box{
-        display: flex;
-        background-color: #601484;
-        width: 39%;
-        height: 100%;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.5vmax;
-        margin-right: 1vmax;
-        margin-top: 1vmax;
-        margin-bottom: 1vmax;
-
-    }
-    .left-box .new-map-text{
-        display: flex;
-        font-size: 1vmax;
-        color: aliceblue;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        padding: 1.2vmax;
-    }
-
-
-
-    .left-box .full-deck-box{
-        background-color: #601484;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 33%;
-        width: 95%;
-        border-radius: 0.5vmax;
-        margin-right: 1vmax;
-        margin-left: 1vmax;
-        margin-bottom: 1vmax;
-    }
-    .left-box .first-second-deck-box{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding-left: 1vmax;
-        padding-bottom: 1vmax;
-        padding-right: 1vmax;
-    }
-    .left-box .deck-title{
-        padding: 1vmax;
-        color: aliceblue;
-        font-size: 1.5vmax;
-    }
-
-    .left-box .deck-box{
-        width: 48%;
-        background-color: rgb(175, 121, 190);
-        padding: 1.2vmax;
-        border-radius: 0.5vmax;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-
-
-
-
-
-
-
-    .popup {
-        background-color: rgba(231, 238, 245,0.5);
-        height: 80%;
-        width: 85%;
-        overflow-y: scroll;
-        visibility: hidden;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        border: 3px;
-        border-radius: 10px;
-        font-size: 2vmax;
-    }
-    .popup .x {
-        color: red;
-        user-select: none;
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        align-self: flex-start;
-    }
-    .popup .ls{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .gameButton {
-            background-color: #601484;
-            border-radius: 1vmax;
-            color: white;
-            padding: 0.4vmax 0.9vmax;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            cursor: pointer;
-            font-size: 1vmax;
-        }
-        .gameError {
-            border: 3px;
-            border-radius: 5px;
-            border-color: red;
-        }
-        a {
-            color : aliceblue;
-        }
-    
-</style>
-
 
 <script>
     function createGame() {
