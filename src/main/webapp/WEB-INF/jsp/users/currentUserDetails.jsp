@@ -13,10 +13,10 @@
     <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
         <div class="form-group has-feedback">
             <petclinic:inputField label="Username" name="username"/>
-            <petclinic:inputField label="Password" name="password" type="hidden"/>
             <petclinic:inputField label="Name" name="name"/>
             <petclinic:inputField label="Email" name="email"/>
             <petclinic:inputField label="Birthdate" name="birthdate"/>
+            <form:input class="form-control" path="password" type="hidden"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

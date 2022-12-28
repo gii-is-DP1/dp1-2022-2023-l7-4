@@ -49,7 +49,7 @@
         align-items: center;
         text-decoration: none;
         border-radius: 10px;
-        border-width: 3px;
+        border-width: 2px;
         border-style: solid;
         border-color: black;
         background: rgb(95,75,139);
@@ -68,7 +68,9 @@
         font-size: 2rem;
         width: 150px;
         height: 50px;
-        background: black;
+        border: 1.5px solid rgba(95,75,139,1); 
+        background: rgb(0,0,0);
+        background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(49,39,72,1) 50%, rgba(95,75,139,1) 100%);
         margin-bottom: 50px;
     }
 </style>
