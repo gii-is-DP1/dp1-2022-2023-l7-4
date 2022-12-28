@@ -14,7 +14,6 @@ import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Chec
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
-import org.springframework.samples.petclinic.card.action.executeActions.ActionParser;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.initializer.InitializePositionService;
