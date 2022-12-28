@@ -1,14 +1,18 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="motero2k" tagdir="/WEB-INF/tags/motero2k" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
+
 <body>
     <div class="fullscreen-game">  
+
+        <!--LOYOUT ZONA SUPERIOR-->
         <div class="tophud">
             <div class="tophud-box tophud-b1">
                 <div class="player-div">
@@ -34,7 +38,9 @@
             </div>
         </div>  
          
+        
         <div class="game-flex">
+            <!--LAYOUT IZQUIERDA (RECURSOS)-->
             <div class="resource-layout">
                 <div class="resources-box">
                     <abbr title="Puntos de influencia: usa los puntos de influencia para comprar cartas del mercado" style="display:flex; width: 100%; height: 100%;">
@@ -87,191 +93,164 @@
                 <div class="resources-box">
                     <abbr title="Puntos de victoria totales" style="display:flex; width: 100%; height: 100%;">
                         <a onclick="showPopUp('VpPopUp')" href="JavaScript:void(0)" class="resource-image vp"></a>
-                        <!-- <div class="resource-image vp"></div> -->
                         <div class="resource-valor">
                             ${totalVp}
                         </div>
                     </abbr>
                 </div>
             </div>
-            <div class="popup" id="VpPopUp">
-                
-                <a onclick="dontShowPopUp('VpPopUp')" href="JavaScript:void(0)" class="x">x</a>
-                <div class="ls">
-                    <p>Puntos por control simple: ${vp.controlVP}</p>
-                    <p>Puntos por control total: ${vp.totalControlVP}</p>
-                    <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
-                    <p>Puntos en mano: ${vp.handVP}</p>
-                    <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
-                    <p>Puntos en mazo: ${vp.deckVP}</p>
-                    <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
+
+            <!--CUADRO GRANDE (ZONA DE JUEGO)-->
+            <div class="playing-box-roundN">
+                <div class="card-action-box">
+                    <div class="market-box">
+                        <div class="market-zone" >
+                            <div class="top-market-cards">
+                                <div class="card-box">
+
+                                </div>
+                                <div class="card-box">
+
+                                </div>
+                                <div class="empty-card-box">
+
+                                </div>
+                                <div class="empty-card-box">
+
+                                </div>
+                                <div class="card-box">
+
+                                </div>
+                                <div class="card-box">
+
+                                </div>
+                            </div>
+                            <div class="top-market-cards">
+                                <c:forEach var="card" items="${game.sellZone}">
+                                    <div class="card-box" title="${card.rulesText}" >
+                                        ${card.name}
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="player-cards-box">
+                        <div class="player-hand-zone-box">
+                            <div class="player-hand-margin-box">
+                                <c:forEach var="card" items="${player.hand}">
+                                        <div class="card-hand-box" title="${card.rulesText}" >
+                                            ${card.name}
+                                        </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="basics-actions-and-resume-box">
+                        <div class="resume-box">
+                            <div class="cards-player-deck">
+
+                            </div>
+                            <div class="cards-player-dicarded">
+
+                            </div>
+                            <div class="cards-player-promoted">
+
+                            </div>
+                            <div class="cards-deck-market">
+
+                            </div>
+                        </div>
+                        <div class="basics-actions-box">
+                            <div class="deploy-troop-box">
+
+                            </div>
+                            <div class="kill-troop-box">
+
+                            </div>
+                            <div class="return-spy-box">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="map-box">
+
+                </div>
+
+                    <!--<a href='/play/${gameId}/round/${round}/placeTroop?reachable=true&price=true&numberOfMoves=1'>
+                        <div>DESPLEGAR TROPA - PRECIO: 1 DE PODER</div>
+                    </a>
+                    <br>
+                    <a href='/play/${gameId}/round/${round}/killTroop?reachable=false&price=true&onlyWhite=&numberOfMoves=1'>
+                        <div>MATAR TROPA - PRECIO: 3 DE PODER</div>
+                    </a>-->
             </div>
 
-            <div class="positions-round0">
-                <div class="position-scroll">
-                    <div class="position-totally">
-                        <h1>WORK IN PROGRESS</h1>
+                <!--POPUPS AQUI!!!-->
+                <div class="popup" id="VpPopUp">
+                    <a onclick="dontShowPopUp('VpPopUp')" href="JavaScript:void(0)" class="x">x</a>
+                    <div class="ls">
+                        <p>Puntos por control simple: ${vp.controlVP}</p>
+                        <p>Puntos por control total: ${vp.totalControlVP}</p>
+                        <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
+                        <p>Puntos en mano: ${vp.handVP}</p>
+                        <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
+                        <p>Puntos en mazo: ${vp.deckVP}</p>
+                        <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                     </div>
                 </div>
-                <a href='/play/${gameId}/round/${round}/placeTroop?reachable=true&price=true&numberOfMoves=1' >
-                <div class="aBotton">
-                    <div class="especial-btn btn-two"><div class="textbtn">DESPLEGAR TROPA - PRECIO: 1 DE PODER</div></div>
-                    </div>
-			</a><br>
-            <a href='/play/${gameId}/round/${round}/killTroop?reachable=false&price=true&onlyWhite=&numberOfMoves=1' >
-                <div class="aBotton">
-                    <div class="especial-btn btn-two"><div class="textbtn">MATAR TROPA - PRECIO: 3 DE PODER</div></div>
-                    </div>
-			</a>
-                </div>
+
+
+
+
             </div>
-            
         </div>
     </div>
-    <style>
-        .textbtn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 100%;
-        }
-        @import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
-
-        .body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        font-family: 'Open Sans Condensed', sans-serif;
-        }
-
-        .box-2 { background-color: #282121; }
-
-        .especial-btn {
-            opacity: 90%;
-            line-height: 50px;
-            height: 50px;
-            text-align: center;
-            width: 100%;
-            cursor: pointer;
-        }
-        .container-button{
-            margin-left: 0%;
-        }
-
-        /*Botton*/
-        .btn-two {
-            color: rgb(197, 172, 63);
-            transition: all 0.5s;
-            position: relative;	
-            background-color: #282121;
-            font-size: 20px;
-            border-radius: 10%;
-        }
-        .btn-two span {
-            z-index: 2;	
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 10%;
-            
-        }
-        .btn-two::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            transition: all 0.5s;
-            border: 1px solid rgba(255, 255, 255, 0.086);
-            background-color: rgba(255, 255, 255, 0);
-            border-radius: 10%;
-
-        }
-        .btn-two::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            transition: all 0.5s;
-            border: 1px solid rgba(202, 189, 189, 0.123);
-            background-color: rgba(200, 177, 177, 0.122);
-            border-radius: 10%;
-
-        }
-        .btn-two:hover::before {
-        transform: rotate(-45deg);
-        background-color: rgba(255, 255, 255, 0.105);
-        border-radius: 10%;
-
-        }
-        .btn-two:hover::after {
-        transform: rotate(45deg);
-        background-color: rgba(255, 255, 255, 0.105);
-        border-radius: 10%;
-
-        }
-        .aBotton{
-            text-align: center;
-        }
-
-    </style>     
-  
 </body>
-
 <style>
-     .popup {
-        background-color: rgba(231, 238, 245,0.5);
-        height: 80%;
-        width: 85%;
-        visibility: hidden;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        border: 3px;
-        border-radius: 10px;
-        font-size: 2vmax;
-    }
-    .popup .ls{
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-    }
-    .popup .x {
-        margin-left: 10px;
-        color: black;
-        user-select: none;
-        width: 50px;
-        height: 50px;
-        position: absolute;
-        align-self: flex-start;
-    }
-    p{
-        margin: 10px;
+    .popup {
+    background-color: rgba(16, 64, 112, 0.814);
+    height: 80%;
+    width: 85%;
+    visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    border: 3px;
+    border-radius: 10px;
+    font-size: 2vmax;
+}
+.popup .ls{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    color: aliceblue;
+}
+.popup .x {
+    margin-left: 10px;
+    color: rgb(255, 0, 0);
+    user-select: none;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    align-self: flex-start;
+    font-family: monospace;
+}
+p{
+    margin: 10px;
 
-    }
-    #icon{
-        width: 50px;
-        height: 50px;
-        color: red;
+}
+#icon{
+    width: 50px;
+    height: 50px;
+    color: red;
 
-    }
+}
 </style>
 <script>
     function showPopUp(popup) {
@@ -286,4 +265,159 @@
     }
 </script>
 
-
+<style>
+    .playing-box-roundN{
+        width: 96%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url(/resources/images/round0-background.jpg);
+        background-position: center;
+        background-size:cover;
+    }
+    .playing-box-roundN .card-action-box{
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+    }
+    .playing-box-roundN .map-box{
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        background-color: aquamarine;
+    }
+    .card-action-box .market-box{
+        width: 100%;
+        height: 52%;
+        background-color: #8a2be2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .market-box .market-zone{
+        width: 93%;
+        height: 92%;
+        background-color: orange;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: column;
+    }
+    .market-zone .top-market-cards{
+        width: 98%;
+        height: 46%;
+        background-color:rgb(255, 255, 255);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .card-box{
+        width: 15%;
+        height: 100%;
+        background-image: url(/resources/images/card_in_sellzone.png);
+        background-position: center;
+        background-size:contain;
+        background-repeat: no-repeat;
+    }
+    .card-hand-box{
+        width: 15%;
+        height: 100%;
+        background-image: url(/resources/images/card_in_hand.png);
+        background-position: center;
+        background-size:contain;
+        background-repeat: no-repeat;
+    }
+    .top-market-cards .empty-card-box{
+        width: 15%;
+        height: 100%;
+    }
+    .card-action-box .player-cards-box{
+        width: 100%;
+        height: 28%;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .card-action-box .player-hand-zone-box{
+        width: 93%;
+        height: 85%;
+        background-color:indigo;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .player-hand-zone-box .player-hand-margin-box{
+        width: 98%;
+        height: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+    .card-action-box .basics-actions-and-resume-box{
+        width: 100%;
+        height: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .card-action-box .resume-box{
+        width: 30%;
+        height: 100%;
+        background-color: chartreuse;
+        display: flex;
+        align-items: center;
+        justify-content:space-evenly;
+        flex-direction: column;
+    }
+    .resume-box .cards-player-deck{
+        width: 90%;
+        height: 20%;
+        background-color: deeppink;
+    }
+    .resume-box .cards-player-dicarded{
+        width: 90%;
+        height: 20%;
+        background-color:gold;
+    }
+    .resume-box .cards-player-promoted{
+        width: 90%;
+        height: 20%;
+        background-color:forestgreen;
+    }
+    .resume-box .cards-deck-market{
+        width: 90%;
+        height: 20%;
+        background-color:rgb(144, 154, 104);
+    }
+    .card-action-box .basics-actions-box{
+        width: 70%;
+        height: 100%;
+        background-color: brown;
+        display: flex;
+        align-items: center;
+        justify-content:space-evenly;
+        flex-direction: column;
+    }
+    .basics-actions-box .deploy-troop-box{
+        width: 90%;
+        height: 30%;
+        background-color: cadetblue;
+    }
+    .basics-actions-box .kill-troop-box{
+        width: 90%;
+        height: 30%;
+        background-color: coral;
+    }
+    .basics-actions-box .return-spy-box{
+        width: 90%;
+        height: 30%;
+        background-color:darkslateblue;
+    }
+</style>

@@ -78,7 +78,7 @@ public class PlayController {
         result.addObject("turn", game.getTurnPlayer());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
-        result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVP());
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
@@ -155,6 +155,8 @@ public class PlayController {
         Player player = game.getCurrentPlayer();
         List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
         putPlayerDataInModel(game, player, result);
+        result.addObject("game", game);
+        result.addObject("player", player);
         result.addObject("positions", positions);
         result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
         result.addObject("vp", game.getPlayerScore(player));

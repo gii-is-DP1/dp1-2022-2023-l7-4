@@ -1,0 +1,41 @@
+.popup {
+    background-color: rgba(25, 91, 158, 0.5);
+    height: 80%;
+    width: 85%;
+    visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    border: 3px;
+    border-radius: 10px;
+    font-size: 2vmax;
+}
+.popup .ls{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.popup .x {
+    margin-left: 10px;
+    color: black;
+    user-select: none;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    align-self: flex-start;
+}
+p{
+    margin: 10px;
+
+}
+#icon{
+    width: 50px;
+    height: 50px;
+    color: red;
+
+}

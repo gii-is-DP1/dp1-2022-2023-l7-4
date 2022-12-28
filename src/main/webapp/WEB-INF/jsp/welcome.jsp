@@ -20,7 +20,10 @@
         margin: auto;
         width: 60%;
         height: 60%;
-        background-color: rgba(95, 75, 139, 0.8);
+        background-image: url(/resources/images/home_back.png);
+        background-position:0px -650px;
+        background-size:cover;
+        background-repeat: no-repeat;
         -webkit-box-shadow: 0px 27px 20px -20px rgba(0,0,0,0.51);
         -moz-box-shadow: 0px 27px 20px -20px rgba(0,0,0,0.51);
         box-shadow: 0px 27px 20px -20px rgba(0,0,0,0.51);
