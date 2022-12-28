@@ -167,7 +167,7 @@
                 </div>
             </div>
             <div class="popup" id="decks2PopUp">
-                <a onclick="dontShowPopUp('decksPopUp')" class="x">x</a>
+                <a onclick="dontShowPopUp('decks2PopUp')" class="x">x</a>
                 <div class="ls">
                     <c:forEach items="${availableDecks}" var="deck">
                         <div class="popup-content-box">

@@ -45,7 +45,7 @@ public class InitializeCardsService {
 	 */
 	public Game loadCards(Game game) throws Exception {
 		initCardsInPlayers(game);
-		initGameDecks(game);
+		initGameDeck(game);
 		initSellzoneInGame(game);
 		initLolthAndGuards(game);
 
@@ -82,11 +82,16 @@ public class InitializeCardsService {
 	}
 
 
-	private void initGameDecks(@Valid Game game) throws Exception {
-		List<Card> gameDeck= new ArrayList<>();
-		gameDeck.addAll(cardService.getCardsByHalfdeck(game.getFirstHalfDeck()));
-		gameDeck.addAll(cardService.getCardsByHalfdeck(game.getSecondHalfDeck()));
-
+	private void initGameDeck(@Valid Game game) throws Exception {
+		List<Card> deckNoRarity= new ArrayList<>();
+		deckNoRarity.addAll(cardService.getCardsByHalfdeck(game.getFirstHalfDeck()));
+		deckNoRarity.addAll(cardService.getCardsByHalfdeck(game.getSecondHalfDeck()));
+		List<Card> gameDeck = new ArrayList<>();
+		for(Card card: deckNoRarity){
+			for(int i = 1; i<= card.getRarity();i++){
+				gameDeck.add(card);
+			}
+		}
 		game.setGameDeck(gameDeck);
 	}
 

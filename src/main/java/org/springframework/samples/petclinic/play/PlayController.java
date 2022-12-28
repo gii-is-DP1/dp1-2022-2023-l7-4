@@ -78,7 +78,7 @@ public class PlayController {
         result.addObject("turn", game.getTurnPlayer());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
-        result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVP());
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
@@ -111,7 +111,10 @@ public class PlayController {
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
         putPlayerDataInModel(game, player, result);
         result.addObject("positions", initialPositions);
-        
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
+        result.addObject("vp", game.getPlayerScore(player));
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
+
         return result;
     }
 
@@ -152,7 +155,12 @@ public class PlayController {
         Player player = game.getCurrentPlayer();
         List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
         putPlayerDataInModel(game, player, result);
+        result.addObject("game", game);
+        result.addObject("player", player);
         result.addObject("positions", positions);
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
+        result.addObject("vp", game.getPlayerScore(player));
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
         return result;
     }
 
@@ -171,8 +179,16 @@ public class PlayController {
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Game game=this.gameService.getGameById(gameId);
         Player actualPlayer=game.getCurrentPlayer();
-        putPlayerDataInModel(game, actualPlayer, result);
-        if(reachable==true)
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("round", game.getRound());
+        result.addObject("turn", game.getTurnPlayer());
+        result.addObject("gameId", gameId);
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVP());
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
+        if(reachable)
             result.addObject("positions"
             , customListingPositionService.getPresenceTroopPositions(actualPlayer.getId(),false));
         else
