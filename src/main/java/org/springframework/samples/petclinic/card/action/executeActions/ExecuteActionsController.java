@@ -168,7 +168,6 @@ public class ExecuteActionsController {
                 numberOfMoves--; 
                 res=numberOfMoves<1?new ModelAndView(REDIRECT+gameId)
                 :new ModelAndView(REDIRECT+gameId+"/deployTroop?withPresence=true&numberOfMoves="+numberOfMoves);
-                res=new ModelAndView("redirect:/play/"+gameId);
             }catch(Exception e){
                 br.rejectValue("position","occupied","already occupy");
                 res=errorRes;
@@ -207,7 +206,6 @@ public class ExecuteActionsController {
                 numberOfMoves--; 
                 res=numberOfMoves<1?new ModelAndView(REDIRECT+gameId)
                 :new ModelAndView(REDIRECT+gameId+"/placeSpy?numberOfMoves="+numberOfMoves);
-                res=new ModelAndView("redirect:/play/"+gameId);
             }catch(Exception e){
                 br.rejectValue("position","occupied","already occupy");
                 res=errorRes;
