@@ -75,6 +75,7 @@ public class BasicActionsController {
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
         result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVP());
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 

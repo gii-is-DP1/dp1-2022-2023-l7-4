@@ -5,14 +5,6 @@ import java.util.List;
 import org.springframework.samples.petclinic.card.Card;
 
 public class CheckCardMovement {
-    
-    public static void sourceIsNotEmpty(List<Card> source) throws Exception{// TODO esto puede que nos interese no preguntarlo.
-        Boolean mustBeTrue = !source.isEmpty();
- 
-        Preconditions.check(mustBeTrue)
-        .formattedError("You tried to move from an empty list of cards. (Have you choose the right one?)");
-    }
-
 
     public static void sellZoneContainsCard(List<Card> sellZone,Card card) throws Exception{
         

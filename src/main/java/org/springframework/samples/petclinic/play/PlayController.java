@@ -14,6 +14,7 @@ import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Chec
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
+import org.springframework.samples.petclinic.game.EndTurnService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.initializer.InitializePositionService;
@@ -70,6 +71,9 @@ public class PlayController {
 
     @Autowired
     private PathService pathService;
+
+    @Autowired
+    private EndTurnService endTurnService;
 
     
     public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
@@ -160,8 +164,7 @@ public class PlayController {
 
     @GetMapping("{gameId}/round/{round}/next")
     public ModelAndView processNextTurn(@PathVariable Integer gameId){
-        Game game=gameService.getGameById(gameId);
-        gameService.nextPlayerAndSave(game);
+        endTurnService.execute(gameId);
         ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
         return result;
     }

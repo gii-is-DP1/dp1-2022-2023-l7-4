@@ -8,7 +8,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
-
+<link rel="stylesheet" href="/resources/styles/cardlisting.css">
 <body>
     <div class="fullscreen-game">  
 
@@ -127,7 +127,67 @@
                             </div>
                             <div class="top-market-cards">
                                 <c:forEach var="card" items="${game.sellZone}">
-                                    <div class="card-box" title="${card.rulesText}" >
+                                    <div class="popup" id="CardPopUp${card.id}">
+                                        <div class="popup-content">
+                                            <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
+                                            <div class="popup-content-box">
+                                                <div class="principalCard" style="width: 23vmax; height: 32vmax">
+                                                <spring:url value="/cards/{cardId}" var="cardUrl">
+                                                    <spring:param name="cardId" value="${card.id}" />
+                                                </spring:url>
+                                                    <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')">
+                                                    <div class="topTextName">
+                                                        <b>
+                                                            <c:out value="${card.name}" />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextCost">
+                                                        <b>
+                                                            <c:out value="${card.cost} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextAspect">
+                                                        <b>
+                                                            <c:out value="${card.aspect.name} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextHalfDeck">
+                                                        <b>
+                                                            <c:out value="${card.halfDeck.name} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextRulesText">
+                                                        <b>
+                                                            <c:out value="${card.rulesText} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextRarity">
+                                                        <b>
+                                                            <text id="t${card.id}" style="font-size: 180%;">
+                                                                <script>
+                                                                    var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
+                                                                    document.getElementById("t${card.id}").innerHTML = rarity
+                                                                </script>
+                                                            </text>
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextDeckVP">
+                                                        <b>
+                                                            <c:out value="${card.deckVP} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextInnerCirclePV">
+                                                        <b>
+                                                            <c:out value="${card.innerCirclePV} " />
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <!--ANDRES EL BOTON DE COMPRAR ES ESTE!!!-->
+                                                <button type="submit"> COMPRAR CARTA</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-box" title="${card.rulesText}" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
                                         ${card.name}
                                     </div>
                                 </c:forEach>
@@ -138,9 +198,69 @@
                         <div class="player-hand-zone-box">
                             <div class="player-hand-margin-box">
                                 <c:forEach var="card" items="${player.hand}">
-                                        <div class="card-hand-box" title="${card.rulesText}" >
-                                            ${card.name}
+                                    <div class="popup" id="CardPopUp${card.id}">
+                                        <div class="popup-content">
+                                            <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
+                                            <div class="popup-content-box">
+                                                <div class="principalCard" style="width: 23vmax; height: 32vmax">
+                                                <spring:url value="/cards/{cardId}" var="cardUrl">
+                                                    <spring:param name="cardId" value="${card.id}" />
+                                                </spring:url>
+                                                    <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')">
+                                                    <div class="topTextName">
+                                                        <b>
+                                                            <c:out value="${card.name}" />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextCost">
+                                                        <b>
+                                                            <c:out value="${card.cost} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextAspect">
+                                                        <b>
+                                                            <c:out value="${card.aspect.name} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextHalfDeck">
+                                                        <b>
+                                                            <c:out value="${card.halfDeck.name} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextRulesText">
+                                                        <b>
+                                                            <c:out value="${card.rulesText} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextRarity">
+                                                        <b>
+                                                            <text id="t${card.id}" style="font-size: 180%;">
+                                                                <script>
+                                                                    var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
+                                                                    document.getElementById("t${card.id}").innerHTML = rarity
+                                                                </script>
+                                                            </text>
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextDeckVP">
+                                                        <b>
+                                                            <c:out value="${card.deckVP} " />
+                                                        </b>
+                                                    </div>
+                                                    <div class="topTextInnerCirclePV">
+                                                        <b>
+                                                            <c:out value="${card.innerCirclePV} " />
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <!--ANDRES EL BOTON DE JUGAR ES ESTE!!!-->
+                                                <button type="submit"> JUGAR CARTA</button>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="card-hand-box" title="${card.rulesText}" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
+                                        ${card.name}
+                                    </div>
                                 </c:forEach>
                             </div>
                         </div>
@@ -249,6 +369,24 @@ p{
     height: 50px;
     color: red;
 
+}
+.popup-content-box{
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    display: flex;
+    align-items: center ;
+    justify-content: space-evenly;
+    margin: 3px;
+}
+.popup-content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center ;
+    border: 3px;
+    border-radius: 10px;
+    font-size: 2vmax;
 }
 </style>
 <script>
@@ -418,7 +556,10 @@ p{
         height: 30%;
         background-color:darkslateblue;
     }
+
 </style>
+
+</html>
 
 
 
