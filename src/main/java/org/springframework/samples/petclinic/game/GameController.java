@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.samples.petclinic.board.map.MapTemplate;
 import org.springframework.samples.petclinic.board.map.MapTemplateService;
-import org.springframework.samples.petclinic.card.CardServiceRepo;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.card.HalfDeck;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
@@ -38,7 +38,7 @@ public class GameController {
 	@Autowired
 	UserService userService;
 	@Autowired
-	CardServiceRepo cardService;
+	CardService cardService;
 
 	@Autowired
 	MapTemplateService mapTemplateService;

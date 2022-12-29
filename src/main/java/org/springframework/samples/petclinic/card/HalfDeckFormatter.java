@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class HalfDeckFormatter implements Formatter<HalfDeck> {
 
-	private final CardServiceRepo cardService;
+	private final CardService cardService;
 
 	@Autowired
-	public HalfDeckFormatter(CardServiceRepo cardService) {
+	public HalfDeckFormatter(CardService cardService) {
 		this.cardService = cardService;
 	}
 

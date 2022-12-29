@@ -9,55 +9,28 @@
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
 
     <h2>Actions</h2>    
-    <table id="compoundTable" class="table table-striped">
-        <thead>
-            <tr>
-                <th>JOINER</th>
-                <th>SUBACTIONS</th>
-                
-            </tr>
-        </thead>
-    <c:forEach items="${actions}" var="action">
-            <c:if test="${action.isSimple()=='false'}">
-                        <tr>
-                            <td>
-                                <c:out value="${action.actionName}"/>
-                            </td>
-                            <td>
-                                <c:out value="${action}"/>
-                            </td>
-                        </tr>
-                </c:if>
-    </c:forEach>
-</table>
+
+
 <table id="compoundTable" class="table table-striped">
     <thead>
         <tr>
             <th>Id</th>
-            <th>iterations</th>
-            <th>name</th>
-            <th>value</th>
-            <th>aspect</th>
+            <th>rule text</th>
+            <th>full</th>
                 
         </tr>
         </thead>
-        <c:forEach items="${actions}" var="action">
-            <c:if test="${action.isSimple()=='true'}">
+        <c:forEach items="${cards}" var="card">
+            <c:if test="${card.action!=null}">
                 <tr>
                     <td>
-                        <c:out value="${action.id}"/>
+                        <c:out value="${card.action.id}"/>
                     </td>
                     <td>
-                        <c:out value="${action.iterations}"/>
+                        <c:out value="${card.rulesText}"/>
                     </td>
                     <td>
-                        <c:out value="${action.actionName}"/>
-                    </td>
-                    <td>
-                        <c:out value="${action.value}"/>
-                    </td>
-                    <td>
-                        <c:out value="${action.aspect}"/>
+                        <c:out value="${card.action}"/>
                     </td>
                 </tr>
             </c:if>

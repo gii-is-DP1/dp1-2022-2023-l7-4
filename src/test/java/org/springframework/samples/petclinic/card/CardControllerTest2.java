@@ -28,7 +28,7 @@ public class CardControllerTest2 {
     private static final int TEST_CARD_ID = 7;
 
     @MockBean
-    private CardServiceRepo cardServiceRepo;
+    private CardService cardServiceRepo;
 
     @Autowired
     private MockMvc mockMvc;

@@ -23,10 +23,10 @@ public class CardController {
 	private String HALFDECK_LISTING_VIEW="cards/halfDecksListing";
 
 
-    private CardServiceRepo cardService;
+    private CardService cardService;
 
     @Autowired
-    public CardController(CardServiceRepo cardService){
+    public CardController(CardService cardService){
         this.cardService = cardService;
     }
 
