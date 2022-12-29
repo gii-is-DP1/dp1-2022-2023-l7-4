@@ -17,8 +17,11 @@ public class MarketMoveCardsService {
 
     public void moveFromGameDeckToSellZone(@Valid Game game){// if game deck is empty the game will finish in the next round
         List<Card> gameDeck = game.getGameDeck();
-        Card card = gameDeck.get(randomBetween(0,gameDeck.size()-1));
-        moveSelectedCardAndSave(card,gameDeck,game.getSellZone(),game);   
+        if(gameDeck.size()>0){
+
+            Card card = gameDeck.get(randomBetween(0,gameDeck.size()-1));
+            moveSelectedCardAndSave(card,gameDeck,game.getSellZone(),game);   
+        }
     }
 
     public void devourCardFromSellZone(@Valid Card card,@Valid Game game){
