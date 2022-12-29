@@ -9,6 +9,7 @@ import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityRepository;
 import org.springframework.samples.petclinic.board.sector.path.PathRepository;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,6 +111,36 @@ public class CustomListingPositionService {
             .filter(pos->(searchWhites & pos.getPlayer().isWhite())
              || (!searchWhites & !pos.getPlayer().isWhite())).collect(Collectors.toList());
         return res;
+    }
+
+    @Transactional(readOnly=true)
+    public List<Position> getAvailableEnemyPositionsByGame(Player player,Game game,String typeOfEnemy
+    ,Boolean withPresence,Boolean forSpy){
+        if(typeOfEnemy.toLowerCase().trim().equals("white"))
+            return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, true, game);
+        else if(typeOfEnemy.toLowerCase().trim().equals("player"))
+            return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, false, game);
+        else
+            return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, null, game);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getAvailableFreeTroopPositionsByGame(Player player,Game game
+    ,Boolean withPresence){
+        List<Position> result=new ArrayList<>();
+        if(withPresence){
+            result=getPresenceTroopPositions(player.getId(),false);
+            if(result.isEmpty()) result=this.positionServiceRepo.getFreePositionsFromGame(game);
+        }
+        return result;
+    }
+
+    @Transactional(readOnly=true)
+    public Boolean isSpecialCaseOfFreeTroopPositions(Game game,Boolean withPresence){
+        if(!withPresence) return false;
+        else{
+            return getPresencePositions(game.getCurrentPlayer().getId(),false).isEmpty();
+        }
     }
 
     @Transactional(readOnly = true)
