@@ -103,7 +103,9 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
     (10,1,'DEPLOY_OWN_TROOP',null),
     (11,1,'KILL_WHITE_TROOP',null),
     (12,2,'MOVE_ENEMY_TROOP',null),
-    (13,1,'PLACE_OWN_SPY',null);
+    (13,1,'PLACE_OWN_SPY',null),
+    (14,1,'POWER',4),
+    (15,1,'THEN',null);
 
 --CARD ACTIONS
 INSERT INTO actions(id,iterations,action_name,value) VALUES 
@@ -119,7 +121,7 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
     (108,1,'CHOOSE',null),--Guardia Negro
     (109,1,'SUPPLANT_WHITE_TROOP',null),--Rastreadora de avanzadilla
     (110,2,'KILL_WHITE_TROOP',null),--Explorador del UnderDark
-    (111,1,'THEN',null),--Elegida de Lolth
+    (111,1,'ALL',null),--Elegida de Lolth
     (112,1,'POWER',3),--Cazarrecompensas
     (113,1,'SUPPLANT_WHITE_TROOP',null),--Doppelganger
     (114,1,'CHOOSE',null),--Maestros de Sorcere
@@ -155,8 +157,10 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
     ;
 
 INSERT INTO subactions(action_id,subaction_id) VALUES 
-    (106,2),
+    (15,7),
+    (15,14),
     (106,3),
+    (106,2),
     (107,3),
     (107,4),
     (108,5),
@@ -164,7 +168,7 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (111,1), --Name of Card if is the top of the tree
     (111,2),
     (114,6),
-    (114,7),
+    (114,15),
     (115,8),
     (115,9),
     (117,10),
@@ -198,8 +202,8 @@ VALUES      ('Soldado',0,'Los soldados defienden a sus superiores contra todos l
             ('Guardia Negro',3,'Patrullan el Underdark, exterminando a intrusos perdidos, inconscientes y temerarios.','Elige una Opcion: + 2 poder| Asesina tropa',1,3,4,1,3,108),
             ('Rastreadora de avanzadilla',3,'Se infiltran en el entramado de la sociedad drow sin perturbar ni una sola hierba','Suplanta 1 tropa blanca',1,3,3,1,2,109),
             ('Explorador del UnderDark',3,'Su conocimiento del Underdark no tiene parangón; ningún rincón esta a salvo de sus espadas','Asesina 2 tropas blancas',2,4,2,1,2,110),
-            ('Elegida de Lolth',4,'<<No pienses siquiera en desobedecer. ¡Es la voluntad de la Reina Araña!>>','Devuelve 1 tropa enemíga o espía enemigo.Al final del turno, asciende carta jugada durante este turno',2,4,2,1,2,111),
-            ('Cazarrecompensas',4,'Toda vida tiene un precio','.+3 Poder',2,4,2,1,3,112),
+            ('Elegida de Lolth',4,'<<No pienses siquiera en desobedecer. ¡Es la voluntad de la Reina Araña!>>','Devuelve 1 tropa enemíga o espía enemigo Al final del turno, asciende carta jugada durante este turno',2,4,2,1,2,111),
+            ('Cazarrecompensas',4,'Toda vida tiene un precio','+3 Poder',2,4,2,1,3,112),
             ('Doppelganger',5,'<<Bonita vida la tuya. Creo que me la voy a quedar>>','Suplanta 1 tropa blanca',3,5,2,1,3,113),
             ('Maestros de Sorcere',5,'Las maestras de Sorcere cumplen dos propósitos; enseñar a los estudiantes y garantizar la lealtad a Lolth','Elige una opción:Pon 2 espías| Devuelve 1 de tus espías=> +4 poder',2,5,1,1,4,114),
             ('Maestro de Melee-Magthere',5,'Las instrucciones de Melee-Magthere se cuentan entre los mejores guerreros de Menzoberranzan','Elige una opción:Despliega 4 tropas|Suplanta 1 tropa blanca',2,5,2,1,2,115),
