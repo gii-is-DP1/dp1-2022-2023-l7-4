@@ -273,28 +273,58 @@
                             <div class="cards-player-dicarded">
 
                             </div>
-                            <div class="cards-player-promoted">
-
-                            </div>
-                            <div class="cards-deck-market">
+                            <div class="cards-player-played">
 
                             </div>
                         </div>
                         <div class="basics-actions-box">
                             <div class="deploy-troop-box">
-                                <a href='/play/${gameId}/round/${round}/basicPlaceTroop' >
-                                    DESPLEGAR TROPA - 1 DE PODER
-                                </a>
+                                <div class="power-cost-box" style="opacity: 0%; margin-left: 0.3vmax;">
+                                </div>
+                                <div class="power-cost-box" style="opacity: 0%;">
+                                </div>
+                                <div class="power-cost-box">
+                                </div>
+                                <div class="deploy-explication-box"> 
+                                    <b>DESPLEGAR TROPA</b>
+                                </div>
+                                <div class="do-button-box">
+                                    <a href='/play/${gameId}/round/${round}/basicPlaceTroop' class="do-button">
+                                        REALIZAR
+                                    </a>
+                                </div>
                             </div>
                             <div class="kill-troop-box">
-                                <a href='/play/${gameId}/round/${round}/basicKillTroop' >
-                                    MATAR TROPA ENEMIGA - 3 DE PODER
-                                </a>
+                                <div class="power-cost-box" style="margin-left: 0.3vmax;">
+                                </div>
+                                <div class="power-cost-box">
+                                </div>
+                                <div class="power-cost-box">
+                                </div>
+                                <div class="kill-explication-box"> 
+                                    <b>ELIMINAR TROPA ENEMIGA</b>
+                                </div>
+                                <div class="do-button-box">
+                                    <a href='/play/${gameId}/round/${round}/basicKillTroop'  class="do-button">
+                                        REALIZAR
+                                    </a>
+                                </div>
                             </div>
                             <div class="return-spy-box">
-                                <a href='/play/${gameId}/round/${round}/basicReturnEnemySpy' >
-                                    DEVOLVER ESPÍA ENEMIGO - 3 DE PODER
-                                </a>
+                                <div class="power-cost-box" style=" margin-left: 0.3vmax;">
+                                </div>
+                                <div class="power-cost-box">
+                                </div>
+                                <div class="power-cost-box">
+                                </div>
+                                <div class="return-explication-box"> 
+                                    <b>DEVOLVER ESPÍA ENEMIGO</b>
+                                </div>
+                                <div class="do-button-box">
+                                    <a href='/play/${gameId}/round/${round}/basicReturnEnemySpy' class="do-button">
+                                        REALIZAR
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -318,10 +348,6 @@
                         <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                     </div>
                 </div>
-
-
-
-
             </div>
         </div>
     </div>
@@ -431,7 +457,6 @@ p{
     .card-action-box .market-box{
         width: 100%;
         height: 52%;
-        background-color: #8a2be2;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -476,7 +501,6 @@ p{
     .card-action-box .player-cards-box{
         width: 100%;
         height: 28%;
-        background-color: black;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -506,7 +530,6 @@ p{
     .card-action-box .resume-box{
         width: 30%;
         height: 100%;
-        background-color: chartreuse;
         display: flex;
         align-items: center;
         justify-content:space-evenly;
@@ -522,39 +545,106 @@ p{
         height: 20%;
         background-color:gold;
     }
-    .resume-box .cards-player-promoted{
+    .resume-box .cards-player-played{
         width: 90%;
         height: 20%;
         background-color:forestgreen;
-    }
-    .resume-box .cards-deck-market{
-        width: 90%;
-        height: 20%;
-        background-color:rgb(144, 154, 104);
-    }
+    }   
     .card-action-box .basics-actions-box{
         width: 70%;
         height: 100%;
-        background-color: brown;
         display: flex;
         align-items: center;
         justify-content:space-evenly;
         flex-direction: column;
     }
     .basics-actions-box .deploy-troop-box{
-        width: 90%;
+        width: 92%;
         height: 30%;
-        background-color: cadetblue;
+        background-color: rgb(25, 24, 24);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.7vmax;
+    }
+    .power-cost-box{
+        width: 6%;
+        height: 60%;
+        background-image: url(/resources/images/power.png);
+        background-position: center;
+        background-size:contain;
+        background-repeat: no-repeat;
+    }
+    .do-button-box{
+        height: 60%;
+        width: 27%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0.5vmax;
+    }
+    .do-button{
+        height: 100%;
+        width: 85%;
+        background-color: #8a2be2;
+        border-radius: 1vmax;
+        border-color: rgb(52, 10, 83);
+        border-style: solid;
+        border-width: 0.2vmax;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: black;
+        font-size: 1.1vmax;
+    }
+    .deploy-troop-box .deploy-explication-box{
+        width: 50%;
+        height: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        font-size: 1.05vmax;
+        margin-left: 1vmax;
+        color: aliceblue;
     }
     .basics-actions-box .kill-troop-box{
-        width: 90%;
+        width: 92%;
         height: 30%;
-        background-color: coral;
+        background-color: rgb(25, 24, 24);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.7vmax;
+    }
+    .kill-troop-box .kill-explication-box{
+        width: 50%;
+        height: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        font-size: 1.05vmax;
+        margin-left: 1vmax;
+        color: aliceblue;
     }
     .basics-actions-box .return-spy-box{
-        width: 90%;
+        width: 92%;
         height: 30%;
-        background-color:darkslateblue;
+        background-color:rgb(25, 24, 24);
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        border-radius: 0.7vmax;
+    }
+    .return-spy-box .return-explication-box{
+        width: 50%;
+        height: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        font-size: 1.05vmax;
+        margin-left: 1vmax;
+        color: aliceblue;
+
     }
 
 </style>

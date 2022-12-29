@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.card.Card;
-import org.springframework.samples.petclinic.card.CardServiceRepo;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.cardsMovement.PlayerMoveCardsService;
 import org.springframework.samples.petclinic.checkers.Preconditions;
 import org.springframework.samples.petclinic.game.Game;
@@ -24,7 +24,7 @@ public class InitializeCardsService {
     private PlayerService playerService;
 
 	@Autowired
-	private CardServiceRepo cardService;
+	private CardService cardService;
 	
 	@Autowired
 	private GameService gameService;

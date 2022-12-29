@@ -96,6 +96,7 @@
                             <motero2k:positionTable>
                             </motero2k:positionTable>
                         </form:form>
+                        <a href="/play/${gameId}/round/${round}">CANCELAR</a>
                     </div>
                 </div>
 
