@@ -254,7 +254,7 @@
                                                     </div>
                                                 </div>
                                                 <!--ANDRES EL BOTON DE JUGAR ES ESTE!!!-->
-                                                <button type="submit"> JUGAR CARTA</button>
+                                                <a type="submit" href="${round}/play-card/${card.id}"> JUGAR CARTA</a>
                                             </div>
                                         </div>
                                     </div>

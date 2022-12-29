@@ -1,7 +1,6 @@
 package org.springframework.samples.petclinic.card.action.executeActions;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -11,14 +10,16 @@ import org.springframework.samples.petclinic.board.position.PlayerUsePositionSer
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
+import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.action.Action;
 import org.springframework.samples.petclinic.card.action.ActionService;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
+import org.springframework.samples.petclinic.cardsMovement.PlayerMoveCardsService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-@RequestMapping("play")
+@RequestMapping("play/{gameId}/round/{round}")
 @Controller
 public class ExecuteActionsController {
     @Autowired
@@ -42,24 +43,48 @@ public class ExecuteActionsController {
 
     @Autowired
     PlayerUsePositionService playerUsePositionService;
+    @Autowired
+    PlayerService playerService;
+    @Autowired
+    PlayerMoveCardsService playerMoveCardsService;
 
     private final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
 
 
-    String REDIRECT = "redirect:/play/";
+    String REDIRECT =       "redirect:/play/{gameId}/round/{round}";
+    String GAME_MAIN_VIEW = "redirect:/play/{gameId}";
+    String EXECUTE_ACTION = "redirect:/play/{gameId}/round/{round}/execute-action";
 
-    @GetMapping("{gameId}/{actionId}")
-    public String gameInfluence(@PathVariable Integer gameId,@PathVariable Integer actionId){
+    @GetMapping("play-card/{cardId}")
+    public String generateGameAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "cardId") Card card){
+        Action currentAction = Action.of(card.getAction());
+        actionService.save(currentAction);
+        game.setCurrentAction(currentAction);
+        playerMoveCardsService.moveFromHandToPlayed(card, game.getCurrentPlayer());
+        gameService.save(game);
+        return EXECUTE_ACTION;
+    }
+    @GetMapping("execute-action")
+    public String executeAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "gameId") Action gameAction){
+        Player player = game.getCurrentPlayer();
+        Action currentAction = game.getCurrentAction();
         
-        Action action = actionService.getActionById(actionId);
-        Game game= gameService.getGameById(gameId);
+
+        Action action = getNextAction(currentAction);
+        if(action == null)  {
+            game.setCurrentAction(null);
+            gameService.save(game);
+            actionService.remove(currentAction);
+            return GAME_MAIN_VIEW;
+        }
+        actionService.save(action);
 
         if(action.getActionName() == ActionName.POWER){
             AutomaticActions.earnPower(game, action); 
         }else if(action.getActionName() == ActionName.INFLUENCE){
             AutomaticActions.earnInfluence(game,action);
         }else if(action.getActionName()== ActionName.DEPLOY_OWN_TROOP){
-            return REDIRECT+gameId+"/deployTroop?withPresence=true&numberOfMoves="+action.getIterations();
+            return REDIRECT+"/deployTroop?withPresence=true&numberOfMoves="+action.getIterations();
         }else if(action.getActionName()== ActionName.PLACE_OWN_SPY){
             return null;
         }else if(action.getActionName()== ActionName.CHOOSE){
@@ -67,7 +92,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
             return null;
         }else if(action.getActionName()== ActionName.KILL_ENEMY_TROOP){
-            return REDIRECT+gameId+"/killTroop?withPresence=true&numberOfMoves="+action.getIterations();
+            return REDIRECT+"/killTroop?withPresence=true&numberOfMoves="+action.getIterations();
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_PIECE){
             return null;
         }else if(action.getActionName()== ActionName.ALL){
@@ -105,9 +130,27 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_TOTAL_CONTROLLED_SITE){
             return null;
         }
-       
-       return REDIRECT + gameId;
+        System.out.println(player);
+        playerService.savePlayer(player);
+        System.out.println(2);
+        gameService.saveGame(game);
+        return EXECUTE_ACTION;
     }
+
+    public static Action getNextAction(Action action) {
+        if (action.getIterations() == 0) {
+          return null;
+        }
+        for (Action subaction : action.getSubactions()) {
+          Action next = getNextAction(subaction);
+          if (next != null) {
+            return next;
+          }
+        }
+        action.decrementIterations();
+        return action;
+      }
+
 
     public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
         result.addObject("player", game.getCurrentPlayer());
@@ -120,7 +163,7 @@ public class ExecuteActionsController {
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
-    @GetMapping("{gameId}/deployTroop")
+    @GetMapping("deployTroop")
     public ModelAndView initDeployTroopForm(@PathVariable Integer gameId
     ,@RequestParam("withPresence") Boolean withPresence,@RequestParam("numberOfMoves") Integer numberOfMoves){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
@@ -145,7 +188,7 @@ public class ExecuteActionsController {
         return result;
     }
 
-    @PostMapping("{gameId}/deployTroop")
+    @PostMapping("deployTroop")
     public ModelAndView processDeployTroopForm(@Valid Idposition idposition,
     @PathVariable Integer gameId,@RequestParam("withPresence") Boolean withPresence,
     @RequestParam("numberOfMoves") Integer numberOfMoves, BindingResult br){
@@ -177,7 +220,7 @@ public class ExecuteActionsController {
         return res;
     }
 
-    @GetMapping("{gameId}/placeSpy")
+    @GetMapping("placeSpy")
     public ModelAndView initPlaceSpyForm(@PathVariable Integer gameId
     ,@RequestParam("numberOfMoves") Integer numberOfMoves){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
@@ -189,7 +232,7 @@ public class ExecuteActionsController {
         return result;
     }
 
-    @PostMapping("{gameId}/placeSpy")
+    @PostMapping("placeSpy")
     public ModelAndView processPlaceSpyForm(@Valid Idposition idposition,
     @PathVariable Integer gameId,
     @RequestParam("numberOfMoves") Integer numberOfMoves, BindingResult br){

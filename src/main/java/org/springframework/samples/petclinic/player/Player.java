@@ -116,6 +116,14 @@ public class Player extends BaseEntity{
         return this.getHand().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
     }
 
+    public void earnInfluence(Integer n){
+        Integer newInfluence = influence+n;
+        influence = newInfluence<0?0:newInfluence;
+    }
+    public void earnPower(Integer n){
+        Integer newPower = power+n;
+        power = newPower<0?0:newPower;
+    }
     @Override
     public String toString() {
         return name;

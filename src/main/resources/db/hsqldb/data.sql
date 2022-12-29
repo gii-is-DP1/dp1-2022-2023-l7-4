@@ -108,7 +108,7 @@ INSERT INTO actions(id,iterations,action_name,value) VALUES
     (15,1,'THEN',null);
 
 --CARD ACTIONS
-INSERT INTO actions(id,iterations,action_name,value) VALUES 
+INSERT INTO actions(id,original_iterations,action_name,value) VALUES 
     
     (100,1,'POWER',1),--Soldado
     (101,1,'INFLUENCE',1),--Noble

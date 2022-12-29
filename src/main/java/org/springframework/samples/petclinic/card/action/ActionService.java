@@ -35,6 +35,14 @@ public class ActionService {
         return actionRepository.findActionByCardId(cardId);
     }
 
+    public void save(Action action) {
+        actionRepository.save(action);
+    }
+
+    public void remove(Action currentAction) {
+        actionRepository.delete(currentAction);
+    }
+
     
 
     

@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.card.Aspect;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -34,15 +35,20 @@ public class Action extends BaseEntity {
     
     Integer iterations;
 
+    Integer originalIterations;
+
     Integer value;
+
     @ManyToOne
-    Aspect aspect; //some actions ask for cards only from x aspect
+    Position position;
+    
+
+
+    @ManyToOne
+    Aspect aspect;
+
     @ManyToMany
-    @JoinTable(
-        name = "subactions",
-        // joinColumns = @JoinColumn(name="subaction_id",unique = false),
-        inverseJoinColumns = @JoinColumn(name="subaction_id",unique = false)
-    )
+    @JoinTable(name = "subactions",inverseJoinColumns = @JoinColumn(name="subaction_id",unique = false))
     List<Action> subactions= new ArrayList<>();
 
     public Boolean isSimple(){
@@ -60,4 +66,41 @@ public class Action extends BaseEntity {
         return result;
 
     }
+
+    public void reset(){
+        position = null;
+        subactions.forEach(subaction-> subaction.reset());
+    }
+
+ 
+
+    public Boolean hasNoMoreIterations(){
+        return getIterations()<0;
+    }
+
+
+    public static Action of(Action action) {
+        Action copy = new Action();
+        copy.setActionName(action.getActionName());
+        copy.description = action.getDescription();
+        copy.setPosition(action.getPosition());
+        copy.setValue(action.getValue());
+        copy.setAspect(action.getAspect());
+        copy.setIterations(action.getOriginalIterations());
+        copy.setOriginalIterations(action.getOriginalIterations());
+        for (Action subaction : action.getSubactions()) {
+          copy.getSubactions().add(of(subaction));
+        }
+        return copy;
+      }
+
+    public void decrementIterations() {
+        iterations--;
+        if (iterations == 0) {
+          // Todas las subacciones han llegado a cero, se reinician
+          for (Action subaction : subactions) {
+            subaction.setIterations(subaction.getOriginalIterations());
+          }
+        }
+      }
 }
