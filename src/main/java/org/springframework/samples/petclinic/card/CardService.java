@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CardServiceRepo {
+public class CardService {
     
     CardRepository cardRepository;
 
     @Autowired
-    public CardServiceRepo(CardRepository cardRepository){
+    public CardService(CardRepository cardRepository){
         this.cardRepository = cardRepository;
     }
 
@@ -62,6 +62,10 @@ public class CardServiceRepo {
 
     public List<Card> getCardsByHalfdeck(HalfDeck halfDeck) {
         return cardRepository.findCardByHalfDeck(halfDeck);
+    }
+
+    public List<Card> getAllCards() {
+        return (List<Card>) cardRepository.findAll();
     }
 
     

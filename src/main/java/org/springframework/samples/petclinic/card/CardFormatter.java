@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class CardFormatter implements Formatter<Card> {
 
-	private final CardServiceRepo cardService;
+	private final CardService cardService;
 
 	@Autowired
-	public CardFormatter(CardServiceRepo cardService) {
+	public CardFormatter(CardService cardService) {
 		this.cardService = cardService;
 	}
 

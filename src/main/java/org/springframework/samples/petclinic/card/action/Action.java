@@ -51,7 +51,13 @@ public class Action extends BaseEntity {
 
     @Override
     public String toString() {
-         if(isSimple()) return actionName.toString();
-        else return actionName.toString()+ this.subactions.toString();
+        String result = ""; 
+        
+        if(value !=null) result += value+" " ;
+        result += actionName;
+        if(iterations !=null && iterations >1) result += " ("+ iterations + " times)";
+        if(! subactions.isEmpty()) result += subactions;
+        return result;
+
     }
 }

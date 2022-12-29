@@ -37,7 +37,7 @@ public class CardControllerTest {
     private CardController cardController;
 
     @MockBean
-    private CardServiceRepo cardServiceRepo;
+    private CardService cardServiceRepo;
 
     @Autowired
     private MockMvc mockMvc;
