@@ -10,10 +10,11 @@ import org.springframework.samples.petclinic.board.position.PlayerUsePositionSer
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.position.PricedPositionService;
-import org.springframework.samples.petclinic.board.position.auxiliarEntitys.CheckPlayerUsePosition;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
+import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.cardsMovement.MarketPlayerMoveCardsService;
 import org.springframework.samples.petclinic.game.EndTurnService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -75,7 +75,10 @@ public class PlayController {
     @Autowired
     private EndTurnService endTurnService;
 
-    
+    @Autowired
+    private MarketPlayerMoveCardsService playerMoveCardsService;
+
+
     public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
@@ -98,7 +101,7 @@ public class PlayController {
         if(game.getRound()==0){
             result="redirect:"+gameId+"/round/0";
         }
-        else if(game.getFinished())
+        else if(game.isFinished())
             result="redirect:"+gameId+"/scoreboard";
         else
             result="redirect:"+gameId+"/round/"+game.getRound();
@@ -123,7 +126,7 @@ public class PlayController {
     }
 
     @PostMapping("{gameId}/round/0")
-    public ModelAndView processChoosedPositionInRoundZero(@Valid Idposition idpos,BindingResult br
+    public ModelAndView chooseInitialPosition(@Valid Idposition idpos,BindingResult br
     ,@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         Player player=game.getCurrentPlayer();
@@ -163,15 +166,26 @@ public class PlayController {
     }
 
     @GetMapping("{gameId}/round/{round}/next")
-    public ModelAndView processNextTurn(@PathVariable Integer gameId){
+    public ModelAndView nextTurn(@PathVariable Integer gameId){
         endTurnService.execute(gameId);
         ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
         return result;
     }
 
-    @GetMapping("{gameId}/card-action/{cardId}")
+    @GetMapping("{gameId}/round/{round}/card-action/{cardId}")
     public String playCard (@PathVariable Integer gameId,@PathVariable Integer cardId){
         return null;
+    }
+    @GetMapping("{game}/round/{round}/buy/{card}")
+    public String buyCard (@PathVariable Game game,@PathVariable Card card){
+        try {
+            playerMoveCardsService.buyCard(card, game.getCurrentPlayer());
+        } catch (Exception e) {
+            System.out.println(game);
+            System.out.println(card);
+            e.printStackTrace();
+        }
+        return "redirect:/play/{game}";
     }
 
     @GetMapping("{gameId}/scoreboard")

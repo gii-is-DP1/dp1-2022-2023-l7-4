@@ -71,14 +71,13 @@ INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','El mazo Drow presen
 INSERT INTO halfdecks(id,name,description) VALUES (2,'Dragons','El mazo Dragones tiene muchas cartas de alto coste de influencia, y cuenta con 5 Dragones que te recompensarán por seguir una estrategia.');
 INSERT INTO halfdecks(id,name,description) VALUES (3,'Inicial','Cartas iniciales de los jugadores');
 INSERT INTO halfdecks(id,name,description) VALUES (4,'Básica','Cartas básicas disponibles en el mercado de todas las partidas');
-INSERT INTO halfdecks(id,name,description) VALUES (5,'Mazo vacio de pruebas','Mazo de testing, no tiene cartas');
-INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo vacio','Mazo de testing, no tiene cartas');
+INSERT INTO halfdecks(id,name,description) VALUES (5,'Mazo con 3 cartas','Mazo de testing, no tiene todas la cartas');
+INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas','Mazo de testing, no tiene todas las cartas');
 
 
 -- GAMES
-INSERT INTO games(id,date,name,map_template_id) 
-    VALUES  (1,'2002-04-08','Partida 1',1),
-            (2,'2002-04-09','Partida 2',1);
+INSERT INTO games(id,date,name,map_template_id) VALUES  (1,'2002-04-08','Partida 1',1);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',1,5,6);
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 G1', 'daviddhc',10,10,1,1);
@@ -86,8 +85,8 @@ INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'P3 G1',10,10,3,1);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 G1',10,10,4,1);
 
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 G2',10,10,1,2);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 G2',10,10,2,2);
+INSERT INTO players(id,name,power,influence,troops,house_id,game_id) VALUES (5, 'Player1 G2',1000,1000,3,1,2);
+INSERT INTO players(id,name,power,influence,troops,house_id,game_id) VALUES (6, 'Player2 G2',1000,1000,3,2,2);
 
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,iterations,action_name,value) VALUES 
@@ -233,5 +232,16 @@ VALUES      ('Soldado',0,'Los soldados defienden a sus superiores contra todos l
             ('Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2,142),
             ('Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3,143);
 
+-- ====================================================================================
+--TESTING HALFDECKS CARDS
+INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id,action_id) VALUES
+            ('carta A1',2,'aqui va el lore','pedaso de carta sin acciones',7,7,1,5,1,null),
+            ('carta A2',2,'aqui va el lore','pedaso de carta sin acciones',7,7,1,5,1,null),
+            ('carta A3',2,'aqui va el lore','pedaso de carta sin acciones',7,7,1,5,1,null),
+            ('carta A4',2,'aqui va el lore','pedaso de carta sin acciones',7,7,1,5,1,null),
+            ('carta B1',2,'aqui va el lore','pedaso de carta sin acciones',7,7,1,6,1,null),
+            ('carta B2',2,'aqui va el lore','pedaso de carta sin acciones',7,7,1,6,1,null),
+            ('carta B3',2,'aqui va el lore','pedaso de carta sin acciones',7,7,1,6,1,null);
+-- ====================================================================================
 
 

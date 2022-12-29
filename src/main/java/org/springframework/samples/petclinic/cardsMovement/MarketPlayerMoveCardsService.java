@@ -22,6 +22,8 @@ public class MarketPlayerMoveCardsService {
 	@Autowired
 	private GameService gameService;
 
+    @Autowired
+    MarketMoveCardsService marketMoveCardsService;
 
     /**
      * takes a selected card form market and inserts into players hand
@@ -40,6 +42,7 @@ public class MarketPlayerMoveCardsService {
         CheckCardMovement.playerHasEnoughInfluenceToBuyCard(playerInfluence,cardCost);
  
         moveSelectedCard(card, game.getSellZone(), player.getDiscardPile(), player);
+        marketMoveCardsService.moveFromGameDeckToSellZone(game);
         player.setInfluence(playerInfluence-cardCost);
         playerService.savePlayer(player);
         gameService.save(game);

@@ -183,7 +183,7 @@
                                                     </div>
                                                 </div>
                                                 <!--ANDRES EL BOTON DE COMPRAR ES ESTE!!!-->
-                                                <button type="submit"> COMPRAR CARTA</button>
+                                                <a type="submit" href="${round}/buy/${card.id}"> COMPRAR CARTA</a>
                                             </div>
                                         </div>
                                     </div>

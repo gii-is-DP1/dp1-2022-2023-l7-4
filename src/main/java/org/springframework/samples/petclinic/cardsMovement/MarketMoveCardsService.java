@@ -15,18 +15,15 @@ public class MarketMoveCardsService {
 	private GameService gameService;
 
 
-    public void moveFromGameDeckToSellZone(@Valid Card card,@Valid Game game){
+    public void moveFromGameDeckToSellZone(@Valid Game game){// if game deck is empty the game will finish in the next round
         List<Card> gameDeck = game.getGameDeck();
-        if(gameDeck.isEmpty()){
-            // TODO end of game in the next round. Turn.conditionToFinish = true
-        } else{
+        Card card = gameDeck.get(randomBetween(0,gameDeck.size()-1));
         moveSelectedCardAndSave(card,gameDeck,game.getSellZone(),game);   
-        }   
     }
 
     public void devourCardFromSellZone(@Valid Card card,@Valid Game game){
         moveSelectedCardAndSave(card,game.getSellZone(),game.getDevoured(),game);
-        moveFromGameDeckToSellZone(card, game);
+        moveFromGameDeckToSellZone(game);
     }
     
     
@@ -35,4 +32,7 @@ public class MarketMoveCardsService {
         target.add(card);
         gameService.save(game);
     }
+    private Integer randomBetween(Integer min, Integer max) {
+		return (int) ((Math.random() * (max - min)) + min);
+	}
 }
