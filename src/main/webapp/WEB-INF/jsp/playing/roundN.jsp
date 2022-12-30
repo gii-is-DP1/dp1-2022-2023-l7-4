@@ -137,8 +137,9 @@
             background-size:contain;
             background-repeat: no-repeat;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             font-size: 0.8vmax;
+            flex-direction: column;
         }
         .reversed-card{
             width: 15%;
@@ -149,7 +150,6 @@
             background-repeat: no-repeat;
             display: flex;
             justify-content: center;
-     
         }
         .bold-gold-number {
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -157,18 +157,58 @@
             font-size: 2vmax;
             color: goldenrod;
             margin-top: 1vmax;
-    
-            
         }
-        .card-box b {
-            position: relative;
-            padding: 0.4vmax;
-            top: 1.6vmax; left:0.3vmax;
+        .card-box .card-name-box{
+            height: 67%;
+            width: 100%;
+            justify-content: center;
+            display: flex;
         }
-        .card-hand-box b {
-            position: relative;
-            padding: 0.4vmax;
-            top: 1.6vmax;
+        .card-name-box .card-name-center {
+            margin-top: 1.75vmax;
+            width: 85%;
+            text-align: center;
+            font-size: 1vmax;
+        }
+        .card-box .card-cost-vp-box{
+            height: 32%;
+            width: 100%;
+            justify-content: center;
+            display: flex;
+        }
+        .card-cost-vp-box .card-cost{
+            width: 33%;
+            color: darkgoldenrod;
+            text-align: center;
+            font-size: 1.7vmax;
+            margin-left: 0.12vmax;
+        }
+        .card-cost-vp-box .card-deckVP{
+            width: 33%;
+            color: aliceblue;
+            text-align: center;
+            margin-top: 0.1vmax;
+            font-size: 1.6vmax;
+            margin-left: 0.12vmax;
+        }
+        .card-cost-vp-box .card-innerCirclePV{
+            margin-top: 0.19vmax;
+            width: 30%;
+            height: 50%;
+            color: aliceblue;
+            text-align: center;
+            font-size: 1.50vmax;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: aqua;
+
+        }
+        .card-hand-box .card-name-center {
+            margin-top: 1.8vmax;
+            width: 85%;
+            text-align: center;
+            font-size: 1vmax;
         }
         .card-hand-box{
             width: 15%;
@@ -177,6 +217,8 @@
             background-position: center;
             background-size:contain;
             background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
         }
         .top-market-cards .empty-card-box{
             width: 15%;
@@ -221,21 +263,41 @@
             justify-content:space-evenly;
             flex-direction: column;
         }
-        .resume-box .cards-player-deck{
-            width: 90%;
+        .resume-box .resume-decks-box{
+            width: 125%;
             height: 20%;
-            background-color: deeppink;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .resume-box .cards-player-dicarded{
-            width: 90%;
-            height: 20%;
-            background-color:gold;
+        .resume-decks-box .resume-decks-secuaz-image{
+            width: 20%;
+            height: 133%;
+            background-image: url(/resources/images/card_back.png);
+            background-position: center;
+            background-size:contain;
+            background-repeat: no-repeat;
+            margin: 0.2vmax;
         }
-        .resume-box .cards-player-played{
-            width: 90%;
-            height: 20%;
-            background-color:forestgreen;
-        }   
+        .resume-decks-box .resume-decks-hand-image{
+            width: 20%;
+            height: 133%;
+            background-image: url(/resources/images/card_in_hand.png);
+            background-position: center;
+            background-size:contain;
+            background-repeat: no-repeat;
+            margin: 0.2vmax;
+        }
+        .resume-decks-box .resume-decks-text{
+            width: 75%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            background-color: rgb(25, 24, 24);
+            color: aliceblue;
+            font-size: 1.03vmax;
+            border-radius: 0.5vmax;
+        }
         .card-action-box .basics-actions-box{
             width: 70%;
             height: 100%;
@@ -430,6 +492,7 @@
             <!--CUADRO GRANDE (ZONA DE JUEGO)-->
             <div class="playing-box-roundN">
                 <div class="card-action-box">
+                    <!--ZONA DE MERCADO-->
                     <div class="market-box">
                         <div class="market-zone" >
                             <div class="top-market-cards">
@@ -518,12 +581,20 @@
                                         </div>
                                     </div>
                                     <div class="card-box" title="${card.rulesText}" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
-                                        <b>${card.name}</b>
+                                        <div class="card-name-box">
+                                            <div class="card-name-center"><b>${card.name}</b></div>
+                                        </div>
+                                        <div class="card-cost-vp-box">
+                                            <div class="card-cost">${card.cost}</div>
+                                            <div class="card-deckVP">${card.deckVP}</div>
+                                            <div class="card-innerCirclePV">${card.innerCirclePV}</div>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>
                         </div>
                     </div>
+                    <!--ZONA DE CARTAS DEL JUGADOR-->
                     <div class="player-cards-box">
                         <div class="player-hand-zone-box">
                             <div class="player-hand-margin-box">
@@ -589,24 +660,36 @@
                                         </div>
                                     </div>
                                     <div class="card-hand-box" title="${card.rulesText}" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
-                                        <b>${card.name}</b>
+                                        <div class="card-name-center"><b>${card.name}</b></div>
                                     </div>
                                 </c:forEach>
                             </div>
                         </div>
                     </div>
+                    <!--RESUMEN DE MAZOS Y ACCIONES BÁSICAS - TERMINADO-->
                     <div class="basics-actions-and-resume-box">
+                        <!--RESUMEN DE MAZOS - TERMINADO-->
                         <div class="resume-box">
-                            <div class="cards-player-deck">
-                                <b>Mazo de Robo:  ${player.deck.size()}</b>
+                            <div class="resume-decks-box">
+                                <div class="resume-decks-text">
+                                    <div class="resume-decks-secuaz-image"></div>
+                                    <b><div style="margin-left: 0.1vmax;">Mazo de Robo:  ${player.deck.size()}</div></b>
+                                </div>
                             </div>
-                            <div class="cards-player-dicarded">
-                                <b>Mazo de Descartes:  ${player.discarded.size()}</b>
+                            <div class="resume-decks-box">
+                                <div class="resume-decks-text">
+                                    <div class="resume-decks-secuaz-image"></div>
+                                    <b><div style="margin-left: 0.1vmax;">Mazo de Descartes:  ${player.discarded.size()}</div></b>
+                                </div>
                             </div>
-                            <div class="cards-player-played">
-                                <b>Cartas ya jugadas:  ${player.played.size()}</b>
+                            <div class="resume-decks-box">
+                                <div class="resume-decks-text">
+                                    <div class="resume-decks-hand-image"></div>
+                                    <b><div style="margin-left: 0.1vmax;">Cartas ya jugadas:  ${player.played.size()}</div></b>
+                                </div>
                             </div>
                         </div>
+                        <!--ACCIONES BÁSICAS - TERMINADO-->
                         <div class="basics-actions-box">
                             <div class="deploy-troop-box">
                                 <div class="power-cost-box" style="opacity: 0%; margin-left: 0.3vmax;">
@@ -659,6 +742,7 @@
                         </div>
                     </div>
                 </div>
+                <!--MAPA-->
                 <div class="map-box">
                     <motero2k:positionTable>
                     </motero2k:positionTable>
