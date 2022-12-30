@@ -95,6 +95,11 @@
                         <form:form modelAttribute="pairPosition">
                             <motero2k:twoPositionTables>
                             </motero2k:twoPositionTables>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-default">MOVER PIEZA</button>
+                                </div>
+                            </div>
                         </form:form>
                         <a href="/play/${gameId}/round/${round}">CANCELAR</a>
                     </div>

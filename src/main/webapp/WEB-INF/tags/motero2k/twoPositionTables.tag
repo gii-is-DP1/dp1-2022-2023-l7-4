@@ -88,102 +88,102 @@
     
     <h2> All positions</h2>
     <table id="positionsTable1" class="table table-striped">
-            <thead>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Occupied</th>
+            <th>Player</th>
+            <th>Type</th>
+            <th>Path</th>
+            <th>City</th>
+            <th>Adjacencies</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${movablePositions}" var="position">
             <tr>
-                <th>Id</th>
-                <th>Occupied?</th>
-                <th>Player</th>
-                <th>For Spy?</th>
-                <th>Path</th>
-                <th>City<th>
-                <th>Adjacencies</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${movablePosition}" var="pos">
-                <tr>
-                    <td>
-                        <c:out value="${pos.id}"/>
-                    </td>
-                    <td>
-                        <c:out value="${pos.isOccupied}"/>
-                    </td>
-                    <td>
-                        <c:out value="${pos.player.name}"/>
-                    </td>
-                    <td>
-                        <c:out value="${pos.forSpy}"/>
-                    </td>
-                    <td>
-                        <c:out value="${pos.path}"/>
-                    </td>
-                    <td>
-                        
-                        <c:out value="${pos.city}"/>
-                    </td>
-                    <td>
-                        <c:out value="${pos.adjacents}"/>
-                    </td>
-                    <td>
-                        <input type="radio" id="radio-${pos.id}" name="positionSourceId" value="${pos.id}" hidden/>
-                        <label for="radio-${pos.id}" class="btn btn-default">
+                <td>
+                    <c:out value="${position.getId()}"/>
+                </td>
+                <td>
+                    <c:out value="${position.isOccupied()== true? 'Yes':'-'}"/>
+                </td>
+                <td>
+                    <c:out value="${position.player.name}"/>
+                </td>
+                <td>
+                    <c:out value="${position.forSpy==true? 'Spy': 'Troop'}"/>
+                </td>
+                <td>
+                    <c:out value="${position.path}"/>
+                </td>
+                <td>
+                    <c:out value="${position.city}"/>
+                </td>
+                <td>
+                    <c:out value="${position.adjacents}"/>
+                </td>
+                <td>
+                        <input type="radio" id="radio-${position.id}" name="positionSourceId" value="${position.id}" hidden/>
+                        <label for="radio-${position.id}" class="btn btn-default">
                             ELIGEME
                         </label>
                     </td>
-                    
-                </tr>
-            </c:forEach>
-            
-            </tbody>
-        </table>
-            <table id="positionsTable2" class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Occupied?</th>
-                    <th>Player</th>
-                    <th>For Spy?</th>
-                    <th>Path</th>
-                    <th>City<th>
-                    <th>Adjacencies</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${freePositions}" var="pos">
-                    <tr>
-                        <td>
-                            <c:out value="${pos.id}"/>
-                        </td>
-                        <td>
-                            <c:out value="${pos.isOccupied}"/>
-                        </td>
-                        <td>
-                            <c:out value="${pos.player.name}"/>
-                        </td>
-                        <td>
-                            <c:out value="${pos.forSpy}"/>
-                        </td>
-                        <td>
-                            <c:out value="${pos.path}"/>
-                        </td>
-                        <td>
-                            
-                            <c:out value="${pos.city}"/>
-                        </td>
-                        <td>
-                            <c:out value="${pos.adjacents}"/>
-                        </td>
-                        <td>
-                                <input type="radio" id="radio-${pos.id}" name="positionTargetId" value="${pos.id}" hidden/>
-                            <label for="radio-${pos.id}" class="btn btn-default">
+
+            </tr>
+        </c:forEach>
+        
+        </tbody>
+                
+    </table>
+           <table id="positionsTable2" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Occupied</th>
+            <th>Player</th>
+            <th>Type</th>
+            <th>Path</th>
+            <th>City</th>
+            <th>Adjacencies</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${freePositions}" var="position">
+            <tr>
+                <td>
+                    <c:out value="${position.getId()}"/>
+                </td>
+                <td>
+                    <c:out value="${position.isOccupied()== true? 'Yes':'-'}"/>
+                </td>
+                <td>
+                    <c:out value="${position.player.name}"/>
+                </td>
+                <td>
+                    <c:out value="${position.forSpy==true? 'Spy': 'Troop'}"/>
+                </td>
+                <td>
+                    <c:out value="${position.path}"/>
+                </td>
+                <td>
+                    <c:out value="${position.city}"/>
+                </td>
+                <td>
+                    <c:out value="${position.adjacents}"/>
+                </td>
+                <td>
+                                <input type="radio" id="radio-${position.id}" name="positionTargetId" value="${position.id}" hidden/>
+                            <label for="radio-${position.id}" class="btn btn-default">
                                 ELIGEME
                             </label>
                         </td>
-                        
-                    </tr>
-                </c:forEach>
+
+            </tr>
+        </c:forEach>
+        
+        </tbody>
                 
-                </tbody>
-            </table>
+    </table>
 
     

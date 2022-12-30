@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.board.position.PlayerUsePositionSer
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
+import org.springframework.samples.petclinic.board.position.auxiliarEntitys.PairPosition;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.action.Action;
 import org.springframework.samples.petclinic.card.action.ActionService;
@@ -49,6 +50,8 @@ public class ExecuteActionsController {
     PlayerMoveCardsService playerMoveCardsService;
 
     private final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
+
+    private final String CHOOSE_TWO_POSITIONS_FORM_VIEW="playing/chooseTwoPositionsFormView";
 
     private final String CHOOSE_ONE_ACTION_FORM_VIEW="playing/chooseActionFormView";
 
@@ -108,7 +111,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
             return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.MOVE_ENEMY_TROOP){
-            return null;
+            return REDIRECT+"/movePiece?piece=troop";
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
             return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_DISCARDED_CARD_NOW){
@@ -279,7 +282,7 @@ public class ExecuteActionsController {
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions",
         customListingPositionService
-        .getReturnablePiecesByPlayerInGame(actualPlayer, game, piece, enemyPlayer));
+        .getMovablePiecesForPlayer(actualPlayer, game, piece, enemyPlayer));
         return result;
     }
 
@@ -334,6 +337,43 @@ public class ExecuteActionsController {
                 Position position= this.positionServiceRepo.findPositionById(idposition.getId());
                 Player player=game.getCurrentPlayer();
                 this.playerUsePositionService.supplantTroop(position, player, withPresence);
+                res=new ModelAndView(EXECUTE_ACTION);
+            }catch(Exception e){
+                br.rejectValue("position","not right","something happen");
+                res=errorRes;
+            }
+        }
+        return res;
+    }
+
+    //DE MOMENTO, SOLO ESTA HECHO PARA MOVER PIEZAS ENEMIGAS, NO TUYAS
+    @GetMapping("movePiece")
+    public ModelAndView initMovePiece(@PathVariable("gameId") Game game,@RequestParam("piece") String piece){
+        List<Position> movablePositions=this.customListingPositionService
+        .getMovablePiecesForPlayer(game.getCurrentPlayer(), game, piece, true);
+        List<Position> freePositions=this.customListingPositionService.getAllFreePositionsByPieceAndGame(game, piece);
+        ModelAndView result=new ModelAndView(CHOOSE_TWO_POSITIONS_FORM_VIEW);
+        putPlayerDataInModel(game, game.getCurrentPlayer(), result);
+        result.addObject("movablePositions",movablePositions);
+        result.addObject("freePositions",freePositions);
+        return result;
+    }
+
+    @PostMapping("movePiece")
+    public ModelAndView proccessMoveTroop(@Valid PairPosition pairPosition
+    ,@PathVariable("gameId") Game game,@RequestParam("piece") String piece,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }
+        else{
+            try{
+                Position pieceToMove=this.positionServiceRepo.findPositionById(pairPosition.getPositionSourceId());
+                Position newPosition=this.positionServiceRepo.findPositionById(pairPosition.getPositionTargetId());
+                this.playerUsePositionService.movePiece(pieceToMove, newPosition,game.getCurrentPlayer());
                 res=new ModelAndView(EXECUTE_ACTION);
             }catch(Exception e){
                 br.rejectValue("position","not right","something happen");
