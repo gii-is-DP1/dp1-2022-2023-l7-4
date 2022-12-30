@@ -79,20 +79,7 @@ public class Action extends BaseEntity {
     }
 
 
-    public static Action of(Action action) {
-        Action copy = new Action();
-        copy.setActionName(action.getActionName());
-        copy.description = action.getDescription();
-        copy.setPosition(action.getPosition());
-        copy.setValue(action.getValue());
-        copy.setAspect(action.getAspect());
-        copy.setIterations(action.getOriginalIterations());
-        copy.setOriginalIterations(action.getOriginalIterations());
-        for (Action subaction : action.getSubactions()) {
-          copy.getSubactions().add(of(subaction));
-        }
-        return copy;
-      }
+
 
     public void decrementIterations() {
         iterations--;

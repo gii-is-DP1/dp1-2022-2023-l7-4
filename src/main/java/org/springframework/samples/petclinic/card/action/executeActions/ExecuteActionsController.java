@@ -59,7 +59,7 @@ public class ExecuteActionsController {
 
     @GetMapping("play-card/{cardId}")
     public String generateGameAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "cardId") Card card){
-        Action currentAction = Action.of(card.getAction());
+        Action currentAction = actionService.of(card.getAction());
         actionService.save(currentAction);
         game.setCurrentAction(currentAction);
         playerMoveCardsService.moveFromHandToPlayed(card, game.getCurrentPlayer());
