@@ -77,7 +77,7 @@ INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas'
 
 -- GAMES
 INSERT INTO games(id,date,name,map_template_id) VALUES  (1,'2002-04-08','Partida 1',1);
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',1,5,6);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',1,1,2);
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 G1', 'daviddhc',10,10,1,1);

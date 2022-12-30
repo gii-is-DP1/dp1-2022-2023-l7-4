@@ -9,6 +9,332 @@
 
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
 <link rel="stylesheet" href="/resources/styles/cardlisting.css">
+<head>
+    <style>
+        .popup {
+        background-color: rgba(16, 64, 112, 0.814);
+        height: 80%;
+        width: 85%;
+        visibility: hidden;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        border: 3px;
+        border-radius: 10px;
+        font-size: 2vmax;
+    }
+    .popup .ls{
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        color: aliceblue;
+    }
+    .popup .x {
+        margin-left: 10px;
+        color: rgb(255, 0, 0);
+        user-select: none;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        align-self: flex-start;
+        font-family: monospace;
+    }
+    p{
+        margin: 10px;
+    
+    }
+    #icon{
+        width: 50px;
+        height: 50px;
+        color: red;
+    
+    }
+    .popup-content-box{
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        display: flex;
+        align-items: center ;
+        justify-content: space-evenly;
+        margin: 3px;
+    }
+    .popup-content {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center ;
+        border: 3px;
+        border-radius: 10px;
+        font-size: 2vmax;
+    }
+        .playing-box-roundN{
+            width: 96%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url(/resources/images/round0-background.jpg);
+            background-position: center;
+            background-size:cover;
+        }
+        .playing-box-roundN .card-action-box{
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100%;
+        }
+        .playing-box-roundN .map-box{
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            background-color: aquamarine;
+            overflow-y: scroll;
+        }
+        .card-action-box .market-box{
+            width: 100%;
+            height: 52%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+     
+        }
+        .market-box .market-zone{
+            width: 93%;
+            height: 92%;
+            border-color: white;
+            border-radius: 1.5vmax;
+            border-style: solid;
+            border-width: 4px;
+            background-image: url(/resources/images/market.png);
+            background-position: center;
+            background-size:contain;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+        }
+        .market-zone .top-market-cards{
+            width: 98%;
+            height: 46%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-box{
+            width: 15%;
+            height: 10vmax;
+            background-image: url(/resources/images/card_in_sellzone.png);
+            background-position: center;
+            background-size:contain;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.8vmax;
+        }
+        .reversed-card{
+            width: 15%;
+            height: 10vmax;
+            background-image: url(/resources/images/card_back.png);
+            background-position: center;
+            background-size:contain;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+     
+        }
+        .bold-gold-number {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin-bottom: 1.5vmax;
+            font-size: 2vmax;
+            color: goldenrod;
+            margin-top: 1vmax;
+    
+            
+        }
+        .card-box b {
+            position: relative;
+            padding: 0.4vmax;
+            top: 1.6vmax; left:0.3vmax;
+        }
+        .card-hand-box b {
+            position: relative;
+            padding: 0.4vmax;
+            top: 1.6vmax;
+        }
+        .card-hand-box{
+            width: 15%;
+            height: 10vmax;
+            background-image: url(/resources/images/card_in_hand.png);
+            background-position: center;
+            background-size:contain;
+            background-repeat: no-repeat;
+        }
+        .top-market-cards .empty-card-box{
+            width: 15%;
+            height: 10vmax;
+            display: flex;
+            justify-content: center;
+        }
+        .card-action-box .player-cards-box{
+            width: 100%;
+            height: 28%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card-action-box .player-hand-zone-box{
+            width: 93%;
+            height: 85%;
+            background-color:indigo;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .player-hand-zone-box .player-hand-margin-box{
+            width: 98%;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        .card-action-box .basics-actions-and-resume-box{
+            width: 100%;
+            height: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-action-box .resume-box{
+            width: 30%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content:space-evenly;
+            flex-direction: column;
+        }
+        .resume-box .cards-player-deck{
+            width: 90%;
+            height: 20%;
+            background-color: deeppink;
+        }
+        .resume-box .cards-player-dicarded{
+            width: 90%;
+            height: 20%;
+            background-color:gold;
+        }
+        .resume-box .cards-player-played{
+            width: 90%;
+            height: 20%;
+            background-color:forestgreen;
+        }   
+        .card-action-box .basics-actions-box{
+            width: 70%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content:space-evenly;
+            flex-direction: column;
+        }
+        .basics-actions-box .deploy-troop-box{
+            width: 92%;
+            height: 30%;
+            background-color: rgb(25, 24, 24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.7vmax;
+        }
+        .power-cost-box{
+            width: 6%;
+            height: 60%;
+            background-image: url(/resources/images/power.png);
+            background-position: center;
+            background-size:contain;
+            background-repeat: no-repeat;
+        }
+        .do-button-box{
+            height: 60%;
+            width: 27%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5vmax;
+        }
+        .do-button{
+            height: 100%;
+            width: 85%;
+            background-color: #8a2be2;
+            border-radius: 1vmax;
+            border-color: rgb(52, 10, 83);
+            border-style: solid;
+            border-width: 0.2vmax;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 1.1vmax;
+        }
+        .deploy-troop-box .deploy-explication-box{
+            width: 50%;
+            height: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            font-size: 1.05vmax;
+            margin-left: 1vmax;
+            color: aliceblue;
+        }
+        .basics-actions-box .kill-troop-box{
+            width: 92%;
+            height: 30%;
+            background-color: rgb(25, 24, 24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.7vmax;
+        }
+        .kill-troop-box .kill-explication-box{
+            width: 50%;
+            height: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            font-size: 1.05vmax;
+            margin-left: 1vmax;
+            color: aliceblue;
+        }
+        .basics-actions-box .return-spy-box{
+            width: 92%;
+            height: 30%;
+            background-color:rgb(25, 24, 24);
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            border-radius: 0.7vmax;
+        }
+        .return-spy-box .return-explication-box{
+            width: 50%;
+            height: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            font-size: 1.05vmax;
+            margin-left: 1vmax;
+            color: aliceblue;
+    
+        }
+    
+    </style>
+    
+</head>
 <body>
     <div class="fullscreen-game">  
 
@@ -118,11 +444,11 @@
                                 <div class="empty-card-box">
 
                                 </div>
-                                <div class="card-box">
-
+                                <div class=${game.devoured.isEmpty()?'empty-card-box':'reversed-card'}>
+                                    <b class="bold-gold-number">${game.devoured.size()}</b>
                                 </div>
-                                <div class="card-box">
-
+                                <div class=${game.gameDeck.isEmpty()?'empty-card-box':'reversed-card'}>
+                                        <b class="bold-gold-number">${game.gameDeck.size()}</b>
                                 </div>
                             </div>
                             <div class="top-market-cards">
@@ -183,12 +509,15 @@
                                                     </div>
                                                 </div>
                                                 <!--ANDRES EL BOTON DE COMPRAR ES ESTE!!!-->
-                                                <a type="submit" href="${round}/buy/${card.id}"> COMPRAR CARTA</a>
+                                                <c:if test="${card.cost<player.influence}">
+
+                                                    <a type="submit" href="${round}/buy/${card.id}"> COMPRAR CARTA</a>
+                                                </c:if>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-box" title="${card.rulesText}" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
-                                        ${card.name}
+                                        <b>${card.name}</b>
                                     </div>
                                 </c:forEach>
                             </div>
@@ -259,7 +588,7 @@
                                         </div>
                                     </div>
                                     <div class="card-hand-box" title="${card.rulesText}" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
-                                        ${card.name}
+                                        <b>${card.name}</b>
                                     </div>
                                 </c:forEach>
                             </div>
@@ -268,13 +597,13 @@
                     <div class="basics-actions-and-resume-box">
                         <div class="resume-box">
                             <div class="cards-player-deck">
-
+                                <b>Mazo de Robo:  ${player.deck.size()}</b>
                             </div>
                             <div class="cards-player-dicarded">
-
+                                <b>Mazo de Descartes:  ${player.discarded.size()}</b>
                             </div>
                             <div class="cards-player-played">
-
+                                <b>Cartas ya jugadas:  ${player.played.size()}</b>
                             </div>
                         </div>
                         <div class="basics-actions-box">
@@ -351,303 +680,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function showPopUp(popup) {
+            var overlay = document.getElementById(popup);
+            overlay.style.visibility = "visible";
+            overlay.style.opacity = 1;
+        }
+           function dontShowPopUp(popup) {
+            var overlay = document.getElementById(popup);
+            overlay.style.visibility = "hidden";
+            overlay.style.opacity = 0;
+        }
+    </script>
 </body>
-<style>
-    .popup {
-    background-color: rgba(16, 64, 112, 0.814);
-    height: 80%;
-    width: 85%;
-    visibility: hidden;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    border: 3px;
-    border-radius: 10px;
-    font-size: 2vmax;
-}
-.popup .ls{
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    color: aliceblue;
-}
-.popup .x {
-    margin-left: 10px;
-    color: rgb(255, 0, 0);
-    user-select: none;
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    align-self: flex-start;
-    font-family: monospace;
-}
-p{
-    margin: 10px;
-
-}
-#icon{
-    width: 50px;
-    height: 50px;
-    color: red;
-
-}
-.popup-content-box{
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-    display: flex;
-    align-items: center ;
-    justify-content: space-evenly;
-    margin: 3px;
-}
-.popup-content {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center ;
-    border: 3px;
-    border-radius: 10px;
-    font-size: 2vmax;
-}
-</style>
-<script>
-    function showPopUp(popup) {
-        var overlay = document.getElementById(popup);
-        overlay.style.visibility = "visible";
-        overlay.style.opacity = 1;
-    }
-       function dontShowPopUp(popup) {
-        var overlay = document.getElementById(popup);
-        overlay.style.visibility = "hidden";
-        overlay.style.opacity = 0;
-    }
-</script>
-
-<style>
-    .playing-box-roundN{
-        width: 96%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-image: url(/resources/images/round0-background.jpg);
-        background-position: center;
-        background-size:cover;
-    }
-    .playing-box-roundN .card-action-box{
-        width: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        height: 100%;
-    }
-    .playing-box-roundN .map-box{
-        width: 50%;
-        display: flex;
-        justify-content: center;
-        height: 100%;
-        background-color: aquamarine;
-        overflow-y: scroll;
-    }
-    .card-action-box .market-box{
-        width: 100%;
-        height: 52%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .market-box .market-zone{
-        width: 93%;
-        height: 92%;
-        background-color: orange;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        flex-direction: column;
-    }
-    .market-zone .top-market-cards{
-        width: 98%;
-        height: 46%;
-        background-color:rgb(255, 255, 255);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .card-box{
-        width: 15%;
-        height: 100%;
-        background-image: url(/resources/images/card_in_sellzone.png);
-        background-position: center;
-        background-size:contain;
-        background-repeat: no-repeat;
-    }
-    .card-hand-box{
-        width: 15%;
-        height: 100%;
-        background-image: url(/resources/images/card_in_hand.png);
-        background-position: center;
-        background-size:contain;
-        background-repeat: no-repeat;
-    }
-    .top-market-cards .empty-card-box{
-        width: 15%;
-        height: 100%;
-    }
-    .card-action-box .player-cards-box{
-        width: 100%;
-        height: 28%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .card-action-box .player-hand-zone-box{
-        width: 93%;
-        height: 85%;
-        background-color:indigo;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .player-hand-zone-box .player-hand-margin-box{
-        width: 98%;
-        height: 90%;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-    .card-action-box .basics-actions-and-resume-box{
-        width: 100%;
-        height: 20%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .card-action-box .resume-box{
-        width: 30%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content:space-evenly;
-        flex-direction: column;
-    }
-    .resume-box .cards-player-deck{
-        width: 90%;
-        height: 20%;
-        background-color: deeppink;
-    }
-    .resume-box .cards-player-dicarded{
-        width: 90%;
-        height: 20%;
-        background-color:gold;
-    }
-    .resume-box .cards-player-played{
-        width: 90%;
-        height: 20%;
-        background-color:forestgreen;
-    }   
-    .card-action-box .basics-actions-box{
-        width: 70%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content:space-evenly;
-        flex-direction: column;
-    }
-    .basics-actions-box .deploy-troop-box{
-        width: 92%;
-        height: 30%;
-        background-color: rgb(25, 24, 24);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.7vmax;
-    }
-    .power-cost-box{
-        width: 6%;
-        height: 60%;
-        background-image: url(/resources/images/power.png);
-        background-position: center;
-        background-size:contain;
-        background-repeat: no-repeat;
-    }
-    .do-button-box{
-        height: 60%;
-        width: 27%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 0.5vmax;
-    }
-    .do-button{
-        height: 100%;
-        width: 85%;
-        background-color: #8a2be2;
-        border-radius: 1vmax;
-        border-color: rgb(52, 10, 83);
-        border-style: solid;
-        border-width: 0.2vmax;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: black;
-        font-size: 1.1vmax;
-    }
-    .deploy-troop-box .deploy-explication-box{
-        width: 50%;
-        height: 60%;
-        display: flex;
-        align-items: center;
-        justify-content: left;
-        font-size: 1.05vmax;
-        margin-left: 1vmax;
-        color: aliceblue;
-    }
-    .basics-actions-box .kill-troop-box{
-        width: 92%;
-        height: 30%;
-        background-color: rgb(25, 24, 24);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.7vmax;
-    }
-    .kill-troop-box .kill-explication-box{
-        width: 50%;
-        height: 60%;
-        display: flex;
-        align-items: center;
-        justify-content: left;
-        font-size: 1.05vmax;
-        margin-left: 1vmax;
-        color: aliceblue;
-    }
-    .basics-actions-box .return-spy-box{
-        width: 92%;
-        height: 30%;
-        background-color:rgb(25, 24, 24);
-        display: flex;
-        align-items: center;
-        justify-content: left;
-        border-radius: 0.7vmax;
-    }
-    .return-spy-box .return-explication-box{
-        width: 50%;
-        height: 60%;
-        display: flex;
-        align-items: center;
-        justify-content: left;
-        font-size: 1.05vmax;
-        margin-left: 1vmax;
-        color: aliceblue;
-
-    }
-
-</style>
 
 </html>
 

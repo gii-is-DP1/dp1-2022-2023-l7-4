@@ -95,7 +95,7 @@ public class Player extends BaseEntity{
     @JoinTable(
         inverseJoinColumns=
             @JoinColumn(name="card_id"))
-    private List<Card> discardPile = new ArrayList<>(); 
+    private List<Card> discarded = new ArrayList<>(); 
 
     @ManyToMany
     @JoinTable(

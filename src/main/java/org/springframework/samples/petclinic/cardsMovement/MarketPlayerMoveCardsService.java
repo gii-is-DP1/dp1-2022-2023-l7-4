@@ -41,7 +41,7 @@ public class MarketPlayerMoveCardsService {
         CheckCardMovement.sellZoneContainsCard(game.getSellZone(),card);
         CheckCardMovement.playerHasEnoughInfluenceToBuyCard(playerInfluence,cardCost);
  
-        moveSelectedCard(card, game.getSellZone(), player.getDiscardPile(), player);
+        moveSelectedCard(card, game.getSellZone(), player.getDiscarded(), player);
         marketMoveCardsService.moveFromGameDeckToSellZone(game);
         player.setInfluence(playerInfluence-cardCost);
         playerService.savePlayer(player);

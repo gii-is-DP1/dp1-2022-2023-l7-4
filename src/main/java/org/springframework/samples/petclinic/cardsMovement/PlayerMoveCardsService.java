@@ -47,15 +47,15 @@ public class PlayerMoveCardsService {
 //	MOVE FULL COLLECTIONS
 
 	public void moveAllPlayedToDiscardPile(@Valid Player player) throws Exception{
-		moveAllAndSave(player.getPlayed(), player.getDiscardPile(), player);
+		moveAllAndSave(player.getPlayed(), player.getDiscarded(), player);
 	}
 
 	public void moveAllDiscardedToDeck(@Valid Player player) throws Exception{
-		moveAllAndSave(player.getDiscardPile(), player.getDeck(), player);
+		moveAllAndSave(player.getDiscarded(), player.getDeck(), player);
 	}
 
 	public void moveAllHandToDiscard(@Valid Player player) throws Exception{
-		moveAllAndSave(player.getHand(), player.getDiscardPile(), player);
+		moveAllAndSave(player.getHand(), player.getDiscarded(), player);
 	}
 
 //	PROMOTE
@@ -65,7 +65,7 @@ public class PlayerMoveCardsService {
 	}
 
 	public void promoteSelectedFromDiscardPile(@Valid Card card,@Valid Player player){
-		moveSelectedCardAndSave(card,player.getDiscardPile(),player.getInnerCircle(),  player);
+		moveSelectedCardAndSave(card,player.getDiscarded(),player.getInnerCircle(),  player);
 	}
 	
 
