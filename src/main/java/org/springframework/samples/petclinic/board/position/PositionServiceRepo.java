@@ -56,6 +56,11 @@ public class PositionServiceRepo {
         return positionRepository.findAllPositionByPlayerId(player_id);
     }
 
+    @Transactional(readOnly=true)
+    public List<Position> getTroopPositionsOfPlayer(Integer player_id,Game game){
+        return positionRepository.findTroopPositionsByPlayerIdAndByGameId(player_id, game.getId());
+    }
+
     @Transactional(readOnly = true)
     public List<Position> getSpyPositionsOfPlayer(Integer player_id,Game game){
         return positionRepository.findSpyPositionsByPlayerIdAndByGameId(player_id,game.getId());
@@ -75,11 +80,6 @@ public class PositionServiceRepo {
         .collect(Collectors.toList());
     }
 
-    public List<Position> filteredByGame(List<Position> positions,Game game){
-        return positions.stream()
-        .filter(p-> p.getCity() != null && p.getCity().getGame() == game || p.getPath() != null && p.getPath().getGame() == game)
-        .collect(Collectors.toList());
-    }
 
 
     

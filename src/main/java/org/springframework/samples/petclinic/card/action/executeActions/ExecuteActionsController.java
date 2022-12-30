@@ -59,7 +59,7 @@ public class ExecuteActionsController {
 
     @GetMapping("play-card/{cardId}")
     public String generateGameAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "cardId") Card card){
-        Action currentAction = Action.of(card.getAction());
+        Action currentAction = actionService.of(card.getAction());
         actionService.save(currentAction);
         game.setCurrentAction(currentAction);
         playerMoveCardsService.moveFromHandToPlayed(card, game.getCurrentPlayer());
@@ -86,35 +86,31 @@ public class ExecuteActionsController {
         }else if(action.getActionName() == ActionName.INFLUENCE){
             AutomaticActions.earnInfluence(game,action);
         }else if(action.getActionName()== ActionName.DEPLOY_OWN_TROOP){
-            return REDIRECT+"/deployTroop?withPresence=true&numberOfMoves="+action.getIterations();
+            return REDIRECT+"/deployTroop?withPresence=true";
         }else if(action.getActionName()== ActionName.PLACE_OWN_SPY){
-            return REDIRECT+"/placeSpy?numberOfMoves="+action.getIterations();
+            return REDIRECT+"/placeSpy";
         }else if(action.getActionName()== ActionName.CHOOSE){
-            return REDIRECT+"/choose?numberOfMoves="+action.getIterations();
-        }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
-            return null;
+            return REDIRECT+"/choose";
         }else if(action.getActionName()== ActionName.KILL_ENEMY_TROOP){
-            return REDIRECT+"/killTroop?withPresence=true&numberOfMoves="+action.getIterations();
+            return REDIRECT+"/killTroop?typeOfEnemy=any&withPresence=true";
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_PIECE){
-            return null;
+            return REDIRECT+"/returnPiece?piece=any&enemyPlayer=true";
         }else if(action.getActionName()== ActionName.ALL){
             return null;
         }else if(action.getActionName()== ActionName.THEN){
             return null;
         }else if(action.getActionName()== ActionName.RETURN_OWN_SPY){
-            return null;
+            return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=false";
         }else if(action.getActionName()== ActionName.KILL_WHITE_TROOP){
-            return null;
+            return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_PLAYED_CARD){
             return null;
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
-            return null;
-        }else if(action.getActionName()== ActionName.DEPLOY_OWN_TROOP){
-            return null;
+            return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.MOVE_ENEMY_TROOP){
             return null;
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
-            return null;
+            return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_DISCARDED_CARD_NOW){
             return null;
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_CARDS_IN_INNER){
@@ -122,7 +118,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_5_ENEMY_KILLED_TROOPS){
             return null;
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP_ANYWHERE){
-            return null;
+            return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=false";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_WHITE_KILLED_TROOPS){
             return null;
         }else if(action.getActionName()== ActionName.DEVORE_MARKET_CARD){
@@ -139,6 +135,8 @@ public class ExecuteActionsController {
         return EXECUTE_ACTION;
     }
 
+
+    //ESTO REALMENTE DEBERIA ESTAR COMO MÉTODO DE LA CLASE DE ACTION
     public static Action getNextAction(Action action) {
         if (action.getIterations() == 0) {
           return null;
@@ -165,9 +163,11 @@ public class ExecuteActionsController {
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
+    
+
     @GetMapping("deployTroop")
-    public ModelAndView initDeployTroopForm(@PathVariable("gameId") Game game
-    ,@RequestParam("withPresence") Boolean withPresence,@RequestParam("numberOfMoves") Integer numberOfMoves){
+    public ModelAndView initDeployTroop(@PathVariable("gameId") Game game
+    ,@RequestParam("withPresence") Boolean withPresence){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
         putPlayerDataInModel(game, actualPlayer, result);
@@ -180,10 +180,12 @@ public class ExecuteActionsController {
         return result;
     }
 
-    @PostMapping("{gameId}/deployTroop")
+    
+
+    @PostMapping("deployTroop")
     public ModelAndView processDeployTroop(@Valid Idposition idposition,
     @PathVariable("gameId") Game game,@RequestParam("withPresence") Boolean withPresence,
-    @RequestParam("numberOfMoves") Integer numberOfMoves, BindingResult br){
+     BindingResult br){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -198,9 +200,7 @@ public class ExecuteActionsController {
                     this.playerUsePositionService.occupyTroopPosition(position, player, false);
                 else
                     this.playerUsePositionService.occupyTroopPosition(position, player, withPresence);
-                numberOfMoves--; 
-                res=numberOfMoves<1?new ModelAndView(REDIRECT+game.getId())
-                :new ModelAndView(REDIRECT+game.getId()+"/deployTroop?withPresence=true&numberOfMoves="+numberOfMoves);
+                res=new ModelAndView(EXECUTE_ACTION);
             }catch(Exception e){
                 br.rejectValue("position","occupied","already occupy");
                 res=errorRes;
@@ -209,11 +209,9 @@ public class ExecuteActionsController {
         return res;
     }
 
-    @GetMapping("{gameId}/placeSpy")
-    public ModelAndView initPlaceSpy(@PathVariable Integer gameId
-    ,@RequestParam("numberOfMoves") Integer numberOfMoves){
+    @GetMapping("placeSpy")
+    public ModelAndView initPlaceSpy(@PathVariable("gameId") Game game){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
-        Game game=this.gameService.getGameById(gameId);
         Player actualPlayer=game.getCurrentPlayer();
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions", customListingPositionService
@@ -221,10 +219,9 @@ public class ExecuteActionsController {
         return result;
     }
 
-    @PostMapping("{gameId}/placeSpy")
+    @PostMapping("placeSpy")
     public ModelAndView processPlaceSpy(@Valid Idposition idposition,
-    @PathVariable("gameId") Game game,
-    @RequestParam("numberOfMoves") Integer numberOfMoves, BindingResult br){
+    @PathVariable("gameId") Game game, BindingResult br){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -236,9 +233,7 @@ public class ExecuteActionsController {
                 Position position= positionServiceRepo.findPositionById(idposition.getId());
                 Player player=game.getCurrentPlayer();
                 this.playerUsePositionService.occupySpyPosition(position, player);
-                numberOfMoves--; 
-                res=numberOfMoves<1?new ModelAndView(REDIRECT+game.getId())
-                :new ModelAndView(REDIRECT+game.getId()+"/placeSpy?numberOfMoves="+numberOfMoves);
+                res=new ModelAndView(EXECUTE_ACTION);
             }catch(Exception e){
                 br.rejectValue("position","occupied","already occupy");
                 res=errorRes;
@@ -247,10 +242,9 @@ public class ExecuteActionsController {
         return res;
     }
 
-    @GetMapping("{gameId}/killTroop")
+    @GetMapping("killTroop")
     public ModelAndView initKillTroop(@PathVariable("gameId") Game game
-    ,@RequestParam("typeOfEnemy") String typeOfEnemy,@RequestParam("withPresence") Boolean withPresence
-    ,@RequestParam("numberOfMoves") Integer numberOfMoves){
+    ,@RequestParam("typeOfEnemy") String typeOfEnemy,@RequestParam("withPresence") Boolean withPresence){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
         putPlayerDataInModel(game, actualPlayer, result);
@@ -260,11 +254,10 @@ public class ExecuteActionsController {
         return result;
     }
 
-    @PostMapping("{gameId}/killTroop")
+    @PostMapping("killTroop")
     public ModelAndView processKillTroop(@Valid Idposition idposition,
     @PathVariable("gameId") Game game,@RequestParam("typeOfEnemy") String typeOfEnemy
-    ,@RequestParam("withPresence") Boolean withPresence
-    ,@RequestParam("numberOfMoves") Integer numberOfMoves,BindingResult br){
+    ,@RequestParam("withPresence") Boolean withPresence,BindingResult br){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -276,10 +269,7 @@ public class ExecuteActionsController {
                 Position position= this.positionServiceRepo.findPositionById(idposition.getId());
                 Player player=game.getCurrentPlayer();
                 this.playerUsePositionService.killTroop(position, player, withPresence);
-                numberOfMoves--; 
-                res=numberOfMoves<1?new ModelAndView(REDIRECT+game.getId())
-                :new ModelAndView(REDIRECT+game.getId()+"/killTroop?typeOfEnemy="
-                +typeOfEnemy+"&withPresence="+withPresence+"&numberOfMoves="+numberOfMoves);
+                res=new ModelAndView(EXECUTE_ACTION);
             }catch(Exception e){
                 br.rejectValue("position","not right","something happen");
                 res=errorRes;
@@ -287,5 +277,78 @@ public class ExecuteActionsController {
         }
         return res;
     }
-    
+
+    @GetMapping("returnPiece")
+    public ModelAndView initReturnPiece(@PathVariable("gameId") Game game
+    ,@RequestParam("enemyPlayer") Boolean enemyPlayer,@RequestParam("piece") String piece){
+        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        Player actualPlayer=game.getCurrentPlayer();
+        putPlayerDataInModel(game, actualPlayer, result);
+        result.addObject("positions",
+        customListingPositionService
+        .getReturnablePiecesByPlayerInGame(actualPlayer, game, piece, enemyPlayer));
+        return result;
+    }
+
+    @PostMapping("returnPiece")
+    public ModelAndView processReturnPiece(@Valid Idposition idposition,
+    @PathVariable("gameId") Game game
+    ,@RequestParam("enemyPlayer") Boolean enemyPlayer,@RequestParam("piece") String piece,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }else{
+            try{
+                Position position= this.positionServiceRepo.findPositionById(idposition.getId());
+                Player player=game.getCurrentPlayer();
+                this.playerUsePositionService.returnPiece(position, player);
+                res=new ModelAndView(EXECUTE_ACTION);
+            }catch(Exception e){
+                br.rejectValue("position","not right","something happen");
+                res=errorRes;
+            }
+        }
+        return res;
+    }
+
+    @GetMapping("supplantTroop")
+    public ModelAndView initSupplantTroop(@PathVariable("gameId") Game game
+    ,@RequestParam("typeOfEnemy") String typeOfEnemy,@RequestParam("withPresence") Boolean withPresence){
+        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        Player actualPlayer=game.getCurrentPlayer();
+        putPlayerDataInModel(game, actualPlayer, result);
+        result.addObject("positions",
+        customListingPositionService
+        .getAvailableEnemyPositionsByGame(actualPlayer, game, typeOfEnemy, withPresence, false));
+        return result;
+    }
+
+    @PostMapping("supplantTroop")
+    public ModelAndView processSupplantTroop(@Valid Idposition idposition,
+    @PathVariable("gameId") Game game,@RequestParam("typeOfEnemy") String typeOfEnemy
+    ,@RequestParam("withPresence") Boolean withPresence,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }else{
+            try{
+                Position position= this.positionServiceRepo.findPositionById(idposition.getId());
+                Player player=game.getCurrentPlayer();
+                this.playerUsePositionService.supplantTroop(position, player, withPresence);
+                res=new ModelAndView(EXECUTE_ACTION);
+            }catch(Exception e){
+                br.rejectValue("position","not right","something happen");
+                res=errorRes;
+            }
+        }
+        return res;
+    }
+
+
 }
