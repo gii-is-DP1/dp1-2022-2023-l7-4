@@ -43,6 +43,7 @@
         position: absolute;
         align-self: flex-start;
         font-family: monospace;
+        cursor: pointer;
     }
     p{
         margin: 10px;
@@ -682,8 +683,11 @@
     </div>
 
     <script>
+        var top = 10;
         function showPopUp(popup) {
             var overlay = document.getElementById(popup);
+            // overlay.parentNode.appendChild(overlay)
+            overlay.style.zIndex= ++top;
             overlay.style.visibility = "visible";
             overlay.style.opacity = 1;
         }
