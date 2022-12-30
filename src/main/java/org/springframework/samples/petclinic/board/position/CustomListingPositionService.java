@@ -152,5 +152,19 @@ public class CustomListingPositionService {
     public List<Position> getAllEnemySpiesForPlayerOfGame(Integer player_id,Game game){
         return getEnemyPositionsByTypeOfGame(player_id, true, true,null,game);
     }
+
+    @Transactional(readOnly = true)
+    public List<Position> getReturnablePiecesByPlayerInGame(Player player,Game game,String piece, Boolean enemyPlayer){
+        if(piece.toLowerCase().trim().equals("troop"))
+            return enemyPlayer?getPresenceTroopPositions(player.getId(),true)
+            :this.positionServiceRepo.getTroopPositionsOfPlayer(player.getId(), game);
+        else if(piece.toLowerCase().trim().equals("spy"))
+            return enemyPlayer?getPresenceSpyPositions(player.getId(),true)
+            :this.positionServiceRepo.getSpyPositionsOfPlayer(player.getId(), game);
+        else
+            return enemyPlayer?getPresencePositions(player.getId(),true):
+            this.positionServiceRepo.getPlayerPositions(player.getId());
+    }
+
     
 }
