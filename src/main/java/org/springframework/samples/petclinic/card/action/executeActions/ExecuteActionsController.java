@@ -72,7 +72,7 @@ public class ExecuteActionsController {
         Action currentAction = game.getCurrentAction();
         
 
-        Action action = getNextAction(currentAction);
+        Action action = actionService.getNextAction(currentAction);
         if(action == null)  {
             game.setCurrentAction(null);
             gameService.save(game);
@@ -136,20 +136,7 @@ public class ExecuteActionsController {
     }
 
 
-    //ESTO REALMENTE DEBERIA ESTAR COMO MÉTODO DE LA CLASE DE ACTION
-    public static Action getNextAction(Action action) {
-        if (action.getIterations() == 0) {
-          return null;
-        }
-        for (Action subaction : action.getSubactions()) {
-          Action next = getNextAction(subaction);
-          if (next != null) {
-            return next;
-          }
-        }
-        action.decrementIterations();
-        return action;
-      }
+
 
 
     public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
@@ -164,7 +151,13 @@ public class ExecuteActionsController {
     }
 
     
-
+    @GetMapping("chooseSubaction/{actionId}")
+    public String chooseSubaction(@PathVariable("gameId") Game game,@PathVariable Integer actionId){
+        Action action = actionService.getActionById(actionId);
+        actionService.chooseSubaction(game,action);
+        gameService.save(game);
+        return EXECUTE_ACTION;
+    }
     @GetMapping("deployTroop")
     public ModelAndView initDeployTroop(@PathVariable("gameId") Game game
     ,@RequestParam("withPresence") Boolean withPresence){

@@ -83,11 +83,16 @@ public class Action extends BaseEntity {
 
     public void decrementIterations() {
         iterations--;
-        if (iterations == 0) {
-          // Todas las subacciones han llegado a cero, se reinician
           for (Action subaction : subactions) {
             subaction.setIterations(subaction.getOriginalIterations());
+            subaction.decrementIterations();
           }
-        }
-      }
+        
+    }
+
+    public boolean isNotChosenYet() {
+      return subactions.stream().allMatch(subaction -> subaction.getIterations()>=1);
+    }
+
+
 }
