@@ -92,9 +92,14 @@
                <c:out>${special}</c:out> 
                 <div class="position-scroll">
                     <div class="position-totally">
-                        <form:form modelAttribute="idposition">
-                            <motero2k:positionTable>
-                            </motero2k:positionTable>
+                        <form:form modelAttribute="pairPosition">
+                            <motero2k:twoPositionTables>
+                            </motero2k:twoPositionTables>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-default">MOVER PIEZA</button>
+                                </div>
+                            </div>
                         </form:form>
                         <a href="/play/${gameId}/round/${round}">CANCELAR</a>
                     </div>
@@ -117,7 +122,7 @@
             
         </div>
     </div>     
-
+  
 </body>
 <style>
     .popup {

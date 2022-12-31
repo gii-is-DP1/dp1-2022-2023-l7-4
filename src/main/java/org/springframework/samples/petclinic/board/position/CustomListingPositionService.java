@@ -113,6 +113,8 @@ public class CustomListingPositionService {
         return res;
     }
 
+    //MÉTODOS PARA EXECUTEACTIONCONTROLLER
+
     @Transactional(readOnly=true)
     public List<Position> getAvailableEnemyPositionsByGame(Player player,Game game,String typeOfEnemy
     ,Boolean withPresence,Boolean forSpy){
@@ -151,6 +153,29 @@ public class CustomListingPositionService {
     @Transactional(readOnly = true)
     public List<Position> getAllEnemySpiesForPlayerOfGame(Integer player_id,Game game){
         return getEnemyPositionsByTypeOfGame(player_id, true, true,null,game);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getMovablePiecesForPlayer(Player player,Game game,String piece, Boolean enemyPlayer){
+        if(piece.toLowerCase().trim().equals("troop"))
+            return enemyPlayer?getPresenceTroopPositions(player.getId(),true)
+            :this.positionServiceRepo.getTroopPositionsOfPlayer(player.getId(), game);
+        else if(piece.toLowerCase().trim().equals("spy"))
+            return enemyPlayer?getPresenceSpyPositions(player.getId(),true)
+            :this.positionServiceRepo.getSpyPositionsOfPlayer(player.getId(), game);
+        else
+            return enemyPlayer?getPresencePositions(player.getId(),true):
+            this.positionServiceRepo.getPlayerPositions(player.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getAllFreePositionsByPieceAndGame(Game game,String piece){
+        if(piece.toLowerCase().trim().equals("troop"))
+            return this.positionServiceRepo.getFreeTroopPositionsFromGame(game);
+        else if(piece.toLowerCase().trim().equals("spy"))
+            return this.positionServiceRepo.getFreeSpyPositionsFromGame(game);
+        else
+            return this.positionServiceRepo.getFreePositionsFromGame(game);
     }
     
 }

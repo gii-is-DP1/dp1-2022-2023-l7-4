@@ -10,8 +10,8 @@
     <img src="/resources/images/logo-menu.png" alt="">
     <a href="/games/list">Jugar</a>
     <div class="botmenu">
-        <a href="">Mapas</a>
-        <a href="">Reglas</a>
+        <a href="" >Mapas</a>
+        <a href="/resources/rules/tyrants-of-the-underdark-reglas-es.pdf" target="_blank">Reglas</a>
         <a href="/cards/all">Cartas</a>
     </div>
 </div>
@@ -53,6 +53,27 @@
         border-style: solid;
         border-color: black;
         background: rgb(95,75,139);
+        transition-duration: 0.5s;
+
+    }
+    .mainmenu a:hover{
+        color: rgba(95,75,139,1);
+        margin: auto;
+        margin-bottom: 50px;
+        width: 250px;
+        height: 100px;
+        display: flex;
+        font-size: 5rem;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        border-radius: 10px;
+        border-width: 2px;
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        background: rgb(255, 255, 255);
+        transition-duration: 0.5s;
+
     }
     .botmenu{
         width: 100%;
@@ -71,6 +92,18 @@
         border: 1.5px solid rgba(95,75,139,1); 
         background: rgb(0,0,0);
         background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(49,39,72,1) 50%, rgba(95,75,139,1) 100%);
+        margin-bottom: 50px;
+    }
+    .botmenu a:hover{
+        margin: auto;
+        font-size: 2rem;
+        width: 150px;
+        height: 50px;
+        color: black;
+        border: 0.2vmax solid rgba(95,75,139,1); 
+        background: rgb(245, 245, 245);
+        background: linear-gradient(0deg, rgb(242, 242, 242) 0%, rgb(179, 175, 189) 50%, rgb(158, 129, 220) 100%);
+        transition-duration: 0.5s;
         margin-bottom: 50px;
     }
 </style>

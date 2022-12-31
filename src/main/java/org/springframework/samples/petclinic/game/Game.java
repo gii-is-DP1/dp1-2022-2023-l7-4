@@ -72,7 +72,8 @@ public class Game extends BaseEntity{
     @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
 
-
+    
+    
     @ManyToOne()
     MapTemplate mapTemplate ;
 
@@ -94,7 +95,7 @@ public class Game extends BaseEntity{
 
     @ManyToMany
     @JoinTable(name = "games_cards_in_deck",
-        inverseJoinColumns = @JoinColumn(name = "card_in_deck_id"))
+    inverseJoinColumns = @JoinColumn(name = "card_in_deck_id"))
     private List<Card> gameDeck = new ArrayList<>();
     
     @ManyToMany
@@ -105,11 +106,17 @@ public class Game extends BaseEntity{
     
     @ManyToMany
     private List<Card> houseGuards = new ArrayList<>();
-
+    
     @ManyToMany
     private List<Card> lolths = new ArrayList<>();
+    
+    @ManyToMany()
+    List<Card> cardsToPromote=new ArrayList<>();
 
-
+    public Boolean canFinishTurn(){
+        return getCardsToPromote().isEmpty();
+    }
+    
     public void addPlayer(Player player) {
         getPlayers().add(player);
         player.setGame(this);

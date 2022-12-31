@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.card.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,12 +22,26 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @Table(name = "actions")
 @Entity
 public class Action extends BaseEntity {
-
+   
+    String aaa(){
+        String result = getIterations().toString();
+        if(isSimple()){
+            return result;
+        }else{
+            result += "[";
+            for (Action subAction: getSubactions()) {
+                result += subAction.aaa()+",";
+            }
+            result += "]";
+        }
+        return result;
+    }
     @Enumerated(value = EnumType.STRING)
     @Column(name = "action_name")
     ActionName actionName;
@@ -34,7 +49,7 @@ public class Action extends BaseEntity {
     String description;
     
     Integer iterations;
-
+  
     Integer originalIterations;
 
     Integer value;
@@ -75,32 +90,41 @@ public class Action extends BaseEntity {
  
 
     public Boolean hasNoMoreIterations(){
-        return getIterations()<0;
+        return getIterations()<=0;
+    }
+
+    public Boolean isExecuteInEndOfTurn(){
+        List<ActionName> list=List.of(ActionName.PROMOTE_OWN_PLAYED_CARD
+        ,ActionName.PROMOTE_OWN_DISCARDED_CARD,ActionName.PROMOTE_CARD_FROM_OWN_DECK);
+        return list.contains(this.getActionName());
     }
 
 
-    public static Action of(Action action) {
-        Action copy = new Action();
-        copy.setActionName(action.getActionName());
-        copy.description = action.getDescription();
-        copy.setPosition(action.getPosition());
-        copy.setValue(action.getValue());
-        copy.setAspect(action.getAspect());
-        copy.setIterations(action.getOriginalIterations());
-        copy.setOriginalIterations(action.getOriginalIterations());
-        for (Action subaction : action.getSubactions()) {
-          copy.getSubactions().add(of(subaction));
-        }
-        return copy;
-      }
 
-    public void decrementIterations() {
+
+
+
+    public boolean isNotChosenYet() {
+      return subactions.stream().allMatch(subaction -> subaction.getIterations()>=1);
+    }
+
+    public boolean subActionsAllDone() {
+        if(this.isSimple()) return false;
+        return subactions.stream().allMatch(a->a.getIterations()<=0);
+    }
+
+    public void decreaseIterations() {
         iterations--;
-        if (iterations == 0) {
-          // Todas las subacciones han llegado a cero, se reinician
-          for (Action subaction : subactions) {
-            subaction.setIterations(subaction.getOriginalIterations());
-          }
-        }
-      }
+    }
+
+    public boolean isChosen() {
+        
+        return subactions.stream().filter(a->a.getIterations()>0).collect(Collectors.toList()).size()==1;
+    }
+
+    public boolean isChooseType() {
+        return actionName.equals(ActionName.CHOOSE);
+    }
+
+
 }

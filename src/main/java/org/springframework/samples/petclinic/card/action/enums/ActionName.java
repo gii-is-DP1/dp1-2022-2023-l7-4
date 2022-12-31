@@ -42,8 +42,10 @@ public enum ActionName {
     RETURN_OWN_SPY,
     RETURN_ONE_OR_MORE_OWN_SPY, // minimum 1 and it is considered succesful
     //CARD
+    //FOR EACH PROMOTE, CHANGE METHOD IN ACTION
     PROMOTE_OWN_PLAYED_CARD, //EXCLUDE THIS CARD FILTERED BY ASPECT and  minionType(nullable)
     PROMOTE_OWN_DISCARDED_CARD_NOW, //this card included
+    PROMOTE_OWN_DISCARDED_CARD,
     PROMOTE_CARD_FROM_OWN_DECK, //first one if disordered, random if ordered
     MOVE_OWN_DECK_CARDS_TO_DISCARDED,
     DEVORE_THIS_CARD,

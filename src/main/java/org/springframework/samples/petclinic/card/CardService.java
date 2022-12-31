@@ -68,5 +68,13 @@ public class CardService {
         return (List<Card>) cardRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<Card> getPromotableCardForPlayerByGame(Game game,String typeOfCard){
+        if(typeOfCard.toLowerCase().trim().equals("played"))
+            return game.getCurrentPlayer().getPlayed();
+        else
+            return game.getCurrentPlayer().getDiscarded();
+    }
+
     
 }
