@@ -53,12 +53,13 @@ public class ExecuteActionsController {
 
     private final String CHOOSE_TWO_POSITIONS_FORM_VIEW="playing/chooseTwoPositionsFormView";
 
-    private final String CHOOSE_ONE_ACTION_FORM_VIEW="playing/chooseActionFormView";
+    private final String CHOOSE_VIEW="actions/choose";
 
 
     String REDIRECT =       "redirect:/play/{gameId}/round/{round}";
     String GAME_MAIN_VIEW = "redirect:/play/{gameId}";
     String EXECUTE_ACTION = "redirect:/play/{gameId}/round/{round}/execute-action";
+    String CHOOSE = "redirect:/play/{gameId}/round/{round}/choose";
 
     @GetMapping("play-card/{cardId}")
     public String generateGameAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "cardId") Card card){
@@ -70,12 +71,12 @@ public class ExecuteActionsController {
         return EXECUTE_ACTION;
     }
     @GetMapping("execute-action")
-    public String executeAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "gameId") Action gameAction){
+    public String executeAction(@PathVariable(name = "gameId") Game game){
         Player player = game.getCurrentPlayer();
         Action currentAction = game.getCurrentAction();
         
 
-        Action action = actionService.getNextAction(currentAction);
+        Action action = actionService.getNextAction(currentAction,currentAction);
         if(action == null)  {
             game.setCurrentAction(null);
             gameService.save(game);
@@ -93,7 +94,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.PLACE_OWN_SPY){
             return REDIRECT+"/placeSpy";
         }else if(action.getActionName()== ActionName.CHOOSE){
-            return REDIRECT+"/choose";
+            return CHOOSE+"/"+action.getId();
         }else if(action.getActionName()== ActionName.KILL_ENEMY_TROOP){
             return REDIRECT+"/killTroop?typeOfEnemy=any&withPresence=true";
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_PIECE){
@@ -131,9 +132,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_TOTAL_CONTROLLED_SITE){
             return null;
         }
-        System.out.println(player);
         playerService.savePlayer(player);
-        System.out.println(2);
         gameService.saveGame(game);
         return EXECUTE_ACTION;
     }
@@ -153,12 +152,21 @@ public class ExecuteActionsController {
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
-    
-    @GetMapping("chooseSubaction/{actionId}")
-    public String chooseSubaction(@PathVariable("gameId") Game game,@PathVariable Integer actionId){
+    @GetMapping("choose/{actionId}")
+    public ModelAndView chooseSubaction(@PathVariable("gameId") Game game,@PathVariable Integer actionId){
+        ModelAndView mav = new ModelAndView(CHOOSE_VIEW);
+        Action action = actionService.getActionById(actionId);
+		mav.addObject("action",action);
+		mav.addObject("round",game.getRound());
+		mav.addObject("gameId",game.getId());
+        return mav;
+    }
+    @GetMapping("chosenSubaction/{actionId}")
+    public String chosenSubaction(@PathVariable("gameId") Game game,@PathVariable Integer actionId){
         Action action = actionService.getActionById(actionId);
         actionService.chooseSubaction(game,action);
         gameService.save(game);
+        System.out.println("se ha elegido "+action);
         return EXECUTE_ACTION;
     }
     @GetMapping("deployTroop")

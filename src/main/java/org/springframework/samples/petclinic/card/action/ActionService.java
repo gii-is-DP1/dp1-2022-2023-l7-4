@@ -3,10 +3,8 @@ package org.springframework.samples.petclinic.card.action;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.card.CardRepository;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 import org.springframework.samples.petclinic.game.Game;
-import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,15 +12,10 @@ public class ActionService {
 
     
     private ActionRepository actionRepository;
-    private PlayerRepository playerRepository;
-    private CardRepository cardRepository;
 
     @Autowired
-    public ActionService(ActionRepository actionRepository,PlayerRepository playerRepository
-    ,CardRepository cardRepository){
+    public ActionService(ActionRepository actionRepository){
         this.actionRepository=actionRepository;
-        this.playerRepository=playerRepository;
-        this.cardRepository=cardRepository;
     }
 
     public List<Action> getAllActions(){
@@ -61,46 +54,68 @@ public class ActionService {
         return copy;
     }
 
-    public Action getNextAction(Action action) {
+    public Action getNextAction(Action action,Action gameAction) {
         if (action.getIterations() == 0) {
           return null;
         }else if(action.getActionName()==ActionName.CHOOSE && action.isNotChosenYet()){
             return action;
+        }else if(action.getActionName()==ActionName.CHOOSE && action.isChosen()){
+            Action subAction = action.getSubactions().stream().filter(x->!x.hasNoMoreIterations()).findFirst().get();
+
+            return getNextAction(subAction, gameAction);
+        }else if(action.subActionsAllDone()){
+            decreaseIterationsOf(action);
+            return getNextAction(gameAction, gameAction);
         }
         for (Action subaction : action.getSubactions()) {
-          Action next = getNextAction(subaction);
+          Action next = getNextAction(subaction, gameAction);
           if (next != null) {
             return next;
           }
         }
-        action.decrementIterations();
+        decreaseIterationsOf(action);
         return action;
       }
 
-    public void blockSubactionsExcept(Action action, Action chosenSubAction){
-        for(Action subAction:action.getSubactions()){
-            if(subAction!=chosenSubAction){
+      public void blockSubactionsExcept(Action action, Action chosenSubAction) {
+        for (Action subAction : action.getSubactions()) {
+            if (!subAction.equals(chosenSubAction)) {
                 subAction.setIterations(0);
-                blockSubactionsExcept(action, chosenSubAction); //en principio no tiene que ser recursivo porque con bloquear ese nivel no va a seguir por sus hijos
+                save(subAction);
             }
         }
     }
 
+    
+    private void decreaseIterationsOf(Action action) {
+        action.decreaseIterations();
+        resetSubactions(action);
+        save(action);
+        
+    }
+    private void resetSubactions(Action action) {
+        for (Action subaction : action.getSubactions()) {
+            subaction.setIterations(subaction.getOriginalIterations());
+            resetSubactions(subaction);
+            save(subaction);
+        }
+        
+    }
     public void chooseSubaction(Game game, Action selected) {
         Action gameAction = game.getCurrentAction();
         chooseSubaction(gameAction, selected);
         
     }
 
-    private void chooseSubaction(Action action, Action selected) {
-        if(action == selected){
-            blockSubactionsExcept(action, selected);
-        }else{
-            for(Action subAction: action.getSubactions()){
+    private void chooseSubaction(Action father, Action selected) {
+        for(Action subAction: father.getSubactions()){
+                if(subAction.equals(selected)){
+                    blockSubactionsExcept(father, subAction);
+                }
                 chooseSubaction(subAction, selected);
-            }
 
         }
+
     }
     
 }

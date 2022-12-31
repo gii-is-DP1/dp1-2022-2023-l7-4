@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.card.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,12 +22,26 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @Table(name = "actions")
 @Entity
 public class Action extends BaseEntity {
-
+   
+    String aaa(){
+        String result = getIterations().toString();
+        if(isSimple()){
+            return result;
+        }else{
+            result += "[";
+            for (Action subAction: getSubactions()) {
+                result += subAction.aaa()+",";
+            }
+            result += "]";
+        }
+        return result;
+    }
     @Enumerated(value = EnumType.STRING)
     @Column(name = "action_name")
     ActionName actionName;
@@ -34,7 +49,7 @@ public class Action extends BaseEntity {
     String description;
     
     Integer iterations;
-
+  
     Integer originalIterations;
 
     Integer value;
@@ -75,23 +90,34 @@ public class Action extends BaseEntity {
  
 
     public Boolean hasNoMoreIterations(){
-        return getIterations()<0;
+        return getIterations()<=0;
     }
 
 
 
 
-    public void decrementIterations() {
-        iterations--;
-          for (Action subaction : subactions) {
-            subaction.setIterations(subaction.getOriginalIterations());
-            subaction.decrementIterations();
-          }
-        
-    }
+
 
     public boolean isNotChosenYet() {
       return subactions.stream().allMatch(subaction -> subaction.getIterations()>=1);
+    }
+
+    public boolean subActionsAllDone() {
+        if(this.isSimple()) return false;
+        return subactions.stream().allMatch(a->a.getIterations()<=0);
+    }
+
+    public void decreaseIterations() {
+        iterations--;
+    }
+
+    public boolean isChosen() {
+        
+        return subactions.stream().filter(a->a.getIterations()>0).collect(Collectors.toList()).size()==1;
+    }
+
+    public boolean isChooseType() {
+        return actionName.equals(ActionName.CHOOSE);
     }
 
 
