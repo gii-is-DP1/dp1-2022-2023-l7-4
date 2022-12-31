@@ -1,9 +1,6 @@
 package org.springframework.samples.petclinic.game;
 
 import java.util.ArrayList;
-
-import java.util.Collections;
-
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -16,12 +13,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -30,17 +23,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 
 import org.springframework.samples.petclinic.board.map.MapTemplate;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.HalfDeck;
+import org.springframework.samples.petclinic.card.action.Action;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.VictoryPoints;
@@ -57,6 +46,8 @@ public class Game extends BaseEntity{
     @NotEmpty
     String name= "";
     
+    @ManyToOne
+    Action currentAction;
 
     @Temporal(TemporalType.DATE)
     Date date = new Date();
@@ -130,7 +121,12 @@ public class Game extends BaseEntity{
     
     public void setNextPlayer(){
        this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
-       if(this.turnPlayer==1) this.round++;
+       if(this.turnPlayer==1) {
+            this.round++;
+            Boolean anyPlayerHasNoTroops = players.stream().anyMatch(player->player.getTroops()<=0);
+            if(gameDeck.isEmpty() || anyPlayerHasNoTroops) setFinished(true);
+            
+       }
     }
 
     public Player getCurrentPlayer(){
@@ -195,7 +191,7 @@ public class Game extends BaseEntity{
         Integer totalControlVP=getTotalControlVP(player);
         Integer trophyHallVP=player.getTrophyHallVPs();
         Integer handVP=player.getHandVPs();
-        Integer dicardPileVP=player.getDiscardPile().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
+        Integer dicardPileVP=player.getDiscarded().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer innerCircleVP= getInnerCircleVP(player);
         vp.setControlVP(controlVP);

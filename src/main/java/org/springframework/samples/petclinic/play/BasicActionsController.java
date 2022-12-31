@@ -75,6 +75,7 @@ public class BasicActionsController {
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
         result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVP());
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
@@ -161,7 +162,7 @@ public class BasicActionsController {
         return res;
     }
 
-    @GetMapping("{gameId}/round/{round}/basicReturnSpy")
+    @GetMapping("{gameId}/round/{round}/basicReturnEnemySpy")
     public ModelAndView initBasicReturnEnemySpy(@PathVariable Integer gameId){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Game game=this.gameService.getGameById(gameId);
@@ -173,7 +174,7 @@ public class BasicActionsController {
         return result;
     }
 
-    @PostMapping("{gameId}/round/{round}/basicReturnSpy")
+    @PostMapping("{gameId}/round/{round}/basicReturnEnemySpy")
     public ModelAndView processBasicReturnEnemySpy(@Valid Idposition idposition,@PathVariable Integer gameId,
     BindingResult br){
         ModelAndView res=null;

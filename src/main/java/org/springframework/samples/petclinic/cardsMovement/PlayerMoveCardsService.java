@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.checkers.CheckCardMovement;
 import org.springframework.samples.petclinic.checkers.Preconditions;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Service;
@@ -25,11 +26,16 @@ public class PlayerMoveCardsService {
 		drawFromDeckToHand(5, player);
 	}
 	
-	public void drawFromDeckToHand(Integer numberOfCard,Player player) throws Exception{
-		if(player.getDeck().size()<numberOfCard){
-			moveAllDiscardedToDeck(player);
-		}
-		moveNCardsRandomAndSave(numberOfCard, player.getDeck(), player.getHand(), player);
+	public void drawFromDeckToHand(Integer numberOfCards,Player player) throws Exception{
+			for (int i = 0; i < numberOfCards; i++) {
+				if(player.getDeck().isEmpty()){
+					moveAllDiscardedToDeck(player);
+				}
+				int random = randomBetween(0, player.getDeck().size()-1);
+				Card removed = player.getDeck().remove(random);
+				player.getHand().add(removed);
+			}
+		playerService.savePlayer(player);
 	}
 
 	public void moveFromHandToPlayed(@Valid Card card,@Valid Player player){
@@ -41,15 +47,15 @@ public class PlayerMoveCardsService {
 //	MOVE FULL COLLECTIONS
 
 	public void moveAllPlayedToDiscardPile(@Valid Player player) throws Exception{
-		moveAllAndSave(player.getPlayed(), player.getDiscardPile(), player);
+		moveAllAndSave(player.getPlayed(), player.getDiscarded(), player);
 	}
 
 	public void moveAllDiscardedToDeck(@Valid Player player) throws Exception{
-		moveAllAndSave(player.getDiscardPile(), player.getDeck(), player);
+		moveAllAndSave(player.getDiscarded(), player.getDeck(), player);
 	}
 
 	public void moveAllHandToDiscard(@Valid Player player) throws Exception{
-		moveAllAndSave(player.getHand(), player.getDiscardPile(), player);
+		moveAllAndSave(player.getHand(), player.getDiscarded(), player);
 	}
 
 //	PROMOTE
@@ -59,7 +65,7 @@ public class PlayerMoveCardsService {
 	}
 
 	public void promoteSelectedFromDiscardPile(@Valid Card card,@Valid Player player){
-		moveSelectedCardAndSave(card,player.getDiscardPile(),player.getInnerCircle(),  player);
+		moveSelectedCardAndSave(card,player.getDiscarded(),player.getInnerCircle(),  player);
 	}
 	
 
@@ -81,32 +87,14 @@ public class PlayerMoveCardsService {
 
 
 	private void moveAllAndSave(List<Card> source, List<Card> target, Player player) throws Exception{
-		CheckCardMovement.sourceIsNotEmpty(source);
-		for (int i = 0; i < source.size(); i++) {
+		Integer size = source.size();
+		for (int i = size-1; i >= 0; i--) {
 			Card removed = source.remove(i);
 			target.add(removed);
+			playerService.savePlayer(player);
 		}
 	}
 
-
-	/**
-	 * @param numberOfCards number of random cards to draw
-	 * @param source list of cards (origin)
-	 * @param target list of cards (card goes here)
-	 * @throws Exception null/empty source, selected more cards than cards in list
-	 */
-	private void moveNCardsRandomAndSave(Integer numberOfCards,List<Card> source, List<Card> target, Player player) throws Exception {
-
-		CheckCardMovement.sourceIsNotEmpty(source);
-		Preconditions.check(numberOfCards<=source.size()).error("cant take more cards than cards in given list");
-			for (int i = 0; i < numberOfCards; i++) {
-				int random = randomBetween(0, numberOfCards);
-				Card removed = source.remove(random);
-				target.add(removed);
-			}
-		
-		playerService.savePlayer(player);
-	}
 
 	private Integer randomBetween(Integer min, Integer max) {
 		return (int) ((Math.random() * (max - min)) + min);

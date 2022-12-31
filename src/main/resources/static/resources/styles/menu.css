@@ -178,3 +178,10 @@ border-radius: 10%;
 .table-striped > tbody > tr:nth-child(even) {
     background-color: #96dfe4;
  }
+ .table-striped > tbody > tr:nth-child(odd) {
+    background-color: #ffffff;
+ }
+ .table-striped > thead > tr > th {
+    background-color: rgb(95,75,139);
+    color: white;
+ }

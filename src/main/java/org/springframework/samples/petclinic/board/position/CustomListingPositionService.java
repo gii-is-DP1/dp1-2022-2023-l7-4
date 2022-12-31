@@ -9,6 +9,7 @@ import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityRepository;
 import org.springframework.samples.petclinic.board.sector.path.PathRepository;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,6 +113,38 @@ public class CustomListingPositionService {
         return res;
     }
 
+    //MÉTODOS PARA EXECUTEACTIONCONTROLLER
+
+    @Transactional(readOnly=true)
+    public List<Position> getAvailableEnemyPositionsByGame(Player player,Game game,String typeOfEnemy
+    ,Boolean withPresence,Boolean forSpy){
+        if(typeOfEnemy.toLowerCase().trim().equals("white"))
+            return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, true, game);
+        else if(typeOfEnemy.toLowerCase().trim().equals("player"))
+            return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, false, game);
+        else
+            return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, null, game);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getAvailableFreeTroopPositionsByGame(Player player,Game game
+    ,Boolean withPresence){
+        List<Position> result=new ArrayList<>();
+        if(withPresence){
+            result=getPresenceTroopPositions(player.getId(),false);
+            if(result.isEmpty()) result=this.positionServiceRepo.getFreePositionsFromGame(game);
+        }
+        return result;
+    }
+
+    @Transactional(readOnly=true)
+    public Boolean isSpecialCaseOfFreeTroopPositions(Game game,Boolean withPresence){
+        if(!withPresence) return false;
+        else{
+            return getPresencePositions(game.getCurrentPlayer().getId(),false).isEmpty();
+        }
+    }
+
     @Transactional(readOnly = true)
     public List<Position> getAllEnemyTroopsForPlayerOfGame(Integer player_id,Game game){
         return getEnemyPositionsByTypeOfGame(player_id, false, true,null,game);
@@ -120,6 +153,29 @@ public class CustomListingPositionService {
     @Transactional(readOnly = true)
     public List<Position> getAllEnemySpiesForPlayerOfGame(Integer player_id,Game game){
         return getEnemyPositionsByTypeOfGame(player_id, true, true,null,game);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getMovablePiecesForPlayer(Player player,Game game,String piece, Boolean enemyPlayer){
+        if(piece.toLowerCase().trim().equals("troop"))
+            return enemyPlayer?getPresenceTroopPositions(player.getId(),true)
+            :this.positionServiceRepo.getTroopPositionsOfPlayer(player.getId(), game);
+        else if(piece.toLowerCase().trim().equals("spy"))
+            return enemyPlayer?getPresenceSpyPositions(player.getId(),true)
+            :this.positionServiceRepo.getSpyPositionsOfPlayer(player.getId(), game);
+        else
+            return enemyPlayer?getPresencePositions(player.getId(),true):
+            this.positionServiceRepo.getPlayerPositions(player.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Position> getAllFreePositionsByPieceAndGame(Game game,String piece){
+        if(piece.toLowerCase().trim().equals("troop"))
+            return this.positionServiceRepo.getFreeTroopPositionsFromGame(game);
+        else if(piece.toLowerCase().trim().equals("spy"))
+            return this.positionServiceRepo.getFreeSpyPositionsFromGame(game);
+        else
+            return this.positionServiceRepo.getFreePositionsFromGame(game);
     }
     
 }

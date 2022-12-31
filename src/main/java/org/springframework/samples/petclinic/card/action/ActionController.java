@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.card.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,22 +14,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class ActionController {
     
     private final String ACTION_LISTING="actions/allActionsView";
-    private final String ACTION_LISTING_OF_CARD="actions/actionsOfCardView";
 
-    private PlayerService playerService;
     private ActionService actionService;
-
-
     @Autowired
-    public ActionController(PlayerService playerService,ActionService actionService){
-        this.actionService=actionService;
-        this.playerService=playerService;
-    }
+    private CardService cardService;
+
 
     @GetMapping("")
     public ModelAndView showAllActions(){
         ModelAndView result=new ModelAndView(ACTION_LISTING);
-        result.addObject("actions", actionService.getAllActions());
+        result.addObject("cards", cardService.getAllCards());
         return result;
     }
 

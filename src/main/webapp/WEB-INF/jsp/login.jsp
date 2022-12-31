@@ -74,6 +74,7 @@
     height: 100%;
     border: none;
     background: none;
+    border-radius: 20px;
     box-sizing: border-box;
     padding: 20px 45px 10px;
     font-size: 18px;
