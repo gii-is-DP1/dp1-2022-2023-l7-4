@@ -1,5 +1,8 @@
+
+INSERT INTO users(username,password,enabled,name,email,birthdate)
+VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
 -- One admin user, named admin1 with passwor 4dm1n and authority admin
-INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
+-- INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('manotebar','manotebar',TRUE,'Manuel', 'manotebar@gmail.com', '2000-10-20');
@@ -118,7 +121,7 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (105,1,'PLACE_OWN_SPY',null),--Maestra de espías
     (106,1,'CHOOSE',null),--Adalid
     (107,1,'CHOOSE',null),--Inquisidora
-    (108,1,'CHOOSE',null),--Guardia Negro
+    (108,2,'CHOOSE',null),--Guardia Negro
     (109,1,'SUPPLANT_WHITE_TROOP',null),--Rastreadora de avanzadilla
     (110,2,'KILL_WHITE_TROOP',null),--Explorador del UnderDark
     (111,1,'ALL',null),--Elegida de Lolth
@@ -189,6 +192,13 @@ INSERT INTO aspects(id,name,description,image) VALUES (3,'Malicia','Los siervos 
 INSERT INTO aspects(id,name,description,image) VALUES (4,'Astucia','Los siervos de astucia son los mejores para espiar e interrumpir el control.','');
 INSERT INTO aspects(id,name,description,image) VALUES (5,'Obediencia','Los siervos de obediencia realizan las tareas del día a día.','');
 
+
+
+
+
+
+
+
 -- CARDS
 INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id,action_id) 
 VALUES      ('Soldado',0,'Los soldados defienden a sus superiores contra todos los enemigos','+1 de poder',0,1,0,3,5,100),
@@ -236,4 +246,23 @@ VALUES      ('Soldado',0,'Los soldados defienden a sus superiores contra todos l
             -- ('Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2,142),
             -- ('Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3,143);
 
+INSERT INTO actions(id,original_iterations,action_name,value) VALUES 
+    
+    (-1,2,'CHOOSE',null),
+    (-2,2,'CHOOSE',null),
+
+    (-10,4,'POWER',1),
+    (-11,1,'INFLUENCE',1),
+    (-12,1,'INFLUENCE',+50),
+    (-13,5,'POWER',+10)
+    ;
+INSERT INTO subactions(action_id,subaction_id) VALUES 
+    --choose
+    (-1,-10), --power
+    (-1,-2),
+        (-2,-12),
+        (-2,-13);
+
+INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id,action_id) 
+VALUES      (-10,'Test elegir',0,'lore','+1 de poder',1,4,5,1,2,-1);
 
