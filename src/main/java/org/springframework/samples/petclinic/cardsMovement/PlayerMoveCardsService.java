@@ -67,6 +67,10 @@ public class PlayerMoveCardsService {
 	public void promoteSelectedFromDiscardPile(@Valid Card card,@Valid Player player){
 		moveSelectedCardAndSave(card,player.getDiscarded(),player.getInnerCircle(),  player);
 	}
+
+	public void promoteSelectedFromDeck(@Valid Card card,@Valid Player player){
+		moveSelectedCardAndSave(card, player.getDeck(), player.getInnerCircle(), player);
+	}
 	
 
 

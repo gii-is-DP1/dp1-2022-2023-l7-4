@@ -108,7 +108,12 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (12,2,'MOVE_ENEMY_TROOP',null),
     (13,1,'PLACE_OWN_SPY',null),
     (14,1,'POWER',4),
-    (15,1,'THEN',null);
+    (15,1,'THEN',null),
+    (16,1,'MOVE_OWN_DECK_CARDS_TO_DISCARDED',null),
+    (17,1,'PROMOTE_OWN_DISCARDED_CARD_NOW',null),
+    (18,1,'THEN',null),
+    (19,1,'DRAW_CARD',3)
+    ;
 
 --CARD ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value) VALUES 
@@ -134,8 +139,8 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (118,2,'KILL_ENEMY_TROOP',null),--Filo letal
     (119,1,'THEN',null),--Miembro del consejo
     (120,1,'CHOOSE',null),--Hilador de conjuros
-    (121,null,null,null),--Name of Card
-    (122,null,null,null),--Name of Card
+    (121,1,'THEN',null),--Matrona
+    (122,1,'CHOOSE',null),--Traficante de información
     (123,null,null,null),--Name of Card
     (124,null,null,null),--Name of Card
     (125,null,null,null),--Name of Card
@@ -162,6 +167,8 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
 INSERT INTO subactions(action_id,subaction_id) VALUES 
     (15,7),
     (15,14),
+    (18,7),
+    (18,19),
     (106,3),
     (106,2),
     (107,3),
@@ -180,7 +187,12 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (119,2),
     (120,10),
     (120,13),
-    (120,7)
+    (120,7),
+    (121,16),
+    (121,17),
+    (122,13),
+    (122,18)
+
     
     ;
 
@@ -221,9 +233,9 @@ VALUES      ('Soldado',0,'Los soldados defienden a sus superiores contra todos l
             ('Maestro de armas',6,'<<O resultas ser digno o perecerás. Tu destino depende de ti. >> -- Shoor Vandree','Elige 3 veces: Despliega 1 tropa| Asesina 1 tropa blanca',3,6,1,1,2,117),
             ('Filo letal',5,'<<Ojalá te señalen los Filos letales.>>--Maldición drow','Asesina 2 tropas',3,6,1,1,3,118),
             ('Miembro del consejo',6,'En las cámaras del consejo drow, la intriga es una forma de arte.','Mueve hasta 2 tropas enemigas. Al final del turno, asciende otra carta jugada',3,6,1,1,1,119),
-            ('Hilador de conjuros',3,'Nunca sabrás que tu mente no te pertenece','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Suplanta 1 tropa que esté en la misma ubicación que ese espía',1,3,3,1,4,120);
-            -- ('Matrona',6,'La voluntad de la matrona es absoluta','Pon tu mazo en tu pila de descartes=>Asciende 1 carta de tu pila de descartes',3,6,1,1,1,121),
-            -- ('Traficante de información',5,'<<¿Por qué malgastar hechizos y acero cuando unas simples palabras son capaces de derribar una casa?>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Roba 3 cartas',2,5,2,1,4,122),
+            ('Hilador de conjuros',3,'Nunca sabrás que tu mente no te pertenece','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Suplanta 1 tropa que esté en la misma ubicación que ese espía',1,3,3,1,4,120),
+            ('Matrona',6,'La voluntad de la matrona es absoluta','Pon tu mazo en tu pila de descartes=>Asciende 1 carta de tu pila de descartes',3,6,1,1,1,121),
+            ('Traficante de información',5,'<<¿Por qué malgastar hechizos y acero cuando unas simples palabras son capaces de derribar una casa?>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Roba 3 cartas',2,5,2,1,4,122);
             -- ('Negociadora Drow',3,'<<Puedo abrir puertas que están cerradas para todos excepto para las matronas.>>','Si hay 4 cartas o más en tu círculo interno, +3 influencia. Al final del turno, asciende otra carta jugada durante este turno',1,2,2,1,1,123),
             -- ('Kobold',1,'Aunque pueden llegar a vivir más de un siglo, la mayoría parece antes de cumplir un puñado de décadas','Elige una opción:Despliega 1 tropa| Asesina 1 tropa blanca',1,2,3,2,2,124),
             -- ('Sectario del Culto del Dragón',3,'Su misión en la vida es alumbrar una era de dominación','Elige una opción:+2 influencia| +2 poder',1,4,4,2,3,125),

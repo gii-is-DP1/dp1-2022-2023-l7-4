@@ -93,6 +93,12 @@ public class Action extends BaseEntity {
         return getIterations()<=0;
     }
 
+    public Boolean isExecuteInEndOfTurn(){
+        List<ActionName> list=List.of(ActionName.PROMOTE_OWN_PLAYED_CARD
+        ,ActionName.PROMOTE_OWN_DISCARDED_CARD,ActionName.PROMOTE_CARD_FROM_OWN_DECK);
+        return list.contains(this.getActionName());
+    }
+
 
 
 

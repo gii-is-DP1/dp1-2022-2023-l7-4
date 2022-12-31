@@ -139,6 +139,12 @@ public class ExecuteActionsController {
             return null;
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_TOTAL_CONTROLLED_SITE){
             return null;
+        }else if(action.getActionName()==ActionName.DRAW_CARD){
+            try{
+                playerMoveCardsService.drawFromDeckToHand(action.getValue(), player);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
         playerService.savePlayer(player);
         gameService.saveGame(game);
@@ -188,21 +194,16 @@ public class ExecuteActionsController {
     }
 
 
-    @PostMapping("promoteCard")
-    public ModelAndView processPromoteCard(@Valid CardData cardData ,@PathVariable("gameId") Game game
-    ,@RequestParam("typeOfCard") String typeOfCard,@RequestParam("endOfTurn") Boolean endOfTurn,BindingResult br){
+    @GetMapping("chosenCardToPromove/{cardId}")
+    public ModelAndView processPromoteCard(@PathVariable("gameId") Game game, @PathVariable("cardId") Card card){
         ModelAndView res=null;
-        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
-        if(br.hasErrors()){
-            res=errorRes;
-            res.addObject("message", "Ha ocurrido un error");
-            res.addObject("message", br.getAllErrors().toString());
-        }else{
-                Card choosedCard=this.cardService.getCardById(cardData.getCardId());
-                this.playerMoveCardsService.promoteSelectedFromDiscardPile(choosedCard, game.getCurrentPlayer());
-                if(endOfTurn)
-                    res=null;
-        }
+        Player player=game.getCurrentPlayer();
+            if(player.getDiscarded().contains(card))
+                this.playerMoveCardsService.promoteSelectedFromDiscardPile(card, player);
+            else if(player.getPlayed().contains(card))
+                this.playerMoveCardsService.promoteSelectedFromPlayed(card, player);
+            else if(player.getDeck().contains(card))
+                this.playerMoveCardsService.promoteSelectedFromDeck(card, player);
         return res;
 
     }

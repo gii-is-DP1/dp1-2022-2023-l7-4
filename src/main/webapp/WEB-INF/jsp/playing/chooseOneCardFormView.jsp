@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
 <body>
 
-    <form:form modelAttribute="cardData">
         <table>
             <thead>
                 <tr>
@@ -31,19 +30,11 @@
                             <c:out value="${card.innerCirclePV} "/>
                         </td>
                         <td>
-                            <input type="radio" id="radio-${card.id}" name="cardId" value="${card.id}" hidden/>
-                            <label for="radio-${card.id}" class="btn btn-default">
-                                    Eligeme
-                            </label>
+                            <a type="submit" href="${round}/chosenCardToPromove/${card.id}" class="play-buy-card-button" style="font-size: 1.1vmax;">PROMOVER</a>
                         </td>
                     </tr>
                 </c:forEach>
         </table>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">CONFIRMAR</button>
-            </div>
-        </div>
-    </form:form>
+
 
 </body>
