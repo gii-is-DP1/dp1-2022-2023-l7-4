@@ -115,7 +115,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
             return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_DISCARDED_CARD_NOW){
-            return null;
+            return REDIRECT+"/promoteDiscardedCard";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_CARDS_IN_INNER){
             return null;
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_5_ENEMY_KILLED_TROOPS){
