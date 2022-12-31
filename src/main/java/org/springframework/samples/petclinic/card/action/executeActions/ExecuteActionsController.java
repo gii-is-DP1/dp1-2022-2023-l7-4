@@ -12,9 +12,11 @@ import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.PairPosition;
 import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.card.action.Action;
 import org.springframework.samples.petclinic.card.action.ActionService;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
+import org.springframework.samples.petclinic.card.auxiliarClass.CardData;
 import org.springframework.samples.petclinic.cardsMovement.PlayerMoveCardsService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
@@ -49,11 +51,17 @@ public class ExecuteActionsController {
     @Autowired
     PlayerMoveCardsService playerMoveCardsService;
 
+    @Autowired
+    CardService cardService;
+    
+
     private final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
 
     private final String CHOOSE_TWO_POSITIONS_FORM_VIEW="playing/chooseTwoPositionsFormView";
 
     private final String CHOOSE_VIEW="actions/choose";
+
+    private final String CHOOSE_CARD_VIEW="playing/chooseOneCardFormView";
 
 
     String REDIRECT =       "redirect:/play/{gameId}/round/{round}";
@@ -108,7 +116,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.KILL_WHITE_TROOP){
             return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_PLAYED_CARD){
-            return null;
+            return REDIRECT+"/promoteCard?typeOfCard=played&endOfTurn=true";
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
             return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.MOVE_ENEMY_TROOP){
@@ -116,7 +124,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
             return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_DISCARDED_CARD_NOW){
-            return REDIRECT+"/promoteDiscardedCard";
+            return REDIRECT+"/promoteCard?typeOfCard=discarded&endOfTurn=false";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_CARDS_IN_INNER){
             return null;
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_5_ENEMY_KILLED_TROOPS){
@@ -169,6 +177,38 @@ public class ExecuteActionsController {
         System.out.println("se ha elegido "+action);
         return EXECUTE_ACTION;
     }
+
+    @GetMapping("promoteCard")
+    public ModelAndView initPromoteCard(@PathVariable("gameId") Game game,@RequestParam("typeOfCard") String typeOfCard
+    ,@RequestParam("endOfTurn") Boolean endOfTurn){
+        List<Card> cards=this.cardService.getPromotableCardForPlayerByGame(game, typeOfCard);
+        ModelAndView result= new ModelAndView(CHOOSE_CARD_VIEW);
+        result.addObject("cards", cards);
+        return result;
+    }
+
+
+    @PostMapping("promoteCard")
+    public ModelAndView processPromoteCard(@Valid CardData cardData ,@PathVariable("gameId") Game game
+    ,@RequestParam("typeOfCard") String typeOfCard,@RequestParam("endOfTurn") Boolean endOfTurn,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }else{
+                Card choosedCard=this.cardService.getCardById(cardData.getCardId());
+                this.playerMoveCardsService.promoteSelectedFromDiscardPile(choosedCard, game.getCurrentPlayer());
+                if(endOfTurn)
+                    res=null;
+        }
+        return res;
+
+    }
+
+
+
     @GetMapping("deployTroop")
     public ModelAndView initDeployTroop(@PathVariable("gameId") Game game
     ,@RequestParam("withPresence") Boolean withPresence){
