@@ -59,8 +59,8 @@ public class ActionService {
           return null;
         }else if(action.getActionName()==ActionName.AT_END_TURN){
             decreaseIterationsOf(action);
-            
-            return getNextAction(action, gameAction);
+            //TODO PREGUNTAR A LOLO
+            return getNextAction(gameAction, gameAction);
 
         }else if(action.getActionName()==ActionName.CHOOSE && action.isNotChosenYet()){
             return action;
