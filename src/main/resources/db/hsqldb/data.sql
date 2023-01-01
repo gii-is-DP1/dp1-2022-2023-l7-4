@@ -128,7 +128,7 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (32,2,'PROMOTE_OWN_PLAYED_CARD',null),
     (33,1,'VP_FOR_EVERY_3_CARDS_IN_INNER',null),
     (34,1,'THEN',null),
-    (35,1,'VP_FOR_EVERY_5_ENEMY_KILLED_TROOPS',null),
+    (35,1,'CHECK_KILLED_PLAYER_TROOPS_GREATER_THAN',4),
     (36,1,'THEN',null),
     (37,1,'CHECK_PLAYER_ANY_TROOP_IN_SITE',1),
     (38,1,'SUPPLANT_WHITE_TROOP_ANYWHERE',null),
@@ -140,7 +140,8 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (44,3,'DEPLOY_OWN_TROOP',null),
     (45,1,'VP_FOR_EVERY_2_CONTROLED_SITES',null),
     (46,1,'SUPPLANT_ENEMY_TROOP',null),
-    (47,1,'VP_FOR_EVERY_TOTAL_CONTROLLED_SITE',null)
+    (47,1,'VP_FOR_EVERY_TOTAL_CONTROLLED_SITE',null),
+    (48,1,'POWER',1)
     ;
 
 --CARD ACTIONS
@@ -162,10 +163,10 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (113,1,'SUPPLANT_WHITE_TROOP',null),--Doppelganger
     (114,1,'CHOOSE',null),--Maestros de Sorcere
     (115,1,'CHOOSE',null),--Maestro de Melee-Magthere
-    (116,1,'ALL',null),--Infiltrador ===================HACER=========================
+    (116,1,'THEN',null),--Infiltrador
     (117,3,'CHOOSE',null),--Maestro de armas
     (118,2,'KILL_ENEMY_TROOP',null),--Filo letal
-    (119,1,'CHOOSE',null),--Miembro del consejo
+    (119,1,'ALL',null),--Miembro del consejo
     (120,1,'CHOOSE',null),--Hilador de conjuros
     (121,1,'THEN',null),--Matrona
     (122,1,'CHOOSE',null),--Traficante de información
@@ -178,7 +179,7 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (129,1,'ALL',null),--Cría de dragón negro
     (130,1,'ALL',null),--Voz de dragón
     (131,1,'THEN',null),--Dragón azul
-    (132,1,'THEN',null),--Garra de dragón ===============REVISAR===================================
+    (132,1,'THEN',null),--Garra de dragón
     (133,1,'ALL',null),--Cría de dragón verde
     (134,1,'ALL',null),--Dragón negro
     (135,1,'ALL',null),--Cría de dragón rojo
@@ -227,6 +228,8 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (114,15),
     (115,8),
     (115,9),
+    (116,37),
+    (116,48),
     (117,10),
     (117,11),
     (119,12),
