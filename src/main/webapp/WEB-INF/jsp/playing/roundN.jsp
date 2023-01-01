@@ -601,10 +601,10 @@
                             </div>
                             <div class="top-market-cards">
                                 <c:forEach var="card" items="${game.sellZone}">
-                                    <div class="popup" id="CardPopUp${card.id}">
+                                    <div class="popup" id="SellZoneCardPopUp${card.id}">
                                         <div class="popup-blue-box">
                                             <div class="popup-content">
-                                                <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
+                                                <a onclick="dontShowPopUp('SellZoneCardPopUp${card.id}')" class="x">&times;</a>
                                                 <div class="popup-content-box">
                                                     <div class="principalCard" style="width: 23vmax; height: 32vmax">
                                                     <spring:url value="/cards/{cardId}" var="cardUrl">
@@ -674,7 +674,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-box" title="${card.rulesText}" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
+                                    <div class="card-box" title="${card.rulesText}" onclick="showPopUp('SellZoneCardPopUp${card.id}')" style="cursor: pointer;">
                                         <div class="card-name-box">
                                             <div class="card-name-center"><b>${card.name}</b></div>
                                         </div>
@@ -693,10 +693,10 @@
                         <div class="player-hand-zone-box">
                             <div class="player-hand-margin-box">
                                 <c:forEach var="card" items="${player.hand}">
-                                    <div class="popup" id="CardPopUp${card.id}">
+                                    <div class="popup" id="HandCardPopUp${card.id}">
                                         <div class="popup-blue-box">
                                             <div class="popup-content">
-                                                <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
+                                                <a onclick="dontShowPopUp('HandCardPopUp${card.id}')" class="x">&times;</a>
                                                 <div class="popup-content-box">
                                                     <div class="principalCard" style="width: 23vmax; height: 32vmax">
                                                     <spring:url value="/cards/{cardId}" var="cardUrl">
@@ -754,7 +754,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-hand-box" title="${card.rulesText}" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
+                                    <div class="card-hand-box" title="${card.rulesText}" onclick="showPopUp('HandCardPopUp${card.id}')" style="cursor: pointer;">
                                         <div class="card-name-center"><b>${card.name}</b></div>
                                     </div>
                                 </c:forEach>
