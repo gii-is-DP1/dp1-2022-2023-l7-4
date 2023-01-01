@@ -119,6 +119,13 @@ public class Game extends BaseEntity{
     @Column(columnDefinition = "integer default 0")
     private Integer numberOfPromoveCardFromPlayedLeft=0;
 
+    @ManyToMany()
+    private List<Card> notPromovableCards=new ArrayList<>();
+
+    public void addNotPromovableCard(Card card){
+        notPromovableCards.add(card);
+    }
+
     public Boolean canFinishTurn(){
         return numberOfPromoveCardFromDeckLeft==0 & numberOfPromoveCardFromDiscardedLeft==0 & numberOfPromoveCardFromPlayedLeft==0;
     }

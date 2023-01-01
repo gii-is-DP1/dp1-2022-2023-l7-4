@@ -118,6 +118,7 @@ public class ExecuteActionsController {
             return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_PLAYED_CARD){
             game.setNumberOfPromoveCardFromPlayedLeft(game.getNumberOfPromoveCardFromPlayedLeft()+1);
+            game.addNotPromovableCard(game.getCurrentPlayer().getLastPlayedCard());
         }else if(action.getActionName()==ActionName.PROMOTE_OWN_DISCARDED_CARD){
             game.setNumberOfPromoveCardFromDiscardedLeft(game.getNumberOfPromoveCardFromDiscardedLeft()+1);
         }else if(action.getActionName()==ActionName.PROMOTE_CARD_FROM_OWN_DECK){

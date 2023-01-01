@@ -78,6 +78,7 @@ public class CardService {
             promotableCards.addAll(actualPlayer.getPlayed());
             if(!endOfTurn)
                 promotableCards.remove(actualPlayer.getLastPlayedCard());
+            promotableCards.removeAll(game.getNotPromovableCards());
         }
         else if(typeOfCard.toLowerCase().trim().equals("discarded")){
             promotableCards.addAll(actualPlayer.getDiscarded());

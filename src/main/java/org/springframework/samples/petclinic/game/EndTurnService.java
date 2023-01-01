@@ -24,6 +24,7 @@ public class EndTurnService {
     public void execute(Integer gameId){
         try {
             Game game=gameService.getGameById(gameId);
+            game.setNotPromovableCards(new ArrayList<>());
             Player player=game.getCurrentPlayer();
 
             playerMoveCardsService.moveAllHandToDiscard(player);
