@@ -57,6 +57,11 @@ public class ActionService {
     public Action getNextAction(Action action,Action gameAction) {
         if (action.getIterations() == 0) {
           return null;
+        }else if(action.getActionName()==ActionName.AT_END_TURN){
+            decreaseIterationsOf(action);
+            
+            return getNextAction(action, gameAction);
+
         }else if(action.getActionName()==ActionName.CHOOSE && action.isNotChosenYet()){
             return action;
         }else if(action.getActionName()==ActionName.CHOOSE && action.isChosen()){

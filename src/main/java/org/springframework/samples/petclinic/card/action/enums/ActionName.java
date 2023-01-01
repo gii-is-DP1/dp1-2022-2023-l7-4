@@ -66,6 +66,7 @@ public enum ActionName {
     CHOOSE,
     THEN,
     ALL,
+    AT_END_TURN
     ;
 
     
