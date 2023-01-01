@@ -126,6 +126,10 @@ public class Game extends BaseEntity{
         notPromovableCards.add(card);
     }
 
+    public void removeNotPromovableCard(Card card){
+        notPromovableCards.remove(card);
+    }
+
     public Boolean canFinishTurn(){
         return numberOfPromoveCardFromDeckLeft==0 & numberOfPromoveCardFromDiscardedLeft==0 & numberOfPromoveCardFromPlayedLeft==0;
     }

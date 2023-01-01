@@ -141,7 +141,8 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (45,1,'VP_FOR_EVERY_2_CONTROLED_SITES',null),
     (46,1,'SUPPLANT_ENEMY_TROOP',null),
     (47,1,'VP_FOR_EVERY_TOTAL_CONTROLLED_SITE',null),
-    (48,1,'POWER',1)
+    (48,1,'POWER',1),
+    (49,1,'AT_END_TURN',null)
     ;
 
 --CARD ACTIONS
@@ -357,7 +358,8 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     -- test of promote
     (-14,1,'PROMOTE_OWN_DISCARDED_CARD_NOW',null),
     (-15,2,'PROMOTE_OWN_DISCARDED_CARD',null),
-    (-16,2,'PROMOTE_OWN_PLAYED_CARD',null)
+    (-16,2,'PROMOTE_OWN_PLAYED_CARD',null),
+    (-17,1,'PROMOTE_OWN_PLAYED_CARD',null)
     ;
 INSERT INTO subactions(action_id,subaction_id) VALUES 
     --choose
@@ -370,5 +372,6 @@ INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,h
 VALUES      (-10,'Test elegir',0,'lore','+1 de poder',1,4,5,1,2,-1),
             (-11,'Test promover',0,'mondongo','promueve ahora 1 carta descartada',1,2,3,4,2,-14),
             (-12,'Test promover',0,'mondongo','promueve 2 cartas descartadas al final del turno',1,2,3,4,2,-15),
-            (-13,'Test promover',0,'mondongo','promueve 2 cartas jugadas al final del turno',1,2,3,4,2,-16);
+            (-13,'Test promover',0,'mondongo','promueve 2 cartas jugadas al final del turno',1,2,3,4,2,-16),
+            (-14,'Test promover',0,'mondongo','promueve 2 cartas jugadas al final del turno',1,2,3,4,2,-17); 
 

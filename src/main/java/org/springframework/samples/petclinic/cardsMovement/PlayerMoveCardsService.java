@@ -74,8 +74,10 @@ public class PlayerMoveCardsService {
 	public void promoteSelectedFromDiscardPile(@Valid Card card,@Valid Player player,Boolean endOfTurn){
 		Game game=player.getGame();
 		moveSelectedCardAndSave(card,player.getDiscarded(),player.getInnerCircle(),  player);
-		if(endOfTurn){
+
+		if(endOfTurn || game.getNotPromovableCards().contains(card)){
 			game.setNumberOfPromoveCardFromDiscardedLeft(game.getNumberOfPromoveCardFromDiscardedLeft()-1);
+			if(game.getNotPromovableCards().contains(card)) game.removeNotPromovableCard(card);
 			this.gameService.save(game);
 		}
 	}
