@@ -1,6 +1,7 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="motero2k" tagdir="/WEB-INF/tags/motero2k" %>
@@ -17,8 +18,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                
-                <c:forEach items="${cards}" var="card">
+                <c:out value="${size}"/>
+                <c:forEach var="card" items="${cards}" >
                     <tr>
                         <td>
                             <c:out value="${card.id}"/>
@@ -30,7 +31,7 @@
                             <c:out value="${card.innerCirclePV} "/>
                         </td>
                         <td>
-                            <a type="submit" href="${round}/chosenCardToPromove/${card.id}" class="play-buy-card-button" style="font-size: 1.1vmax;">PROMOVER</a>
+                            <a type="submit" href="chosenCardToPromove/${card.id}?endOfTurn=${param.endOfTurn}" class="play-buy-card-button" style="font-size: 1.1vmax;">PROMOVER</a>
                         </td>
                     </tr>
                 </c:forEach>

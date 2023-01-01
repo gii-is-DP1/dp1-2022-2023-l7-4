@@ -167,10 +167,26 @@ public class PlayController {
 
     @GetMapping("{gameId}/round/{round}/next")
     public ModelAndView nextTurn(@PathVariable Integer gameId){
-        endTurnService.execute(gameId);
         ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
+        Game game=this.gameService.getGameById(gameId);
+        if(game.canFinishTurn()){
+            endTurnService.execute(gameId);
+        }else{
+            if(game.getNumberOfPromoveCardFromDeckLeft()>=1)
+                result=new ModelAndView("redirect:/play/{gameId}/round/{round}/promoteCard?typeOfCard=deck&endOfTurn=true");
+            else if(game.getNumberOfPromoveCardFromDiscardedLeft()>=1)
+                result=new ModelAndView("redirect:/play/{gameId}/round/{round}/promoteCard?typeOfCard=discarded&endOfTurn=true");
+            else{
+                result=new ModelAndView("redirect:/play/{gameId}/round/{round}/promoteCard?typeOfCard=played&endOfTurn=true");
+            }
+        }
+        
         return result;
     }
+
+
+
+
 
     @GetMapping("{gameId}/round/{round}/card-action/{cardId}")
     public String playCard (@PathVariable Integer gameId,@PathVariable Integer cardId){

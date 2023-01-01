@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.card;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,11 +71,22 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Card> getPromotableCardForPlayerByGame(Game game,String typeOfCard){
-        if(typeOfCard.toLowerCase().trim().equals("played"))
-            return game.getCurrentPlayer().getPlayed();
-        else
-            return game.getCurrentPlayer().getDiscarded();
+    public List<Card> getPromotableCardForPlayerByGame(Game game,String typeOfCard,Boolean endOfTurn){
+        Player actualPlayer=game.getCurrentPlayer();
+        List<Card> promotableCards=new ArrayList<>();
+        if(typeOfCard.toLowerCase().trim().equals("played")){
+            promotableCards.addAll(actualPlayer.getPlayed());
+            if(!endOfTurn)
+                promotableCards.remove(actualPlayer.getLastPlayedCard());
+        }
+        else if(typeOfCard.toLowerCase().trim().equals("discarded")){
+            promotableCards.addAll(actualPlayer.getDiscarded());
+        }else{
+            promotableCards.addAll(actualPlayer.getDeck());
+        }
+        
+        return promotableCards;
+            
     }
 
     

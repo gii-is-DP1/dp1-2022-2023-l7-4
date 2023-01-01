@@ -110,12 +110,19 @@ public class Game extends BaseEntity{
     @ManyToMany
     private List<Card> lolths = new ArrayList<>();
     
-    @ManyToMany()
-    List<Card> cardsToPromote=new ArrayList<>();
+    @Column(columnDefinition = "integer default 0")
+    private Integer numberOfPromoveCardFromDeckLeft=0;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer numberOfPromoveCardFromDiscardedLeft=0;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer numberOfPromoveCardFromPlayedLeft=0;
 
     public Boolean canFinishTurn(){
-        return getCardsToPromote().isEmpty();
+        return numberOfPromoveCardFromDeckLeft==0 & numberOfPromoveCardFromDiscardedLeft==0 & numberOfPromoveCardFromPlayedLeft==0;
     }
+
     
     public void addPlayer(Player player) {
         getPlayers().add(player);

@@ -91,6 +91,10 @@ public class Player extends BaseEntity{
             @JoinColumn(name="card_id"))
     private List<Card> played = new ArrayList<>(); 
 
+    public Card getLastPlayedCard(){
+        return played.get(played.size()-1);
+    }
+
     @ManyToMany
     @JoinTable(
         inverseJoinColumns=

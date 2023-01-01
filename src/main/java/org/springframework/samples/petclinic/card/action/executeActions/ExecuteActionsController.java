@@ -65,6 +65,7 @@ public class ExecuteActionsController {
 
 
     String REDIRECT =       "redirect:/play/{gameId}/round/{round}";
+    String NEXT_TURN= "redirect:/play/{gameId}/round/{round}/next";
     String GAME_MAIN_VIEW = "redirect:/play/{gameId}";
     String EXECUTE_ACTION = "redirect:/play/{gameId}/round/{round}/execute-action";
     String CHOOSE = "redirect:/play/{gameId}/round/{round}/choose";
@@ -116,7 +117,11 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.KILL_WHITE_TROOP){
             return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_PLAYED_CARD){
-            return REDIRECT+"/promoteCard?typeOfCard=played&endOfTurn=true";
+            game.setNumberOfPromoveCardFromPlayedLeft(game.getNumberOfPromoveCardFromPlayedLeft()+1);
+        }else if(action.getActionName()==ActionName.PROMOTE_OWN_DISCARDED_CARD){
+            game.setNumberOfPromoveCardFromDiscardedLeft(game.getNumberOfPromoveCardFromDiscardedLeft()+1);
+        }else if(action.getActionName()==ActionName.PROMOTE_CARD_FROM_OWN_DECK){
+            game.setNumberOfPromoveCardFromDeckLeft(game.getNumberOfPromoveCardFromDeckLeft()+1);
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
             return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.MOVE_ENEMY_TROOP){
@@ -187,23 +192,25 @@ public class ExecuteActionsController {
     @GetMapping("promoteCard")
     public ModelAndView initPromoteCard(@PathVariable("gameId") Game game,@RequestParam("typeOfCard") String typeOfCard
     ,@RequestParam("endOfTurn") Boolean endOfTurn){
-        List<Card> cards=this.cardService.getPromotableCardForPlayerByGame(game, typeOfCard);
+        List<Card> cards=this.cardService.getPromotableCardForPlayerByGame(game, typeOfCard,endOfTurn);
         ModelAndView result= new ModelAndView(CHOOSE_CARD_VIEW);
         result.addObject("cards", cards);
+        result.addObject("size", cards.size());
         return result;
     }
 
 
     @GetMapping("chosenCardToPromove/{cardId}")
-    public ModelAndView processPromoteCard(@PathVariable("gameId") Game game, @PathVariable("cardId") Card card){
-        ModelAndView res=null;
+    public ModelAndView processPromoteCard(@PathVariable("gameId") Game game, @PathVariable("cardId") Card card
+    ,@RequestParam("endOfTurn") Boolean endOfTurn){
+        ModelAndView res=endOfTurn?new ModelAndView(NEXT_TURN):new ModelAndView(EXECUTE_ACTION);
         Player player=game.getCurrentPlayer();
             if(player.getDiscarded().contains(card))
-                this.playerMoveCardsService.promoteSelectedFromDiscardPile(card, player);
+                this.playerMoveCardsService.promoteSelectedFromDiscardPile(card, player,endOfTurn);
             else if(player.getPlayed().contains(card))
-                this.playerMoveCardsService.promoteSelectedFromPlayed(card, player);
+                this.playerMoveCardsService.promoteSelectedFromPlayed(card, player,endOfTurn);
             else if(player.getDeck().contains(card))
-                this.playerMoveCardsService.promoteSelectedFromDeck(card, player);
+                this.playerMoveCardsService.promoteSelectedFromDeck(card, player,endOfTurn);
         return res;
 
     }

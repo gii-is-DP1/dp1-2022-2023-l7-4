@@ -9,6 +9,7 @@ import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.checkers.CheckCardMovement;
 import org.springframework.samples.petclinic.checkers.Preconditions;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,8 @@ public class PlayerMoveCardsService {
 	@Autowired
     private PlayerService playerService; //USED TO SAVE UPDATED LISTS
 	
-
+	@Autowired
+	private GameService gameService;
 
 
 	public void draw5CardsFromDeckToHand(@Valid Player player) throws Exception{
@@ -60,16 +62,31 @@ public class PlayerMoveCardsService {
 
 //	PROMOTE
 
-	public void promoteSelectedFromPlayed(@Valid Card card, @Valid Player player){
+	public void promoteSelectedFromPlayed(@Valid Card card, @Valid Player player,Boolean endOfTurn){
+		Game game=player.getGame();
 		moveSelectedCardAndSave(card, player.getPlayed(), player.getInnerCircle(), player);
+		if(endOfTurn){
+			game.setNumberOfPromoveCardFromPlayedLeft(game.getNumberOfPromoveCardFromPlayedLeft()-1);
+			this.gameService.save(game);
+		}
 	}
 
-	public void promoteSelectedFromDiscardPile(@Valid Card card,@Valid Player player){
+	public void promoteSelectedFromDiscardPile(@Valid Card card,@Valid Player player,Boolean endOfTurn){
+		Game game=player.getGame();
 		moveSelectedCardAndSave(card,player.getDiscarded(),player.getInnerCircle(),  player);
+		if(endOfTurn){
+			game.setNumberOfPromoveCardFromDiscardedLeft(game.getNumberOfPromoveCardFromDiscardedLeft()-1);
+			this.gameService.save(game);
+		}
 	}
 
-	public void promoteSelectedFromDeck(@Valid Card card,@Valid Player player){
+	public void promoteSelectedFromDeck(@Valid Card card,@Valid Player player,Boolean endOfTurn){
+		Game game=player.getGame();
 		moveSelectedCardAndSave(card, player.getDeck(), player.getInnerCircle(), player);
+		if(endOfTurn){
+			game.setNumberOfPromoveCardFromDeckLeft(game.getNumberOfPromoveCardFromDeckLeft()-1);
+			this.gameService.save(game);
+		}
 	}
 	
 
