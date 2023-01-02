@@ -225,8 +225,9 @@ public class Game extends BaseEntity{
         vp.setTotalControlVP(totalControlVP);
         vp.setTrophyHallVP(trophyHallVP);
         vp.setHandVP(handVP);
-        vp.setTotalVp();
         vp.setEarnedVP(vpEarned);
+        vp.setTotalVp();
+        
         return vp;
         
     }
