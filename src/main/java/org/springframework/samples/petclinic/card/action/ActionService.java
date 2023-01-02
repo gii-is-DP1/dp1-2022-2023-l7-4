@@ -45,7 +45,6 @@ public class ActionService {
         copy.setDescription("copia");
         copy.setCard(action.getCard());
         copy.setCard(card);
-        copy.setPosition(action.getPosition());
         copy.setValue(action.getValue());
         // copy.setAspect(action.getAspect()); //expansion pack
         copy.setIterations(action.getOriginalIterations());

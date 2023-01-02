@@ -165,7 +165,20 @@ public class ExecuteActionsController {
             }catch(Exception e){
                 e.printStackTrace();
             }
+        }else if(action.getActionName()== ActionName.CHECK_INNER_CARDS_GREATER_THAN){
+            Boolean condition = false;
+            //TODO automatic action return Boolean
+            if(!condition)game.setLastActionSkipped(true);
+        }else if(action.getActionName()== ActionName.CHECK_PLAYER_ANY_TROOP_IN_SITE){
+            Boolean condition = false;
+            //TODO automatic action return Boolean
+            if(!condition)game.setLastActionSkipped(true);
+        }else if(action.getActionName()== ActionName.CHECK_KILLED_PLAYER_TROOPS_GREATER_THAN){
+            Boolean condition = false;
+            //TODO automatic action return Boolean
+            if(!condition)game.setLastActionSkipped(true);
         }
+        
         playerService.savePlayer(player);
         gameService.saveGame(game);
         return EXECUTE_ACTION;

@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -56,8 +55,7 @@ public class Action extends BaseEntity {
 
     Integer value;
 
-    @ManyToOne
-    Position position;
+
     
 
     
@@ -87,10 +85,6 @@ public class Action extends BaseEntity {
 
     }
 
-    public void reset(){
-        position = null;
-        subactions.forEach(subaction-> subaction.reset());
-    }
 
  
 
