@@ -363,7 +363,9 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (-15,2,'PROMOTE_OWN_DISCARDED_CARD',null),
     (-16,2,'PROMOTE_OWN_PLAYED_CARD',null),
     (-17,1,'PROMOTE_OWN_PLAYED_CARD',null),
-    (-18,1,'AT_END_TURN',null)
+    (-18,1,'AT_END_TURN',null),
+    (-19,2,'DEVORE_MARKET_CARD',null),
+    (-20,2,'MOVE_ENEMY_TROOP',null)
     ;
 INSERT INTO subactions(action_id,subaction_id) VALUES 
     --choose twice
@@ -379,5 +381,7 @@ VALUES      (-10,'Test elegir',0,'lore','+1 de poder',1,4,50,1,2,-1),
             (-11,'Test promover',0,'mondongo','ascender ahora 1 carta descartada',1,2,3,4,2,-14),
             (-12,'Test promover',0,'mondongo','ascender 2 cartas descartadas al final del turno',1,2,3,4,2,-15),
             (-13,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-16),
-            (-14,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-17); 
+            (-14,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-17),
+            (-15,'Test devorar',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-19),
+            (-16,'Test mover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-20); 
 
