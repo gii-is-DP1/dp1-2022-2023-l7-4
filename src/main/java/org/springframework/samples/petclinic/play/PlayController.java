@@ -38,8 +38,6 @@ public class PlayController {
     private static final String ROUND_N = "playing/roundN";
     
     private static final String SCORE_BOARD = "playing/scoreBoard";
-
-    private static final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
     
     @Autowired
     private PositionInGameService positionInGameService;
@@ -54,23 +52,8 @@ public class PlayController {
     private PlayerUsePositionService playerUsePositionService;
     @Autowired
     InitializePositionService positionInitialiter;
-
-    @Autowired
-    private CustomListingPositionService customListingPositionService;
-
-
-    @Autowired
-    private PricedPositionService pricedPositionService;
-
-
     @Autowired
     private PositionServiceRepo positionServiceRepo;
-
-    @Autowired
-    private CityService cityService;
-
-    @Autowired
-    private PathService pathService;
 
     @Autowired
     private EndTurnService endTurnService;
@@ -94,11 +77,20 @@ public class PlayController {
     @GetMapping("{gameId}")
     public String showActualRound(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
-        String result=null;
+        String result="redirect:";// redirect aqui mismo (recursividad)
         game = gameInitializer.loadGame(game);
         
-
-        if(game.getRound()==0){
+        if(game.getRound()==-1){
+            if(gameService.enoughUnaligned(gameService)){
+                result = "redirect:{gameId}/round/{round}/next";
+            }else{
+                if(game.getAutomaticWhiteTroops()){
+                    //TODO llamas a automatic y no haces nada (recursivo)
+                }else{
+                    //TODO redirect a ChoosePosition como player 0;
+                }
+            }
+        }else if(game.getRound()==0){
             result="redirect:"+gameId+"/round/0";
         }
         else if(game.isFinished())

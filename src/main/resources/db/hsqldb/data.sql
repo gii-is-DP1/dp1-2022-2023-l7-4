@@ -371,7 +371,7 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
 INSERT INTO subactions(action_id,subaction_id) VALUES 
     --choose twice
     (-1,-10), --power
-    (-1,-2), --choose twice
+    (-1,-2), --then
         (-2,-11),--dploy
         (-2,-12),
         (-2,-13),
