@@ -120,7 +120,7 @@
             border-color: white;
             border-radius: 1.5vmax;
             border-style: solid;
-            border-width: 4px;
+            border-width: 0.32vmax;
             background-image: url(/resources/images/market.png);
             background-position: center;
             background-size:contain;
@@ -248,6 +248,10 @@
             width: 93%;
             height: 85%;
             background-color:indigo;
+            border-color: white;
+            border-radius: 1.5vmax;
+            border-style: solid;
+            border-width: 0.32vmax;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -478,6 +482,34 @@
             background: rgb(114, 114, 114);
             background: linear-gradient(0deg, rgb(147, 147, 147) 0%, rgb(129, 129, 129) 50%, rgb(86, 86, 86) 100%);
         }
+
+        
+.skip-turn-button{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 11vmax;
+    font-size: 1.3vmax;
+    color: aliceblue;
+    border-radius: 0.5vmax;
+    border: 0.2vmax solid rgb(54, 24, 72); 
+    background:#8a2be2;
+    background: linear-gradient(0deg, #a677d2 0%, #8a2be2 50%, #5e15a3 100%);
+    transition-duration: 0.5s;
+}
+.skip-turn-button:hover{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 11vmax;
+    font-size: 1.3vmax;
+    color: #360c5d;
+    border-radius: 0.5vmax;
+    border: 0.2vmax solid #360c5d; 
+    background: #e2c9fa;
+    background: linear-gradient(0deg, #e6d9f3 0%, #cea9f1 50%, #8d65b1 100%);
+    transition-duration: 0.5s;
+}
     
     </style>
     
@@ -500,11 +532,9 @@
                 </div>
             </div>
             <div class="tophud-box tophud-b3">
-                <div style="margin-top: 1vmax;">
-                    <form action="/play/${gameId}/round/${round}/next" method="get">
-                        <input type="submit" value="PASAR TURNO" style="width: 10vmax; height: 1.5vmax; font-size: 1vmax; margin-right: 2vmax;">
-                    </form>
-                </div>
+                <a href="/play/${gameId}/round/${round}/next" class="skip-turn-button" style="margin-right: 2vmax;">
+                    PASAR TURNO
+                </a>
                 <div class="round-div">
                     RONDA ${round}
                 </div>
@@ -580,24 +610,43 @@
                     <div class="market-box">
                         <div class="market-zone" >
                             <div class="top-market-cards">
-                                <div class="card-box">
+                                <!--Guardas de la casa-->
+                                <div class="card-box" style="background-image: url(/resources/images/guardias_mercado.png);">
 
                                 </div>
-                                <div class="card-box">
-
+                                <!--Sacerdotisas de Lolth-->
+                                <div class="card-box"  style="background-image: url(/resources/images/lolth_mercado.png);">
+                                
                                 </div>
-                                <div class="empty-card-box">
-
+                                <!--Titulo de Mercado-->
+                                <div style="height: 100%; width: 14vmax; display: flex; justify-content: center;">
+                                    <div style="margin-top: 2vmax; font-size: 2vmax; color: aliceblue;"><b> MERCADO </b></div>
                                 </div>
-                                <div class="empty-card-box">
-
-                                </div>
-                                <div class=${game.devoured.isEmpty()?'empty-card-box':'reversed-card'}>
-                                    <b class="bold-gold-number">${game.devoured.size()}</b>
-                                </div>
-                                <div class=${game.gameDeck.isEmpty()?'empty-card-box':'reversed-card'}>
-                                        <b class="bold-gold-number">${game.gameDeck.size()}</b>
-                                </div>
+                                <!--Cartas devoradas-->
+                                <c:choose>
+                                    <c:when test="${game.devoured.size()==0}">
+                                        <div class="card-box" style="background-image: url(/resources/images/devoradas_mercado.png);">
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="card-box" style="background-image: url(/resources/images/card_back.png);" title="Cartas devoradas">
+                                            <b class="bold-gold-number" style="color: aliceblue">${game.devoured.size()}</b>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                <!--Mazo de robo de mercado-->
+                                <c:choose>
+                                    <c:when test="${game.gameDeck.size()==0}">
+                                        <div class="card-box" style="background-image: url(/resources/images/mazo_mercado.png);">
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="card-box" style="background-image: url(/resources/images/card_back.png);" title="Mazo de mercado">
+                                            <b class="bold-gold-number" style="color: aliceblue">${game.gameDeck.size()}</b>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                
                             </div>
                             <div class="top-market-cards">
                                 <c:forEach var="card" items="${game.sellZone}">

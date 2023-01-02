@@ -87,6 +87,8 @@ public class BasicActionsController {
         putPlayerDataInModel(game, actualPlayer, result);
         List<Position> positions=customListingPositionService
         .getPresenceTroopPositions(actualPlayer.getId(),false);
+        Boolean price = true;
+        result.addObject("price", price);
         if(positions.isEmpty()){
             result.addObject("positions"
             , positionServiceRepo.getFreeTroopPositionsFromGame(game));
@@ -133,6 +135,8 @@ public class BasicActionsController {
         Game game=this.gameService.getGameById(gameId);
         Player actualPlayer=game.getCurrentPlayer();
         putPlayerDataInModel(game, actualPlayer, result);
+        Boolean price = true;
+        result.addObject("price", price);
         result.addObject("positions",
         customListingPositionService
         .getEnemyPositionsByTypeOfGame(actualPlayer.getId(),false, true, null, game));
@@ -168,6 +172,8 @@ public class BasicActionsController {
         Game game=this.gameService.getGameById(gameId);
         Player actualPlayer=game.getCurrentPlayer();
         putPlayerDataInModel(game, actualPlayer, result);
+        Boolean price = true;
+        result.addObject("price", price);
         result.addObject("positions",
         customListingPositionService
         .getEnemyPositionsByTypeOfGame(actualPlayer.getId(),true, true, null, game));
