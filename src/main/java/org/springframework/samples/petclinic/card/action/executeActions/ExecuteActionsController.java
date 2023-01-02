@@ -171,7 +171,7 @@ public class ExecuteActionsController {
         result.addObject("round", game.getRound());
         result.addObject("turn", game.getTurnPlayer());
         result.addObject("cities", game.getCities());
-        result.addObject("paths", game.getPaths());
+        result.addObject("paths", game.getPaths()); 
         result.addObject("vp", game.getPlayerScore(actualPlayer));
         result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVp());
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));

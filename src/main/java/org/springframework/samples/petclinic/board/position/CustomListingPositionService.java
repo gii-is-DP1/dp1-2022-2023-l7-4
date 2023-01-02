@@ -63,8 +63,10 @@ public class CustomListingPositionService {
             for(Position position:city.getPositions()){
                 if(position.isOccupied())
                     //cuando se tengan jugadores cuyo id sea distinto de 1, poner condicion de evitar jugadores blancos
-                    availableCities.remove(city);
-                    break;
+                    if(!position.getPlayer().isWhite()){
+                        availableCities.remove(city);
+                        break;
+                    }
                 
             }
         }
