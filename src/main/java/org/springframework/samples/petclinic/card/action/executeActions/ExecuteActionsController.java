@@ -17,6 +17,7 @@ import org.springframework.samples.petclinic.card.action.Action;
 import org.springframework.samples.petclinic.card.action.ActionService;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 import org.springframework.samples.petclinic.card.auxiliarClass.CardData;
+import org.springframework.samples.petclinic.cardsMovement.MarketMoveCardsService;
 import org.springframework.samples.petclinic.cardsMovement.PlayerMoveCardsService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
@@ -53,6 +54,9 @@ public class ExecuteActionsController {
 
     @Autowired
     CardService cardService;
+
+    @Autowired
+    MarketMoveCardsService marketMoveCardsService;
     
 
     private final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
@@ -72,7 +76,7 @@ public class ExecuteActionsController {
 
     @GetMapping("play-card/{cardId}")
     public String generateGameAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "cardId") Card card){
-        Action currentAction = actionService.of(card.getAction());
+        Action currentAction = actionService.of(card.getAction(),card);
         actionService.save(currentAction);
         game.setCurrentAction(currentAction);
         playerMoveCardsService.moveFromHandToPlayed(card, game.getCurrentPlayer());
@@ -84,9 +88,9 @@ public class ExecuteActionsController {
     public String executeAction(@PathVariable(name = "gameId") Game game){
         Player player = game.getCurrentPlayer();
         Action currentAction = game.getCurrentAction();
-        Card card = null; //TODO
 
-        Action action = actionService.getNextAction(currentAction,game,card);
+
+        Action action = actionService.getNextAction(currentAction,game);
         if(action == null)  {
             game.setCurrentAction(null);
             gameService.save(game);
@@ -141,7 +145,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_WHITE_KILLED_TROOPS){
             return null;
         }else if(action.getActionName()== ActionName.DEVORE_MARKET_CARD){
-            return null;
+            return REDIRECT+"/devoreMarketCard?devoreAll=false";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_2_CONTROLED_SITES){
             return null;
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_TOTAL_CONTROLLED_SITE){
@@ -173,6 +177,23 @@ public class ExecuteActionsController {
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
+    @GetMapping("devoreMarketCard")
+    public ModelAndView initDevoreCard(@PathVariable("gameId") Game game){
+        List<Card> devorableCards= game.getSellZone();
+        ModelAndView result= new ModelAndView(CHOOSE_CARD_VIEW);
+        result.addObject("cards", devorableCards);
+        result.addObject("devore",true);
+        return result;
+    }
+
+    @GetMapping("chosenCardToDevore/{cardId}")
+    public ModelAndView processDevoredCard(@PathVariable("gameId") Game game,@PathVariable("cardId") Card card){
+        ModelAndView res= new ModelAndView(EXECUTE_ACTION);
+        this.marketMoveCardsService.devourCardFromSellZone(card, game);
+        return res;
+    }
+
+
     @GetMapping("choose/{actionId}")
     public ModelAndView chooseSubaction(@PathVariable("gameId") Game game,@PathVariable Integer actionId){
         ModelAndView mav = new ModelAndView(CHOOSE_VIEW);
@@ -198,6 +219,7 @@ public class ExecuteActionsController {
         ModelAndView result= new ModelAndView(CHOOSE_CARD_VIEW);
         result.addObject("cards", cards);
         result.addObject("size", cards.size());
+        result.addObject("devore", false);
         return result;
     }
 

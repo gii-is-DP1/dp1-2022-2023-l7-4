@@ -39,24 +39,25 @@ public class ActionService {
         actionRepository.delete(currentAction);
     }
 
-    public Action of(Action action) {
+    public Action of(Action action,Card card) {
         Action copy = new Action();
         copy.setActionName(action.getActionName());
         copy.setDescription("copia");
         copy.setCard(action.getCard());
+        copy.setCard(card);
         copy.setPosition(action.getPosition());
         copy.setValue(action.getValue());
         copy.setAspect(action.getAspect());
         copy.setIterations(action.getOriginalIterations());
         copy.setOriginalIterations(action.getOriginalIterations());
         for (Action subaction : action.getSubactions()) {
-          copy.getSubactions().add(of(subaction));
+          copy.getSubactions().add(of(subaction,card));
         }
         save(copy);
         return copy;
     }
 
-    public Action getNextAction(Action action,Game game,Card card) {
+    public Action getNextAction(Action action,Game game) {
         Action gameAction = game.getCurrentAction();
 
         if (action.getIterations() == 0) {
@@ -66,22 +67,22 @@ public class ActionService {
                 return null;
             }
         }else if(action.getActionName()==ActionName.AT_END_TURN){
-            addActionsOfEndOfTurn(action,game,card);
+            addActionsOfEndOfTurn(action,game,action.getCard());
             decreaseIterationsOf(action);
-            return getNextAction(gameAction, game, card);
+            return getNextAction(gameAction, game);
 
         }else if(action.getActionName()==ActionName.CHOOSE && action.isNotChosenYet()){
             return action;
         }else if(action.getActionName()==ActionName.CHOOSE && action.isChosen()){
             Action subAction = action.getSubactions().stream().filter(x->!x.hasNoMoreIterations()).findFirst().get();
 
-            return getNextAction(subAction, game, card);
+            return getNextAction(subAction, game);
         }else if(action.subActionsAllDone()){
             decreaseIterationsOf(action);
-            return getNextAction(gameAction, game, card);
+            return getNextAction(gameAction, game);
         }
         for (Action subaction : action.getSubactions()) {
-          Action next = getNextAction(subaction, game, card);
+          Action next = getNextAction(subaction, game);
           if (next != null) {
             return next;
           }
@@ -101,7 +102,7 @@ public class ActionService {
         
         for(Action subAction: originalAction.getSubactions()){      
             subAction.setCard(card); 
-            endTurnActionInGame.getSubactions().add(of(subAction));
+            endTurnActionInGame.getSubactions().add(of(subAction,card));
         }
         save(endTurnActionInGame);
         game.setEndTurnAction(endTurnActionInGame);

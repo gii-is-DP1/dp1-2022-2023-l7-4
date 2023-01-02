@@ -140,8 +140,6 @@ public class PlayController {
             gameService.nextPlayerAndSave(game);
             result=new ModelAndView("redirect:/play/"+gameId);
         }catch(Exception e){
-            // br.rejectValue("position","occupied","already occupy");
-            // result=new ModelAndView(ROUND_ZERO,br.getModel());
             result=new ModelAndView("redirect:/play/"+gameId);
         }
         return result;
@@ -166,15 +164,14 @@ public class PlayController {
     }
 
     @GetMapping("{gameId}/round/{round}/next")
-    public ModelAndView nextTurn(@PathVariable Integer gameId){
-        ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
-        Game game=this.gameService.getGameById(gameId);
+    public ModelAndView nextTurn(@PathVariable("gameId") Game game){
+        ModelAndView result=new ModelAndView("redirect:/play/{gameId}");
+
         if(game.canFinishTurn()){
-            endTurnService.execute(gameId);
+            endTurnService.execute(game);
         }else{
     
             gameService.loadEndTurnActionAndSave(game);
-            
             result=new ModelAndView("redirect:/play/{gameId}/round/{round}/execute-action");
             
         }
