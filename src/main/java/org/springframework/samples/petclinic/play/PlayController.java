@@ -37,7 +37,7 @@ public class PlayController {
 
     private static final String ROUND_N = "playing/roundN";
     
-    private static final String SCORE_BOARD = null;
+    private static final String SCORE_BOARD = "playing/scoreBoard";
 
     private static final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
     
@@ -85,7 +85,7 @@ public class PlayController {
         result.addObject("turn", game.getTurnPlayer());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
-        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVP());
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVp());
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
@@ -118,7 +118,7 @@ public class PlayController {
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
         putPlayerDataInModel(game, player, result);
         result.addObject("positions", initialPositions);
-        result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
 
@@ -157,7 +157,7 @@ public class PlayController {
         result.addObject("game", game);
         result.addObject("player", player);
         result.addObject("positions", positions);
-        result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
         return result;
@@ -203,7 +203,8 @@ public class PlayController {
     public ModelAndView showScoreBoard(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         ModelAndView result= new ModelAndView(SCORE_BOARD);
-        result.addObject("gamePlayers", game.getPlayers());
+        result.addObject("ranking", game.getQualifying());
+        result.addObject("players", game.getPlayers());
         return result;
     }
     

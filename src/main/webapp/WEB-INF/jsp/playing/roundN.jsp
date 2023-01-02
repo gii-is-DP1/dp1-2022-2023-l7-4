@@ -512,6 +512,21 @@
 }
     
     </style>
+<script>
+        var top = 10;
+        function showPopUp(popup) {
+            var overlay = document.getElementById(popup);
+            // overlay.parentNode.appendChild(overlay)
+            overlay.style.zIndex= ++top;
+            overlay.style.visibility = "visible";
+            overlay.style.opacity = 1;
+        }
+           function dontShowPopUp(popup) {
+            var overlay = document.getElementById(popup);
+            overlay.style.visibility = "hidden";
+            overlay.style.opacity = 0;
+        }
+</script>
     
 </head>
 <body>
@@ -932,6 +947,7 @@
                             <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
                             <p>Puntos en mazo: ${vp.deckVP}</p>
                             <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
+                            <p>Puntos acumulados por acciones de cartas: ${vp.earnedVp}</p>
                         </div>
                     </div>
                 </div>
@@ -940,21 +956,7 @@
         </div>
     </div>
 
-    <script>
-        var top = 10;
-        function showPopUp(popup) {
-            var overlay = document.getElementById(popup);
-            // overlay.parentNode.appendChild(overlay)
-            overlay.style.zIndex= ++top;
-            overlay.style.visibility = "visible";
-            overlay.style.opacity = 1;
-        }
-           function dontShowPopUp(popup) {
-            var overlay = document.getElementById(popup);
-            overlay.style.visibility = "hidden";
-            overlay.style.opacity = 0;
-        }
-    </script>
+  
 </body>
 
 </html>
