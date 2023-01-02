@@ -1,8 +1,11 @@
 package org.springframework.samples.petclinic.game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -156,14 +159,37 @@ public class Game extends BaseEntity{
     }
     //TODO: COMPROBAR ESO
 
-    public SortedMap<Player,Integer> getQualifying(){
-        SortedMap<Player,Integer> map= new TreeMap<>();
+    public Map<Player,Integer> getQualifyingTotalVp(){
+        Map<Player,Integer> map= new LinkedHashMap<>();
         for(Player player:this.players){
-            Integer result=getPlayerScore(player).getTotalVP();
+            Integer result=getPlayerScore(player).getTotalVp();
             map.put(player,result);
         }
-        map.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-        return map;
+        Map<Player, Integer> resultado = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (map1, map2) -> map1, LinkedHashMap::new));
+        return resultado;
+    }
+    
+    public Map<Player, VictoryPoints> getQualifying(){
+        Map<Player,VictoryPoints> map= new LinkedHashMap<>();
+        for(Player player:this.players){
+            VictoryPoints vps=getPlayerScore(player);
+            map.put(player,vps);
+        }
+        Map<Player, VictoryPoints> resultado = map.entrySet()
+                .stream()
+                .sorted((e1,e2) -> e1.getValue().compareTo(e2.getValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (map1, map2) -> map1, LinkedHashMap::new));
+        return resultado;
+
     }
 
         public void removePlayerByName(String name){
@@ -180,21 +206,8 @@ public class Game extends BaseEntity{
        
 
     public Player getWinner(){
-        return getQualifying().firstKey();
+        return getQualifyingTotalVp().entrySet().stream().findFirst().get().getKey();
     }
-
-    /* public Integer getPlayerScore(Player player){
-        Integer result=0;
-        Integer controlVP=getControlCityVP(player);
-        Integer totalControlVP=getTotalControlVP(player);
-        Integer trophyHallVP=player.getTrophyHallVPs();
-        Integer handVP=player.getHandVPs();
-        Integer dicardPileVP=player.getDiscardPile().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
-        Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
-        Integer innerCircleVP= getInnerCircleVP(player);
-        result=controlVP+totalControlVP+trophyHallVP+handVP+dicardPileVP+deckVP+innerCircleVP;
-        return result;
-    } */
     public VictoryPoints getPlayerScore(Player player){
         VictoryPoints vp= new VictoryPoints();
         Integer controlVP=getControlCityVP(player);
@@ -211,6 +224,7 @@ public class Game extends BaseEntity{
         vp.setTotalControlVP(totalControlVP);
         vp.setTrophyHallVP(trophyHallVP);
         vp.setHandVP(handVP);
+        vp.setTotalVp();
         return vp;
         
     }
