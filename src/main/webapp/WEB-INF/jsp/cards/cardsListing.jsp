@@ -178,63 +178,67 @@
     </c:forEach>
     <c:forEach var="card" items="${cards}">
         <div class="popup" id="CardPopUp${card.id}">
-        <div class="popup-content">
+            <div class="popup-content">
                 <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
                 <div class="popup-content-box">
-                <div class="principalCard" style="width: 35rem; height: 50rem;">
-                <spring:url value="/cards/{cardId}" var="cardUrl">
-                    <spring:param name="cardId" value="${card.id}" />
-                </spring:url>
-                    <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')">
-                    <div class="topTextName">
-                        <b>
-                            <c:out value="${card.name}" />
-                        </b>
+                    <div class="principalCard" style="width: 35rem; height: 50rem;">
+                        <spring:url value="/cards/{cardId}" var="cardUrl">
+                            <spring:param name="cardId" value="${card.id}" />
+                        </spring:url>
+                        <img src="/resources/images/cardsModel.png" class="cardImage"
+                            onclick="showPopUp('CardPopUp${card.id}')">
+                        <div class="topTextName">
+                            <b>
+                                <c:out value="${card.name}" />
+                            </b>
+                        </div>
+                        <div class="topTextCost">
+                            <b>
+                                <c:out value="${card.cost} " />
+                            </b>
+                        </div>
+                        <div class="topTextAspect">
+                            <b>
+                                <c:out value="${card.aspect.name} " />
+                            </b>
+                        </div>
+                        <div class="topTextHalfDeck">
+                            <b>
+                                <c:out value="${card.halfDeck.name} " />
+                            </b>
+                        </div>
+                        <div class="topTextRulesText">
+                            <b>
+                                <c:out value="${card.rulesText} " />
+                            </b>
+                        </div>
+                        <div class="topTextRarity">
+                            <b>
+                                <text id="t${card.id}" style="font-size: 180%;">
+                                    <script>
+                                        var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
+                                        document.getElementById("t${card.id}").innerHTML = rarity
+                                    </script>
+                                </text>
+                            </b>
+                        </div>
+                        <div class="topTextDeckVP">
+                            <b>
+                                <c:out value="${card.deckVP} " />
+                            </b>
+                        </div>
+                        <div class="topTextInnerCirclePV">
+                            <b>
+                                <c:out value="${card.innerCirclePV} " />
+                            </b>
+                        </div>
                     </div>
-                    <div class="topTextCost">
-                        <b>
-                            <c:out value="${card.cost} " />
-                        </b>
-                    </div>
-                    <div class="topTextAspect">
-                        <b>
-                            <c:out value="${card.aspect.name} " />
-                        </b>
-                    </div>
-                    <div class="topTextHalfDeck">
-                        <b>
-                            <c:out value="${card.halfDeck.name} " />
-                        </b>
-                    </div>
-                    <div class="topTextRulesText">
-                        <b>
-                            <c:out value="${card.rulesText} " />
-                        </b>
-                    </div>
-                    <div class="topTextRarity">
-                        <b>
-                            <text id="t${card.id}" style="font-size: 180%;">
-                                <script>
-                                    var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
-                                    document.getElementById("t${card.id}").innerHTML = rarity
-                                </script>
-                            </text>
-                        </b>
-                    </div>
-                    <div class="topTextDeckVP">
-                        <b>
-                            <c:out value="${card.deckVP} " />
-                        </b>
-                    </div>
-                    <div class="topTextInnerCirclePV">
-                        <b>
-                            <c:out value="${card.innerCirclePV} " />
-                        </b>
+                    <div class="story">
+                        <p><c:out value="${card.story}"></c:out></p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </c:forEach>
     </div>
 
@@ -357,10 +361,17 @@
     align-items: center;
     margin: 3px;
 }
-.xdiv{
-    display: flex;
-    flex-direction: row;
-    align-self: flex-start;
+.story{
+    border-radius: 1em;
+    padding: 0.3em;
+    border: 0.2em solid #5f4b8b;
+    background-image: url(https://media.istockphoto.com/id/1133497899/es/foto/vieja-textura-de-papel-sucio.jpg?s=612x612&w=0&k=20&c=5U66N7rMGr1QdWz_DznqlM6Cu1bMjG31gdN4H0ZBTpU=);
+    background-color: antiquewhite;
+    margin-left: 2em;
+    width: 30rem;
+    font-size: 2.5rem;
+    text-align: center;
+    text-justify: auto;
 }
 
 </style>
