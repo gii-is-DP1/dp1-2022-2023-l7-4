@@ -137,19 +137,19 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_DISCARDED_CARD_NOW){
             return REDIRECT+"/promoteCard?typeOfCard=discarded&endOfTurn=false";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_CARDS_IN_INNER){
-            return null;
+            AutomaticActions.earnVpFor3Inner(game, action);
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_5_ENEMY_KILLED_TROOPS){
-            return null;
+            AutomaticActions.earnVpFor5Killed(game, action);
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP_ANYWHERE){
             return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=false";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_WHITE_KILLED_TROOPS){
-            return null;
+            AutomaticActions.earnVpFor3WhiteKilled(game, action);
         }else if(action.getActionName()== ActionName.DEVORE_MARKET_CARD){
             return REDIRECT+"/devoreMarketCard?devoreAll=false";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_2_CONTROLED_SITES){
-            return null;
+            AutomaticActions.earnVpFor2ControlledSites(game, action);
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_TOTAL_CONTROLLED_SITE){
-            return null;
+            AutomaticActions.earnVpForTotalControlledSites(game, action);
         }else if(action.getActionName()==ActionName.DRAW_CARD){
             try{
                 playerMoveCardsService.drawFromDeckToHand(action.getValue(), player);

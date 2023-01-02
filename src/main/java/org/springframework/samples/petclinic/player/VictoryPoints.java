@@ -21,9 +21,11 @@ public class VictoryPoints {
 
     Integer innerCircleVP; 
 
+    Integer earnedVP;
+
     public Integer getTotalVP(){
         Integer result=0;
-        result=this.controlVP+this.totalControlVP+this.trophyHallVP+this.handVP+this.dicardPileVP+this.deckVP+this.innerCircleVP;
+        result=this.controlVP+this.totalControlVP+this.trophyHallVP+this.handVP+this.dicardPileVP+this.deckVP+this.innerCircleVP+this.earnedVP;
         return result;
     }
     

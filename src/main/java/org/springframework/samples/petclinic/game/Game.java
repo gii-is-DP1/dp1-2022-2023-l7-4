@@ -204,6 +204,7 @@ public class Game extends BaseEntity{
         Integer dicardPileVP=player.getDiscarded().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer innerCircleVP= getInnerCircleVP(player);
+        Integer vpEarned = player.getVpEarned();
         vp.setControlVP(controlVP);
         vp.setDeckVP(deckVP);
         vp.setDicardPileVP(dicardPileVP);
@@ -211,6 +212,7 @@ public class Game extends BaseEntity{
         vp.setTotalControlVP(totalControlVP);
         vp.setTrophyHallVP(trophyHallVP);
         vp.setHandVP(handVP);
+        vp.setEarnedVP(vpEarned);
         return vp;
         
     }
