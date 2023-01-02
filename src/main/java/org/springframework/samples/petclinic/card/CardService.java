@@ -89,8 +89,9 @@ public class CardService {
         }
         
         return promotableCards;
-            
     }
+
+    
 
     
 }

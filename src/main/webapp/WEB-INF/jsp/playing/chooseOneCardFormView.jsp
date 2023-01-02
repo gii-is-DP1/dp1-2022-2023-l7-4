@@ -31,7 +31,15 @@
                             <c:out value="${card.innerCirclePV} "/>
                         </td>
                         <td>
-                            <a type="submit" href="chosenCardToPromove/${card.id}?endOfTurn=${param.endOfTurn}" class="play-buy-card-button" style="font-size: 1.1vmax;">PROMOVER</a>
+                            <c:choose>
+                                <c:when test="${devore}">
+                                    <a type="submit" href="chosenCardToDevore/${card.id}" class="play-buy-card-button" style="font-size: 1.1vmax;">DEVORAR</a>
+                                
+                            </c:when>
+                            <c:otherwise>
+                                <a type="submit" href="chosenCardToPromove/${card.id}?endOfTurn=${param.endOfTurn}" class="play-buy-card-button" style="font-size: 1.1vmax;">PROMOVER</a>
+                            </c:otherwise>
+                            </c:choose>
                         </td>
                     </tr>
                 </c:forEach>
