@@ -62,33 +62,27 @@ public class PlayerMoveCardsService {
 
 //	PROMOTE
 
-	public void promoteSelectedFromPlayed(@Valid Card card, @Valid Player player,Boolean endOfTurn){
+	public void promoteSelectedFromPlayed(@Valid Card card, @Valid Player player){
 		Game game=player.getGame();
 		moveSelectedCardAndSave(card, player.getPlayed(), player.getInnerCircle(), player);
-		// if(endOfTurn){
-		// 	game.setNumberOfPromoveCardFromPlayedLeft(game.getNumberOfPromoveCardFromPlayedLeft()-1);
-		// 	this.gameService.save(game);
-		// }
+
+		this.gameService.save(game);
+
 	}
 
-	public void promoteSelectedFromDiscardPile(@Valid Card card,@Valid Player player,Boolean endOfTurn){
+	public void promoteSelectedFromDiscardPile(@Valid Card card,@Valid Player player){
 		Game game=player.getGame();
 		moveSelectedCardAndSave(card,player.getDiscarded(),player.getInnerCircle(),  player);
 
-		// if(endOfTurn || game.getNotPromovableCards().contains(card)){
-		// 	game.setNumberOfPromoveCardFromDiscardedLeft(game.getNumberOfPromoveCardFromDiscardedLeft()-1);
-		// 	if(game.getNotPromovableCards().contains(card)) game.removeNotPromovableCard(card);
-		// 	this.gameService.save(game);
-		// }
+		this.gameService.save(game);
+
 	}
 
-	public void promoteSelectedFromDeck(@Valid Card card,@Valid Player player,Boolean endOfTurn){
+	public void promoteSelectedFromDeck(@Valid Card card,@Valid Player player){
 		Game game=player.getGame();
 		moveSelectedCardAndSave(card, player.getDeck(), player.getInnerCircle(), player);
-		// if(endOfTurn){
-		// 	game.setNumberOfPromoveCardFromDeckLeft(game.getNumberOfPromoveCardFromDeckLeft()-1);
-		// 	this.gameService.save(game);
-		// }
+		this.gameService.save(game);
+
 	}
 	
 

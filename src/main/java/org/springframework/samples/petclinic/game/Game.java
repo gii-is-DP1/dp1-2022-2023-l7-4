@@ -74,7 +74,9 @@ public class Game extends BaseEntity{
     
     @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
-
+    
+    @Column(columnDefinition = "boolean default false")
+    Boolean lastActionSkipped= false;
     
     
     @ManyToOne()
@@ -269,6 +271,9 @@ public class Game extends BaseEntity{
     }
     public boolean canFinishTurn() {
         return endTurnAction==null;
+    }
+    public boolean hasLastActionSkipped() {
+        return lastActionSkipped;
     }
 
     

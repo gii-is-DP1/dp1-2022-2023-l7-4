@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.samples.petclinic.board.position.Position;
-import org.springframework.samples.petclinic.card.Aspect;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -30,7 +29,8 @@ import lombok.Setter;
 @Table(name = "actions")
 @Entity
 public class Action extends BaseEntity {
-   
+   //DEBUG FUNCTION
+   //TODO DELETE AFTER ACTIONS IS COMPLETED
     String aaa(){
         String result = getIterations().toString();
         if(isSimple()){
@@ -49,9 +49,9 @@ public class Action extends BaseEntity {
     ActionName actionName;
 
     String description;
-    
+
     Integer iterations;
-  
+    @Column(columnDefinition = "integer default 1")
     Integer originalIterations;
 
     Integer value;
@@ -60,14 +60,17 @@ public class Action extends BaseEntity {
     Position position;
     
 
-
-    @ManyToOne
-    Aspect aspect;
-
+    
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "subactions",inverseJoinColumns = @JoinColumn(name="subaction_id",unique = false))
     List<Action> subactions= new ArrayList<>();
-
+    
+    @ManyToOne
+    Card card;
+    
+    //Mazos de pack de expansiones ELEMENTAL
+    // @ManyToOne
+    // Aspect aspect;
     public Boolean isSimple(){
         return this.subactions.isEmpty();
     }
@@ -94,16 +97,6 @@ public class Action extends BaseEntity {
     public Boolean hasNoMoreIterations(){
         return getIterations()<=0;
     }
-
-    public Boolean isExecuteInEndOfTurn(){
-        List<ActionName> list=List.of(ActionName.PROMOTE_OWN_PLAYED_CARD
-        ,ActionName.PROMOTE_OWN_DISCARDED_CARD,ActionName.PROMOTE_CARD_FROM_OWN_DECK);
-        return list.contains(this.getActionName());
-    }
-
-
-    @ManyToOne
-    Card card;
 
 
 
@@ -135,6 +128,10 @@ public class Action extends BaseEntity {
         action.setOriginalIterations(1);
         action.setIterations(1);
         return action;
+    }
+
+    public boolean isMandatory(Action action) {
+        return action.getActionName()==ActionName.THEN && action.getSubactions().get(0)==this;
     }
 
 
