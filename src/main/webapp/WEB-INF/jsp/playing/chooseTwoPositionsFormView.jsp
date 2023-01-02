@@ -7,6 +7,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
+<link rel="stylesheet" href="/resources/styles/passactionbutton.css">
+
 <body>
     <div class="fullscreen-game">  
         <div class="tophud">
@@ -23,6 +25,7 @@
                 </div>
             </div>
             <div class="tophud-box tophud-b3">
+                <a href="" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
                 <div class="round-div">
                     RONDA ${round}
                 </div>

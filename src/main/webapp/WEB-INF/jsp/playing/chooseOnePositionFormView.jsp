@@ -2,11 +2,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="motero2k" tagdir="/WEB-INF/tags/motero2k" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
+<link rel="stylesheet" href="/resources/styles/passactionbutton.css">
+
 <body>
     <div class="fullscreen-game">  
         <div class="tophud">
@@ -23,6 +26,14 @@
                 </div>
             </div>
             <div class="tophud-box tophud-b3">
+                <c:choose>
+                    <c:when test="${price==true}">
+                        <a href="/play/${gameId}/round/${round}" class="skip-action-button" style="width: 8vmax; margin-right: 2vmax;">CANCELAR</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
+                    </c:otherwise>
+                </c:choose>
                 <div class="round-div">
                     RONDA ${round}
                 </div>
@@ -89,14 +100,13 @@
                 </div>
             </div>
             <div class="positions-round0">
-               <c:out>${special}</c:out> 
+               <o:out>${special}</o:out> 
                 <div class="position-scroll">
                     <div class="position-totally">
                         <form:form modelAttribute="idposition">
                             <motero2k:positionTable>
                             </motero2k:positionTable>
                         </form:form>
-                        <a href="/play/${gameId}/round/${round}">CANCELAR</a>
                     </div>
                 </div>
 
@@ -163,6 +173,7 @@ p{
     color: red;
 
 }
+
 </style>
 <script>
     function showPopUp(popup) {
