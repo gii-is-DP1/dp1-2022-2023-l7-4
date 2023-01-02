@@ -44,7 +44,6 @@ public enum ActionName {
     //CARD
     //FOR EACH PROMOTE, CHANGE METHOD IN ACTION
     PROMOTE_OWN_PLAYED_CARD, //EXCLUDE THIS CARD FILTERED BY ASPECT and  minionType(nullable)
-    PROMOTE_OWN_DISCARDED_CARD_NOW, //this card included
     PROMOTE_OWN_DISCARDED_CARD,
     PROMOTE_CARD_FROM_OWN_DECK, //first one if disordered, random if ordered
     MOVE_OWN_DECK_CARDS_TO_DISCARDED,

@@ -71,16 +71,14 @@ public class CardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Card> getPromotableCardForPlayerByGame(Game game,String typeOfCard,Boolean endOfTurn){
+    public List<Card> getPromotableCardForPlayerByGame(Card card,Game game,String typeOfCard){
         Player actualPlayer=game.getCurrentPlayer();
         List<Card> promotableCards=new ArrayList<>();
         if(typeOfCard.toLowerCase().trim().equals("played")){
             promotableCards.addAll(actualPlayer.getPlayed());
-            if(!endOfTurn)
-                promotableCards.remove(actualPlayer.getLastPlayedCard());
-            else{
-                promotableCards.remove(game.getToBePromoted().get(0)); // VAMOS COGIENDO LA PRIMERA CARTA NO PROMOVIBLE
-            }
+
+            promotableCards.remove(card);
+
         }
         else if(typeOfCard.toLowerCase().trim().equals("discarded")){
             promotableCards.addAll(actualPlayer.getDiscarded());

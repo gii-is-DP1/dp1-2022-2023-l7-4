@@ -16,7 +16,6 @@ import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.card.action.Action;
 import org.springframework.samples.petclinic.card.action.ActionService;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
-import org.springframework.samples.petclinic.card.auxiliarClass.CardData;
 import org.springframework.samples.petclinic.cardsMovement.MarketMoveCardsService;
 import org.springframework.samples.petclinic.cardsMovement.PlayerMoveCardsService;
 import org.springframework.samples.petclinic.game.Game;
@@ -76,21 +75,34 @@ public class ExecuteActionsController {
 
     @GetMapping("play-card/{cardId}")
     public String generateGameAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "cardId") Card card){
-        Action currentAction = actionService.of(card.getAction(),card);
-        actionService.save(currentAction);
-        game.setCurrentAction(currentAction);
-        playerMoveCardsService.moveFromHandToPlayed(card, game.getCurrentPlayer());
+        List<Card> hand = game.getCurrentPlayer().getHand();
+        //TODO cuando se termine de testear por rutas, cambiar el if
+        // if(hand.contains(card)){ 
+        if(true){
+            Action currentAction = actionService.of(card.getAction(),card);
+            actionService.save(currentAction);
+            game.setCurrentAction(currentAction);
+            playerMoveCardsService.moveFromHandToPlayed(card, game.getCurrentPlayer());
+            gameService.save(game);
+            return EXECUTE_ACTION;
+        }
+        return REDIRECT;
+    }
+
+    @GetMapping("skip")
+    public String skip(@PathVariable(name = "gameId") Game game){
+        game.setLastActionSkipped(true);
         gameService.save(game);
         return EXECUTE_ACTION;
     }
-    //TODO add cardID
+   
     @GetMapping("execute-action")
     public String executeAction(@PathVariable(name = "gameId") Game game){
         Player player = game.getCurrentPlayer();
         Action currentAction = game.getCurrentAction();
 
-
         Action action = actionService.getNextAction(currentAction,game);
+        
         if(action == null)  {
             game.setCurrentAction(null);
             gameService.save(game);
@@ -102,7 +114,7 @@ public class ExecuteActionsController {
         }
         gameService.save(game);
         actionService.save(action);
-
+        Integer cardId = action.getCard().getId();
         if(action.getActionName() == ActionName.POWER){
             AutomaticActions.earnPower(game, action); 
         }else if(action.getActionName() == ActionName.INFLUENCE){
@@ -122,20 +134,17 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.KILL_WHITE_TROOP){
             return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_PLAYED_CARD){
-            //TODO 
-            return REDIRECT+"/promoteFromPlayed/"+game.getToBePromoted().remove(0);
+            return REDIRECT+"/promoteCard/"+cardId+"?locationOfCard=played";
         }else if(action.getActionName()==ActionName.PROMOTE_OWN_DISCARDED_CARD){
-            //TODO
+            return REDIRECT+"/promoteCard/"+cardId+"?locationOfCard=discarded";
         }else if(action.getActionName()==ActionName.PROMOTE_CARD_FROM_OWN_DECK){
-            //TODO
+            return REDIRECT+"/promoteCard/"+cardId+"?locationOfCard=deck";
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
             return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.MOVE_ENEMY_TROOP){
             return REDIRECT+"/movePiece?piece=troop";
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
             return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=true";
-        }else if(action.getActionName()== ActionName.PROMOTE_OWN_DISCARDED_CARD_NOW){
-            return REDIRECT+"/promoteCard?typeOfCard=discarded&endOfTurn=false";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_CARDS_IN_INNER){
             AutomaticActions.earnVpFor3Inner(game, action);
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_5_ENEMY_KILLED_TROOPS){
@@ -212,10 +221,10 @@ public class ExecuteActionsController {
         return EXECUTE_ACTION;
     }
 
-    @GetMapping("promoteCard")
-    public ModelAndView initPromoteCard(@PathVariable("gameId") Game game,@RequestParam("typeOfCard") String typeOfCard
-    ,@RequestParam("endOfTurn") Boolean endOfTurn){
-        List<Card> cards=this.cardService.getPromotableCardForPlayerByGame(game, typeOfCard,endOfTurn);
+    @GetMapping("promoteCard/{cardId}")
+    public ModelAndView initPromoteCard(@PathVariable("gameId") Game game,@PathVariable("cardId") Card card,@RequestParam("locationOfCard") String locationOfCard
+    ){
+        List<Card> cards=this.cardService.getPromotableCardForPlayerByGame(card,game, locationOfCard);
         ModelAndView result= new ModelAndView(CHOOSE_CARD_VIEW);
         result.addObject("cards", cards);
         result.addObject("size", cards.size());
@@ -224,17 +233,16 @@ public class ExecuteActionsController {
     }
 
 //TODO CAMBIAR A promottttttte
-    @GetMapping("chosenCardToPromove/{cardId}")
-    public ModelAndView processPromoteCard(@PathVariable("gameId") Game game, @PathVariable("cardId") Card card
-    ,@RequestParam("endOfTurn") Boolean endOfTurn){
-        ModelAndView res=endOfTurn?new ModelAndView(NEXT_TURN):new ModelAndView(EXECUTE_ACTION);
+    @GetMapping("promoteCard/chosenCardToPromote/{cardId}")
+    public ModelAndView processPromoteCard(@PathVariable("gameId") Game game, @PathVariable("cardId") Card card){
+        ModelAndView res=new ModelAndView(EXECUTE_ACTION);
         Player player=game.getCurrentPlayer();
             if(player.getDiscarded().contains(card))
-                this.playerMoveCardsService.promoteSelectedFromDiscardPile(card, player,endOfTurn);
+                this.playerMoveCardsService.promoteSelectedFromDiscardPile(card, player);
             else if(player.getPlayed().contains(card))
-                this.playerMoveCardsService.promoteSelectedFromPlayed(card, player,endOfTurn);
+                this.playerMoveCardsService.promoteSelectedFromPlayed(card, player);
             else if(player.getDeck().contains(card))
-                this.playerMoveCardsService.promoteSelectedFromDeck(card, player,endOfTurn);
+                this.playerMoveCardsService.promoteSelectedFromDeck(card, player);
         return res;
 
     }
