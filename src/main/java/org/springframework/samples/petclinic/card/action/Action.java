@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.card.Aspect;
+import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
@@ -62,7 +64,7 @@ public class Action extends BaseEntity {
     @ManyToOne
     Aspect aspect;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "subactions",inverseJoinColumns = @JoinColumn(name="subaction_id",unique = false))
     List<Action> subactions= new ArrayList<>();
 
@@ -76,7 +78,7 @@ public class Action extends BaseEntity {
         
         if(value !=null) result += value+" " ;
         result += actionName;
-        if(iterations !=null && iterations >1) result += " ("+ iterations + " times)";
+        if(originalIterations !=null && originalIterations >1) result += " ("+ originalIterations + " times)";
         if(! subactions.isEmpty()) result += subactions;
         return result;
 
@@ -100,7 +102,8 @@ public class Action extends BaseEntity {
     }
 
 
-
+    @ManyToOne
+    Card card;
 
 
 
@@ -114,7 +117,7 @@ public class Action extends BaseEntity {
     }
 
     public void decreaseIterations() {
-        iterations--;
+        if(iterations>0)iterations--;
     }
 
     public boolean isChosen() {
@@ -124,6 +127,14 @@ public class Action extends BaseEntity {
 
     public boolean isChooseType() {
         return actionName.equals(ActionName.CHOOSE);
+    }
+
+    public static Action ofEndOfTurn() {
+        Action action= new Action();
+        action.setActionName(ActionName.END_TURN_ACTION);
+        action.setOriginalIterations(1);
+        action.setIterations(1);
+        return action;
     }
 
 

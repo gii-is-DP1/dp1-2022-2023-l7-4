@@ -79,7 +79,7 @@ public class CardService {
             if(!endOfTurn)
                 promotableCards.remove(actualPlayer.getLastPlayedCard());
             else{
-                promotableCards.remove(game.getNotPromovableCards().get(0)); // VAMOS COGIENDO LA PRIMERA CARTA NO PROMOVIBLE
+                promotableCards.remove(game.getToBePromoted().get(0)); // VAMOS COGIENDO LA PRIMERA CARTA NO PROMOVIBLE
             }
         }
         else if(typeOfCard.toLowerCase().trim().equals("discarded")){

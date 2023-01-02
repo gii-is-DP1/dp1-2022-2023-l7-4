@@ -79,19 +79,24 @@ public class ExecuteActionsController {
         gameService.save(game);
         return EXECUTE_ACTION;
     }
+    //TODO add cardID
     @GetMapping("execute-action")
     public String executeAction(@PathVariable(name = "gameId") Game game){
         Player player = game.getCurrentPlayer();
         Action currentAction = game.getCurrentAction();
-        
+        Card card = null; //TODO
 
-        Action action = actionService.getNextAction(currentAction,currentAction);
+        Action action = actionService.getNextAction(currentAction,game,card);
         if(action == null)  {
             game.setCurrentAction(null);
             gameService.save(game);
             actionService.remove(currentAction);
             return GAME_MAIN_VIEW;
         }
+        if(action.getActionName()==ActionName.NEXT_TURN){
+            return NEXT_TURN;
+        }
+        gameService.save(game);
         actionService.save(action);
 
         if(action.getActionName() == ActionName.POWER){
@@ -108,21 +113,17 @@ public class ExecuteActionsController {
             return REDIRECT+"/killTroop?typeOfEnemy=any&withPresence=true";
         }else if(action.getActionName()== ActionName.RETURN_PLAYER_PIECE){
             return REDIRECT+"/returnPiece?piece=any&enemyPlayer=true";
-        }else if(action.getActionName()== ActionName.ALL){
-            return null;
-        }else if(action.getActionName()== ActionName.THEN){
-            return null;
         }else if(action.getActionName()== ActionName.RETURN_OWN_SPY){
             return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=false";
         }else if(action.getActionName()== ActionName.KILL_WHITE_TROOP){
             return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.PROMOTE_OWN_PLAYED_CARD){
-            game.setNumberOfPromoveCardFromPlayedLeft(game.getNumberOfPromoveCardFromPlayedLeft()+1);
-            game.addNotPromovableCard(game.getCurrentPlayer().getLastPlayedCard());
+            //TODO 
+            return REDIRECT+"/promoteFromPlayed/"+game.getToBePromoted().remove(0);
         }else if(action.getActionName()==ActionName.PROMOTE_OWN_DISCARDED_CARD){
-            game.setNumberOfPromoveCardFromDiscardedLeft(game.getNumberOfPromoveCardFromDiscardedLeft()+1);
+            //TODO
         }else if(action.getActionName()==ActionName.PROMOTE_CARD_FROM_OWN_DECK){
-            game.setNumberOfPromoveCardFromDeckLeft(game.getNumberOfPromoveCardFromDeckLeft()+1);
+            //TODO
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
             return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.MOVE_ENEMY_TROOP){
@@ -200,7 +201,7 @@ public class ExecuteActionsController {
         return result;
     }
 
-
+//TODO CAMBIAR A promottttttte
     @GetMapping("chosenCardToPromove/{cardId}")
     public ModelAndView processPromoteCard(@PathVariable("gameId") Game game, @PathVariable("cardId") Card card
     ,@RequestParam("endOfTurn") Boolean endOfTurn){

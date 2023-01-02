@@ -172,13 +172,11 @@ public class PlayController {
         if(game.canFinishTurn()){
             endTurnService.execute(gameId);
         }else{
-            if(game.getNumberOfPromoveCardFromDeckLeft()>=1)
-                result=new ModelAndView("redirect:/play/{gameId}/round/{round}/promoteCard?typeOfCard=deck&endOfTurn=true");
-            else if(game.getNumberOfPromoveCardFromDiscardedLeft()>=1)
-                result=new ModelAndView("redirect:/play/{gameId}/round/{round}/promoteCard?typeOfCard=discarded&endOfTurn=true");
-            else{
-                result=new ModelAndView("redirect:/play/{gameId}/round/{round}/promoteCard?typeOfCard=played&endOfTurn=true");
-            }
+    
+            gameService.loadEndTurnActionAndSave(game);
+            
+            result=new ModelAndView("redirect:/play/{gameId}/round/{round}/execute-action");
+            
         }
         
         return result;

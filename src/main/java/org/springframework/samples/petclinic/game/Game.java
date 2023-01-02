@@ -49,6 +49,9 @@ public class Game extends BaseEntity{
     @ManyToOne
     Action currentAction;
 
+    @ManyToOne
+    Action endTurnAction;
+
     @Temporal(TemporalType.DATE)
     Date date = new Date();
 
@@ -109,30 +112,12 @@ public class Game extends BaseEntity{
     
     @ManyToMany
     private List<Card> lolths = new ArrayList<>();
+
     
-    @Column(columnDefinition = "integer default 0")
-    private Integer numberOfPromoveCardFromDeckLeft=0;
+    //TODO esto es nuevo, almacena las cartas a ascender a final de turno
+    @ManyToMany
+    private List<Card> toBePromoted;
 
-    @Column(columnDefinition = "integer default 0")
-    private Integer numberOfPromoveCardFromDiscardedLeft=0;
-
-    @Column(columnDefinition = "integer default 0")
-    private Integer numberOfPromoveCardFromPlayedLeft=0;
-
-    @ManyToMany()
-    private List<Card> notPromovableCards=new ArrayList<>();
-
-    public void addNotPromovableCard(Card card){
-        notPromovableCards.add(card);
-    }
-
-    public void removeNotPromovableCard(Card card){
-        notPromovableCards.remove(card);
-    }
-
-    public Boolean canFinishTurn(){
-        return numberOfPromoveCardFromDeckLeft==0 & numberOfPromoveCardFromDiscardedLeft==0 & numberOfPromoveCardFromPlayedLeft==0;
-    }
 
     
     public void addPlayer(Player player) {
@@ -263,6 +248,17 @@ public class Game extends BaseEntity{
         if(playerCount==4) zones.add(1);
         return zones;
     }
+    /**
+     * Devuelve una nueva accion si no existe. NO GUARDADA EN BASE DE DATOS
+     * @return
+     */
+    public Action getEndTurnAction(){
+        if(endTurnAction==null){
+            return Action.ofEndOfTurn();
+        }else{
+            return endTurnAction;
+        }
+    }
     @Override
     public String toString() {
         return "Game [name=" + name + ", date=" + date + ", round=" + round + ", turnPlayer=" + turnPlayer
@@ -270,6 +266,9 @@ public class Game extends BaseEntity{
                 + ", cities=" + cities + ", paths=" + paths + ", players=" + players + ", firstHalfDeck="
                 + firstHalfDeck + ", secondHalfDeck=" + secondHalfDeck + ", gameDeck=" + gameDeck + ", sellZone="
                 + sellZone + ", devoured=" + devoured + ", houseGuards=" + houseGuards + ", lolths=" + lolths + "]";
+    }
+    public boolean canFinishTurn() {
+        return endTurnAction==null;
     }
 
     

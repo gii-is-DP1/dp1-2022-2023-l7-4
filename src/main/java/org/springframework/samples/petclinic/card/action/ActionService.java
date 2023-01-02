@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.card.action;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,8 @@ public class ActionService {
     public Action of(Action action) {
         Action copy = new Action();
         copy.setActionName(action.getActionName());
-        copy.description = action.getDescription();
+        copy.setDescription("copia");
+        copy.setCard(action.getCard());
         copy.setPosition(action.getPosition());
         copy.setValue(action.getValue());
         copy.setAspect(action.getAspect());
@@ -54,26 +56,32 @@ public class ActionService {
         return copy;
     }
 
-    public Action getNextAction(Action action,Action gameAction) {
+    public Action getNextAction(Action action,Game game,Card card) {
+        Action gameAction = game.getCurrentAction();
+
         if (action.getIterations() == 0) {
-          return null;
+            if(action.actionName==ActionName.END_TURN_ACTION){
+                return ofNextTurn();
+            }else{
+                return null;
+            }
         }else if(action.getActionName()==ActionName.AT_END_TURN){
+            addActionsOfEndOfTurn(action,game,card);
             decreaseIterationsOf(action);
-            //TODO PREGUNTAR A LOLO
-            return getNextAction(gameAction, gameAction);
+            return getNextAction(gameAction, game, card);
 
         }else if(action.getActionName()==ActionName.CHOOSE && action.isNotChosenYet()){
             return action;
         }else if(action.getActionName()==ActionName.CHOOSE && action.isChosen()){
             Action subAction = action.getSubactions().stream().filter(x->!x.hasNoMoreIterations()).findFirst().get();
 
-            return getNextAction(subAction, gameAction);
+            return getNextAction(subAction, game, card);
         }else if(action.subActionsAllDone()){
             decreaseIterationsOf(action);
-            return getNextAction(gameAction, gameAction);
+            return getNextAction(gameAction, game, card);
         }
         for (Action subaction : action.getSubactions()) {
-          Action next = getNextAction(subaction, gameAction);
+          Action next = getNextAction(subaction, game, card);
           if (next != null) {
             return next;
           }
@@ -82,7 +90,24 @@ public class ActionService {
         return action;
       }
 
-      public void blockSubactionsExcept(Action action, Action chosenSubAction) {
+      private Action ofNextTurn() {
+        Action action = new Action();
+        action.setActionName(ActionName.NEXT_TURN);
+        return action;
+    }
+
+    private void addActionsOfEndOfTurn(Action originalAction, Game game,Card card) {
+        Action endTurnActionInGame=game.getEndTurnAction();
+        
+        for(Action subAction: originalAction.getSubactions()){      
+            subAction.setCard(card); 
+            endTurnActionInGame.getSubactions().add(of(subAction));
+        }
+        save(endTurnActionInGame);
+        game.setEndTurnAction(endTurnActionInGame);
+    }
+
+    public void blockSubactionsExcept(Action action, Action chosenSubAction) {
         for (Action subAction : action.getSubactions()) {
             if (!subAction.equals(chosenSubAction)) {
                 subAction.setIterations(0);
