@@ -1,8 +1,8 @@
 package org.springframework.samples.petclinic.game;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.card.action.Action;
+import org.springframework.samples.petclinic.card.action.ActionService;
 import org.springframework.samples.petclinic.cardsMovement.PlayerMoveCardsService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,8 @@ public class EndTurnService {
     
     @Autowired
     GameService gameService;
+    @Autowired
+    ActionService actionService;
     
     /**
      * <pre>Mueve las cartas de la mano y las cartas jugadas a el mazo de descartes.
@@ -21,11 +23,15 @@ public class EndTurnService {
      * Pasa al siguiente jugador y salva el game.</pre>
      * @param gameId
      */
-    public void execute(Integer gameId){
+    public void execute(Game game){
         try {
-            Game game=gameService.getGameById(gameId);
 
             Player player=game.getCurrentPlayer();
+            Action currentAction=game.getCurrentAction();
+            if(currentAction!=null){
+                game.setCurrentAction(null);
+                actionService.remove(currentAction);
+            }
 
             playerMoveCardsService.moveAllHandToDiscard(player);
             
