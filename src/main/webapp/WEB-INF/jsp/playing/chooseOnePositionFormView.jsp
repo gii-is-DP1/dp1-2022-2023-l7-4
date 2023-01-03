@@ -31,7 +31,7 @@
                         <a href="/play/${gameId}/round/${round}" class="skip-action-button" style="width: 8vmax; margin-right: 2vmax;">CANCELAR</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="/play/${gameId}/round/${round}/skip" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
+                        <a href="skip" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
                     </c:otherwise>
                 </c:choose>
                 <div class="round-div">

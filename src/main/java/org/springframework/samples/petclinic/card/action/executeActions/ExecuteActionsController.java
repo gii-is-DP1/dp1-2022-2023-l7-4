@@ -245,7 +245,6 @@ public class ExecuteActionsController {
         return result;
     }
 
-//TODO CAMBIAR A promottttttte
     @GetMapping("promoteCard/chosenCardToPromote/{cardId}")
     public ModelAndView processPromoteCard(@PathVariable("gameId") Game game, @PathVariable("cardId") Card card){
         ModelAndView res=new ModelAndView(EXECUTE_ACTION);
