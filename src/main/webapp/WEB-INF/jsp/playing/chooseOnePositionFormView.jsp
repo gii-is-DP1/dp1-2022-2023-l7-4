@@ -31,7 +31,7 @@
                         <a href="/play/${gameId}/round/${round}" class="skip-action-button" style="width: 8vmax; margin-right: 2vmax;">CANCELAR</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
+                        <a href="skip" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
                     </c:otherwise>
                 </c:choose>
                 <div class="round-div">
@@ -92,7 +92,7 @@
                 </div>
                 <div class="resources-box">
                     <abbr title="Puntos de victoria totales" >
-                        <a onclick="showPopUp('VpPopUp')" href="JavaScript:void(0)" class="resource-image vp"></a>
+                        <a onclick="showPopUp('VpPopUp')" href="JavaScript:void(0)" class="resource-image-vp"></a>
                         <div class="resource-valor">
                             ${totalVp}
                         </div>

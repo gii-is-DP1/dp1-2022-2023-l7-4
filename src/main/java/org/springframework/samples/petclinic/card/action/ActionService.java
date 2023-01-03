@@ -45,9 +45,8 @@ public class ActionService {
         copy.setDescription("copia");
         copy.setCard(action.getCard());
         copy.setCard(card);
-        copy.setPosition(action.getPosition());
         copy.setValue(action.getValue());
-        copy.setAspect(action.getAspect());
+        // copy.setAspect(action.getAspect()); //expansion pack
         copy.setIterations(action.getOriginalIterations());
         copy.setOriginalIterations(action.getOriginalIterations());
         for (Action subaction : action.getSubactions()) {
@@ -82,10 +81,15 @@ public class ActionService {
             return getNextAction(gameAction, game);
         }
         for (Action subaction : action.getSubactions()) {
-          Action next = getNextAction(subaction, game);
-          if (next != null) {
-            return next;
-          }
+            if(subaction.isMandatory(action) && game.hasLastActionSkipped()){
+                blockSubactionsExcept(action, null);
+                game.setLastActionSkipped(false);
+                return getNextAction(gameAction, game);
+            }
+            Action next = getNextAction(subaction, game);
+            if (next != null) {
+                return next;
+            }
         }
         decreaseIterationsOf(action);
         return action;

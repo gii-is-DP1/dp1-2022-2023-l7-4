@@ -81,7 +81,7 @@
                 </div>
                 <div class="resources-box">
                     <abbr title="Puntos de victoria totales" >
-                        <a onclick="showPopUp('VpPopUp')" href="JavaScript:void(0)" class="resource-image vp"></a>
+                        <a onclick="showPopUp('VpPopUp')" href="JavaScript:void(0)" class="resource-image-vp"></a>
                         <div class="resource-valor">
                             ${totalVp}
                         </div>

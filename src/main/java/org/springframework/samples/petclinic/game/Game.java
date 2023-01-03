@@ -1,15 +1,11 @@
 package org.springframework.samples.petclinic.game;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -21,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +25,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.board.map.MapTemplate;
+import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.card.Card;
@@ -77,8 +75,16 @@ public class Game extends BaseEntity{
     
     @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
-
     
+    @Column(columnDefinition = "boolean default false")
+    Boolean lastActionSkipped= false;
+
+    @Column(columnDefinition = "boolean default true")
+    Boolean automaticWhiteTroops= true;
+    
+    //TODO  esto es para las acciones que piden suplantar una tropa en donde pusiste/devolviste espia
+    @OneToOne()
+    Position lastSpyLocation;
     
     @ManyToOne()
     MapTemplate mapTemplate ;
@@ -225,8 +231,9 @@ public class Game extends BaseEntity{
         vp.setTotalControlVP(totalControlVP);
         vp.setTrophyHallVP(trophyHallVP);
         vp.setHandVP(handVP);
-        vp.setTotalVp();
         vp.setEarnedVP(vpEarned);
+        vp.setTotalVp();
+        
         return vp;
         
     }
@@ -285,6 +292,9 @@ public class Game extends BaseEntity{
     }
     public boolean canFinishTurn() {
         return endTurnAction==null;
+    }
+    public boolean hasLastActionSkipped() {
+        return lastActionSkipped;
     }
 
     

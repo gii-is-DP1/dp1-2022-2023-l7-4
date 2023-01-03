@@ -11,7 +11,7 @@ public enum ActionName {
     VP_FOR_EVERY_3_CARDS_IN_INNER,
     VP_FOR_EVERY_SITE_MARKER, //?
     VP_FOR_EVERY_TOTAL_CONTROLLED_SITE,
-    //CHECKS
+    //CHECKS 
     CHECK_KILLED_PLAYER_TROOPS_GREATER_THAN,
     CHECK_INNER_CARDS_GREATER_THAN,
     CHECK_PLAYER_ANY_TROOP_IN_SITE, //NEEDS THE SITE OF THE FATHER ACTION
@@ -44,7 +44,6 @@ public enum ActionName {
     //CARD
     //FOR EACH PROMOTE, CHANGE METHOD IN ACTION
     PROMOTE_OWN_PLAYED_CARD, //EXCLUDE THIS CARD FILTERED BY ASPECT and  minionType(nullable)
-    PROMOTE_OWN_DISCARDED_CARD_NOW, //this card included
     PROMOTE_OWN_DISCARDED_CARD,
     PROMOTE_CARD_FROM_OWN_DECK, //first one if disordered, random if ordered
     MOVE_OWN_DECK_CARDS_TO_DISCARDED,
@@ -66,7 +65,9 @@ public enum ActionName {
     CHOOSE,
     THEN,
     ALL,
-    AT_END_TURN, END_TURN_ACTION, NEXT_TURN
+    AT_END_TURN, //esta tiene como hijas a las de final de turno (como ascender) (cuando esta a 0 llama genera END_TURN)
+    END_TURN_ACTION, //esta se usa automaticamente para finalizar las acciones de turno (es un mensajero)
+    NEXT_TURN// redirige a siguiente turno 
     ;
 
     

@@ -110,7 +110,7 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (14,1,'POWER',4),
     (15,1,'THEN',null),
     (16,1,'MOVE_OWN_DECK_CARDS_TO_DISCARDED',null),
-    (17,1,'PROMOTE_OWN_DISCARDED_CARD_NOW',null),
+    (17,1,'PROMOTE_OWN_DISCARDED_CARD',null),
     (18,1,'THEN',null),
     (19,null,'DRAW_CARD',3),
     (20,1,'THEN',null),
@@ -299,6 +299,8 @@ INSERT INTO aspects(id,name,description,image) VALUES (5,'Obediencia','Los sierv
 
 
 
+INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES      
+        (0,'Espaciador',0,'','',0,0,0,3,5);
 
 
 
@@ -352,34 +354,36 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
 INSERT INTO actions(id,original_iterations,action_name,value) VALUES 
     -- test of choose
     (-1,2,'CHOOSE',null),
-    (-2,2,'CHOOSE',null),
+    (-2,2,'THEN',null),
 
     (-10,4,'POWER',1),
     (-11,1,'DEPLOY_OWN_TROOP',null),
     (-12,1,'INFLUENCE',+50),
     (-13,5,'POWER',+10),
     -- test of promote
-    (-14,1,'PROMOTE_OWN_DISCARDED_CARD_NOW',null),
+    (-14,1,'PROMOTE_OWN_DISCARDED_CARD',null),
     (-15,2,'PROMOTE_OWN_DISCARDED_CARD',null),
     (-16,2,'PROMOTE_OWN_PLAYED_CARD',null),
     (-17,1,'PROMOTE_OWN_PLAYED_CARD',null),
     (-18,1,'AT_END_TURN',null),
     (-19,2,'DEVORE_MARKET_CARD',null),
-    (-20,2,'MOVE_ENEMY_TROOP',null)
+    (-20,2,'MOVE_ENEMY_TROOP',null),
+    (-21,1,'AT_END_TURN',null)
     ;
 INSERT INTO subactions(action_id,subaction_id) VALUES 
     --choose twice
     (-1,-10), --power
-    (-1,-18), --endGame
-        (-18,-2), --choose twice
-            (-2,-11),--dploy
-            (-2,-12),
-            (-2,-13);
+    (-1,-2), --then
+        (-2,-11),--dploy
+        (-2,-12),
+        (-2,-13),
+    (-21,-15)        
+    ;
 
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id,action_id) 
-VALUES      (-10,'Test elegir',0,'lore','+1 de poder',1,4,50,1,2,-1),
+VALUES      (-10,'Test elegir',22,'lore','+1 de poder',22,22,1,1,2,-1),
             (-11,'Test promover',0,'mondongo','ascender ahora 1 carta descartada',1,2,3,4,2,-14),
-            (-12,'Test promover',0,'mondongo','ascender 2 cartas descartadas al final del turno',1,2,3,4,2,-15),
+            (-12,'Test promover',0,'mondongo','ascender 2 cartas descartadas al final del turno',1,2,3,4,2,-21),
             (-13,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-16),
             (-14,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-17),
             (-15,'Test devorar',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-19),

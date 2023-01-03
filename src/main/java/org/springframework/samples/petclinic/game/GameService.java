@@ -89,5 +89,10 @@ public class GameService {
         save(game);
     }
 
+    public boolean enoughUnaligned(GameService gameService) {
+		//TODO
+        return false;
+    }
+
     
 }
