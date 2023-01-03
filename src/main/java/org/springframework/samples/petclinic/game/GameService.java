@@ -103,5 +103,11 @@ public class GameService {
         return res;
     }
 
+	public Long getNumberOfWhiteTroopsLeftToDeploy(Game game){
+		List<Position> positions =this.positionServiceRepo.getTroopPositionsFromGame(game);
+        Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
+		return numberOfWhiteTroopsToDeploy-this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size();
+	}
+
     
 }

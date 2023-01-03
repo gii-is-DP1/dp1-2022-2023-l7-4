@@ -17,9 +17,18 @@
             </div>
             <div class="tophud-box tophud-b2">
                 <div class="resume-div">
-                    <div class="resume-text">
-                        Selecciona una ubicación inicial
-                    </div>
+                    <c:choose>
+                        <c:when test="${round <0}">
+                            <div class="resume-text">
+                                te quedan ${whiteTroopsLeft} tropas por colocar
+                            </div>
+                        </c:when>
+                        <c:when test="${round ==0}">
+                            <div class="resume-text">
+                                Selecciona posición inicial
+                            </div>
+                        </c:when>
+                    </c:choose>
                 </div>
             </div>
             <div class="tophud-box tophud-b3">

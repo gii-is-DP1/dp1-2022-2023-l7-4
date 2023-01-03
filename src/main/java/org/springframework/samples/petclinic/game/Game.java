@@ -79,7 +79,7 @@ public class Game extends BaseEntity{
     @Column(columnDefinition = "boolean default false")
     Boolean lastActionSkipped= false;
 
-    @Column(columnDefinition = "boolean default true")
+    @Column(columnDefinition = "boolean default true",name="automatic")
     Boolean automaticWhiteTroops= true;
     
     //TODO  esto es para las acciones que piden suplantar una tropa en donde pusiste/devolviste espia

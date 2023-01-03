@@ -21,6 +21,7 @@ import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.initializer.InitializePositionService;
 import org.springframework.samples.petclinic.initializer.IntializeGame;
 import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,6 +62,9 @@ public class PlayController {
     @Autowired
     private MarketPlayerMoveCardsService playerMoveCardsService;
 
+    @Autowired
+    private PlayerService playerService;
+
 
     public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
         result.addObject("player", game.getCurrentPlayer());
@@ -91,7 +95,7 @@ public class PlayController {
                     this.gameInitializer.loadAutomaticWhitePositions(game);
 
                 }else{
-                    //TODO redirect a ChoosePosition como player 0;
+                    result="redirect:{gameId}/chooseWhitePositions";
                 }
             }
         }else if(game.getRound()==0){
@@ -117,7 +121,6 @@ public class PlayController {
         result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
-
         return result;
     }
 
@@ -134,6 +137,42 @@ public class PlayController {
             Position position= positionServiceRepo.findPositionById(idpos.getId());
             this.playerUsePositionService.occupyTroopPosition(position, player,false);
             gameService.nextPlayerAndSave(game);
+            result=new ModelAndView("redirect:/play/"+gameId);
+        }catch(Exception e){
+            result=new ModelAndView("redirect:/play/"+gameId);
+        }
+        return result;
+    }
+
+    @GetMapping("{gameId}/chooseWhitePositions")
+    public ModelAndView initDeployWhiteTroops(@PathVariable Integer gameId){
+        ModelAndView result=new ModelAndView(ROUND_ZERO);
+        Game game=gameService.getGameById(gameId);
+        Player player = game.getCurrentPlayer();
+
+        List<Position> initialPositions=this.positionInGameService.getAvailableFreeWhiteTroopPositions(game);
+        putPlayerDataInModel(game, player, result);
+        result.addObject("positions", initialPositions);
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
+        result.addObject("vp", game.getPlayerScore(player));
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
+        result.addObject("whiteTroopsLeft",gameService.getNumberOfWhiteTroopsLeftToDeploy(game));
+        return result;
+    }
+
+    @PostMapping("{gameId}/chooseWhitePositions")
+    public ModelAndView processChosenWhitePosition(@Valid Idposition idpos,BindingResult br
+    ,@PathVariable Integer gameId){
+        Game game=gameService.getGameById(gameId);
+        Player whitePlayer=this.playerService.getPlayerById(0);
+        ModelAndView result=null;
+        if(br.hasErrors()){
+            result=new ModelAndView("redirect:/play/"+gameId);
+        }
+        try{
+            Position position= positionServiceRepo.findPositionById(idpos.getId());
+            this.playerUsePositionService.occupyTroopPosition(position, whitePlayer,false);
+            gameService.save(game);
             result=new ModelAndView("redirect:/play/"+gameId);
         }catch(Exception e){
             result=new ModelAndView("redirect:/play/"+gameId);
