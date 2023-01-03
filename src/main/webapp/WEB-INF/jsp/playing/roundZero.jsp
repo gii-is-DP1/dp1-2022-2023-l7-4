@@ -81,7 +81,7 @@
                 </div>
                 <div class="resources-box">
                     <abbr title="Puntos de victoria totales" >
-                        <a onclick="showPopUp('VpPopUp')" href="JavaScript:void(0)" class="resource-image vp"></a>
+                        <a onclick="showPopUp('VpPopUp')" href="JavaScript:void(0)" class="resource-image-vp"></a>
                         <div class="resource-valor">
                             ${totalVp}
                         </div>
@@ -109,6 +109,7 @@
                         <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
                         <p>Puntos en mazo: ${vp.deckVP}</p>
                         <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
+                        <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
                     </div>
                 </div>
             </div>

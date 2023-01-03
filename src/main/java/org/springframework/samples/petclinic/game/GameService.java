@@ -83,5 +83,16 @@ public class GameService {
 		save(game);
 	}
 
+    public void loadEndTurnActionAndSave(Game game) {
+		game.setCurrentAction(game.getEndTurnAction());
+		game.setEndTurnAction(null);
+        save(game);
+    }
+
+    public boolean enoughUnaligned(GameService gameService) {
+		//TODO
+        return false;
+    }
+
     
 }

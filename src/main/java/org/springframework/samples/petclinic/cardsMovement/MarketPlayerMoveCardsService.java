@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.checkers.CheckCardMovement;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
@@ -25,6 +26,9 @@ public class MarketPlayerMoveCardsService {
     @Autowired
     MarketMoveCardsService marketMoveCardsService;
 
+    @Autowired
+    CardService cardService;
+
     /**
      * takes a selected card form market and inserts into players hand
      * checks if card is in sellzone and if player has enough influence 
@@ -41,8 +45,9 @@ public class MarketPlayerMoveCardsService {
         CheckCardMovement.sellZoneContainsCard(game.getSellZone(),card);
         CheckCardMovement.playerHasEnoughInfluenceToBuyCard(playerInfluence,cardCost);
  
-        moveSelectedCard(card, game.getSellZone(), player.getDiscarded(), player);
-        marketMoveCardsService.moveFromGameDeckToSellZone(game);
+        Integer index = game.getSellZone().indexOf(card);
+        moveOneCardFromSellZoneToDiscarded(card, game, player);
+        marketMoveCardsService.moveFromGameDeckToSellZone(game,index);
         player.setInfluence(playerInfluence-cardCost);
         playerService.savePlayer(player);
         gameService.save(game);
@@ -51,9 +56,14 @@ public class MarketPlayerMoveCardsService {
 
 
     // private methods
-    private void moveSelectedCard(Card card, List<Card> source, List<Card> target, @Valid Player player) {
-        source.remove(card);
-        target.add(card);
+    private void moveOneCardFromSellZoneToDiscarded(Card card, Game game, @Valid Player player) {
+        List<Card> sellZone = game.getSellZone();
+        List<Card> discarded = player.getDiscarded();
+        if (game.getGameDeck().isEmpty()){
+            sellZone.add(sellZone.indexOf(card), cardService.getCardById(0));
+        } 
+        sellZone.remove(card);
+        discarded.add(card);
     }
 
 

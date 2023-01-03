@@ -71,6 +71,7 @@ public class Card {
     @NotNull
     @JoinColumn(name = "aspect_id")
     private Aspect aspect;
+    
 }
 
 

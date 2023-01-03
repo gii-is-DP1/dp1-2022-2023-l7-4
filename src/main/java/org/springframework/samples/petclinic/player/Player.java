@@ -42,6 +42,10 @@ public class Player extends BaseEntity{
     @Min(0)
     Integer influence = 0;
 
+    @Column(name = "vp_earned",columnDefinition = "integer default 0")
+    @Min(0)
+    private int vpEarned = 0;
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
@@ -53,7 +57,6 @@ public class Player extends BaseEntity{
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="house_id",nullable = true)
     private House house;
-
    
     @Column(columnDefinition = "integer default 40")
     @Min(0)
@@ -90,6 +93,10 @@ public class Player extends BaseEntity{
         inverseJoinColumns=
             @JoinColumn(name="card_id"))
     private List<Card> played = new ArrayList<>(); 
+
+    public Card getLastPlayedCard(){
+        return played.get(played.size()-1);
+    }
 
     @ManyToMany
     @JoinTable(

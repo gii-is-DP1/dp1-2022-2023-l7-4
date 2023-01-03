@@ -3,10 +3,9 @@ package org.springframework.samples.petclinic.game;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -18,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +25,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.board.map.MapTemplate;
+import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.card.Card;
@@ -49,6 +50,9 @@ public class Game extends BaseEntity{
     @ManyToOne
     Action currentAction;
 
+    @ManyToOne
+    Action endTurnAction;
+
     @Temporal(TemporalType.DATE)
     Date date = new Date();
 
@@ -71,8 +75,17 @@ public class Game extends BaseEntity{
     
     @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
+    
+    @Column(columnDefinition = "boolean default false")
+    Boolean lastActionSkipped= false;
 
-
+    @Column(columnDefinition = "boolean default true")
+    Boolean automaticWhiteTroops= true;
+    
+    //TODO  esto es para las acciones que piden suplantar una tropa en donde pusiste/devolviste espia
+    @OneToOne()
+    Position lastSpyLocation;
+    
     @ManyToOne()
     MapTemplate mapTemplate ;
 
@@ -94,7 +107,7 @@ public class Game extends BaseEntity{
 
     @ManyToMany
     @JoinTable(name = "games_cards_in_deck",
-        inverseJoinColumns = @JoinColumn(name = "card_in_deck_id"))
+    inverseJoinColumns = @JoinColumn(name = "card_in_deck_id"))
     private List<Card> gameDeck = new ArrayList<>();
     
     @ManyToMany
@@ -105,11 +118,17 @@ public class Game extends BaseEntity{
     
     @ManyToMany
     private List<Card> houseGuards = new ArrayList<>();
-
+    
     @ManyToMany
     private List<Card> lolths = new ArrayList<>();
 
+    
+    //TODO esto es nuevo, almacena las cartas a ascender a final de turno
+    @ManyToMany
+    private List<Card> toBePromoted;
 
+
+    
     public void addPlayer(Player player) {
         getPlayers().add(player);
         player.setGame(this);
@@ -146,14 +165,37 @@ public class Game extends BaseEntity{
     }
     //TODO: COMPROBAR ESO
 
-    public SortedMap<Player,Integer> getQualifying(){
-        SortedMap<Player,Integer> map= new TreeMap<>();
+    public Map<Player,Integer> getQualifyingTotalVp(){
+        Map<Player,Integer> map= new LinkedHashMap<>();
         for(Player player:this.players){
-            Integer result=getPlayerScore(player).getTotalVP();
+            Integer result=getPlayerScore(player).getTotalVp();
             map.put(player,result);
         }
-        map.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-        return map;
+        Map<Player, Integer> resultado = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (map1, map2) -> map1, LinkedHashMap::new));
+        return resultado;
+    }
+    
+    public Map<Player, VictoryPoints> getQualifying(){
+        Map<Player,VictoryPoints> map= new LinkedHashMap<>();
+        for(Player player:this.players){
+            VictoryPoints vps=getPlayerScore(player);
+            map.put(player,vps);
+        }
+        Map<Player, VictoryPoints> resultado = map.entrySet()
+                .stream()
+                .sorted((e1,e2) -> e1.getValue().compareTo(e2.getValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (map1, map2) -> map1, LinkedHashMap::new));
+        return resultado;
+
     }
 
         public void removePlayerByName(String name){
@@ -170,21 +212,8 @@ public class Game extends BaseEntity{
        
 
     public Player getWinner(){
-        return getQualifying().firstKey();
+        return getQualifyingTotalVp().entrySet().stream().findFirst().get().getKey();
     }
-
-    /* public Integer getPlayerScore(Player player){
-        Integer result=0;
-        Integer controlVP=getControlCityVP(player);
-        Integer totalControlVP=getTotalControlVP(player);
-        Integer trophyHallVP=player.getTrophyHallVPs();
-        Integer handVP=player.getHandVPs();
-        Integer dicardPileVP=player.getDiscardPile().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
-        Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
-        Integer innerCircleVP= getInnerCircleVP(player);
-        result=controlVP+totalControlVP+trophyHallVP+handVP+dicardPileVP+deckVP+innerCircleVP;
-        return result;
-    } */
     public VictoryPoints getPlayerScore(Player player){
         VictoryPoints vp= new VictoryPoints();
         Integer controlVP=getControlCityVP(player);
@@ -194,6 +223,7 @@ public class Game extends BaseEntity{
         Integer dicardPileVP=player.getDiscarded().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer deckVP=player.getDeck().stream().collect(Collectors.summingInt(card->card.getDeckVP()));
         Integer innerCircleVP= getInnerCircleVP(player);
+        Integer vpEarned = player.getVpEarned();
         vp.setControlVP(controlVP);
         vp.setDeckVP(deckVP);
         vp.setDicardPileVP(dicardPileVP);
@@ -201,6 +231,9 @@ public class Game extends BaseEntity{
         vp.setTotalControlVP(totalControlVP);
         vp.setTrophyHallVP(trophyHallVP);
         vp.setHandVP(handVP);
+        vp.setEarnedVP(vpEarned);
+        vp.setTotalVp();
+        
         return vp;
         
     }
@@ -238,6 +271,17 @@ public class Game extends BaseEntity{
         if(playerCount==4) zones.add(1);
         return zones;
     }
+    /**
+     * Devuelve una nueva accion si no existe. NO GUARDADA EN BASE DE DATOS
+     * @return
+     */
+    public Action getEndTurnAction(){
+        if(endTurnAction==null){
+            return Action.ofEndOfTurn();
+        }else{
+            return endTurnAction;
+        }
+    }
     @Override
     public String toString() {
         return "Game [name=" + name + ", date=" + date + ", round=" + round + ", turnPlayer=" + turnPlayer
@@ -245,6 +289,12 @@ public class Game extends BaseEntity{
                 + ", cities=" + cities + ", paths=" + paths + ", players=" + players + ", firstHalfDeck="
                 + firstHalfDeck + ", secondHalfDeck=" + secondHalfDeck + ", gameDeck=" + gameDeck + ", sellZone="
                 + sellZone + ", devoured=" + devoured + ", houseGuards=" + houseGuards + ", lolths=" + lolths + "]";
+    }
+    public boolean canFinishTurn() {
+        return endTurnAction==null;
+    }
+    public boolean hasLastActionSkipped() {
+        return lastActionSkipped;
     }
 
     

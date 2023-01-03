@@ -3,10 +3,9 @@ package org.springframework.samples.petclinic.card.action;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.card.CardRepository;
+import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
 import org.springframework.samples.petclinic.game.Game;
-import org.springframework.samples.petclinic.player.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,15 +13,10 @@ public class ActionService {
 
     
     private ActionRepository actionRepository;
-    private PlayerRepository playerRepository;
-    private CardRepository cardRepository;
 
     @Autowired
-    public ActionService(ActionRepository actionRepository,PlayerRepository playerRepository
-    ,CardRepository cardRepository){
+    public ActionService(ActionRepository actionRepository){
         this.actionRepository=actionRepository;
-        this.playerRepository=playerRepository;
-        this.cardRepository=cardRepository;
     }
 
     public List<Action> getAllActions(){
@@ -45,62 +39,118 @@ public class ActionService {
         actionRepository.delete(currentAction);
     }
 
-    public Action of(Action action) {
+    public Action of(Action action,Card card) {
         Action copy = new Action();
         copy.setActionName(action.getActionName());
-        copy.description = action.getDescription();
-        copy.setPosition(action.getPosition());
+        copy.setDescription("copia");
+        copy.setCard(action.getCard());
+        copy.setCard(card);
         copy.setValue(action.getValue());
-        copy.setAspect(action.getAspect());
+        // copy.setAspect(action.getAspect()); //expansion pack
         copy.setIterations(action.getOriginalIterations());
         copy.setOriginalIterations(action.getOriginalIterations());
         for (Action subaction : action.getSubactions()) {
-          copy.getSubactions().add(of(subaction));
+          copy.getSubactions().add(of(subaction,card));
         }
         save(copy);
         return copy;
     }
 
-    public Action getNextAction(Action action) {
+    public Action getNextAction(Action action,Game game) {
+        Action gameAction = game.getCurrentAction();
+
         if (action.getIterations() == 0) {
-          return null;
+            if(action.actionName==ActionName.END_TURN_ACTION){
+                return ofNextTurn();
+            }else{
+                return null;
+            }
+        }else if(action.getActionName()==ActionName.AT_END_TURN){
+            addActionsOfEndOfTurn(action,game,action.getCard());
+            decreaseIterationsOf(action);
+            return getNextAction(gameAction, game);
+
         }else if(action.getActionName()==ActionName.CHOOSE && action.isNotChosenYet()){
             return action;
+        }else if(action.getActionName()==ActionName.CHOOSE && action.isChosen()){
+            Action subAction = action.getSubactions().stream().filter(x->!x.hasNoMoreIterations()).findFirst().get();
+
+            return getNextAction(subAction, game);
+        }else if(action.subActionsAllDone()){
+            decreaseIterationsOf(action);
+            return getNextAction(gameAction, game);
         }
         for (Action subaction : action.getSubactions()) {
-          Action next = getNextAction(subaction);
-          if (next != null) {
-            return next;
-          }
+            if(subaction.isMandatory(action) && game.hasLastActionSkipped()){
+                blockSubactionsExcept(action, null);
+                game.setLastActionSkipped(false);
+                return getNextAction(gameAction, game);
+            }
+            Action next = getNextAction(subaction, game);
+            if (next != null) {
+                return next;
+            }
         }
-        action.decrementIterations();
+        decreaseIterationsOf(action);
         return action;
       }
 
-    public void blockSubactionsExcept(Action action, Action chosenSubAction){
-        for(Action subAction:action.getSubactions()){
-            if(subAction!=chosenSubAction){
+      private Action ofNextTurn() {
+        Action action = new Action();
+        action.setActionName(ActionName.NEXT_TURN);
+        return action;
+    }
+
+    private void addActionsOfEndOfTurn(Action originalAction, Game game,Card card) {
+        Action endTurnActionInGame=game.getEndTurnAction();
+        
+        for(Action subAction: originalAction.getSubactions()){      
+            subAction.setCard(card); 
+            endTurnActionInGame.getSubactions().add(of(subAction,card));
+        }
+        save(endTurnActionInGame);
+        game.setEndTurnAction(endTurnActionInGame);
+    }
+
+    public void blockSubactionsExcept(Action action, Action chosenSubAction) {
+        for (Action subAction : action.getSubactions()) {
+            if (!subAction.equals(chosenSubAction)) {
                 subAction.setIterations(0);
-                blockSubactionsExcept(action, chosenSubAction); //en principio no tiene que ser recursivo porque con bloquear ese nivel no va a seguir por sus hijos
+                save(subAction);
             }
         }
     }
 
+    
+    private void decreaseIterationsOf(Action action) {
+        action.decreaseIterations();
+        resetSubactions(action);
+        save(action);
+        
+    }
+    private void resetSubactions(Action action) {
+        for (Action subaction : action.getSubactions()) {
+            subaction.setIterations(subaction.getOriginalIterations());
+            resetSubactions(subaction);
+            save(subaction);
+        }
+        
+    }
     public void chooseSubaction(Game game, Action selected) {
         Action gameAction = game.getCurrentAction();
         chooseSubaction(gameAction, selected);
         
     }
 
-    private void chooseSubaction(Action action, Action selected) {
-        if(action == selected){
-            blockSubactionsExcept(action, selected);
-        }else{
-            for(Action subAction: action.getSubactions()){
+    private void chooseSubaction(Action father, Action selected) {
+        for(Action subAction: father.getSubactions()){
+                if(subAction.equals(selected)){
+                    blockSubactionsExcept(father, subAction);
+                }
                 chooseSubaction(subAction, selected);
-            }
 
         }
+
     }
     
 }

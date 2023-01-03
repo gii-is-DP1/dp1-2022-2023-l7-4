@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.card;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +69,27 @@ public class CardService {
     public List<Card> getAllCards() {
         return (List<Card>) cardRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public List<Card> getPromotableCardForPlayerByGame(Card card,Game game,String typeOfCard){
+        Player actualPlayer=game.getCurrentPlayer();
+        List<Card> promotableCards=new ArrayList<>();
+        if(typeOfCard.toLowerCase().trim().equals("played")){
+            promotableCards.addAll(actualPlayer.getPlayed());
+
+            promotableCards.remove(card);
+
+        }
+        else if(typeOfCard.toLowerCase().trim().equals("discarded")){
+            promotableCards.addAll(actualPlayer.getDiscarded());
+        }else{
+            promotableCards.addAll(actualPlayer.getDeck());
+        }
+        
+        return promotableCards;
+    }
+
+    
 
     
 }

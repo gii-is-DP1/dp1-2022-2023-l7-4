@@ -37,9 +37,7 @@ public class PlayController {
 
     private static final String ROUND_N = "playing/roundN";
     
-    private static final String SCORE_BOARD = null;
-
-    private static final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
+    private static final String SCORE_BOARD = "playing/scoreBoard";
     
     @Autowired
     private PositionInGameService positionInGameService;
@@ -54,23 +52,8 @@ public class PlayController {
     private PlayerUsePositionService playerUsePositionService;
     @Autowired
     InitializePositionService positionInitialiter;
-
-    @Autowired
-    private CustomListingPositionService customListingPositionService;
-
-
-    @Autowired
-    private PricedPositionService pricedPositionService;
-
-
     @Autowired
     private PositionServiceRepo positionServiceRepo;
-
-    @Autowired
-    private CityService cityService;
-
-    @Autowired
-    private PathService pathService;
 
     @Autowired
     private EndTurnService endTurnService;
@@ -85,7 +68,7 @@ public class PlayController {
         result.addObject("turn", game.getTurnPlayer());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
-        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVP());
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVp());
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
     }
 
@@ -94,11 +77,21 @@ public class PlayController {
     @GetMapping("{gameId}")
     public String showActualRound(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
-        String result=null;
+        String result="redirect:";// redirect aqui mismo (recursividad)
         game = gameInitializer.loadGame(game);
         
-
-        if(game.getRound()==0){
+        if(game.getRound()==-1){
+            if(gameService.enoughUnaligned(gameService)){
+                result = "redirect:{gameId}/round/{round}/next";
+            }else{
+                if(game.getAutomaticWhiteTroops()){
+                    //TODO llamas a automatic y no haces nada (recursivo)
+                    // fichas blancas = posiciones de tropa * 0.28  !!!!!!!!!!
+                }else{
+                    //TODO redirect a ChoosePosition como player 0;
+                }
+            }
+        }else if(game.getRound()==0){
             result="redirect:"+gameId+"/round/0";
         }
         else if(game.isFinished())
@@ -118,7 +111,7 @@ public class PlayController {
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
         putPlayerDataInModel(game, player, result);
         result.addObject("positions", initialPositions);
-        result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
 
@@ -140,8 +133,6 @@ public class PlayController {
             gameService.nextPlayerAndSave(game);
             result=new ModelAndView("redirect:/play/"+gameId);
         }catch(Exception e){
-            // br.rejectValue("position","occupied","already occupy");
-            // result=new ModelAndView(ROUND_ZERO,br.getModel());
             result=new ModelAndView("redirect:/play/"+gameId);
         }
         return result;
@@ -155,22 +146,37 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         Player player = game.getCurrentPlayer();
         List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
+        List<Integer> sellZoneCounter = List.of(0,1,2,3,4,5);
         putPlayerDataInModel(game, player, result);
         result.addObject("game", game);
         result.addObject("player", player);
         result.addObject("positions", positions);
-        result.addObject("totalVp", game.getPlayerScore(player).getTotalVP());
+        result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
+        result.addObject("sellZoneCounter", sellZoneCounter);
         return result;
     }
 
     @GetMapping("{gameId}/round/{round}/next")
-    public ModelAndView nextTurn(@PathVariable Integer gameId){
-        endTurnService.execute(gameId);
-        ModelAndView result=new ModelAndView("redirect:/play/"+gameId);
+    public ModelAndView nextTurn(@PathVariable("gameId") Game game){
+        ModelAndView result=new ModelAndView("redirect:/play/{gameId}");
+
+        if(game.canFinishTurn()){
+            endTurnService.execute(game);
+        }else{
+    
+            gameService.loadEndTurnActionAndSave(game);
+            result=new ModelAndView("redirect:/play/{gameId}/round/{round}/execute-action");
+            
+        }
+        
         return result;
     }
+
+
+
+
 
     @GetMapping("{gameId}/round/{round}/card-action/{cardId}")
     public String playCard (@PathVariable Integer gameId,@PathVariable Integer cardId){
@@ -192,7 +198,8 @@ public class PlayController {
     public ModelAndView showScoreBoard(@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         ModelAndView result= new ModelAndView(SCORE_BOARD);
-        result.addObject("gamePlayers", game.getPlayers());
+        result.addObject("ranking", game.getQualifying());
+        result.addObject("players", game.getPlayers());
         return result;
     }
     
