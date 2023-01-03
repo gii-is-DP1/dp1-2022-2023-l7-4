@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 
 import org.springframework.samples.petclinic.house.House;
 import org.springframework.samples.petclinic.house.HouseService;
+import org.springframework.samples.petclinic.play.PositionInGameService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
@@ -35,7 +36,9 @@ public class GameService {
 
 	@Autowired
 	PositionServiceRepo positionServiceRepo;
-
+	
+	@Autowired
+	PositionInGameService positionInGameService;
 
 
 	@Transactional
@@ -99,7 +102,8 @@ public class GameService {
 		Boolean res=false;
 		List<Position> positions =this.positionServiceRepo.getTroopPositionsFromGame(game);
         Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
-		if(this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size()==numberOfWhiteTroopsToDeploy) res=true;
+		if(this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size()==numberOfWhiteTroopsToDeploy
+		 | this.positionInGameService.getAvailableFreeWhiteTroopPositions(game).size()<=numberOfWhiteTroopsToDeploy) res=true;
         return res;
     }
 

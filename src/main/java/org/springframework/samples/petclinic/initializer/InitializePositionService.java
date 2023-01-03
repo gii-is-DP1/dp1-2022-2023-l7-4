@@ -67,17 +67,16 @@ public class InitializePositionService {
     }
 
     public void setWhiteTroopsPositions(@Valid Game game){
-        List<Position> positions = this.positionServiceRepo.getFreeTroopPositionsFromGame(game);
+        List<Position> positions = this.positionServiceRepo.getTroopPositionsFromGame(game);
         Player whitePlayer=playerService.getPlayerById(0);
+        List<Position> availablePositions=this.positionInGameService.getAvailableFreeWhiteTroopPositions(game);
         Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
         Random rand= new Random();
-        while(numberOfWhiteTroopsToDeploy>=1){
-            Integer randomIndex=rand.nextInt(positions.size());
-
-            Position randomPosition= positions.get(randomIndex);
-
-            Boolean res=canDeployWhiteInCity(randomPosition, game) & !randomPosition.isOccupied() & canDeployWhiteInPath(randomPosition, game);
-            if(res){
+        while(numberOfWhiteTroopsToDeploy>=1 & numberOfWhiteTroopsToDeploy<=availablePositions.size()){
+            Integer randomIndex=rand.nextInt(availablePositions.size());
+            Position randomPosition= availablePositions.get(randomIndex);
+            if(canDeployWhiteInCity(randomPosition, game) & canDeployWhiteInPath(randomPosition, game) & !randomPosition.isOccupied()){
+                availablePositions.remove(randomPosition);
                 randomPosition.setPlayer(whitePlayer);
                 numberOfWhiteTroopsToDeploy--;
                 this.playerUsePositionService.save(randomPosition);
