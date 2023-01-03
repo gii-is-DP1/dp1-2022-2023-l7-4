@@ -99,6 +99,8 @@
 
         </div>
 
+        <a href="/" class="do-button">Salir de la partida</a>
+
     </div>
 
 </body>
@@ -109,6 +111,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        margin-bottom: 2rem;
         
     }
     .scoreboard{
@@ -160,7 +163,35 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-    }
+    }.do-button{
+            width: 20rem;
+            height: 5rem;
+            background-color: #8a2be2;
+            border-radius: 1vmax;
+            border-color: rgb(52, 10, 83);
+            border-style: solid;
+            border-width: 0.2vmax;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5vmax;
+            transition-duration: 0.5s;
+        }
+        .do-button:hover{
+            text-decoration: none;
+            background-color: #ffffff;
+            border-radius: 1vmax;
+            border-color: rgb(52, 10, 83);
+            border-style: solid;
+            border-width: 0.2vmax;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 1.5vmax;
+            transition-duration: 0.3s;
+        }
 .table-striped > tbody > tr:nth-child(1) {
     background-color: #f9db5c;
  }

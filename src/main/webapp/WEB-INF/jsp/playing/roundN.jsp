@@ -956,7 +956,7 @@
                             <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
                             <p>Puntos en mazo: ${vp.deckVP}</p>
                             <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
-                            <p>Puntos acumulados por acciones de cartas: ${vp.earnedVp}</p>
+                            <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
                         </div>
                     </div>
                 </div>
