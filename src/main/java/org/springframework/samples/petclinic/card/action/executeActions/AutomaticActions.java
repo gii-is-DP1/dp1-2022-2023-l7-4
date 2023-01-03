@@ -70,5 +70,20 @@ public class AutomaticActions {
             player.setVpEarned(Vp+ActualVP);
         }
     }
+    public static Boolean checkInnerCardsGreaterThan(Game game,Integer value){
+        return game.getCurrentPlayer().getInnerCircle().size()>value;
+    }
+
+    public static Boolean checkAnyEnemyPlayerTroopInSite(Game game, Integer value) {
+        return game.getLastSpyLocation().getAdjacents().stream().filter(position->position.isOccupied())
+        .filter(position->!position.getPlayer().isWhite() & !position.getPlayer().equals(game.getCurrentPlayer())).count()>=value;
+    }
+
+    //CHECK_KILLED_PLAYER_TROOPS_GREATER_THAN
+    public static Boolean checkKilledEnemyPlayerTroopsGreaterThan(Game game, Integer value){
+        return game.getCurrentPlayer().getTrophyHall().stream().filter(player->!player.isWhite()).count()>value;
+    }
+
+
 
 }

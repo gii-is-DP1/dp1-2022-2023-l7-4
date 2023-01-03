@@ -105,6 +105,7 @@ public class ExecuteActionsController {
         
         if(action == null)  {
             game.setCurrentAction(null);
+            game.setLastSpyLocation(null);
             gameService.save(game);
             actionService.remove(currentAction);
             return GAME_MAIN_VIEW;
@@ -150,7 +151,9 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_5_ENEMY_KILLED_TROOPS){
             AutomaticActions.earnVpFor5Killed(game, action);
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP_ANYWHERE){
-            return REDIRECT+"/killTroop?typeOfEnemy=white&withPresence=false";
+            return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=false";
+        }else if(action.getActionName()==ActionName.SUPPLANT_ENEMY_TROOP_IN_SITE){
+            return REDIRECT+"/supplantTroopInSite?typeOfEnemy=any";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_WHITE_KILLED_TROOPS){
             AutomaticActions.earnVpFor3WhiteKilled(game, action);
         }else if(action.getActionName()== ActionName.DEVORE_MARKET_CARD){
@@ -166,15 +169,15 @@ public class ExecuteActionsController {
                 e.printStackTrace();
             }
         }else if(action.getActionName()== ActionName.CHECK_INNER_CARDS_GREATER_THAN){
-            Boolean condition = false;
+            Boolean condition = AutomaticActions.checkInnerCardsGreaterThan(game,action.getValue());
             //TODO automatic action return Boolean
             if(!condition)game.setLastActionSkipped(true);
         }else if(action.getActionName()== ActionName.CHECK_PLAYER_ANY_TROOP_IN_SITE){
-            Boolean condition = false;
+            Boolean condition = AutomaticActions.checkAnyEnemyPlayerTroopInSite(game,action.getValue());
             //TODO automatic action return Boolean
             if(!condition)game.setLastActionSkipped(true);
         }else if(action.getActionName()== ActionName.CHECK_KILLED_PLAYER_TROOPS_GREATER_THAN){
-            Boolean condition = false;
+            Boolean condition = AutomaticActions.checkKilledEnemyPlayerTroopsGreaterThan(game,action.getValue());
             //TODO automatic action return Boolean
             if(!condition)game.setLastActionSkipped(true);
         }
@@ -329,6 +332,8 @@ public class ExecuteActionsController {
                 Position position= positionServiceRepo.findPositionById(idposition.getId());
                 Player player=game.getCurrentPlayer();
                 this.playerUsePositionService.occupySpyPosition(position, player);
+                game.setLastSpyLocation(position);
+                this.gameService.save(game);
                 res=new ModelAndView(EXECUTE_ACTION);
             }catch(Exception e){
                 br.rejectValue("position","occupied","already occupy");
@@ -401,6 +406,10 @@ public class ExecuteActionsController {
                 Position position= this.positionServiceRepo.findPositionById(idposition.getId());
                 Player player=game.getCurrentPlayer();
                 this.playerUsePositionService.returnPiece(position, player);
+                if(position.getForSpy()){
+                    game.setLastSpyLocation(position);
+                    this.gameService.save(game);
+                }
                 res=new ModelAndView(EXECUTE_ACTION);
             }catch(Exception e){
                 br.rejectValue("position","not right","something happen");
@@ -437,6 +446,40 @@ public class ExecuteActionsController {
                 Position position= this.positionServiceRepo.findPositionById(idposition.getId());
                 Player player=game.getCurrentPlayer();
                 this.playerUsePositionService.supplantTroop(position, player, withPresence);
+                res=new ModelAndView(EXECUTE_ACTION);
+            }catch(Exception e){
+                br.rejectValue("position","not right","something happen");
+                res=errorRes;
+            }
+        }
+        return res;
+    }
+
+    @GetMapping("supplantTroopInSite")
+    public ModelAndView initSupplantTroopInSite(@PathVariable("gameId") Game game
+    ,@RequestParam("typeOfEnemy") String typeOfEnemy){
+        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        Player actualPlayer=game.getCurrentPlayer();
+        putPlayerDataInModel(game, actualPlayer, result);
+        result.addObject("positions",this.customListingPositionService.getAdjacentEnemyTroopPositionsByLastPosition(game, typeOfEnemy));
+        return result;
+    }
+
+    @PostMapping("supplantTroopInSite")
+    public ModelAndView processSupplantTroopInSite(@Valid Idposition idposition,
+    @PathVariable("gameId") Game game,@RequestParam("typeOfEnemy") String typeOfEnemy
+    ,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }else{
+            try{
+                Position position= this.positionServiceRepo.findPositionById(idposition.getId());
+                Player player=game.getCurrentPlayer();
+                this.playerUsePositionService.supplantTroopInSite(position, player);
                 res=new ModelAndView(EXECUTE_ACTION);
             }catch(Exception e){
                 br.rejectValue("position","not right","something happen");

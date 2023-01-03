@@ -125,5 +125,12 @@ public class PlayerUsePositionService {
         position.setPlayer(player);
         save(position);
     }
+    @Transactional(rollbackFor =
+    {Exception.class})
+    public void supplantTroopInSite(Position position, Player player) throws DataAccessException
+    ,Exception{
+        CheckPlayerUsePosition.playerHasChooseAPositionInTheSameSite(position,player);
+        supplantTroop(position, player, false);
+    }
     
 }
