@@ -37,6 +37,14 @@ public class City extends BaseEntity{
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
     private List<Position> positions= new ArrayList<>();
+
+    public List<Position> getTroopPosition(){
+        return positions.stream().filter(pos->pos.getForSpy()==false).collect(Collectors.toList());
+    }
+
+    public List<Position> getFreeTroopPosition(){
+        return positions.stream().filter(pos->pos.getForSpy()==false & !pos.isOccupied()).collect(Collectors.toList());
+    }
     
 
     /**

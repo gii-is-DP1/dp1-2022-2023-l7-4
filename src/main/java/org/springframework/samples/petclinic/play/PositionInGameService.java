@@ -19,6 +19,7 @@ public class PositionInGameService {
         return positionRepository
         .findAllInitialForTroop(game.getId()).stream()
         .filter(position->position.getCity().hasNoPlayerTroops())
+        .filter(position->!position.isOccupied())
         .collect(Collectors.toList());
     }
 

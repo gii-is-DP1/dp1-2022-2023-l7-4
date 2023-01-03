@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.initializer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -8,10 +9,12 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.position.AdjacentPositionService;
 import org.springframework.samples.petclinic.board.position.CustomListingPositionService;
+import org.springframework.samples.petclinic.board.position.PlayerUsePositionService;
 import org.springframework.samples.petclinic.board.position.PopulatePositionService;
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.play.PositionInGameService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,12 @@ public class InitializePositionService {
 
     @Autowired
     private CustomListingPositionService customListingPositionService;
+
+    @Autowired
+    private PlayerUsePositionService playerUsePositionService;
+
+    @Autowired
+    private PositionInGameService positionInGameService;
 
 // TODO cambiar descripcion
     /**
@@ -58,20 +67,29 @@ public class InitializePositionService {
     }
 
     public void setWhiteTroopsPositions(@Valid Game game){
-        List<Position> positions = positionServiceRepo.getTroopPositionsFromGame(game);
+        List<Position> positions = this.positionServiceRepo.getFreeTroopPositionsFromGame(game);
         Player whitePlayer=playerService.getPlayerById(0);
-        for(Position position:positions){
-            Double randomValue=Math.random();
-            if(randomValue>=0.65 & canDeployWhiteInCity(position, game) & canDeployWhiteInPath(position, game))
-                position.setPlayer(whitePlayer);
+        Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
+        Random rand= new Random();
+        while(numberOfWhiteTroopsToDeploy>=1){
+            Integer randomIndex=rand.nextInt(positions.size());
+
+            Position randomPosition= positions.get(randomIndex);
+
+            Boolean res=canDeployWhiteInCity(randomPosition, game) & !randomPosition.isOccupied() & canDeployWhiteInPath(randomPosition, game);
+            if(res){
+                randomPosition.setPlayer(whitePlayer);
+                numberOfWhiteTroopsToDeploy--;
+                this.playerUsePositionService.save(randomPosition);
+            }
         }
+        
     }
 
     public Boolean canDeployWhiteInCity(Position position,@Valid Game game){
-        List<Position> initialStartingPositions=this.customListingPositionService.getInitialPositionsOfGame(game);
         Boolean res=true;
-        if(initialStartingPositions.contains(position)){
-            if(position.getCity().getPositions().get(0).equals(position)) res=false; //saltarme la primera posi
+        if(position.getCity()!=null){
+            if(position.getCity().isStartingCity() & position.getCity().getFreeTroopPosition().size()<=1) res=false; 
         }
         return res;
     }
