@@ -14,7 +14,8 @@ import org.springframework.samples.petclinic.house.HouseService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-
+import org.springframework.samples.petclinic.board.position.Position;
+import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 
@@ -31,6 +32,11 @@ public class GameService {
 
     @Autowired
 	CityService cityService;
+
+	@Autowired
+	PositionServiceRepo positionServiceRepo;
+
+
 
 	@Transactional
 	public Collection<Game> getGameByName(String name){
@@ -89,9 +95,12 @@ public class GameService {
         save(game);
     }
 
-    public boolean enoughUnaligned(GameService gameService) {
-		//TODO
-        return false;
+    public boolean enoughUnaligned(Game game) {
+		Boolean res=false;
+		List<Position> positions =this.positionServiceRepo.getTroopPositionsFromGame(game);
+        Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
+		if(this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size()==numberOfWhiteTroopsToDeploy) res=true;
+        return res;
     }
 
     

@@ -18,18 +18,18 @@ INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfe
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'UNO Ini Z2',3,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'DOS Ini Z2',3,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'TRES blanca Z2',3,FALSE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'CUATRO Ini Z3',6,TRUE,3);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'CINCO Ini Z1',6,TRUE,1);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'DOS Ini Z2',3,TRUE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'TRES blanca Z2',3,FALSE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'CUATRO Ini Z3',6,TRUE,3);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'CINCO Ini Z1',6,TRUE,1);
 
 -- PATHS
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,1);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,1);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,1);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,1);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,1);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,5,1);-- GIVES ERROR
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,5,3);-- GIVES ERROR
 
 -- MAPS
 INSERT INTO map_templates(name) VALUES ('default Map 4');

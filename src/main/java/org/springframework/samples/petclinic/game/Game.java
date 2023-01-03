@@ -56,8 +56,8 @@ public class Game extends BaseEntity{
     @Temporal(TemporalType.DATE)
     Date date = new Date();
 
-    @Column(columnDefinition = "integer default 0")
-    private Integer round=0;
+    @Column(columnDefinition = "integer default -1")
+    private Integer round=-1;
 
     @Min(1)
     @Column(columnDefinition = "integer default 1")
