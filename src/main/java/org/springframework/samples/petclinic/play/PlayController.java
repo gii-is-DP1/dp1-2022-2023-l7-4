@@ -145,6 +145,7 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         Player player = game.getCurrentPlayer();
         List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
+        List<Integer> sellZoneCounter = List.of(0,1,2,3,4,5);
         putPlayerDataInModel(game, player, result);
         result.addObject("game", game);
         result.addObject("player", player);
@@ -152,6 +153,7 @@ public class PlayController {
         result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
+        result.addObject("sellZoneCounter", sellZoneCounter);
         return result;
     }
 

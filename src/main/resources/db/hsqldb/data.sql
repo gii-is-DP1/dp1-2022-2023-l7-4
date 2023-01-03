@@ -299,6 +299,8 @@ INSERT INTO aspects(id,name,description,image) VALUES (5,'Obediencia','Los sierv
 
 
 
+INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES      
+        (0,'Espaciador',0,'','',0,0,0,3,5);
 
 
 
@@ -307,9 +309,9 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Soldado',0,'Los soldados defienden a sus superiores contra todos los enemigos','+1 de poder',0,1,0,3,5,100),
             ('Noble',0,'La voz de un drow de una casa noble tiene el peso de la de mil plebeyos','+1 de influencia',0,1,0,3,5,101),
             ('Sacerdotisa de Lolth',2,'Elegidas por si devoración a Lolth, ahora hacen valer su voluntad','+2 de influencia',1,2,0,4,5,102),
-            ('Guardia de la casa',3,'El cuerpo de guardia de una casa se nutre de los pocos drow que sobreviven a la instrucción','+2 de poder',1,3,0,4,5,103),
-            ('Cuadrilla de mercenarios',3,'La única otra opción que les queda a quienes carecen de casa es el exilio.','Despliega 3 tropas.',1,4,2,1,2,104),
-            ('Maestra de espías',2,'<<Puedo ayudarte a sortear las puertas y los guardias. Lo que hagas despues es cosa tuya>>','Pon un espía',1,2,2,1,4,105),
+            --('Guardia de la casa',3,'El cuerpo de guardia de una casa se nutre de los pocos drow que sobreviven a la instrucción','+2 de poder',1,3,0,4,5,103),
+            --('Cuadrilla de mercenarios',3,'La única otra opción que les queda a quienes carecen de casa es el exilio.','Despliega 3 tropas.',1,4,2,1,2,104),
+            --('Maestra de espías',2,'<<Puedo ayudarte a sortear las puertas y los guardias. Lo que hagas despues es cosa tuya>>','Pon un espía',1,2,2,1,4,105),
             --('Adalid',2,'<<Codícia, avarícia y poder: tres idiomas que entiendo a la perfección>>','Elige una Opcion: + 2 Influencia | Al final del turno, asciende una carta jugada durante este turno',1,2,4,1,1,106); -- Sin hacer
             ('Inquisidora',3,'<<Si con mi servicio puedo complacer a la Diosa y traer honor a mi casa, me doy por satisfecha>>','Elige una Opcion: + 2 Influencia | Asesina tropa',2,4,1,1,3,107),
             ('Guardia Negro',3,'Patrullan el Underdark, exterminando a intrusos perdidos, inconscientes y temerarios.','Elige una Opcion: + 2 poder| Asesina tropa',1,3,4,1,3,108),
@@ -379,7 +381,7 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     ;
 
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id,action_id) 
-VALUES      (-10,'Test elegir',0,'lore','+1 de poder',1,4,50,1,2,-1),
+VALUES      (-10,'Test elegir',22,'lore','+1 de poder',22,22,1,1,2,-1),
             (-11,'Test promover',0,'mondongo','ascender ahora 1 carta descartada',1,2,3,4,2,-14),
             (-12,'Test promover',0,'mondongo','ascender 2 cartas descartadas al final del turno',1,2,3,4,2,-21),
             (-13,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-16),
