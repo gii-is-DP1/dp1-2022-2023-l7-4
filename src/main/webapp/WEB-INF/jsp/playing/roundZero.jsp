@@ -5,29 +5,30 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="motero2k" tagdir="/WEB-INF/tags/motero2k" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
 <body>
     <div class="fullscreen-game">  
         <div class="tophud">
             <div class="tophud-box tophud-b1">
-                <div class="player-div">
-                    JUGADOR ${turn} - ${player.name}
+                <div class="player-div" style="color: ${player.house.hexColor};">
+                    JUGADOR&nbsp${turn} - ${player.name}
                 </div>
             </div>
             <div class="tophud-box tophud-b2">
                 <div class="resume-div">
                     <c:choose>
-                        <c:when test="${round <0}">
+                        <c:when test="${round<0}">
                             <div class="resume-text">
-                                te quedan ${whiteTroopsLeft} tropas por colocar
+                                Te quedan ${whiteTroopsLeft} tropas por colocar
                             </div>
                         </c:when>
-                        <c:when test="${round ==0}">
+                        <c:otherwise>
                             <div class="resume-text">
                                 Selecciona posición inicial
                             </div>
-                        </c:when>
+                        </c:otherwise>
                     </c:choose>
                 </div>
             </div>

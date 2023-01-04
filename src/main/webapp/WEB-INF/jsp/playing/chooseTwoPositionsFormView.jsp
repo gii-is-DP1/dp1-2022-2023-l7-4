@@ -13,8 +13,8 @@
     <div class="fullscreen-game">  
         <div class="tophud">
             <div class="tophud-box tophud-b1">
-                <div class="player-div">
-                    JUGADOR ${turn} - ${player.name}
+                <div class="player-div"  style="color: ${player.house.hexColor};">
+                    JUGADOR&nbsp${turn} - ${player.name}
                 </div>
             </div>
             <div class="tophud-box tophud-b2">
