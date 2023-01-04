@@ -37,7 +37,7 @@
                                 
                             </c:when>
                             <c:otherwise>
-                                <a type="submit" href="chosenCardToPromote/${card.id}" class="play-buy-card-button" style="font-size: 1.1vmax;">PROMOVER</a>
+                                <a type="submit" href="chosenCardToPromote/${card.id}" class="play-buy-card-button" style="font-size: 1.1vmax;">ASCENDER</a>
                             </c:otherwise>
                             </c:choose>
                         </td>

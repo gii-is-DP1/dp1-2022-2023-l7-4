@@ -143,7 +143,9 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (47,1,'VP_FOR_EVERY_TOTAL_CONTROLLED_SITE',null),
     (48,1,'POWER',1),
     (49,1,'AT_END_TURN',null),
-    (50,1,'THEN',null)
+    (50,1,'THEN',null),
+    (51,1,'AT_END_TURN',null),
+    (52,1,'AT_END_TURN',null)
     ;
 
 --CARD ACTIONS
@@ -155,14 +157,14 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (103,1,'POWER',2),--Guardia HECHA Y COMPROBADA
     (104,3,'DEPLOY_OWN_TROOP',null),--Cuadrilla de mercenarios HECHA Y COMPROBADA
     (105,1,'PLACE_OWN_SPY',null),--Maestra de espías HECHA Y COMPROBADA
-    (106,1,'CHOOSE',null),--Adalid
+    (106,1,'CHOOSE',null),--Adalid HECHA Y COMPROBADA
     (107,1,'CHOOSE',null),--Inquisidora HECHA Y COMPROBADA
     (108,1,'CHOOSE',null),--Guardia Negro HECHA Y COMPROBADA
-    (109,1,'SUPPLANT_WHITE_TROOP',null),--Rastreadora de avanzadilla
-    (110,2,'KILL_WHITE_TROOP',null),--Explorador del UnderDark
-    (111,1,'ALL',null),--Elegida de Lolth
+    (109,1,'SUPPLANT_WHITE_TROOP',null),--Rastreadora de avanzadilla HECHA Y COMPROBADA
+    (110,2,'KILL_WHITE_TROOP',null),--Explorador del UnderDark HECHA Y COMPROBADA
+    (111,1,'ALL',null),--Elegida de Lolth HECHA Y COMPROBADA
     (112,1,'POWER',3),--Cazarrecompensas HECHA Y COMPROBADA
-    (113,1,'SUPPLANT_WHITE_TROOP',null),--Doppelganger
+    (113,1,'SUPPLANT_ENEMY_TROOP',null),--Doppelganger HECHA Y COMPROBADA
     (114,1,'CHOOSE',null),--Maestros de Sorcere
     (115,1,'CHOOSE',null),--Maestro de Melee-Magthere
     (116,1,'THEN',null),--Infiltrador
@@ -220,14 +222,16 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (43,14),
     (50,37),
     (50,48),
+    (51,2),
+    (52,2),
     (106,3),
-    (106,2),
+    (106,51),
     (107,3),
     (107,4),
     (108,5),
     (108,4),
     (111,1), --Name of Card if is the top of the tree
-    (111,2),
+    (111,52),
     (114,6),
     (114,15),
     (115,8),
@@ -312,15 +316,15 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Guardia de la casa',3,'El cuerpo de guardia de una casa se nutre de los pocos drow que sobreviven a la instrucción','+2 de poder',1,3,0,4,5,103),
             ('Cuadrilla de mercenarios',3,'La única otra opción que les queda a quienes carecen de casa es el exilio.','Despliega 3 tropas.',1,4,2,1,2,104),
             ('Maestra de espías',2,'<<Puedo ayudarte a sortear las puertas y los guardias. Lo que hagas despues es cosa tuya>>','Pon un espía',1,2,2,1,4,105),
-            --('Adalid',2,'<<Codícia, avarícia y poder: tres idiomas que entiendo a la perfección>>','Elige una Opcion: + 2 Influencia | Al final del turno, asciende una carta jugada durante este turno',1,2,4,1,1,106); -- Sin hacer
+            ('Adalid',2,'<<Codícia, avarícia y poder: tres idiomas que entiendo a la perfección>>','Elige una Opcion: + 2 Influencia | Al final del turno, asciende otra carta jugada durante este turno',1,2,4,1,1,106), 
             ('Inquisidora',3,'<<Si con mi servicio puedo complacer a la Diosa y traer honor a mi casa, me doy por satisfecha>>','Elige una Opcion: + 2 Influencia | Asesina tropa',2,4,1,1,3,107),
             ('Guardia Negro',3,'Patrullan el Underdark, exterminando a intrusos perdidos, inconscientes y temerarios.','Elige una Opcion: + 2 poder| Asesina tropa',1,3,4,1,3,108),
-            --('Rastreadora de avanzadilla',3,'Se infiltran en el entramado de la sociedad drow sin perturbar ni una sola hierba','Suplanta 1 tropa blanca',1,3,3,1,2,109), -- No probada
-            --('Explorador del UnderDark',3,'Su conocimiento del Underdark no tiene parangón; ningún rincón esta a salvo de sus espadas','Asesina 2 tropas blancas',2,4,2,1,2,110), -- No probada
-            --('Elegida de Lolth',4,'<<No pienses siquiera en desobedecer. ¡Es la voluntad de la Reina Araña!>>','Devuelve 1 tropa enemíga o espía enemigo. Al final del turno, asciende carta jugada durante este turno',2,4,2,1,2,111), -- Sin hacer
+            ('Rastreadora de avanzadilla',3,'Se infiltran en el entramado de la sociedad drow sin perturbar ni una sola hierba','Suplanta 1 tropa blanca',1,3,3,1,2,109), 
+            ('Explorador del UnderDark',3,'Su conocimiento del Underdark no tiene parangón; ningún rincón esta a salvo de sus espadas','Asesina 2 tropas blancas',2,4,2,1,2,110), 
+            ('Elegida de Lolth',4,'<<No pienses siquiera en desobedecer. ¡Es la voluntad de la Reina Araña!>>','Devuelve 1 tropa enemíga o espía enemigo. Al final del turno, asciende otra carta jugada durante este turno',2,4,2,1,2,111), 
             ('Cazarrecompensas',4,'Toda vida tiene un precio','+3 Poder',2,4,2,1,3,112),
-            --('Doppelganger',5,'<<Bonita vida la tuya. Creo que me la voy a quedar>>','Suplanta 1 tropa blanca',3,5,2,1,3,113), --Sin probar
-            --('Maestros de Sorcere',5,'Las maestras de Sorcere cumplen dos propósitos; enseñar a los estudiantes y garantizar la lealtad a Lolth','Elige una opción:Pon 2 espías| Devuelve 1 de tus espías=> +4 poder',2,5,1,1,4,114), -- Sin hacer
+            ('Doppelganger',5,'<<Bonita vida la tuya. Creo que me la voy a quedar>>','Suplanta 1 tropa',3,5,2,1,3,113),
+            --('Maestros de Sorcere',5,'Las maestras de Sorcere cumplen dos propósitos; enseñar a los estudiantes y garantizar la lealtad a Lolth','Elige una opción:Pon 2 espías| Devuelve 1 de tus espías=> +4 poder',2,5,1,1,4,114), -- CORREGIR DEVOLVER ESPÍA
             --('Maestro de Melee-Magthere',5,'Las instrucciones de Melee-Magthere se cuentan entre los mejores guerreros de Menzoberranzan','Elige una opción:Despliega 4 tropas|Suplanta 1 tropa blanca',2,5,2,1,2,115), -- Sin probar
             --('Infiltrador',3,'<<La perfección solo puede alcanzarse cuando el precio del fracaso es la muerte>>','Pon un espía. Si hay alguna tropa de otro jugador en esa ubicación, obten +1 poder',1,2,2,1,4,116), -- Sin hacer
             --('Maestro de armas',6,'<<O resultas ser digno o perecerás. Tu destino depende de ti. >> -- Shoor Vandree','Elige 3 veces: Despliega 1 tropa| Asesina 1 tropa blanca',3,6,1,1,2,117), -- Sin probar

@@ -181,7 +181,7 @@
             <div class="popup-content">
                 <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
                 <div class="popup-content-box">
-                    <div class="principalCard" style="width: 35rem; height: 50rem;">
+                    <div class="principalCard" style="width: 23vmax; height: 33vmax;">
                         <spring:url value="/cards/{cardId}" var="cardUrl">
                             <spring:param name="cardId" value="${card.id}" />
                         </spring:url>
@@ -233,9 +233,18 @@
                             </b>
                         </div>
                     </div>
-                    <div class="story">
-                        <p><c:out value="${card.story}"></c:out></p>
-                    </div>
+                    <c:choose>
+                        <c:when test="${card.getStory().length()>0}">
+                            <div class="story">
+                                Historia: ${card.story}
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="story">
+                                Esta carta no tiene descripción
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
@@ -362,16 +371,16 @@
     margin: 3px;
 }
 .story{
-    border-radius: 1em;
-    padding: 0.3em;
-    border: 0.2em solid #5f4b8b;
-    background-image: url(https://media.istockphoto.com/id/1133497899/es/foto/vieja-textura-de-papel-sucio.jpg?s=612x612&w=0&k=20&c=5U66N7rMGr1QdWz_DznqlM6Cu1bMjG31gdN4H0ZBTpU=);
-    background-color: antiquewhite;
+    border-radius: 1.5vmax;
+    padding: 0.3vmax;
+    border: 0.3vmax solid #000000;
+    background-color:rgba(16, 64, 112, 0.814);
     margin-left: 2em;
-    width: 30rem;
-    font-size: 2.5rem;
+    width: 30vmax;
+    font-size: 1.5vmax;
     text-align: center;
     text-justify: auto;
+    color: aliceblue;
 }
 
 </style>

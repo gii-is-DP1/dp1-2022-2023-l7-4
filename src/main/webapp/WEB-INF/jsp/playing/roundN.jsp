@@ -505,8 +505,35 @@
     border: 0.2vmax solid #360c5d; 
     background: #e2c9fa;
     background: linear-gradient(0deg, #e6d9f3 0%, #cea9f1 50%, #8d65b1 100%);
+    transition-duration: 1s;
+}
+.skip-turn-end-action-button{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 11vmax;
+    font-size: 1.3vmax;
+    color: #4b4505;
+    border-radius: 0.5vmax;
+    border: 0.2vmax solid #4b4505; 
+    background: #cdc947;
+    background: linear-gradient(0deg, #d3d158 0%, #c3c130 50%, #8a8821 100%);
+    transition-duration: 1s;
+}
+.skip-turn-end-action-button:hover{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 11vmax;
+    font-size: 1.3vmax;
+    color: #4b4505;
+    border-radius: 0.5vmax;
+    border: 0.2vmax solid #4b4505; 
+    background: #dddcaf;
+    background: linear-gradient(0deg, #edecc6 0%, #f1ef96 50%, #d7d557 100%);
     transition-duration: 0.5s;
 }
+
     
     </style>
 
@@ -544,9 +571,19 @@
                 </div>
             </div>
             <div class="tophud-box tophud-b3">
-                <a href="/play/${gameId}/round/${round}/next" class="skip-turn-button" style="margin-right: 2vmax;">
-                    PASAR TURNO
-                </a>
+                <c:choose>
+                    <c:when test="${game.endTurnAction.subactions.isEmpty()}">
+                        <a href="/play/${gameId}/round/${round}/next" class="skip-turn-button" style="margin-right: 2vmax;">
+                            PASAR TURNO
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/play/${gameId}/round/${round}/next" class="skip-turn-end-action-button" style="margin-right: 2vmax; width: 21vmax;">
+                            ACCIONES DE FINAL DE TURNO
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+                
                 <div class="round-div">
                     RONDA ${round}
                 </div>
