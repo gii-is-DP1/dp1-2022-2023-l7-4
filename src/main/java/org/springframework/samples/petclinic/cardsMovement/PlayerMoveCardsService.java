@@ -60,6 +60,10 @@ public class PlayerMoveCardsService {
 		moveAllAndSave(player.getHand(), player.getDiscarded(), player);
 	}
 
+	public void moveAllDeckToDiscarded(@Valid Player player) throws Exception{
+		moveAllAndSave(player.getDeck(),player.getDiscarded(),player);
+	}
+
 //	PROMOTE
 
 	public void promoteSelectedFromPlayed(@Valid Card card, @Valid Player player){
