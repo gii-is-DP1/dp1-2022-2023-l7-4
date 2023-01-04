@@ -26,7 +26,7 @@
       name: "${city.name}",
       zone: parseInt("${city.zone}"),
       vp: parseInt("${city.vpEndgameValue}"),
-      isStartingCity: "true" =="${city.isStartingCity}",
+      isStartingCity: "true" =="${city.isStartingCity()}",
       capacity: parseInt("${city.capacity}"),
       x: 50,
       y: 50

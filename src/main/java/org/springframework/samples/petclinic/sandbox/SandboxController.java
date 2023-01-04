@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.position.PositionService;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
+import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.game.GameService;
+import org.springframework.samples.petclinic.initializer.IntializeGame;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,13 +18,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class SandboxController {
     
     private String SANDBOX_LISTING_VIEW="sandbox/sandbox";
-
+    @Autowired
+    private GameService gameService;
     private PositionService positionService;
     private CityService cityService;
     private PathService pathService;
-    
+    @Autowired
+    IntializeGame gameInitializer;
     @ModelAttribute(name = "zones")
     public String zones(){
+
         return "1,2";
     }
 
@@ -34,6 +40,8 @@ public class SandboxController {
 
     @GetMapping("/sandbox")
     public ModelAndView showPositions(){
+        Game game = gameService.getGameById(2);
+        gameInitializer.loadGame(game);
         var cities = cityService.getCities();
         var paths = pathService.getPaths();
         var zones = List.of(1,2,3);
