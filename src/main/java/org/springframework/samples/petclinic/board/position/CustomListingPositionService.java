@@ -106,12 +106,14 @@ public class CustomListingPositionService {
             res= positionServiceRepo.getAllEnemyPositionsOfPlayerByTypeOfPosition(player_id, forSpy,game);
         else{
             res=getPresencePositions(player_id, true);
-            res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
+            res=res.stream().filter(pos->pos.getForSpy()==forSpy).collect(Collectors.toList());
         }
-        if(searchWhites!=null)
-            res.stream()
-            .filter(pos->(searchWhites & pos.getPlayer().isWhite())
-             || (!searchWhites & !pos.getPlayer().isWhite())).collect(Collectors.toList());
+        if(searchWhites!=null){
+            res=res.stream()
+            .filter(pos->(searchWhites & pos.getPlayer().isWhite()) 
+            | (!searchWhites & !pos.getPlayer().isWhite())).collect(Collectors.toList());
+            
+        }
         return res;
     }
 
@@ -120,12 +122,15 @@ public class CustomListingPositionService {
     @Transactional(readOnly=true)
     public List<Position> getAvailableEnemyPositionsByGame(Player player,Game game,String typeOfEnemy
     ,Boolean withPresence,Boolean forSpy){
-        if(typeOfEnemy.toLowerCase().trim().equals("white"))
+        if(typeOfEnemy.toLowerCase().trim().equals("white")){
             return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, true, game);
-        else if(typeOfEnemy.toLowerCase().trim().equals("player"))
+        }
+        else if(typeOfEnemy.toLowerCase().trim().equals("player")){
             return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, false, game);
-        else
+        }
+        else{
             return getEnemyPositionsByTypeOfGame(player.getId(), forSpy, withPresence, null, game);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -134,7 +139,7 @@ public class CustomListingPositionService {
         List<Position> result=new ArrayList<>();
         if(withPresence){
             result=getPresenceTroopPositions(player.getId(),false);
-            if(result.isEmpty()) result=this.positionServiceRepo.getFreePositionsFromGame(game);
+            if(result.isEmpty()) result=this.positionServiceRepo.getFreeTroopPositionsFromGame(game);
         }
         return result;
     }
@@ -143,7 +148,7 @@ public class CustomListingPositionService {
     public Boolean isSpecialCaseOfFreeTroopPositions(Game game,Boolean withPresence){
         if(!withPresence) return false;
         else{
-            return getPresencePositions(game.getCurrentPlayer().getId(),false).isEmpty();
+            return getPresenceTroopPositions(game.getCurrentPlayer().getId(),false).isEmpty();
         }
     }
 

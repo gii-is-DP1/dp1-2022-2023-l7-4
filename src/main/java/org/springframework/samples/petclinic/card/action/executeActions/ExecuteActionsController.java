@@ -155,8 +155,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()==ActionName.SUPPLANT_ENEMY_TROOP){
             return REDIRECT+"/supplantTroop?typeOfEnemy=any&withPresence=true";
         }else if(action.getActionName()==ActionName.SUPPLANT_ENEMY_TROOP_IN_SITE){
-            //TODO IN_SITE significa puesto/devuelto un espía en una posición, esa posición se guarda en
-            //el juego como game.lastSpyLocation. Entonces podremos suplantar dentro del city de esa posición
+            return REDIRECT+"/supplantTroopInSite?typeOfEnemy=any";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_WHITE_KILLED_TROOPS){
             AutomaticActions.earnVpFor3WhiteKilled(game, action);
         }else if(action.getActionName()== ActionName.DEVORE_MARKET_CARD){

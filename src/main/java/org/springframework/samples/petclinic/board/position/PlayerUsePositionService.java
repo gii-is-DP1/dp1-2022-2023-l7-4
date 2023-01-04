@@ -82,10 +82,13 @@ public class PlayerUsePositionService {
 
     @Transactional(rollbackFor = Exception.class)
     public void returnPiece(@Valid Position position,@Valid Player player) throws DataAccessException,Exception{
-        List<Position> playerPositions=
-        customListingPositionService.getPresencePositions(player.getId(),true);
-        CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
+        
         Player enemy=position.getPlayer();
+        if(!player.equals(enemy)){
+            List<Position> playerPositions=
+            customListingPositionService.getPresencePositions(player.getId(),true);
+            CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
+        }
         if(position.getForSpy()){
             enemy.setSpies(enemy.getSpies()+1);
         }else{
