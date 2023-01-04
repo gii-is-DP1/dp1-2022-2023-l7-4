@@ -144,7 +144,14 @@ public class ExecuteActionsController {
             return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.MOVE_ENEMY_TROOP){
             return REDIRECT+"/movePiece?piece=troop";
-        }else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
+        }else if(action.getActionName()==ActionName.MOVE_OWN_DECK_CARDS_TO_DISCARDED){
+            try{
+                this.playerMoveCardsService.moveAllDeckToDiscarded(player);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
             return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=true";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_CARDS_IN_INNER){
             AutomaticActions.earnVpFor3Inner(game, action);
