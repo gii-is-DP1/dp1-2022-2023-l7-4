@@ -65,9 +65,9 @@ INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUE
 
 
 INSERT INTO house(id,name,hex_color) VALUES (0,'Unaligned','#dddddd');
-INSERT INTO house(id,name,hex_color) VALUES (1,'Baerne','#5f605b');
+INSERT INTO house(id,name,hex_color) VALUES (1,'Baerne','#81ed05');
 INSERT INTO house(id,name,hex_color) VALUES (2,'Mizzrym','#ff7133');
-INSERT INTO house(id,name,hex_color) VALUES (3,'Xorlarrin','#2f717f');
+INSERT INTO house(id,name,hex_color) VALUES (3,'Xorlarrin','#09e4e8');
 INSERT INTO house(id,name,hex_color) VALUES (4,'Barrison del"armgo','#fc2e3c');
 -- HALFDECK
 INSERT INTO halfdecks(id,name,description) VALUES (1,'Drow','El mazo Drow presenta cartas optimizadas con costes de influencia más bajos.');

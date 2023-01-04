@@ -559,8 +559,8 @@
         <!--LOYOUT ZONA SUPERIOR-->
         <div class="tophud">
             <div class="tophud-box tophud-b1">
-                <div class="player-div">
-                    JUGADOR${turn} - ${player.name}
+                <div class="player-div" style="color: ${player.house.hexColor};">
+                    JUGADOR&nbsp${turn} - ${player.name}
                 </div>
             </div>
             <div class="tophud-box tophud-b2">
@@ -593,11 +593,11 @@
         
         <div class="game-flex">
             <!--LAYOUT IZQUIERDA (RECURSOS)-->
-            <div class="resource-layout">
+            <div class="resource-layout" >
                 <div class="resources-box">
                     <abbr title="Puntos de influencia: usa los puntos de influencia para comprar cartas del mercado" style="display:flex; width: 100%; height: 100%;">
                         <div class="resource-image influence"></div>
-                        <div class="resource-valor">
+                        <div class="resource-valor" >
                         ${player.influence}
                         </div>
                     </abbr>
