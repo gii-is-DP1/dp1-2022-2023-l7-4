@@ -175,15 +175,20 @@ public class CustomListingPositionService {
             this.positionServiceRepo.getPlayerPositions(player.getId());
     }
 
-    @Transactional(readOnly = true)
-    public List<Position> getAllFreePositionsByPieceAndGame(Game game,String piece){
+    @Transactional(readOnly=true)
+    public List<Position> getReturnablePiecesForPlayer(Player player,Game game,String piece,Boolean enemyPlayer){
         if(piece.toLowerCase().trim().equals("troop"))
-            return this.positionServiceRepo.getFreeTroopPositionsFromGame(game);
+            return enemyPlayer?getEnemyPositionsByTypeOfGame(player.getId(), false, true, false, game)
+            :this.positionServiceRepo.getTroopPositionsOfPlayer(player.getId(), game);
         else if(piece.toLowerCase().trim().equals("spy"))
-            return this.positionServiceRepo.getFreeSpyPositionsFromGame(game);
+            return enemyPlayer?getEnemyPositionsByTypeOfGame(player.getId(), false, true, false, game)
+            :this.positionServiceRepo.getSpyPositionsOfPlayer(player.getId(), game);
         else
-            return this.positionServiceRepo.getFreePositionsFromGame(game);
+            return enemyPlayer?getPresencePositions(player.getId(),true)
+            .stream().filter(position->!position.getPlayer().isWhite()).collect(Collectors.toList()):
+            this.positionServiceRepo.getPlayerPositions(player.getId());
     }
+
 
     @Transactional(readOnly = true)
     public List<Position> getAdjacentEnemyTroopPositionsByLastPosition(Game game,String typeOfEnemy){
@@ -196,6 +201,16 @@ public class CustomListingPositionService {
         else
             return game.getLastSpyLocation().getCity().getTroopPosition().stream().filter(position->position.isOccupied())
             .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly=true)
+    public List<Position> getAvailableFreePositionsToMoveChosenPiece(Game game) {
+        Position chosenPiece=game.getChosenPieceToMove();
+        if(chosenPiece.getForSpy()){
+            return getFreeSpyPositionsForPlayer(chosenPiece.getPlayer().getId(), game);
+        }else{
+            return this.positionServiceRepo.getFreeTroopPositionsFromGame(game);
+        }
     }
     
 }
