@@ -112,18 +112,18 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (16,1,'MOVE_OWN_DECK_CARDS_TO_DISCARDED',null),
     (17,1,'PROMOTE_OWN_DISCARDED_CARD',null),
     (18,1,'THEN',null),
-    (19,null,'DRAW_CARD',3),
+    (19,1,'DRAW_CARD',3),
     (20,1,'THEN',null),
     (21,1,'SUPPLANT_ENEMY_TROOP_IN_SITE',null),
     (22,1,'THEN',null),
-    (23,1,'CHECK_INNER_CARDS_GREATER_THAN',4),
+    (23,1,'CHECK_INNER_CARDS_GREATER_THAN',3),
     (24,1,'INFLUENCE',3),
     (25,1,'THEN',null),
     (26,1,'THEN',null),
     (27,1,'THEN',null),
     (28,1,'VP_FOR_EVERY_SITE_MARKER',null),
     (29,1,'MOVE_ENEMY_TROOP',null),
-    (30,null,'DRAW_CARD',2),
+    (30,1,'DRAW_CARD',2),
     (31,1,'INFLUENCE',1),
     (32,2,'PROMOTE_OWN_PLAYED_CARD',null),
     (33,1,'VP_FOR_EVERY_3_CARDS_IN_INNER',null),
@@ -146,7 +146,11 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (50,1,'THEN',null),
     (51,1,'AT_END_TURN',null),
     (52,1,'AT_END_TURN',null),
-    (53,1,'AT_END_TURN',null)
+    (53,1,'AT_END_TURN',null),
+    (54,1,'AT_END_TURN',null),
+    (55,1,'AT_END_TURN',null),
+    (56,1,'AT_END_TURN',null),
+    (57,1,'RETURN_PLAYER_SPY',null)
     ;
 
 --CARD ACTIONS
@@ -172,23 +176,23 @@ INSERT INTO actions(id,original_iterations,action_name,value) VALUES
     (117,3,'CHOOSE',null),--Maestro de armas HECHA Y COMPROBADA
     (118,2,'KILL_ENEMY_TROOP',null),--Filo letal HECHA Y COMPROBADA
     (119,1,'ALL',null),--Miembro del consejo HECHA Y COMPROBADA
-    (120,1,'CHOOSE',null),--Hilador de conjuros
-    (121,1,'THEN',null),--Matrona
-    (122,1,'CHOOSE',null),--Traficante de información
-    (123,1,'ALL',null),--Negociadora Drow
-    (124,1,'CHOOSE',null),--Kobold
-    (125,1,'CHOOSE',null),--Sectario del Culto del Dragón HECHA Y COMPROBADAS
+    (120,1,'CHOOSE',null),--Hilador de conjuros HECHA Y COMPROBADA
+    (121,1,'THEN',null),--Matrona HECHA Y COMPROBADA
+    (122,1,'CHOOSE',null),--Traficante de información HECHA Y COMPROBADA
+    (123,1,'ALL',null),--Negociadora Drow HECHA Y COMPROBADA
+    (124,1,'CHOOSE',null),--Kobold HECHA Y COMPROBADA
+    (125,1,'CHOOSE',null),--Sectario del Culto del Dragón HECHA Y COMPROBADA
     (126,1,'CHOOSE',null),--Dragón verde
-    (127,1,'ALL',null),--Clérigo de Laogzed
-    (128,1,'ALL',null),--Rath Modar
-    (129,1,'ALL',null),--Cría de dragón negro
-    (130,1,'ALL',null),--Voz de dragón
-    (131,1,'THEN',null),--Dragón azul
-    (132,1,'THEN',null),--Garra de dragón
-    (133,1,'ALL',null),--Cría de dragón verde
-    (134,1,'ALL',null),--Dragón negro
+    (127,1,'ALL',null),--Clérigo de Laogzed HECHA Y COMPROBADA
+    (128,1,'ALL',null),--Rath Modar HECHA Y COMPROBADA
+    (129,1,'ALL',null),--Cría de dragón negro HECHA Y COMPROBADA
+    (130,1,'ALL',null),--Voz de dragón HECHA Y COMPROBADA
+    (131,1,'THEN',null),--Dragón azul HECHA Y COMPROBADA
+    (132,1,'THEN',null),--Garra de dragón HECHA Y COMPROBADA
+    (133,1,'ALL',null),--Cría de dragón verde HECHA Y COMPROBADA
+    (134,1,'ALL',null),--Dragón negro HECHA Y COMPROBADA
     (135,1,'ALL',null),--Cría de dragón rojo HECHA Y COMPROBADA
-    (136,1,'ALL',null),--Sectario fanático
+    (136,1,'ALL',null),--Sectario fanático HECHA Y COMPROBADA
     (137,1,'ALL',null),--Cría de dragón blanco
     (138,1,'CHOOSE',null),--Vigilante de Thav
     (139,1,'ALL',null),--Cría de dragón azul HECHA Y COMPROBADA
@@ -221,12 +225,16 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (42,24),
     (43,7),
     (43,14),
+    (49,2),
     (50,37),
     (50,48),
     (51,2),
     (52,2),
     (53,32),
     (53,33),
+    (54,2),
+    (55,2),
+    (56,2),
     (106,3),
     (106,51),
     (107,3),
@@ -244,7 +252,7 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (117,10),
     (117,11),
     (119,12),
-    (119,52),
+    (119,49),
     (120,13),
     (120,20),
     (121,16),
@@ -252,7 +260,7 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (122,13),
     (122,18),
     (123,22),
-    (123,52),
+    (123,56),
     (124,10),
     (124,11),
     (125,3),
@@ -260,13 +268,13 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (126,25),
     (126,26),
     (127,29),
-    (127,52),
+    (127,55),
     (128,30),
     (128,13),
     (129,31),
     (129,11),
     (130,31),
-    (130,2),
+    (130,54),
     (131,53),
     (132,4),
     (132,34),
@@ -289,7 +297,7 @@ INSERT INTO subactions(action_id,subaction_id) VALUES
     (142,44),
     (142,45),
     (143,46),
-    (143,7),
+    (143,57),
     (143,47)
     ;
 
@@ -332,30 +340,30 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Maestro de armas',6,'<<O resultas ser digno o perecerás. Tu destino depende de ti. >> -- Shoor Vandree','Elige 3 veces: Despliega 1 tropa| Asesina 1 tropa blanca',3,6,1,1,2,117),
             ('Filo letal',5,'<<Ojalá te señalen los Filos letales.>>--Maldición drow','Asesina 2 tropas',3,6,1,1,3,118),
             ('Miembro del consejo',6,'En las cámaras del consejo drow, la intriga es una forma de arte.','Mueve hasta 2 tropas enemigas. Al final del turno, asciende otra carta jugada',3,6,1,1,1,119),
-            --('Hilador de conjuros',3,'Nunca sabrás que tu mente no te pertenece','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Suplanta 1 tropa que esté en la misma ubicación que ese espía',1,3,3,1,4,120), --Sin hacer
-            --('Matrona',6,'La voluntad de la matrona es absoluta','Pon tu mazo en tu pila de descartes=>Asciende 1 carta de tu pila de descartes',3,6,1,1,1,121), -- Sin hacer
-            --('Traficante de información',5,'<<¿Por qué malgastar hechizos y acero cuando unas simples palabras son capaces de derribar una casa?>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Roba 3 cartas',2,5,2,1,4,122), --Sin hacer
-            --('Negociadora Drow',3,'<<Puedo abrir puertas que están cerradas para todos excepto para las matronas.>>','Si hay 4 cartas o más en tu círculo interno, +3 influencia. Al final del turno, asciende otra carta jugada durante este turno',1,2,2,1,1,123), --Sin hacer
-            --('Kobold',1,'Aunque pueden llegar a vivir más de un siglo, la mayoría parece antes de cumplir un puñado de décadas','Elige una opción:Despliega 1 tropa| Asesina 1 tropa blanca',1,2,3,2,2,124), --Sin probar
+            ('Hilador de conjuros',3,'Nunca sabrás que tu mente no te pertenece','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Suplanta 1 tropa que esté en la misma ubicación que ese espía',1,3,3,1,4,120),
+            ('Matrona',6,'La voluntad de la matrona es absoluta','Pon tu mazo en tu pila de descartes=>Asciende 1 carta de tu pila de descartes',3,6,1,1,1,121),
+            ('Traficante de información',5,'<<¿Por qué malgastar hechizos y acero cuando unas simples palabras son capaces de derribar una casa?>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías=> Roba 3 cartas',2,5,2,1,4,122), 
+            ('Negociadora Drow',3,'<<Puedo abrir puertas que están cerradas para todos excepto para las matronas.>>','Si hay 4 cartas o más en tu círculo interno => +3 influencia. Al final del turno, asciende otra carta jugada durante este turno',1,2,2,1,1,123), 
+            ('Kobold',1,'Aunque pueden llegar a vivir más de un siglo, la mayoría parece antes de cumplir un puñado de décadas','Elige una opción:Despliega 1 tropa| Asesina 1 tropa blanca',1,2,3,2,2,124), 
             ('Sectario del Culto del Dragón',3,'Su misión en la vida es alumbrar una era de dominación','Elige una opción:+2 influencia| +2 poder',1,4,4,2,3,125),
-            --('Dragón verde',7,'Los dragones verdes miden sus planes en siglos','Elige una opción:Pon un espía y, a continuación, suplanta 1 tropa que esté en la misma ubicación que ese espía | Devuelve 1 de tus espías=>Suplanta una tropa que esté en la misma ubicación que ese espía y, a continuación, obtén 1 PV por cada marcador de control de ubicación que tengas',3,7,1,2,4,126), --Sin hacer
-            --('Clérigo de Laogzed',4,'Lo único que supera su hedor es su hambre de carne fresca','Mueve 1 tropa enemiga. Al final del turno, asciende otra carta jugada durante este turno',2,4,2,2,1,127), -- Sin hacer
-            --('Rath Modar',6,'<<Los dragones son herramientas, y con ellas construiré imperios>>','Roba 2 cartas. Pon 1 espía',2,5,1,2,4,128), -- Sin hacer
-            --('Cría de dragón negro',3,'Tantos bocaditos apetitosos y tan poco tiempo','+1 influencia. Asesina 1 tropa blanca',1,4,2,2,2,129), --Sin probar
-            --('Voz de dragón',3,'Fanáticos dotados de la capacidad de convencer a los dragones para que se unan a su causa','.+1 influencia. Al final del turno, asciende otra carta jugada durante este turno',1,3,3,2,1,130), --Sin hacer
-            --('Dragón azul',8,'<<En la superficie o en el subsuelo, da igual. Los dragones serán los amos de todo>>','Al final del turno, asciende hasta otras 2 cartas jugadas durante este turno y, a continuación, obtén 1 PV por cada 3 cartas ascendidas que tengas en tu círculo interno',4,8,1,2,1,131), --PROBADO Y FUNCIONAL
-            --('Garra de dragón',4,'Los colores de sus tatuajes se corresponde con los dragones a los que veneran','Asesina 1 tropa. A continuación, si tienes 5 o más tropas de jugador en tu sala de trofeos, obtén +2 poder',1,3,2,2,3,132), --Sin hacer
-            --('Cría de dragón verde',4,'Aún recién salida del huevo, el veneno de una cría de dragón es capaz de disolver huesos y corroer el acero','Pon un espía. Si hay alguna tropa de otro jugador en esa ubicación, obten +2 influencia',2,4,2,2,4,133), --Sin hacer
-            --('Dragón negro',7,'Quiénes presencian su oscura majestad no pueden evitar postrarse en señal de adoración','Suplanta 1 tropa blanca que esté en cualquier lugar del mapa. Obtén 1 PV por cada 3 tropas blancas que haya en tu sala de trofeos',3,7,1,2,2,134), --Sin hacer
+            --('Dragón verde',7,'Los dragones verdes miden sus planes en siglos','Elige una opción:Pon un espía y, a continuación, suplanta 1 tropa que esté en la misma ubicación que ese espía | Devuelve 1 de tus espías=>Suplanta una tropa que esté en la misma ubicación que ese espía y, a continuación, obtén 1 PV por cada marcador de control de ubicación que tengas',3,7,1,2,4,126), --FALTA HACER LOS MARCADORES
+            ('Clérigo de Laogzed',4,'Lo único que supera su hedor es su hambre de carne fresca','Mueve 1 tropa enemiga. Al final del turno, asciende otra carta jugada durante este turno',2,4,2,2,1,127),
+            ('Rath Modar',6,'<<Los dragones son herramientas, y con ellas construiré imperios>>','Roba 2 cartas. Pon 1 espía',2,5,1,2,4,128), 
+            ('Cría de dragón negro',3,'Tantos bocaditos apetitosos y tan poco tiempo','+1 influencia. Asesina 1 tropa blanca',1,4,2,2,2,129), 
+            ('Voz de dragón',3,'Fanáticos dotados de la capacidad de convencer a los dragones para que se unan a su causa','.+1 influencia. Al final del turno, asciende otra carta jugada durante este turno',1,3,3,2,1,130), 
+            ('Dragón azul',8,'<<En la superficie o en el subsuelo, da igual. Los dragones serán los amos de todo>>','Al final del turno, asciende hasta otras 2 cartas jugadas durante este turno y, a continuación, obtén 1 PV por cada 3 cartas ascendidas que tengas en tu círculo interno',4,8,1,2,1,131), 
+            ('Garra de dragón',4,'Los colores de sus tatuajes se corresponde con los dragones a los que veneran','Asesina 1 tropa. A continuación, si tienes 5 o más tropas de jugador en tu sala de trofeos, obtén +2 poder',1,3,2,2,3,132), 
+            ('Cría de dragón verde',4,'Aún recién salida del huevo, el veneno de una cría de dragón es capaz de disolver huesos y corroer el acero','Pon un espía. Si hay alguna tropa de otro jugador en esa ubicación, obten +2 influencia',2,4,2,2,4,133), 
+            ('Dragón negro',7,'Quiénes presencian su oscura majestad no pueden evitar postrarse en señal de adoración','Suplanta 1 tropa blanca que esté en cualquier lugar del mapa. Obtén 1 PV por cada 3 tropas blancas que haya en tu sala de trofeos',3,7,1,2,2,134), 
             ('Cría de dragón rojo',5,'Lo primero que desarrolla una cría de dragón rojo es su inquebrantable arrogancia','+2 poder. +2 influencia',3,5,2,2,3,135),
-            --('Sectario fanático',3,'<<¡Sentir cómo corre la sangre de los dragones por tus venas es sentirse invencible!>>','+2 influencia. Puedes devorar 1 carta del mercado',1,4,2,2,1,136), --Sin hacer
-            --('Cría de dragón blanco',2,'Las crías de dragón blanco nacen con dos impulsos básicos: el hambre y la codicia','Despliega 2 tropas. Puedes devorar 1 carta del mercado',1,3,3,2,2,137), --Sin hacer
-            --('Vigilante de Thav',3,'<<Lo que buscas únicamente se puede comprar con sangre>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías => +3 influencia',2,3,3,2,4,138), --Sin hacer
-            --('Cría de dragón azul',5,'Incluso las crías de dragón azul consideran introlerable la insubordinación a los de su especie','+3 influencia. Devuelve 1 tropa o espía de otro jugador',2,4,2,2,1,139), 
-            ('Severin Silrajin',7,'<<Se me ha concedido la visión de un destino mucho más grande de lo que jamás habría imaginado>>','+5 poder',4,8,1,2,3,140);
-            --('Encantador de Thav',4,'<<Se necesitan tus servicios, estés dispuesto a prestarlos o no>>','Elige una opción:Pon 1 espía| devuelve 1 de tus espias => +4 poder',1,3,3,2,4,141), --Sin hacer
-            --('Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2,142), --Sin hacer
-            --('Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3,143); --Sin hacer
+            ('Sectario fanático',3,'<<¡Sentir cómo corre la sangre de los dragones por tus venas es sentirse invencible!>>','+2 influencia. Puedes devorar 1 carta del mercado',1,4,2,2,1,136), 
+            ('Cría de dragón blanco',2,'Las crías de dragón blanco nacen con dos impulsos básicos: el hambre y la codicia','Despliega 2 tropas. Puedes devorar 1 carta del mercado',1,3,3,2,2,137), 
+            ('Vigilante de Thav',3,'<<Lo que buscas únicamente se puede comprar con sangre>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías => +3 influencia',2,3,3,2,4,138), 
+            --('Cría de dragón azul',5,'Incluso las crías de dragón azul consideran introlerable la insubordinación a los de su especie','+3 influencia. Devuelve 1 tropa o espía de otro jugador',2,4,2,2,1,139), --DEVOLVER SOLO INCLUYE TROPAS DE JUGADORES (MOVER INCLUYE TROPAS DE JUGADORES Y TROPAS BLANCAS)
+            ('Severin Silrajin',7,'<<Se me ha concedido la visión de un destino mucho más grande de lo que jamás habría imaginado>>','+5 poder',4,8,1,2,3,140),
+            ('Encantador de Thav',4,'<<Se necesitan tus servicios, estés dispuesto a prestarlos o no>>','Elige una opción:Pon 1 espía| devuelve 1 de tus espias => +4 poder',1,3,3,2,4,141), --Sin hacer
+            ('Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2,142),
+            ('Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3,143); 
             
 INSERT INTO actions(id,original_iterations,action_name,value) VALUES 
     -- test of choose

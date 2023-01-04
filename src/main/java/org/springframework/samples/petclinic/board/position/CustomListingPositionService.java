@@ -188,13 +188,13 @@ public class CustomListingPositionService {
     @Transactional(readOnly = true)
     public List<Position> getAdjacentEnemyTroopPositionsByLastPosition(Game game,String typeOfEnemy){
         if(typeOfEnemy.toLowerCase().trim().equals("white"))
-            return game.getLastSpyLocation().getAdjacents().stream().filter(position->!position.getForSpy() & position.isOccupied())
-            .filter(position->position.getPlayer().isWhite()).collect(Collectors.toList());
+            return game.getLastSpyLocation().getCity().getTroopPosition().stream().filter(position->position.isOccupied()&&
+            position.getPlayer().isWhite()).collect(Collectors.toList());
         else if(typeOfEnemy.toLowerCase().trim().equals("player"))
-            return game.getLastSpyLocation().getAdjacents().stream().filter(position->!position.getForSpy() & position.isOccupied())
-            .filter(position->!position.getPlayer().isWhite()).collect(Collectors.toList());
+            return game.getLastSpyLocation().getCity().getTroopPosition().stream().filter(position->position.isOccupied()&&
+            !position.getPlayer().isWhite()).collect(Collectors.toList());
         else
-            return game.getLastSpyLocation().getAdjacents().stream().filter(position->!position.getForSpy() & position.isOccupied())
+            return game.getLastSpyLocation().getCity().getTroopPosition().stream().filter(position->position.isOccupied())
             .collect(Collectors.toList());
     }
     
