@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="tophud-box tophud-b3">
-                <a href="" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
+                <a href="skip" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
                 <div class="round-div">
                     RONDA ${round}
                 </div>

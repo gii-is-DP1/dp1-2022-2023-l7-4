@@ -6,11 +6,13 @@ import org.springframework.samples.petclinic.card.Card;
 
 public class CheckCardMovement {
 
-    public static void sellZoneContainsCard(List<Card> sellZone,Card card) throws Exception{
+    public static void sellZoneLolthsGuardsContainsCard(List<Card> sellZone,List<Card> lolths, List<Card> houseGuards, Card card) throws Exception{
         
         Boolean mustBeTrue = sellZone.contains(card);
- 
-        Preconditions.check(mustBeTrue)
+        Boolean mustBeTrue2 = lolths.contains(card);
+        Boolean mustBeTrue3 = houseGuards.contains(card);
+
+        Preconditions.check(mustBeTrue || mustBeTrue2 || mustBeTrue3)
         .formattedError("Card %s not found in sell zone", card);
         }
 

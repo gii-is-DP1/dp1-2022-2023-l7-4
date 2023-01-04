@@ -99,8 +99,12 @@
                     </abbr>
                 </div>
             </div>
-            <div class="positions-round0">
-               <o:out>${special}</o:out> 
+            <div class="positions-round0" style="flex-direction: column;">
+                <c:if test="${special!=null}">
+                    <div class="special-box">
+                        <o:out><b>${special}</b></o:out> 
+                    </div>
+                </c:if>
                 <div class="position-scroll">
                     <div class="position-totally">
                         <form:form modelAttribute="idposition">
@@ -172,6 +176,21 @@ p{
     height: 50px;
     color: red;
 
+}
+.special-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 10%;
+    background-color: rgba(16, 64, 112, 0.814);
+    color: aliceblue;
+    margin-bottom: 1vmax;
+    font-size: 1.2vmax;
+    border-color: black;
+    border-radius: 1vmax;
+    border-style: solid;
+    border-width: 0.3vmax;
 }
 
 </style>

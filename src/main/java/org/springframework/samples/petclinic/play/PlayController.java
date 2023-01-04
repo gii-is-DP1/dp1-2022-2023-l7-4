@@ -149,7 +149,7 @@ public class PlayController {
         ModelAndView result=new ModelAndView(ROUND_ZERO);
         Game game=gameService.getGameById(gameId);
         Player player = game.getCurrentPlayer();
-
+        
         List<Position> initialPositions=this.positionInGameService.getAvailableFreeWhiteTroopPositions(game);
         putPlayerDataInModel(game, player, result);
         result.addObject("positions", initialPositions);

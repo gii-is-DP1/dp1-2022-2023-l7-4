@@ -92,8 +92,8 @@ public class BasicActionsController {
         if(positions.isEmpty()){
             result.addObject("positions"
             , positionServiceRepo.getFreeTroopPositionsFromGame(game));
-            result.addObject("special","Como no tienes posiciones adyacentes libres, puedes colocar en cualquier"
-            +" posición para tropas que este libre");
+            result.addObject("special","Como no tienes posiciones adyacentes libres, puedes colocar una tropa en cualquier"
+            +" posición vacía del mapa");
         }
         else
             result.addObject("positions",positions);

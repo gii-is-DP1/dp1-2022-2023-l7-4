@@ -623,13 +623,193 @@
                         <div class="market-zone" >
                             <div class="top-market-cards">
                                 <!--Guardas de la casa-->
-                                <div class="card-box" style="background-image: url(/resources/images/guardias_mercado.png);">
+                                <c:choose>
+                                    <c:when test="${game.houseGuards.size()==0}">
+                                        <div class="card-box" style="background-image: url(/resources/images/guardias_mercado.png);">
 
-                                </div>
+                                        </div>
+                                    </c:when>   
+                                    <c:otherwise>
+                                        <div class="popup" id="SellZoneCardPopUp${game.houseGuards[0].id}">
+                                            <div class="popup-blue-box">
+                                                <div class="popup-content">
+                                                    <a onclick="dontShowPopUp('SellZoneCardPopUp${game.houseGuards[0].id}')" class="x">&times;</a>
+                                                    <div class="popup-content-box">
+                                                        <div class="principalCard" style="width: 23vmax; height: 32vmax">
+                                                        <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${game.houseGuards[0].id}')">
+                                                        <spring:url value="/cards/{cardId}" var="cardUrl">
+                                                            <spring:param name="cardId" value="${game.houseGuards[0].id}" />
+                                                        </spring:url>
+                                                            <div class="topTextName">
+                                                                <b>
+                                                                    <c:out value="${game.houseGuards[0].name}" />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextCost">
+                                                                <b>
+                                                                    <c:out value="${game.houseGuards[0].cost} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextAspect">
+                                                                <b>
+                                                                    <c:out value="${game.houseGuards[0].aspect.name} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextHalfDeck">
+                                                                <b>
+                                                                    <c:out value="${game.houseGuards[0].halfDeck.name} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextRulesText">
+                                                                <b>
+                                                                    <c:out value="${game.houseGuards[0].rulesText} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextRarity">
+                                                                <b>
+                                                                    <text id="t${game.houseGuards[0].id}" style="font-size: 180%;">
+                                                                        <script>
+                                                                            var rarity = " &#8226 ".repeat(parseInt("${game.houseGuards[0].rarity}"))
+                                                                            document.getElementById("t${game.houseGuards[0].id}").innerHTML = rarity
+                                                                        </script>
+                                                                    </text>
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextDeckVP">
+                                                                <b>
+                                                                    <c:out value="${game.houseGuards[0].deckVP} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextInnerCirclePV">
+                                                                <b>
+                                                                    <c:out value="${game.houseGuards[0].innerCirclePV} " />
+                                                                </b>
+                                                            </div>
+                                                        </div>
+                                                        <c:choose>
+                                                            <c:when test="${game.houseGuards[0].cost<=player.influence}">
+                                                                <a type="submit" href="${round}/buy/${game.houseGuards[0].id}" class="play-buy-card-button" style="font-size: 1.1vmax;">COMPRAR CARTA</a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <div class="play-buy-card-button-inhabilited" style="font-size: 1.1vmax;">      
+                                                                    COMPRAR CARTA
+                                                                </div>
+                                                                <div style="color: aliceblue; font-size: 1.1vmax;">
+                                                                    No tienes suficiente influencia para comprar esta carta.
+                                                                </div>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card-box" title="${game.houseGuards[0].rulesText}" onclick="showPopUp('SellZoneCardPopUp${game.houseGuards[0].id}')" style="cursor: pointer;">
+                                            <div class="card-name-box">
+                                                <div class="card-name-center"><b>${game.houseGuards[0].name}</b></div>
+                                            </div>
+                                            <div class="card-cost-vp-box">
+                                                <div class="card-cost">${game.houseGuards[0].cost}</div>
+                                                <div class="card-deckVP">${game.houseGuards[0].deckVP}</div>
+                                                <div class="card-innerCirclePV">${game.houseGuards[0].innerCirclePV}</div>
+                                            </div>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                                 <!--Sacerdotisas de Lolth-->
-                                <div class="card-box"  style="background-image: url(/resources/images/lolth_mercado.png);">
+                                <c:choose>
+                                    <c:when test="${game.lolths.size()==0}">
+                                        <div class="card-box"  style="background-image: url(/resources/images/lolth_mercado.png);">
                                 
-                                </div>
+                                        </div>
+                                    </c:when>   
+                                    <c:otherwise>
+                                        <div class="popup" id="SellZoneCardPopUp${game.lolths[0].id}">
+                                            <div class="popup-blue-box">
+                                                <div class="popup-content">
+                                                    <a onclick="dontShowPopUp('SellZoneCardPopUp${game.lolths[0].id}')" class="x">&times;</a>
+                                                    <div class="popup-content-box">
+                                                        <div class="principalCard" style="width: 23vmax; height: 32vmax">
+                                                        <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${game.lolths[0].id}')">
+                                                        <spring:url value="/cards/{cardId}" var="cardUrl">
+                                                            <spring:param name="cardId" value="${game.lolths[0].id}" />
+                                                        </spring:url>
+                                                            <div class="topTextName">
+                                                                <b>
+                                                                    <c:out value="${game.lolths[0].name}" />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextCost">
+                                                                <b>
+                                                                    <c:out value="${game.lolths[0].cost} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextAspect">
+                                                                <b>
+                                                                    <c:out value="${game.lolths[0].aspect.name} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextHalfDeck">
+                                                                <b>
+                                                                    <c:out value="${game.lolths[0].halfDeck.name} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextRulesText">
+                                                                <b>
+                                                                    <c:out value="${game.lolths[0].rulesText} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextRarity">
+                                                                <b>
+                                                                    <text id="t${game.lolths[0].id}" style="font-size: 180%;">
+                                                                        <script>
+                                                                            var rarity = " &#8226 ".repeat(parseInt("${game.lolths[0].rarity}"))
+                                                                            document.getElementById("t${game.lolths[0].id}").innerHTML = rarity
+                                                                        </script>
+                                                                    </text>
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextDeckVP">
+                                                                <b>
+                                                                    <c:out value="${game.lolths[0].deckVP} " />
+                                                                </b>
+                                                            </div>
+                                                            <div class="topTextInnerCirclePV">
+                                                                <b>
+                                                                    <c:out value="${game.lolths[0].innerCirclePV} " />
+                                                                </b>
+                                                            </div>
+                                                        </div>
+                                                        <c:choose>
+                                                            <c:when test="${game.lolths[0].cost<=player.influence}">
+                                                                <a type="submit" href="${round}/buy/${game.lolths[0].id}" class="play-buy-card-button" style="font-size: 1.1vmax;">COMPRAR CARTA</a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <div class="play-buy-card-button-inhabilited" style="font-size: 1.1vmax;">      
+                                                                    COMPRAR CARTA
+                                                                </div>
+                                                                <div style="color: aliceblue; font-size: 1.1vmax;">
+                                                                    No tienes suficiente influencia para comprar esta carta.
+                                                                </div>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card-box" title="${game.lolths[0].rulesText}" onclick="showPopUp('SellZoneCardPopUp${game.lolths[0].id}')" style="cursor: pointer;">
+                                            <div class="card-name-box">
+                                                <div class="card-name-center"><b>${game.lolths[0].name}</b></div>
+                                            </div>
+                                            <div class="card-cost-vp-box">
+                                                <div class="card-cost">${game.lolths[0].cost}</div>
+                                                <div class="card-deckVP">${game.lolths[0].deckVP}</div>
+                                                <div class="card-innerCirclePV">${game.lolths[0].innerCirclePV}</div>
+                                            </div>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                                 <!--Titulo de Mercado - TERMINADO-->
                                 <div style="height: 100%; width: 14vmax; display: flex; justify-content: center;">
                                     <div style="margin-top: 2vmax; font-size: 2vmax; color: aliceblue;"><b> MERCADO </b></div>
