@@ -17,6 +17,8 @@ import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,12 +27,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "cities")
+@JsonIgnoreProperties({"cityTemplate","game","freeTroopPosition","positions","new"})
 public class City extends BaseEntity{
-
-
+   
+    //this contains all constant data.
     @ManyToOne(optional = false)
     CityTemplate cityTemplate= new CityTemplate(); 
-    //this contains all constant data.
 
     @ManyToOne
     private Game game;
@@ -38,10 +40,12 @@ public class City extends BaseEntity{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
     private List<Position> positions= new ArrayList<>();
 
-    public List<Position> getTroopPosition(){
+    public List<Position> getTroopPositions(){
         return positions.stream().filter(pos->pos.getForSpy()==false).collect(Collectors.toList());
     }
-
+    public List<Position> getSpyPositions(){
+        return positions.stream().filter(pos-> pos.getForSpy()).collect(Collectors.toList());
+    }
     public List<Position> getFreeTroopPosition(){
         return positions.stream().filter(pos->pos.getForSpy()==false & !pos.isOccupied()).collect(Collectors.toList());
     }
@@ -134,4 +138,13 @@ public class City extends BaseEntity{
     public String toString() {
         return  getName() ;
     }
+
+    //For JSON
+    public Double getX(){
+        return cityTemplate.getX();
+    }
+    public Double getY(){
+        return cityTemplate.getY();
+    }
+
 }

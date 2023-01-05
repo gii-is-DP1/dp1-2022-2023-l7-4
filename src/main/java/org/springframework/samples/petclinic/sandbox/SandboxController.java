@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.position.PositionService;
+import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
+import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
@@ -42,18 +44,10 @@ public class SandboxController {
     public ModelAndView showPositions(){
         Game game = gameService.getGameById(2);
         gameInitializer.loadGame(game);
-        var cities = cityService.getCities();
-        var paths = pathService.getPaths();
-        var zones = List.of(1,2,3);
-        var position = positionService.getPositions();
-        if(position.isEmpty()){
-            //TODO fix this
-            // positionService.populatePositions(cities, paths, zones);
-            // positionService.getPositions().forEach(x->positionService.calculateAdjacents(x));
-        }
-        position = positionService.getPositions();
+        List<City> cities = cityService.getCitiesByGame(game);
+        List<Path> paths = pathService.getPathsByGame(game);
+
         ModelAndView result=new ModelAndView(SANDBOX_LISTING_VIEW);
-        result.addObject("positions", position );
         result.addObject("cities", cities);
         result.addObject("paths", paths);
         result.addObject("freePositions", positionService.getFreePositions());

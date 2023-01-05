@@ -35,6 +35,9 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.VictoryPoints;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +45,8 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name="games")
+@JsonIgnoreProperties(allowGetters = false, value = {"qualifying","winner","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
+})
 public class Game extends BaseEntity{
 
     @NotEmpty
@@ -91,6 +96,7 @@ public class Game extends BaseEntity{
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     List<City> cities = new ArrayList<>();
+    
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     List<Path> paths = new ArrayList<>();
@@ -122,10 +128,6 @@ public class Game extends BaseEntity{
     @ManyToMany
     private List<Card> lolths = new ArrayList<>();
 
-    
-    //TODO esto es nuevo, almacena las cartas a ascender a final de turno
-    @ManyToMany
-    private List<Card> toBePromoted;
 
 
     
@@ -156,15 +158,10 @@ public class Game extends BaseEntity{
         return getFinished();
     }
 
-    /*public Boolean isNotLoaded(){
-        return (getRound()==0 && getCurrentPlayer().equals(this.players.get(0)));
-    }*/
 
-    public void finishGame(){
-        this.finished=true;
-    }
+
     //TODO: COMPROBAR ESO
-
+   
     public Map<Player,Integer> getQualifyingTotalVp(){
         Map<Player,Integer> map= new LinkedHashMap<>();
         for(Player player:this.players){
@@ -180,7 +177,7 @@ public class Game extends BaseEntity{
                         (map1, map2) -> map1, LinkedHashMap::new));
         return resultado;
     }
-    
+
     public Map<Player, VictoryPoints> getQualifying(){
         Map<Player,VictoryPoints> map= new LinkedHashMap<>();
         for(Player player:this.players){

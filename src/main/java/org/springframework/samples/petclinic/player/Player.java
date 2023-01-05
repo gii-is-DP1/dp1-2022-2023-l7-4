@@ -22,12 +22,16 @@ import org.springframework.samples.petclinic.house.House;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.user.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
 @Entity
 @Table(name = "players")
+@JsonIgnoreProperties({"power", "influence", "vpEarned", "user", "game","hand","played","discarded","innerCircle","handVPs","deck","markerVP","trophyHallVPs", "house", "troops", "spies", "markerVp", "trophyHall","white","new"})
 public class Player extends BaseEntity{
 
 
@@ -56,6 +60,8 @@ public class Player extends BaseEntity{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="house_id",nullable = true)
+
+
     private House house;
    
     @Column(columnDefinition = "integer default 40")
@@ -94,9 +100,7 @@ public class Player extends BaseEntity{
             @JoinColumn(name="card_id"))
     private List<Card> played = new ArrayList<>(); 
 
-    public Card getLastPlayedCard(){
-        return played.get(played.size()-1);
-    }
+
 
     @ManyToMany
     @JoinTable(
@@ -147,5 +151,11 @@ public class Player extends BaseEntity{
         player.setUser(user);
         player.setName(user.getName());
         return player;
+    }
+
+    //USED IN JSON DO NOT DELETE THIS
+    @JsonInclude
+    public String color(){
+        return house.getHexColor();
     }
 }

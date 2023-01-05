@@ -44,4 +44,8 @@ public class CityTemplate extends Sector{
     public Boolean isStartingCity (){
         return this.startingCity;
     }
+
+    //Coordinates in map
+    private Double x;
+    private Double y;
 }
