@@ -197,9 +197,9 @@ public class CustomListingPositionService {
             position.getPlayer().isWhite()).collect(Collectors.toList());
         else if(typeOfEnemy.toLowerCase().trim().equals("player"))
             return game.getLastSpyLocation().getCity().getTroopPositions().stream().filter(position->position.isOccupied()&&
-            !position.getPlayer().isWhite()).collect(Collectors.toList());
+            !position.getPlayer().isWhite() && !position.getPlayer().equals(game.getCurrentPlayer())).collect(Collectors.toList());
         else
-            return game.getLastSpyLocation().getCity().getTroopPositions().stream().filter(position->position.isOccupied())
+            return game.getLastSpyLocation().getCity().getTroopPositions().stream().filter(position->position.isOccupied() && !position.getPlayer().equals(game.getCurrentPlayer()))
             .collect(Collectors.toList());
     }
 

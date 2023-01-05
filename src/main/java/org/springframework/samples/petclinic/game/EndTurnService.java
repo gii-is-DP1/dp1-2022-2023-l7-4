@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.sector.city.City;
-import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.card.action.Action;
 import org.springframework.samples.petclinic.card.action.ActionService;
 import org.springframework.samples.petclinic.cardsMovement.PlayerMoveCardsService;
@@ -20,8 +19,7 @@ public class EndTurnService {
     @Autowired
     ActionService actionService;
 
-    @Autowired
-    CityService cityService;
+
 
     @Autowired
     PlayerService playerService;
@@ -47,7 +45,7 @@ public class EndTurnService {
             playerMoveCardsService.moveAllPlayedToDiscardPile(player);
 
             playerMoveCardsService.draw5CardsFromDeckToHand(player);
-            for(City city:this.cityService.getCitiesByGame(game)){
+            for(City city:game.getCities()){
                 if(city.whoTotallyControls() !=null && city.whoTotallyControls().equals(player)) player.setVpEarned(player.getVpEarned()+city.getVpControlled());
             }
             this.playerService.savePlayer(player);
@@ -55,7 +53,7 @@ public class EndTurnService {
             gameService.nextPlayerAndSave(game);
 
             Player nextPlayer=game.getCurrentPlayer();
-		    for(City city:this.cityService.getCitiesByGame(game)){
+		    for(City city:game.getCities()){
 			    if((city.whoControls() !=null && city.whoControls().equals(nextPlayer))
                  || (city.whoTotallyControls()!=null && city.whoTotallyControls().equals(nextPlayer))){
                     nextPlayer.earnInfluence(city.getInfluenceTotalControlled());
