@@ -42,7 +42,7 @@ public class ActionService {
     public Action of(Action action,Card card) {
         Action copy = new Action();
         copy.setActionName(action.getActionName());
-        copy.setDescription("copia");
+        copy.setDescription(action.getDescription());
         copy.setCard(action.getCard());
         copy.setCard(card);
         copy.setValue(action.getValue());
