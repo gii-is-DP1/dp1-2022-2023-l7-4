@@ -105,6 +105,13 @@
                         <o:out><b>${special}</b></o:out> 
                     </div>
                 </c:if>
+                <c:if test="${noSpyToPlace!=null}">
+                    <div class="special-box">
+                        <c:if test="${noSpyToPlace==true}">
+                            <o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> 
+                        </c:if>
+                    </div>
+                </c:if>
                 <div class="position-scroll">
                     <div class="position-totally">
                         <form:form modelAttribute="idposition">

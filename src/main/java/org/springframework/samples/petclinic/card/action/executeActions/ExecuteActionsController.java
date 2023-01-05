@@ -106,6 +106,7 @@ public class ExecuteActionsController {
         if(action == null)  {
             game.setCurrentAction(null);
             game.setLastSpyLocation(null);
+            game.setChosenPieceToMove(null);
             gameService.save(game);
             actionService.remove(currentAction);
             return GAME_MAIN_VIEW;
@@ -123,7 +124,11 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.DEPLOY_OWN_TROOP){
             return REDIRECT+"/deployTroop?withPresence=true";
         }else if(action.getActionName()== ActionName.PLACE_OWN_SPY){
-            return REDIRECT+"/placeSpy";
+            if(game.getCurrentPlayer().getSpies()==0){
+                return REDIRECT+"/choosePieceToMove?piece=spy&enemyPlayer=false&noSpyToPlace=true";
+            }else{
+                return REDIRECT+"/placeSpy";
+            }
         }else if(action.getActionName()== ActionName.CHOOSE){
             return CHOOSE+"/"+action.getId();
         }else if(action.getActionName()== ActionName.KILL_ENEMY_TROOP){
@@ -143,8 +148,15 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.SUPPLANT_WHITE_TROOP){
             return REDIRECT+"/supplantTroop?typeOfEnemy=white&withPresence=true";
         }else if(action.getActionName()== ActionName.MOVE_ENEMY_TROOP){
-            return REDIRECT+"/movePiece?piece=troop";
-        }else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
+            return REDIRECT+"/choosePieceToMove?piece=troop&enemyPlayer=true&noSpyToPlace=false";
+        }else if(action.getActionName()==ActionName.MOVE_OWN_DECK_CARDS_TO_DISCARDED){
+            try{
+                this.playerMoveCardsService.moveAllDeckToDiscarded(player);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        else if(action.getActionName()== ActionName.RETURN_PLAYER_SPY){
             return REDIRECT+"/returnPiece?piece=spy&enemyPlayer=true";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_CARDS_IN_INNER){
             AutomaticActions.earnVpFor3Inner(game, action);
@@ -155,8 +167,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()==ActionName.SUPPLANT_ENEMY_TROOP){
             return REDIRECT+"/supplantTroop?typeOfEnemy=any&withPresence=true";
         }else if(action.getActionName()==ActionName.SUPPLANT_ENEMY_TROOP_IN_SITE){
-            //TODO IN_SITE significa puesto/devuelto un espía en una posición, esa posición se guarda en
-            //el juego como game.lastSpyLocation. Entonces podremos suplantar dentro del city de esa posición
+            return REDIRECT+"/supplantTroopInSite?typeOfEnemy=any";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_WHITE_KILLED_TROOPS){
             AutomaticActions.earnVpFor3WhiteKilled(game, action);
         }else if(action.getActionName()== ActionName.DEVORE_MARKET_CARD){
@@ -390,7 +401,7 @@ public class ExecuteActionsController {
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions",
         customListingPositionService
-        .getMovablePiecesForPlayer(actualPlayer, game, piece, enemyPlayer));
+        .getReturnablePiecesForPlayer(actualPlayer, game, piece, enemyPlayer));
         return result;
     }
 
@@ -492,22 +503,22 @@ public class ExecuteActionsController {
         return res;
     }
 
-    //DE MOMENTO, SOLO ESTA HECHO PARA MOVER PIEZAS ENEMIGAS, NO TUYAS
-    @GetMapping("movePiece")
-    public ModelAndView initMovePiece(@PathVariable("gameId") Game game,@RequestParam("piece") String piece){
+    @GetMapping("choosePieceToMove")
+    public ModelAndView initChoosePieceToMove(@PathVariable("gameId") Game game,@RequestParam("piece") String piece
+    ,@RequestParam("enemyPlayer") Boolean enemyPlayer,@RequestParam("noSpyToPlace") Boolean noSpyToPlace){
         List<Position> movablePositions=this.customListingPositionService
-        .getMovablePiecesForPlayer(game.getCurrentPlayer(), game, piece, true);
-        List<Position> freePositions=this.customListingPositionService.getAllFreePositionsByPieceAndGame(game, piece);
-        ModelAndView result=new ModelAndView(CHOOSE_TWO_POSITIONS_FORM_VIEW);
+        .getMovablePiecesForPlayer(game.getCurrentPlayer(), game, piece, enemyPlayer);
+        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         putPlayerDataInModel(game, game.getCurrentPlayer(), result);
-        result.addObject("movablePositions",movablePositions);
-        result.addObject("freePositions",freePositions);
+        result.addObject("noSpyToPlace", noSpyToPlace);
+        result.addObject("positions",movablePositions);
         return result;
     }
 
-    @PostMapping("movePiece")
-    public ModelAndView proccessMoveTroop(@Valid PairPosition pairPosition
-    ,@PathVariable("gameId") Game game,@RequestParam("piece") String piece,BindingResult br){
+    @PostMapping("choosePieceToMove")
+    public ModelAndView processChoosePieceToMove(@Valid Idposition idposition
+    ,@PathVariable("gameId") Game game,@RequestParam("piece") String piece,@RequestParam("enemyPlayer") Boolean enemyPlayer
+     ,BindingResult br){
         ModelAndView res=null;
         ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
         if(br.hasErrors()){
@@ -517,9 +528,42 @@ public class ExecuteActionsController {
         }
         else{
             try{
-                Position pieceToMove=this.positionServiceRepo.findPositionById(pairPosition.getPositionSourceId());
-                Position newPosition=this.positionServiceRepo.findPositionById(pairPosition.getPositionTargetId());
-                this.playerUsePositionService.movePiece(pieceToMove, newPosition,game.getCurrentPlayer());
+                Position pieceToMove=this.positionServiceRepo.findPositionById(idposition.getId());
+                game.setChosenPieceToMove(pieceToMove);
+                this.gameService.save(game);
+                res=new ModelAndView(REDIRECT+"/movePiece");
+            }catch(Exception e){
+                br.rejectValue("position","not right","something happen");
+                res=errorRes;
+            }
+        }
+        return res;
+    }
+
+    //DE MOMENTO, SOLO ESTA HECHO PARA MOVER PIEZAS ENEMIGAS, NO TUYAS
+    @GetMapping("movePiece")
+    public ModelAndView initMovePiece(@PathVariable("gameId") Game game){
+        List<Position> freePositions=this.customListingPositionService.getAvailableFreePositionsToMoveChosenPiece(game);
+        ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        putPlayerDataInModel(game, game.getCurrentPlayer(), result);
+        result.addObject("positions",freePositions);
+        return result;
+    }
+
+    @PostMapping("movePiece")
+    public ModelAndView proccessMoveTroop(@Valid Idposition idposition
+    ,@PathVariable("gameId") Game game,BindingResult br){
+        ModelAndView res=null;
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
+        if(br.hasErrors()){
+            res=errorRes;
+            res.addObject("message", "Ha ocurrido un error");
+            res.addObject("message", br.getAllErrors().toString());
+        }
+        else{
+            try{
+                Position newPosition=this.positionServiceRepo.findPositionById(idposition.getId());
+                this.playerUsePositionService.movePiece(game.getChosenPieceToMove(), newPosition,game.getCurrentPlayer());
                 res=new ModelAndView(EXECUTE_ACTION);
             }catch(Exception e){
                 br.rejectValue("position","not right","something happen");

@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.card.action.enums.ActionName;
@@ -51,6 +53,8 @@ public class Action extends BaseEntity {
 
     Integer iterations;
     @Column(columnDefinition = "integer default 1")
+    @NotNull
+    @Min(value = 1)
     Integer originalIterations;
 
     Integer value;

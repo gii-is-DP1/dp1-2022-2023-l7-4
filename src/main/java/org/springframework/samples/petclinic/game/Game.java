@@ -90,6 +90,9 @@ public class Game extends BaseEntity{
     //TODO  esto es para las acciones que piden suplantar una tropa en donde pusiste/devolviste espia
     @OneToOne()
     Position lastSpyLocation;
+
+    @OneToOne()
+    Position chosenPieceToMove;
     
     @ManyToOne()
     MapTemplate mapTemplate ;
