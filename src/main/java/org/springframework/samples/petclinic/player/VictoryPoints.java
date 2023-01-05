@@ -22,12 +22,15 @@ public class VictoryPoints implements Comparable<VictoryPoints> {
     Integer innerCircleVP; 
 
     Integer earnedVP;
+
+    Integer markerVP;
     
     Integer totalVp;
 
+
     public Integer setTotalVp(){
         Integer result=0;
-        result=this.controlVP+this.totalControlVP+this.trophyHallVP+this.handVP+this.dicardPileVP+this.deckVP+this.innerCircleVP+this.earnedVP;
+        result=this.controlVP+this.totalControlVP+this.trophyHallVP+this.handVP+this.dicardPileVP+this.deckVP+this.innerCircleVP+this.earnedVP+this.markerVP;
         return this.totalVp=result;
     }
 

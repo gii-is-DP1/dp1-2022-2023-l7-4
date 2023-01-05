@@ -92,8 +92,11 @@ public class GameService {
 	}
 
 	public void nextPlayerAndSave(Game game) throws DataAccessException{
+		Player actualPlayer=game.getCurrentPlayer();
+		actualPlayer.setPower(0);
+        actualPlayer.setInfluence(0);
+		this.playerService.savePlayer(actualPlayer);
 		game.setNextPlayer();
-		
 		save(game);
 	}
 

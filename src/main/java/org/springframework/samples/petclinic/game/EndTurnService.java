@@ -46,7 +46,8 @@ public class EndTurnService {
 
             playerMoveCardsService.draw5CardsFromDeckToHand(player);
             for(City city:game.getCities()){
-                if(city.whoTotallyControls() !=null && city.whoTotallyControls().equals(player)) player.setVpEarned(player.getVpEarned()+city.getVpControlled());
+                if(city.whoTotallyControls() !=null && city.whoTotallyControls().equals(player))
+                 player.setMarkerVP(player.getMarkerVP()+city.getVpControlled());
             }
             this.playerService.savePlayer(player);
             
