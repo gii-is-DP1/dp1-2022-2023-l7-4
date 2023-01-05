@@ -232,7 +232,9 @@ public class PlayerUsePositionServiceTest {
     public void testReturnPiece(){
         Integer currentTroops=player2.getTroops();
         positionOfPlayer2.setAdjacents(List.of(positionOfPlayer1));
+        positionOfPlayer2.setForSpy(false);
         positionOfPlayer1.setAdjacents(List.of(positionOfPlayer2));
+        positionOfPlayer1.setForSpy(false);
         Mockito.lenient().when(customListingPositionService.getPresencePositions(player1.getId(), true)).thenReturn(List.of(positionOfPlayer2));
         playerUsePositionService=
         new PlayerUsePositionService(positionRepository,playerRepository,customListingPositionService);
