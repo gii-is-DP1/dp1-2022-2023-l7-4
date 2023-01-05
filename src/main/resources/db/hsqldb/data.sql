@@ -17,11 +17,12 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'UNO Ini Z2',3,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'DOS Ini Z2',3,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'TRES blanca Z2',3,FALSE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'CUATRO Ini Z3',6,TRUE,3);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'CINCO Ini Z1',6,TRUE,1);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'UNO Ini Z2',3,TRUE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'DOS Ini Z2',3,TRUE,2,2,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'TRES blanca Z2',3,FALSE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CUATRO Ini Z3',6,TRUE,3,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CINCO Ini Z1',6,TRUE,1,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'SEIS blanca Z1',6,FALSE,1,6,2);
 
 -- PATHS
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,3);
@@ -30,6 +31,9 @@ INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,5,3);-- GIVES ERROR
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (5,6,2);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (4,6,1);
+
 
 -- MAPS
 INSERT INTO map_templates(name) VALUES ('default Map 4');
@@ -45,6 +49,8 @@ INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUE
     (1,3),
     (1,4),
     (1,5),
+    (1,7),
+    (1,8),
 
     (2,1),
     (2,2),
@@ -359,7 +365,7 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Sectario fanático',3,'<<¡Sentir cómo corre la sangre de los dragones por tus venas es sentirse invencible!>>','+2 influencia. Puedes devorar 1 carta del mercado',1,4,2,2,1,136), 
             ('Cría de dragón blanco',2,'Las crías de dragón blanco nacen con dos impulsos básicos: el hambre y la codicia','Despliega 2 tropas. Puedes devorar 1 carta del mercado',1,3,3,2,2,137), 
             ('Vigilante de Thav',3,'<<Lo que buscas únicamente se puede comprar con sangre>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías => +3 influencia',2,3,3,2,4,138), 
-            --('Cría de dragón azul',5,'Incluso las crías de dragón azul consideran introlerable la insubordinación a los de su especie','+3 influencia. Devuelve 1 tropa o espía de otro jugador',2,4,2,2,1,139), --DEVOLVER SOLO INCLUYE TROPAS DE JUGADORES (MOVER INCLUYE TROPAS DE JUGADORES Y TROPAS BLANCAS)
+            ('Cría de dragón azul',5,'Incluso las crías de dragón azul consideran introlerable la insubordinación a los de su especie','+3 influencia. Devuelve 1 tropa o espía de otro jugador',2,4,2,2,1,139), --DEVOLVER SOLO INCLUYE TROPAS DE JUGADORES (MOVER INCLUYE TROPAS DE JUGADORES Y TROPAS BLANCAS)
             ('Severin Silrajin',7,'<<Se me ha concedido la visión de un destino mucho más grande de lo que jamás habría imaginado>>','+5 poder',4,8,1,2,3,140),
             ('Encantador de Thav',4,'<<Se necesitan tus servicios, estés dispuesto a prestarlos o no>>','Elige una opción:Pon 1 espía| devuelve 1 de tus espias => +4 poder',1,3,3,2,4,141), --Sin hacer
             ('Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2,142),

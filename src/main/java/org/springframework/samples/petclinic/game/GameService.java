@@ -13,6 +13,7 @@ import org.springframework.samples.petclinic.house.House;
 import org.springframework.samples.petclinic.house.HouseService;
 import org.springframework.samples.petclinic.play.PositionInGameService;
 import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.samples.petclinic.board.position.Position;
@@ -39,6 +40,9 @@ public class GameService {
 	
 	@Autowired
 	PositionInGameService positionInGameService;
+
+	@Autowired
+	PlayerService playerService;
 
 
 	@Transactional
@@ -89,6 +93,7 @@ public class GameService {
 
 	public void nextPlayerAndSave(Game game) throws DataAccessException{
 		game.setNextPlayer();
+		
 		save(game);
 	}
 
