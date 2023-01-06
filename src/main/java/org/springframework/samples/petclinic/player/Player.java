@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.house.House;
@@ -75,6 +76,18 @@ public class Player extends BaseEntity{
     @Column(columnDefinition = "integer default 0")
     @Min(0)
     private int markerVP=0;
+
+    public List<City> getControlMarker(){
+        return this.getGame().getCities().stream()
+        .filter(city->city.whoControls()!=null && city.whoControls().equals(this))
+        .collect(Collectors.toList());
+    }
+
+    public List<City> getTotalControlMarker(){
+        return this.getGame().getCities().stream()
+        .filter(city->city.whoTotallyControls()!=null && city.whoTotallyControls().equals(this))
+        .collect(Collectors.toList());
+    }
 
     @ManyToMany()
     @JoinTable(

@@ -101,9 +101,11 @@ public class PlayerUsePositionService {
 
     @Transactional(rollbackFor = Exception.class)
     public void movePiece(@Valid Position source,@Valid Position target,@Valid Player player) throws DataAccessException,Exception{
-        List<Position> playerPositions=
-        customListingPositionService.getPresencePositions(player.getId(),true);
-        CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(source, playerPositions);
+        if(!source.getPlayer().equals(player)){
+            List<Position> playerPositions=
+            customListingPositionService.getPresencePositions(player.getId(),true);
+            CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(source, playerPositions);
+        }
         CheckPlayerUsePosition.playerHasChooseTwoPositionsOfSameType(target, source);
         target.setPlayer(source.getPlayer());
         source.setPlayer(null);

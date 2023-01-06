@@ -80,10 +80,9 @@ public class Action extends BaseEntity {
     @Override
     public String toString() {
         String result = ""; 
-        
-        if(value !=null) result += value+" " ;
-        result += actionName;
-        if(originalIterations !=null && originalIterations >1) result += " ("+ originalIterations + " times)";
+        // if(value !=null) result += value+" " ;
+        result += description;
+        // if(originalIterations !=null && originalIterations >1) result += " ("+ originalIterations + " times)";
         if(! subactions.isEmpty()) result += subactions;
         return result;
 

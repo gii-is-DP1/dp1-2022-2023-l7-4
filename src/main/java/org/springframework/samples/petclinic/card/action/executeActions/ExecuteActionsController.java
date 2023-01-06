@@ -182,6 +182,8 @@ public class ExecuteActionsController {
             }catch(Exception e){
                 e.printStackTrace();
             }
+        }else if(action.getActionName()==ActionName.VP_FOR_EVERY_SITE_MARKER){
+            AutomaticActions.earnVpForControlledSites(game, action);
         }else if(action.getActionName()== ActionName.CHECK_INNER_CARDS_GREATER_THAN){
             Boolean condition = AutomaticActions.checkInnerCardsGreaterThan(game,action.getValue());
             //TODO automatic action return Boolean

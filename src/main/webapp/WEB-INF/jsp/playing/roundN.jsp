@@ -1184,6 +1184,7 @@
                             <p>Puntos en mazo: ${vp.deckVP}</p>
                             <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                             <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
+                            <p>Puntos acumulados por marcadores de control: ${vp.markerVP}</p>
                         </div>
                     </div>
                 </div>

@@ -17,11 +17,12 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'UNO Ini Z2',3,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'DOS Ini Z2',4,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (3,'TRES blanca Z2',5,FALSE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (4,'CUATRO Ini Z3',6,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (5,'CINCO Ini Z1',6,TRUE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'UNO Ini Z2',3,TRUE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'DOS Ini Z2',3,TRUE,2,2,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'TRES blanca Z2',3,FALSE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CUATRO Ini Z3',6,TRUE,3,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CINCO Ini Z1',6,TRUE,1,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'SEIS blanca Z1',6,FALSE,1,6,2);
 
 -- PATHS
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,1);
@@ -30,6 +31,9 @@ INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,0);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,5,3);-- GIVES ERROR
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (5,6,2);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (4,6,1);
+
 
 -- MAPS
 INSERT INTO map_templates(name) VALUES ('default Map 4');
@@ -45,6 +49,8 @@ INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUE
     (1,3),
     (1,4),
     (1,5),
+    (1,7),
+    (1,8),
 
     (2,1),
     (2,2),
@@ -93,114 +99,114 @@ INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 G2',1000,1000,2,2);
 
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
-INSERT INTO actions(id,original_iterations,action_name,value) VALUES 
+INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
     
-    (1,1,'RETURN_PLAYER_PIECE',null),
-    (2,1,'PROMOTE_OWN_PLAYED_CARD',null),
-    (3,1,'INFLUENCE',2),
-    (4,1,'KILL_ENEMY_TROOP',null),
-    (5,1,'POWER',2),
-    (6,2,'PLACE_OWN_SPY',null),
-    (7,1,'RETURN_OWN_SPY',null),
-    (8,4,'DEPLOY_OWN_TROOP',null),
-    (9,1,'SUPPLANT_WHITE_TROOP',null),
-    (10,1,'DEPLOY_OWN_TROOP',null),
-    (11,1,'KILL_WHITE_TROOP',null),
-    (12,2,'MOVE_ENEMY_TROOP',null),
-    (13,1,'PLACE_OWN_SPY',null),
-    (14,1,'POWER',4),
-    (15,1,'THEN',null),
-    (16,1,'MOVE_OWN_DECK_CARDS_TO_DISCARDED',null),
-    (17,1,'PROMOTE_OWN_DISCARDED_CARD',null),
-    (18,1,'THEN',null),
-    (19,1,'DRAW_CARD',3),
-    (20,1,'THEN',null),
-    (21,1,'SUPPLANT_ENEMY_TROOP_IN_SITE',null),
-    (22,1,'THEN',null),
-    (23,1,'CHECK_INNER_CARDS_GREATER_THAN',3),
-    (24,1,'INFLUENCE',3),
-    (25,1,'THEN',null),
-    (26,1,'THEN',null),
-    (27,1,'THEN',null),
-    (28,1,'VP_FOR_EVERY_SITE_MARKER',null),
-    (29,1,'MOVE_ENEMY_TROOP',null),
-    (30,1,'DRAW_CARD',2),
-    (31,1,'INFLUENCE',1),
-    (32,2,'PROMOTE_OWN_PLAYED_CARD',null),
-    (33,1,'VP_FOR_EVERY_3_CARDS_IN_INNER',null),
-    (34,1,'THEN',null),
-    (35,1,'CHECK_KILLED_PLAYER_TROOPS_GREATER_THAN',4),
-    (36,1,'THEN',null),
-    (37,1,'CHECK_PLAYER_ANY_TROOP_IN_SITE',1),
-    (38,1,'SUPPLANT_WHITE_TROOP_ANYWHERE',null),
-    (39,1,'VP_FOR_EVERY_3_WHITE_KILLED_TROOPS',null),
-    (40,1,'DEVORE_MARKET_CARD',null),
-    (41,2,'DEPLOY_OWN_TROOP',null),
-    (42,1,'THEN',null),
-    (43,1,'THEN',null),
-    (44,3,'DEPLOY_OWN_TROOP',null),
-    (45,1,'VP_FOR_EVERY_2_CONTROLED_SITES',null),
-    (46,1,'SUPPLANT_ENEMY_TROOP',null),
-    (47,1,'VP_FOR_EVERY_TOTAL_CONTROLLED_SITE',null),
-    (48,1,'POWER',1),
-    (49,1,'AT_END_TURN',null),
-    (50,1,'THEN',null),
-    (51,1,'AT_END_TURN',null),
-    (52,1,'AT_END_TURN',null),
-    (53,1,'AT_END_TURN',null),
-    (54,1,'AT_END_TURN',null),
-    (55,1,'AT_END_TURN',null),
-    (56,1,'AT_END_TURN',null),
-    (57,1,'RETURN_PLAYER_SPY',null)
+    (1,1,'RETURN_PLAYER_PIECE',null,'Devuelve una tropa o espía enemigo'),
+    (2,1,'PROMOTE_OWN_PLAYED_CARD',null,'Asciende una carta jugada'),
+    (3,1,'INFLUENCE',2,'+2 de influencia'),
+    (4,1,'KILL_ENEMY_TROOP',null,'Asesina una tropa enemiga'),
+    (5,1,'POWER',2,'+2 de poder'),
+    (6,2,'PLACE_OWN_SPY',null,'Pon 2 espías'),
+    (7,1,'RETURN_OWN_SPY',null,'Devuelve uno de tus espías'),
+    (8,4,'DEPLOY_OWN_TROOP',null,'Despliega 4 tropas'),
+    (9,1,'SUPPLANT_WHITE_TROOP',null,'Suplanta una tropa blanca'),
+    (10,1,'DEPLOY_OWN_TROOP',null,'Despliega una tropa'),
+    (11,1,'KILL_WHITE_TROOP',null,'Asesina una tropa blanca'),
+    (12,2,'MOVE_ENEMY_TROOP',null,'Mueve hasta 2 tropas enemigas'),
+    (13,1,'PLACE_OWN_SPY',null,'Pon un espía'),
+    (14,1,'POWER',4,'+4 de poder'),
+    (15,1,'THEN',null,'Entonces'),
+    (16,1,'MOVE_OWN_DECK_CARDS_TO_DISCARDED',null,'description'),
+    (17,1,'PROMOTE_OWN_DISCARDED_CARD',null,'description'),
+    (18,1,'THEN',null,'description'),
+    (19,1,'DRAW_CARD',3,'description'),
+    (20,1,'THEN',null,'description'),
+    (21,1,'SUPPLANT_ENEMY_TROOP_IN_SITE',null,'description'),
+    (22,1,'THEN',null,'description'),
+    (23,1,'CHECK_INNER_CARDS_GREATER_THAN',3,'description'),
+    (24,1,'INFLUENCE',3,'description'),
+    (25,1,'THEN',null,'description'),
+    (26,1,'THEN',null,'description'),
+    (27,1,'THEN',null,'description'),
+    (28,1,'VP_FOR_EVERY_SITE_MARKER',null,'description'),
+    (29,1,'MOVE_ENEMY_TROOP',null,'description'),
+    (30,1,'DRAW_CARD',2,'description'),
+    (31,1,'INFLUENCE',1,'description'),
+    (32,2,'PROMOTE_OWN_PLAYED_CARD',null,'description'),
+    (33,1,'VP_FOR_EVERY_3_CARDS_IN_INNER',null,'description'),
+    (34,1,'THEN',null,'description'),
+    (35,1,'CHECK_KILLED_PLAYER_TROOPS_GREATER_THAN',4,'description'),
+    (36,1,'THEN',null,'description'),
+    (37,1,'CHECK_PLAYER_ANY_TROOP_IN_SITE',1,'description'),
+    (38,1,'SUPPLANT_WHITE_TROOP_ANYWHERE',null,'description'),
+    (39,1,'VP_FOR_EVERY_3_WHITE_KILLED_TROOPS',null,'description'),
+    (40,1,'DEVORE_MARKET_CARD',null,'description'),
+    (41,2,'DEPLOY_OWN_TROOP',null,'description'),
+    (42,1,'THEN',null,'description'),
+    (43,1,'THEN',null,'description'),
+    (44,3,'DEPLOY_OWN_TROOP',null,'description'),
+    (45,1,'VP_FOR_EVERY_2_CONTROLED_SITES',null,'description'),
+    (46,1,'SUPPLANT_ENEMY_TROOP',null,'description'),
+    (47,1,'VP_FOR_EVERY_TOTAL_CONTROLLED_SITE',null,'description'),
+    (48,1,'POWER',1,'description'),
+    (49,1,'AT_END_TURN',null,'description'),
+    (50,1,'THEN',null,'description'),
+    (51,1,'AT_END_TURN',null,'Al final del turno'),
+    (52,1,'AT_END_TURN',null,'description'),
+    (53,1,'AT_END_TURN',null,'description'),
+    (54,1,'AT_END_TURN',null,'description'),
+    (55,1,'AT_END_TURN',null,'description'),
+    (56,1,'AT_END_TURN',null,'description'),
+    (57,1,'RETURN_PLAYER_SPY',null,'description')
     ;
 
 --CARD ACTIONS
-INSERT INTO actions(id,original_iterations,action_name,value) VALUES 
+INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
     
-    (100,1,'POWER',1),--Soldado HECHA Y COMPROBADA
-    (101,1,'INFLUENCE',1),--Noble HECHA Y COMPROBADA
-    (102,1,'INFLUENCE',2),--Lolth HECHA Y COMPROBADA
-    (103,1,'POWER',2),--Guardia HECHA Y COMPROBADA
-    (104,3,'DEPLOY_OWN_TROOP',null),--Cuadrilla de mercenarios HECHA Y COMPROBADA
-    (105,1,'PLACE_OWN_SPY',null),--Maestra de espías HECHA Y COMPROBADA
-    (106,1,'CHOOSE',null),--Adalid HECHA Y COMPROBADA
-    (107,1,'CHOOSE',null),--Inquisidora HECHA Y COMPROBADA
-    (108,1,'CHOOSE',null),--Guardia Negro HECHA Y COMPROBADA
-    (109,1,'SUPPLANT_WHITE_TROOP',null),--Rastreadora de avanzadilla HECHA Y COMPROBADA
-    (110,2,'KILL_WHITE_TROOP',null),--Explorador del UnderDark HECHA Y COMPROBADA
-    (111,1,'ALL',null),--Elegida de Lolth HECHA Y COMPROBADA
-    (112,1,'POWER',3),--Cazarrecompensas HECHA Y COMPROBADA
-    (113,1,'SUPPLANT_ENEMY_TROOP',null),--Doppelganger HECHA Y COMPROBADA
-    (114,1,'CHOOSE',null),--Maestros de Sorcere HECHA Y COMPROBADA
-    (115,1,'CHOOSE',null),--Maestro de Melee-Magthere HECHA Y COMPROBADA
-    (116,1,'THEN',null),--Infiltrador HECHA Y COMPROBADA
-    (117,3,'CHOOSE',null),--Maestro de armas HECHA Y COMPROBADA
-    (118,2,'KILL_ENEMY_TROOP',null),--Filo letal HECHA Y COMPROBADA
-    (119,1,'ALL',null),--Miembro del consejo HECHA Y COMPROBADA
-    (120,1,'CHOOSE',null),--Hilador de conjuros HECHA Y COMPROBADA
-    (121,1,'THEN',null),--Matrona HECHA Y COMPROBADA
-    (122,1,'CHOOSE',null),--Traficante de información HECHA Y COMPROBADA
-    (123,1,'ALL',null),--Negociadora Drow HECHA Y COMPROBADA
-    (124,1,'CHOOSE',null),--Kobold HECHA Y COMPROBADA
-    (125,1,'CHOOSE',null),--Sectario del Culto del Dragón HECHA Y COMPROBADA
-    (126,1,'CHOOSE',null),--Dragón verde
-    (127,1,'ALL',null),--Clérigo de Laogzed HECHA Y COMPROBADA
-    (128,1,'ALL',null),--Rath Modar HECHA Y COMPROBADA
-    (129,1,'ALL',null),--Cría de dragón negro HECHA Y COMPROBADA
-    (130,1,'ALL',null),--Voz de dragón HECHA Y COMPROBADA
-    (131,1,'THEN',null),--Dragón azul HECHA Y COMPROBADA
-    (132,1,'THEN',null),--Garra de dragón HECHA Y COMPROBADA
-    (133,1,'ALL',null),--Cría de dragón verde HECHA Y COMPROBADA
-    (134,1,'ALL',null),--Dragón negro HECHA Y COMPROBADA
-    (135,1,'ALL',null),--Cría de dragón rojo HECHA Y COMPROBADA
-    (136,1,'ALL',null),--Sectario fanático HECHA Y COMPROBADA
-    (137,1,'ALL',null),--Cría de dragón blanco
-    (138,1,'CHOOSE',null),--Vigilante de Thav
-    (139,1,'ALL',null),--Cría de dragón azul HECHA Y COMPROBADA
-    (140,1,'POWER',5),--Severin Silrajin HECHA Y COMPROBADA
-    (141,1,'CHOOSE',null),--Encantador de Thav
-    (142,1,'ALL',null),--Dragón blanco
-    (143,1,'ALL',null)--Dragón rojo
+    (100,1,'POWER',1,'+1 de poder'),--Soldado HECHA Y COMPROBADA
+    (101,1,'INFLUENCE',1,'+1 de influencia'),--Noble HECHA Y COMPROBADA
+    (102,1,'INFLUENCE',2,'+2 de influencia'),--Lolth HECHA Y COMPROBADA
+    (103,1,'POWER',2,'+2 de poder'),--Guardia HECHA Y COMPROBADA
+    (104,3,'DEPLOY_OWN_TROOP',null,'Despliega 3 tropas'),--Cuadrilla de mercenarios HECHA Y COMPROBADA
+    (105,1,'PLACE_OWN_SPY',null,'Pon un espía'),--Maestra de espías HECHA Y COMPROBADA
+    (106,1,'CHOOSE',null,'Elige una opción: '),--Adalid HECHA Y COMPROBADA
+    (107,1,'CHOOSE',null,'description'),--Inquisidora HECHA Y COMPROBADA
+    (108,1,'CHOOSE',null,'description'),--Guardia Negro HECHA Y COMPROBADA
+    (109,1,'SUPPLANT_WHITE_TROOP',null,'description'),--Rastreadora de avanzadilla HECHA Y COMPROBADA
+    (110,2,'KILL_WHITE_TROOP',null,'description'),--Explorador del UnderDark HECHA Y COMPROBADA
+    (111,1,'ALL',null,'description'),--Elegida de Lolth HECHA Y COMPROBADA
+    (112,1,'POWER',3,'description'),--Cazarrecompensas HECHA Y COMPROBADA
+    (113,1,'SUPPLANT_ENEMY_TROOP',null,'description'),--Doppelganger HECHA Y COMPROBADA
+    (114,1,'CHOOSE',null,'description'),--Maestros de Sorcere HECHA Y COMPROBADA
+    (115,1,'CHOOSE',null,'description'),--Maestro de Melee-Magthere HECHA Y COMPROBADA
+    (116,1,'THEN',null,'description'),--Infiltrador HECHA Y COMPROBADA
+    (117,3,'CHOOSE',null,'description'),--Maestro de armas HECHA Y COMPROBADA
+    (118,2,'KILL_ENEMY_TROOP',null,'description'),--Filo letal HECHA Y COMPROBADA
+    (119,1,'ALL',null,'description'),--Miembro del consejo HECHA Y COMPROBADA
+    (120,1,'CHOOSE',null,'description'),--Hilador de conjuros HECHA Y COMPROBADA
+    (121,1,'THEN',null,'description'),--Matrona HECHA Y COMPROBADA
+    (122,1,'CHOOSE',null,'description'),--Traficante de información HECHA Y COMPROBADA
+    (123,1,'ALL',null,'description'),--Negociadora Drow HECHA Y COMPROBADA
+    (124,1,'CHOOSE',null,'description'),--Kobold HECHA Y COMPROBADA
+    (125,1,'CHOOSE',null,'description'),--Sectario del Culto del Dragón HECHA Y COMPROBADA
+    (126,1,'CHOOSE',null,'description'),--Dragón verde
+    (127,1,'ALL',null,'description'),--Clérigo de Laogzed HECHA Y COMPROBADA
+    (128,1,'ALL',null,'description'),--Rath Modar HECHA Y COMPROBADA
+    (129,1,'ALL',null,'description'),--Cría de dragón negro HECHA Y COMPROBADA
+    (130,1,'ALL',null,'description'),--Voz de dragón HECHA Y COMPROBADA
+    (131,1,'THEN',null,'description'),--Dragón azul HECHA Y COMPROBADA
+    (132,1,'THEN',null,'description'),--Garra de dragón HECHA Y COMPROBADA
+    (133,1,'ALL',null,'description'),--Cría de dragón verde HECHA Y COMPROBADA
+    (134,1,'ALL',null,'description'),--Dragón negro HECHA Y COMPROBADA
+    (135,1,'ALL',null,'description'),--Cría de dragón rojo HECHA Y COMPROBADA
+    (136,1,'ALL',null,'description'),--Sectario fanático HECHA Y COMPROBADA
+    (137,1,'ALL',null,'description'),--Cría de dragón blanco
+    (138,1,'CHOOSE',null,'description'),--Vigilante de Thav
+    (139,1,'ALL',null,'description'),--Cría de dragón azul HECHA Y COMPROBADA
+    (140,1,'POWER',5,'description'),--Severin Silrajin HECHA Y COMPROBADA
+    (141,1,'CHOOSE',null,'description'),--Encantador de Thav
+    (142,1,'ALL',null,'description'),--Dragón blanco
+    (143,1,'ALL',null,'description')--Dragón rojo
     ;
 
 INSERT INTO subactions(action_id,subaction_id) VALUES 
@@ -347,7 +353,7 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Negociadora Drow',3,'<<Puedo abrir puertas que están cerradas para todos excepto para las matronas.>>','Si hay 4 cartas o más en tu círculo interno => +3 influencia. Al final del turno, asciende otra carta jugada durante este turno',1,2,2,1,1,123), 
             ('Kobold',1,'Aunque pueden llegar a vivir más de un siglo, la mayoría parece antes de cumplir un puñado de décadas','Elige una opción:Despliega 1 tropa| Asesina 1 tropa blanca',1,2,3,2,2,124), 
             ('Sectario del Culto del Dragón',3,'Su misión en la vida es alumbrar una era de dominación','Elige una opción:+2 influencia| +2 poder',1,4,4,2,3,125),
-            --('Dragón verde',7,'Los dragones verdes miden sus planes en siglos','Elige una opción:Pon un espía y, a continuación, suplanta 1 tropa que esté en la misma ubicación que ese espía | Devuelve 1 de tus espías=>Suplanta una tropa que esté en la misma ubicación que ese espía y, a continuación, obtén 1 PV por cada marcador de control de ubicación que tengas',3,7,1,2,4,126), --FALTA HACER LOS MARCADORES
+            ('Dragón verde',7,'Los dragones verdes miden sus planes en siglos','Elige una opción:Pon un espía y, a continuación, suplanta 1 tropa que esté en la misma ubicación que ese espía | Devuelve 1 de tus espías=>Suplanta una tropa que esté en la misma ubicación que ese espía y, a continuación, obtén 1 PV por cada marcador de control de ubicación que tengas',3,7,1,2,4,126), --FALTA HACER LOS MARCADORES
             ('Clérigo de Laogzed',4,'Lo único que supera su hedor es su hambre de carne fresca','Mueve 1 tropa enemiga. Al final del turno, asciende otra carta jugada durante este turno',2,4,2,2,1,127),
             ('Rath Modar',6,'<<Los dragones son herramientas, y con ellas construiré imperios>>','Roba 2 cartas. Pon 1 espía',2,5,1,2,4,128), 
             ('Cría de dragón negro',3,'Tantos bocaditos apetitosos y tan poco tiempo','+1 influencia. Asesina 1 tropa blanca',1,4,2,2,2,129), 
@@ -360,30 +366,30 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Sectario fanático',3,'<<¡Sentir cómo corre la sangre de los dragones por tus venas es sentirse invencible!>>','+2 influencia. Puedes devorar 1 carta del mercado',1,4,2,2,1,136), 
             ('Cría de dragón blanco',2,'Las crías de dragón blanco nacen con dos impulsos básicos: el hambre y la codicia','Despliega 2 tropas. Puedes devorar 1 carta del mercado',1,3,3,2,2,137), 
             ('Vigilante de Thav',3,'<<Lo que buscas únicamente se puede comprar con sangre>>','Elige una opción:Pon 1 espía| Devuelve 1 de tus espías => +3 influencia',2,3,3,2,4,138), 
-            --('Cría de dragón azul',5,'Incluso las crías de dragón azul consideran introlerable la insubordinación a los de su especie','+3 influencia. Devuelve 1 tropa o espía de otro jugador',2,4,2,2,1,139), --DEVOLVER SOLO INCLUYE TROPAS DE JUGADORES (MOVER INCLUYE TROPAS DE JUGADORES Y TROPAS BLANCAS)
+            ('Cría de dragón azul',5,'Incluso las crías de dragón azul consideran introlerable la insubordinación a los de su especie','+3 influencia. Devuelve 1 tropa o espía de otro jugador',2,4,2,2,1,139), --DEVOLVER SOLO INCLUYE TROPAS DE JUGADORES (MOVER INCLUYE TROPAS DE JUGADORES Y TROPAS BLANCAS)
             ('Severin Silrajin',7,'<<Se me ha concedido la visión de un destino mucho más grande de lo que jamás habría imaginado>>','+5 poder',4,8,1,2,3,140),
             ('Encantador de Thav',4,'<<Se necesitan tus servicios, estés dispuesto a prestarlos o no>>','Elige una opción:Pon 1 espía| devuelve 1 de tus espias => +4 poder',1,3,3,2,4,141), --Sin hacer
             ('Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2,142),
             ('Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3,143); 
             
-INSERT INTO actions(id,original_iterations,action_name,value) VALUES 
+INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
     -- test of choose
-    (-1,2,'CHOOSE',null),
-    (-2,2,'THEN',null),
+    (-1,2,'CHOOSE',null,'a'),
+    (-2,2,'THEN',null,'a'),
 
-    (-10,4,'POWER',1),
-    (-11,1,'DEPLOY_OWN_TROOP',null),
-    (-12,1,'INFLUENCE',+50),
-    (-13,5,'POWER',+10),
+    (-10,4,'POWER',1,'+1 de poder'),
+    (-11,1,'DEPLOY_OWN_TROOP',null,'a'),
+    (-12,1,'INFLUENCE',+50,'a'),
+    (-13,5,'POWER',+10,'a'),
     -- test of promote
-    (-14,1,'PROMOTE_OWN_DISCARDED_CARD',null),
-    (-15,2,'PROMOTE_OWN_DISCARDED_CARD',null),
-    (-16,2,'PROMOTE_OWN_PLAYED_CARD',null),
-    (-17,1,'PROMOTE_OWN_PLAYED_CARD',null),
-    (-18,1,'AT_END_TURN',null),
-    (-19,2,'DEVORE_MARKET_CARD',null),
-    (-20,2,'MOVE_ENEMY_TROOP',null),
-    (-21,1,'AT_END_TURN',null)
+    (-14,1,'PROMOTE_OWN_DISCARDED_CARD',null,'a'),
+    (-15,2,'PROMOTE_OWN_DISCARDED_CARD',null,'a'),
+    (-16,2,'PROMOTE_OWN_PLAYED_CARD',null,'a'),
+    (-17,1,'PROMOTE_OWN_PLAYED_CARD',null,'a'),
+    (-18,1,'AT_END_TURN',null,'a'),
+    (-19,2,'DEVORE_MARKET_CARD',null,'a'),
+    (-20,2,'MOVE_ENEMY_TROOP',null,'a'),
+    (-21,1,'AT_END_TURN',null,'a')
     ;
 INSERT INTO subactions(action_id,subaction_id) VALUES 
     --choose twice
