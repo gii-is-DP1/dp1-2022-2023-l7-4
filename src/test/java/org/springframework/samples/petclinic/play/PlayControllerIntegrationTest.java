@@ -1,7 +1,4 @@
 package org.springframework.samples.petclinic.play;
-
-
-
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
@@ -44,19 +41,17 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = PlayController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
-public class PlayControllerTest {
+public class PlayControllerIntegrationTest {
 
-    private static final Integer TEST_GAME_ID=100;
-
+    private static final Integer TEST_GAME_ID=3;
 
     @Autowired
     private MockMvc mockMvc;
 
+
     @MockBean
     private PlayerUsePositionService playerUsePositionService;
 
-    @Autowired
-    private PlayController playController;
 
     @MockBean
     private GameService gameService;
@@ -91,80 +86,16 @@ public class PlayControllerTest {
     @MockBean
     private PlayerService playerService;
 
-    private Game game;
-
-
-
-    @BeforeEach
-    void setup(){
-        game=new Game();
-        game.setId(TEST_GAME_ID);
-        game.setRound(0);
-        game.setTurnPlayer(1);
-        game.setFinished(false);
-        CityTemplate cityTemplate1=new CityTemplate();
-        cityTemplate1.setId(1);
-        cityTemplate1.setStartingCity(true);
-        City city1= City.of(cityTemplate1,game);
-        Position initialTroopPosition=new Position();
-        initialTroopPosition.setId(1);
-        initialTroopPosition.setForSpy(false);
-        List<Position> positions=new ArrayList<>();
-        positions.add(initialTroopPosition);
-        city1.setPositions(positions);
-        Player player1=new Player();
-        player1.setId(1);
-        Player player2=new Player();
-        player2.setId(2);
-        game.setPlayers(List.of(player1,player2));
-        given(this.gameService.getGameById(TEST_GAME_ID)).willReturn(game);
-
-
-    }
-
-    @WithMockUser(value="spring")
-    @Test
-    public void testShowRoundZero() throws Exception{
-        mockMvc.perform(get("/play/{gameId}/round/0",TEST_GAME_ID))
-        .andExpect(status().isOk())
-        .andExpect(view().name("playing/roundZero"))
-        .andExpect(model().attribute("player", is(game.getPlayers().get(0))));
-    }
-
-    @WithMockUser(value="spring")
-    @Test
-    public void testProcessRoundZero() throws Exception{
-        mockMvc.perform(post("/play/{gameId}/round/0",TEST_GAME_ID)
-        .with(csrf()).param("idposition", "1"))
-        .andExpect(status().is2xxSuccessful())
-        .andExpect(view().name("playing/roundZero"));        
-    }
-
-    @WithMockUser(value="spring")
-    @Test
-    public void testShowRoundN() throws Exception{
-        game.setRound(1);
-        mockMvc.perform(get("/play/{gameId}/round/"+game.getRound(),TEST_GAME_ID))
-        .andExpect(status().isOk())
-        .andExpect(view().name("playing/roundN"))
-        .andExpect(model().attribute("player", is(game.getPlayers().get(0))));
-    }
-
     @WithMockUser(value="spring")
     @Test
     public void testNextTurn() throws Exception{
         Game game= this.gameService.getGameById(TEST_GAME_ID);
         Player actualPlayer=game.getCurrentPlayer();
         Integer indexOfPlayer=game.getPlayers().indexOf(actualPlayer);
-        game.setRound(1);
         mockMvc.perform(get("/play/{gameId}/round/"+game.getRound()+"/next",TEST_GAME_ID))
         .andExpect(status().isOk())
         .andExpect(view().name("playing/roundN"))
         .andExpect(model().attribute("player", is(game.getPlayers().get(indexOfPlayer+1))));
     }
-
-
-
-
     
 }

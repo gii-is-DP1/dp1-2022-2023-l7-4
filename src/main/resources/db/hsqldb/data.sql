@@ -88,6 +88,7 @@ INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas'
 INSERT INTO games(id,date,name,map_template_id) VALUES  (1,'2002-04-08','Partida 1',1);
 INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',1,1,2,TRUE);
 
+
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 G1', 'daviddhc',10,10,1,1);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'P2 G1', 'anddomrui',10,10,2,1);
@@ -96,7 +97,10 @@ INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 G1'
 
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 G2',1000,1000,1,2);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 G2',1000,1000,2,2);
-
+-- PARA TEST DE INTEGRACIÓN--
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,round) VALUES (3,'2002-04-09','Partida de prueba',1,1,2,TRUE,2);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (7, 'Player1',1000,1000,1,3);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (8, 'Player2',1000,1000,2,3);
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
     
