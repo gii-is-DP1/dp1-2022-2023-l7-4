@@ -114,6 +114,7 @@ public class ExecuteActionsController {
         if(action.getActionName()==ActionName.NEXT_TURN){
             return NEXT_TURN;
         }
+        game.setCardInPlay(action.getCard());
         gameService.save(game);
         actionService.save(action);
         Integer cardId = action.getCard().getId();
@@ -221,9 +222,19 @@ public class ExecuteActionsController {
     @GetMapping("devoreMarketCard")
     public ModelAndView initDevoreCard(@PathVariable("gameId") Game game){
         List<Card> devorableCards= game.getSellZone();
+        Player actualPlayer = game.getCurrentPlayer();
         ModelAndView result= new ModelAndView(CHOOSE_CARD_VIEW);
+        result.addObject("game", game);
         result.addObject("cards", devorableCards);
         result.addObject("devore",true);
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("round", game.getRound());
+        result.addObject("turn", game.getTurnPlayer());
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVp());
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
         return result;
     }
 
@@ -257,10 +268,22 @@ public class ExecuteActionsController {
     public ModelAndView initPromoteCard(@PathVariable("gameId") Game game,@PathVariable("cardId") Card card,@RequestParam("locationOfCard") String locationOfCard
     ){
         List<Card> cards=this.cardService.getPromotableCardForPlayerByGame(card,game, locationOfCard);
+        Player actualPlayer = game.getCurrentPlayer();
         ModelAndView result= new ModelAndView(CHOOSE_CARD_VIEW);
+        String promoteLocation = locationOfCard;
+        result.addObject("game", game);
+        result.addObject("promoteLocation", promoteLocation);
         result.addObject("cards", cards);
         result.addObject("size", cards.size());
         result.addObject("devore", false);
+        result.addObject("vp", game.getPlayerScore(actualPlayer));
+        result.addObject("player", game.getCurrentPlayer());
+        result.addObject("round", game.getRound());
+        result.addObject("turn", game.getTurnPlayer());
+        result.addObject("cities", game.getCities());
+        result.addObject("paths", game.getPaths());
+        result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVp());
+        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
         return result;
     }
 

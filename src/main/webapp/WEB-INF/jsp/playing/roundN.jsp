@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
 <link rel="stylesheet" href="/resources/styles/cardlisting.css">
+
 <head>
     <style>
         .popup {
@@ -534,7 +535,11 @@
     transition-duration: 0.5s;
 }
 
-    
+#graph {
+    background-color: rgba(39, 11, 65, 0.42);
+    width: 100%;
+    height: 100%;
+  }
     </style>
 
 </head>
@@ -553,7 +558,11 @@
             overlay.style.opacity = 0;
         }
 </script>
-    
+<script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+<script src="/js/map.js"></script>
+    <script>
+        init('${game.id}')
+    </script>
     <div class="fullscreen-game">  
 
         <!--LOYOUT ZONA SUPERIOR-->
@@ -712,12 +721,12 @@
                                                                     </text>
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextDeckVP">
+                                                            <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.houseGuards[0].deckVP} " />
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextInnerCirclePV">
+                                                            <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.houseGuards[0].innerCirclePV} " />
                                                                 </b>
@@ -806,12 +815,12 @@
                                                                     </text>
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextDeckVP">
+                                                            <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.lolths[0].deckVP} " />
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextInnerCirclePV">
+                                                            <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.lolths[0].innerCirclePV} " />
                                                                 </b>
@@ -932,12 +941,12 @@
                                                                         </text>
                                                                     </b>
                                                                 </div>
-                                                                <div class="topTextDeckVP">
+                                                                <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                     <b>
                                                                         <c:out value="${game.sellZone[counter.index].deckVP} " />
                                                                     </b>
                                                                 </div>
-                                                                <div class="topTextInnerCirclePV">
+                                                                <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                     <b>
                                                                         <c:out value="${game.sellZone[counter.index].innerCirclePV} " />
                                                                     </b>
@@ -1028,12 +1037,12 @@
                                                                 </text>
                                                             </b>
                                                         </div>
-                                                        <div class="topTextDeckVP">
+                                                        <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                             <b>
                                                                 <c:out value="${card.deckVP} " />
                                                             </b>
                                                         </div>
-                                                        <div class="topTextInnerCirclePV">
+                                                        <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                             <b>
                                                                 <c:out value="${card.innerCirclePV} " />
                                                             </b>
@@ -1156,8 +1165,9 @@
                 </div>
                 <!--MAPA-->
                 <div class="map-box">
-                    <motero2k:positionTable>
-                    </motero2k:positionTable>
+                    <svg id="graph"></svg>
+                    <!-- <motero2k:positionTable>
+                    </motero2k:positionTable> -->
                 </div>
             </div>
 
