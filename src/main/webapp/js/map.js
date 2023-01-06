@@ -1,13 +1,14 @@
 
 
   window.init = (n) => {
-  
+    console.log("inicado el mapa")
     function getGame(n) {
     return fetch('/api/game/'+n)
     // return fetch('/api/game/2')
       .then(response => response.json());
   }
   getGame(n).then(game => {
+    console.log("pepito")
     const cities = game.cities;
     const paths = game.paths;
     console.log(game)
