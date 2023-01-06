@@ -80,6 +80,9 @@ public class Game extends BaseEntity{
     
     @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
+
+    @ManyToOne
+    Card cardInPlay;
     
     @Column(columnDefinition = "boolean default false")
     Boolean lastActionSkipped= false;
@@ -144,8 +147,8 @@ public class Game extends BaseEntity{
     }
     
     public void setNextPlayer(){
-       this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
-       if(this.turnPlayer==1) {
+        this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
+        if(this.turnPlayer==1) {
             this.round++;
             Boolean anyPlayerHasNoTroops = players.stream().anyMatch(player->player.getTroops()<=0);
             if(gameDeck.isEmpty() || anyPlayerHasNoTroops) setFinished(true);

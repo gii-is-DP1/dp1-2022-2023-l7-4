@@ -712,12 +712,12 @@
                                                                     </text>
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextDeckVP">
+                                                            <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.houseGuards[0].deckVP} " />
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextInnerCirclePV">
+                                                            <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.houseGuards[0].innerCirclePV} " />
                                                                 </b>
@@ -806,12 +806,12 @@
                                                                     </text>
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextDeckVP">
+                                                            <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.lolths[0].deckVP} " />
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextInnerCirclePV">
+                                                            <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.lolths[0].innerCirclePV} " />
                                                                 </b>
@@ -932,12 +932,12 @@
                                                                         </text>
                                                                     </b>
                                                                 </div>
-                                                                <div class="topTextDeckVP">
+                                                                <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                     <b>
                                                                         <c:out value="${game.sellZone[counter.index].deckVP} " />
                                                                     </b>
                                                                 </div>
-                                                                <div class="topTextInnerCirclePV">
+                                                                <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                     <b>
                                                                         <c:out value="${game.sellZone[counter.index].innerCirclePV} " />
                                                                     </b>
@@ -1028,12 +1028,12 @@
                                                                 </text>
                                                             </b>
                                                         </div>
-                                                        <div class="topTextDeckVP">
+                                                        <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                             <b>
                                                                 <c:out value="${card.deckVP} " />
                                                             </b>
                                                         </div>
-                                                        <div class="topTextInnerCirclePV">
+                                                        <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                             <b>
                                                                 <c:out value="${card.innerCirclePV} " />
                                                             </b>
