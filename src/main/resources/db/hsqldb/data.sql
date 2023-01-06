@@ -17,16 +17,16 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'UNO Ini Z2',3,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'DOS Ini Z2',3,TRUE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'TRES blanca Z2',3,FALSE,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'CUATRO Ini Z3',6,TRUE,3);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'CINCO Ini Z1',6,TRUE,1);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (1,'UNO Ini Z2',3,TRUE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (2,'DOS Ini Z2',4,TRUE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (3,'TRES blanca Z2',5,FALSE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (4,'CUATRO Ini Z3',6,TRUE,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone) VALUES (5,'CINCO Ini Z1',6,TRUE,2);
 
 -- PATHS
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,1);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,3);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,0);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,5,3);-- GIVES ERROR
@@ -49,6 +49,7 @@ INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUE
     (2,1),
     (2,2),
     (2,3),
+
 
     (3,1),
     (3,2),
@@ -80,7 +81,7 @@ INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas'
 
 -- GAMES
 INSERT INTO games(id,date,name,map_template_id) VALUES  (1,'2002-04-08','Partida 1',1);
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',1,1,2,TRUE);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',2,1,2,TRUE);
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 G1', 'daviddhc',10,10,1,1);

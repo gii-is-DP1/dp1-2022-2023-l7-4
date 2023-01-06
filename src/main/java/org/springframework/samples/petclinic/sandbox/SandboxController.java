@@ -43,7 +43,6 @@ public class SandboxController {
     @GetMapping("/sandbox")
     public ModelAndView showPositions(){
         Game game = gameService.getGameById(2);
-        gameInitializer.loadGame(game);
         List<City> cities = cityService.getCitiesByGame(game);
         List<Path> paths = pathService.getPathsByGame(game);
 
@@ -53,36 +52,5 @@ public class SandboxController {
         result.addObject("freePositions", positionService.getFreePositions());
         return result;
     }
-    // @GetMapping(value = "/sandbox/{id}/occupy")
-    // public String occupy(@PathVariable("id") Integer id) throws DataAccessException {
-    //     Position p= this.positionService.findPositionById(id);
-    //     if(p.getOccupied()) p.setOccupied(false);
-    //     else p.setOccupied(true);
-    //     this.positionService.save(p);
-    //     return "redirect:/sandbox";
-    // }
-        
-    // @GetMapping(value = "/positions/{id}/adjacents")
-    // public String adjacents(@PathVariable("id") Integer id) throws DataAccessException {
-    //     Position position= this.positionService.findPositionById(id);
-    //     positionService.calculateAdjacents(position);
-    //     this.positionService.save(position);
-    //     return "redirect:/positions";
-        
-    // }
-    //TODO choose the zones in populate method
-    @GetMapping(value = "/sandbox/populate")
-    public String populate(){
 
-        // List<Integer> zoneList=List.of(1,2,3);
-        
-        // this.positionService.populatePositions( cityService.getCities(),pathService.getPaths(), zoneList);
-        return "redirect:/sandbox";
-    }
-
-    @GetMapping(value = "/sandbox/2")
-    public String dos(){
-
-        return "redirect:/welcome";
-    }
 }
