@@ -42,12 +42,21 @@ public class MarketPlayerMoveCardsService {
         int playerInfluence =player.getInfluence();
         int cardCost= card.getCost();
 
-        CheckCardMovement.sellZoneContainsCard(game.getSellZone(),card);
+        CheckCardMovement.sellZoneLolthsGuardsContainsCard(game.getSellZone(),game.getLolths(), game.getHouseGuards(),card);
         CheckCardMovement.playerHasEnoughInfluenceToBuyCard(playerInfluence,cardCost);
  
-        Integer index = game.getSellZone().indexOf(card);
-        moveOneCardFromSellZoneToDiscarded(card, game, player);
-        marketMoveCardsService.moveFromGameDeckToSellZone(game,index);
+        if (game.getSellZone().contains(card)){
+            Integer index = game.getSellZone().indexOf(card);
+            moveOneCardFromSellZoneToDiscarded(card, game, player);
+            marketMoveCardsService.moveFromGameDeckToSellZone(game,index);
+        }
+        else if (game.getLolths().contains(card)){
+            moveOneCardFromLolthsToDiscarded(card, game, player);
+        }
+        else if (game.getHouseGuards().contains(card)){
+            moveOneCardFromGuardsToDiscarded(card, game, player);
+        }
+        
         player.setInfluence(playerInfluence-cardCost);
         playerService.savePlayer(player);
         gameService.save(game);
@@ -63,6 +72,22 @@ public class MarketPlayerMoveCardsService {
             sellZone.add(sellZone.indexOf(card), cardService.getCardById(0));
         } 
         sellZone.remove(card);
+        discarded.add(card);
+    }
+
+    private void moveOneCardFromLolthsToDiscarded(Card card, Game game, @Valid Player player) {
+        List<Card> lolths = game.getLolths();
+        List<Card> discarded = player.getDiscarded();
+        
+        lolths.remove(card);
+        discarded.add(card);
+    }
+
+    private void moveOneCardFromGuardsToDiscarded(Card card, Game game, @Valid Player player) {
+        List<Card> guards = game.getHouseGuards();
+        List<Card> discarded = player.getDiscarded();
+        
+        guards.remove(card);
         discarded.add(card);
     }
 

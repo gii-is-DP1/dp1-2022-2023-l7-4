@@ -19,7 +19,8 @@ import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.path.Path;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.player.Player;
-import org.springframework.security.access.method.P;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "positions")
 @Entity
+@JsonIgnoreProperties({"city","path","game","adjacents","inPath","inCity"})
 public class Position{
 
     @Id
@@ -56,16 +58,8 @@ public class Position{
     @ManyToMany
     @JoinTable(
         inverseJoinColumns = @JoinColumn(name = "adjacent_id"))
-    private List<Position> adjacents=null;
+    private List<Position> adjacents=new ArrayList<>();
     
-    public List<Position> getAdjacentsInternal(){
-        if(adjacents != null) return adjacents;
-        return new ArrayList<>();
-        
-    }
-    public void addAdjacents(List<Position> positions) {
-		getAdjacentsInternal().addAll(positions);
-	}
     
     public boolean isOccupied(){
         return player!=null;
@@ -92,6 +86,14 @@ public class Position{
         return p;
     }
 
-    
-    
+    //For JSON when in path
+    public Double getX(){
+        return 50.;
+    }
+    public Double getY(){
+        return 50.;
+    }
+    public String getColor(){
+        return player==null?null:player.color();
+    }
 }

@@ -32,4 +32,9 @@ public class IntializeGame {
         }
         return game;
     }
+
+    public void loadAutomaticWhitePositions(Game game){
+        positionInitialiter.setWhiteTroopsPositions(game);
+        gameService.save(game);
+    }
 }

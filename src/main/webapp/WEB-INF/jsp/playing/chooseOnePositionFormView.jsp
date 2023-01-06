@@ -14,8 +14,8 @@
     <div class="fullscreen-game">  
         <div class="tophud">
             <div class="tophud-box tophud-b1">
-                <div class="player-div">
-                    JUGADOR ${turn} - ${player.name}
+                <div class="player-div"  style="color: ${player.house.hexColor};">
+                    JUGADOR&nbsp${turn} - ${player.name}
                 </div>
             </div>
             <div class="tophud-box tophud-b2">
@@ -31,7 +31,7 @@
                         <a href="/play/${gameId}/round/${round}" class="skip-action-button" style="width: 8vmax; margin-right: 2vmax;">CANCELAR</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="/play/${gameId}/round/${round}/skip" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
+                        <a href="skip" class="skip-action-button" style="margin-right: 2vmax;">OMITIR ACCIÓN</a>
                     </c:otherwise>
                 </c:choose>
                 <div class="round-div">
@@ -99,8 +99,19 @@
                     </abbr>
                 </div>
             </div>
-            <div class="positions-round0">
-               <o:out>${special}</o:out> 
+            <div class="positions-round0" style="flex-direction: column;">
+                <c:if test="${special!=null}">
+                    <div class="special-box">
+                        <o:out><b>${special}</b></o:out> 
+                    </div>
+                </c:if>
+                <c:if test="${noSpyToPlace!=null}">
+                    <c:if test="${noSpyToPlace==true}">
+                        <div class="special-box">
+                            <o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> 
+                        </div>
+                    </c:if>
+                </c:if>
                 <div class="position-scroll">
                     <div class="position-totally">
                         <form:form modelAttribute="idposition">
@@ -112,15 +123,19 @@
 
                 <!--POPUPS AQUI!!!-->
                 <div class="popup" id="VpPopUp">
-                    <a onclick="dontShowPopUp('VpPopUp')" href="JavaScript:void(0)" class="x">x</a>
-                    <div class="ls">
-                        <p>Puntos por control simple: ${vp.controlVP}</p>
-                        <p>Puntos por control total: ${vp.totalControlVP}</p>
-                        <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
-                        <p>Puntos en mano: ${vp.handVP}</p>
-                        <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
-                        <p>Puntos en mazo: ${vp.deckVP}</p>
-                        <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
+                    <div class="popup-blue-box">
+                        <a onclick="dontShowPopUp('VpPopUp')" href="JavaScript:void(0)" class="x">&times;</a>
+                        <div class="ls">
+                            <p>Puntos por control simple: ${vp.controlVP}</p>
+                            <p>Puntos por control total: ${vp.totalControlVP}</p>
+                            <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
+                            <p>Puntos en mano: ${vp.handVP}</p>
+                            <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
+                            <p>Puntos en mazo: ${vp.deckVP}</p>
+                            <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
+                            <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
+                            <p>Puntos acumulados por marcadores de control: ${vp.markerVP}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,47 +146,71 @@
 </body>
 <style>
     .popup {
-    background-color: rgba(16, 64, 112, 0.814);
-    height: 80%;
-    width: 85%;
-    visibility: hidden;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.563);
+        height: 100%;
+        width: 100%;
+        left: 0;
+        visibility: hidden;
+        top: 0;        
+        position:fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2vmax;
+    }
+    .popup-blue-box{
+        background-color: rgba(16, 64, 112, 0.814);
+        height: 85%;
+        width: 80%;
+        display: flex;
+        border: 3px;
+        font-size: 2vmax;
+        border-radius: 1vmax;
+    }
+    .popup .ls{
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        color: aliceblue;
+    }
+    .x {
+        margin-left: 10px;
+        color: rgb(255, 0, 0);
+        user-select: none;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        align-self: flex-start;
+        font-family: monospace;
+        cursor: pointer;
+    }
+    p{
+        margin: 10px;
+    
+    }
+    #icon{
+        width: 50px;
+        height: 50px;
+        color: red;
+    
+    }
+.special-box{
     display: flex;
-    border: 3px;
-    border-radius: 10px;
-    font-size: 2vmax;
-}
-.popup .ls{
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 10%;
+    background-color: rgba(16, 64, 112, 0.814);
     color: aliceblue;
-}
-.popup .x {
-    margin-left: 10px;
-    color: rgb(255, 0, 0);
-    user-select: none;
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    align-self: flex-start;
-    font-family: monospace;
-}
-p{
-    margin: 10px;
-
-}
-#icon{
-    width: 50px;
-    height: 50px;
-    color: red;
-
+    margin-bottom: 1vmax;
+    font-size: 1.2vmax;
+    border-color: black;
+    border-radius: 1vmax;
+    border-style: solid;
+    border-width: 0.3vmax;
 }
 
 </style>

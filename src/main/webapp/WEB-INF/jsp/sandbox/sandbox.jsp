@@ -4,330 +4,421 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.js"></script>
+
 <style>
+  #graph {
+    background-color: rgb(39, 11, 65);
+    width: 50vmax;
+    height: 50vmax;
+    overflow: scroll;
+  }
 
 </style>
-<petclinic:layout pageName="positions">
-  <div >
-  <div id = "aa" ></div>
-  <svg id="graph" style="background-color: rgb(39, 11, 65)"></svg>
+
+<body>
+
+  <div>
+    <svg id="graph"></svg>
   </div>
-  <script>
-
-    let cities=[]
-    let y=[]
-  </script>
-<c:forEach items="${cities}" var="city">
-  <c:out value="${city.name}"/>
-  <script>
-    cities.push({ 
-      id: parseInt("${city.id}")  ,
-      name: "${city.name}",
-      zone: parseInt("${city.zone}"),
-      vp: parseInt("${city.vpEndgameValue}"),
-      isStartingCity: "true" =="${city.isStartingCity}",
-      capacity: parseInt("${city.capacity}"),
-      x: 50,
-      y: 50
-    
-    })
-    
-    
-    </script>
-</c:forEach>
-
-<c:forEach items="${paths}" var="path">
-  <script>
-    y.push({ 
-      id: parseInt("${path.id}")  ,
-      pathName: "${path}",
-      target: parseInt("${path.firstCity.id}"),
-      source: parseInt("${path.secondCity.id}"),
-      capacity: parseInt("${path.capacity}"),
-      type: "html"
-    
-    })
-    
-    
-    </script>
-</c:forEach>
+</body>
 
 
-<script>
-  console.log(y)
-  let html = "<div><h2>Mapa Interactivo</h2></div>";
 
-  document.getElementById("aa").innerHTML = html;
-</script>
+
+
 
 
 
 <script>
 
-(function (d3$1) {
-  'use strict';
 
-  const network = {}
+  function getGame() {
+    // return fetch('/api/game/${game.id}')
+    return fetch('/api/game/2')
+      .then(response => response.json());
+  }
+  getGame().then(game => {
+    const cities = game.cities;
+    const paths = game.paths;
+    console.log(game)
+    let nodes = []
+    let links = []
+    const network = {}
 
 
-  network.nodes = cities;
-  network.links = y;
-  const positionColor =null;
-  const lineWidth = 4;
-  const lineColor = "lightgrey";
-  const strokeColor = "lightgrey";
-  const circleRadius = 20;
-  const forceStrength = 0.;
-  const linkStrength = 0.;
-  const positionRadius = 10;
-  function parentWidth(elem) {return elem.parentElement.clientWidth;}
-  function parentHeight(elem) {return elem.parentElement.clientHeight;}
-  const width = parentWidth(document.getElementById('graph'));
-  // const height = parentHeight(document.getElementById('graph'));
-  const height = 500;
 
-  //svg es el tag <svg> de html a rellenar
-  var svg = d3$1.select("svg")
-      svg.attr("width",width)
-      svg.attr("height",height);
+    const citySize = 200;
+    const linkSize = citySize/1.5;
+    const lineWidth = "0.5%";
+    const lineColor = "lightgrey";
+    const strokeColor = "#000"
+    const circleRadius = 20;
+    const forceStrength = 1.0;
+    const linkStrength = 1.0;
+    const positionRadius = citySize / 12;
+    function parentWidth(elem) { return elem.parentElement.clientWidth; }
+    function parentHeight(elem) { return elem.parentElement.clientHeight; }
+    const width = parentWidth(document.getElementById('graph'));
+    const height = parentWidth(document.getElementById('graph'));
 
-  //centrado en el svg
-  network.nodes.forEach(node => {
-    node.x = (node.x * width) / 100;
-    node.y = (node.y * height) / 100;
-  });
-    
-  //calula direccion del camino respecto a los ids
-  network.links.forEach(link => {
-    //objetos de entrada y salida
-    let source = network.nodes.find(node => node.id == link.source);
-    let target = network.nodes.find(node => node.id == link.target);
 
-    if (source.x < target.x) {
-    	link['dir'] = 'forward';
-    } else {
-    	link['dir'] = 'reverse';
-      let temp = link.source;
-      link.source = link.target;
-      link.target = temp;
+    for (let index = 0; index < cities.length; index++) {
+      const city = cities[index];
+      city['nodeId'] = "city_" + city.id;
+      city['nodeType'] = "city";
+      nodes.push(city);
+
     }
-  });
+
+    function getCoordinate(x1, y1, x2, y2, index, capacity, offset) {
+      // Calculamos la longitud del segmento entre los dos puntos originales
+      const segmentLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+      // Calculamos el incremento en cada coordenada para ir del primer al último punto
+      const dx = (x2 - x1) / (capacity - 1);
+      const dy = (y2 - y1) / (capacity - 1);
+      // Añadimos el offset al punto inicial
+      x1 += offset * (x2 - x1) / segmentLength;
+      y1 += offset * (y2 - y1) / segmentLength;
+      // Calculamos el punto en el índice dado
+      const x = x1 + index * dx;
+      const y = y1 + index * dy;
 
 
-  var link_template = d3.linkVertical()
-      .source(function(d) {
-        let node = network.nodes.find(node => node.id == d.source);
-  	    return [node.x, node.y];
+      return { x, y };
+    }
+
+    function findCoordsForPath(path, capacity, index) {
+
+      let x1 = path.firstCity.x;
+      let x2 = path.secondCity.x;
+      let y1 = path.firstCity.y;
+      let y2 = path.secondCity.y;
+      const m = (x1 + x2) / 2
+      const d = (x2 - x1)
+      let x = x1 + (index * (x2 - x1)) / (capacity + 1)
+      let y = y1 + (index * (y2 - y1)) / (capacity + 1)
+      return { x: x, y: y }
+    }
+    for (let i = 0; i < paths.length; i++) {
+      const path = paths[i];
+      if(path.capacity==0){
+        links.push({ source: "city_" + path.firstCity.id, target: "city_" + path.secondCity.id });
+      }else if(path.capacity==1){
+        links.push({ source: "city_" + path.firstCity.id, target: "pathPosition_" + path.positions[0].id  });
+        links.push({ source: "pathPosition_" + path.positions[0].id , target: "city_" + path.secondCity.id });
+        let alonePosition = path.positions[0];
+          alonePosition['nodeId'] = "pathPosition_" + alonePosition.id;
+          alonePosition['nodeType'] = "position";
+          
+        alonePosition.x = findCoordsForPath(path, path.capacity, 1).x;
+        alonePosition.y = findCoordsForPath(path, path.capacity,  1).y;
+        nodes.push(alonePosition);
+      }else{
+
+        for (let index = 0; index < path.capacity; index++) {
+          let pathPosition = path.positions[index];
+          pathPosition['nodeId'] = "pathPosition_" + pathPosition.id;
+          pathPosition['nodeType'] = "position";
+          
+        pathPosition.x = findCoordsForPath(path, path.capacity, index + 1).x;
+        pathPosition.y = findCoordsForPath(path, path.capacity, index + 1).y;
+        nodes.push(pathPosition);
+        
+        // Asigna valores por defecto a todas las propiedades del objeto link
+        let link = {
+          source: "pathPosition_" + pathPosition.id,
+          target: "pathPosition_" + pathPosition.id
+        };
+        // Modifica los valores de las propiedades en función de las distintas condiciones
+        if (index === 0) {
+          // Primer elemento
+          link.source = "city_" + path.firstCity.id;
+          links.push(link);
+          
+        } else if (index === path.capacity - 1) {
+          // Último elemento
+          link.target = "city_" + path.secondCity.id;
+          links.push(link);
+          links.push({ source: "pathPosition_" + (pathPosition.id - 1), target: "pathPosition_" + pathPosition.id })
+          
+        } else {
+          // Elemento intermedio
+          link.source = "pathPosition_" + (pathPosition.id - 1);
+          links.push(link);
+
+        }
+      }
+    }
+    }
+    console.log(network)
+    network.nodes = nodes;
+    network.links = links;
+    //MAIN SVG, this stores everything inside
+    var svg = d3.select("svg").append("g")
+    
+    //GENERATING LINKS
+    var link_template = d3.linkVertical()
+      .source(function (d) {
+        let node = network.nodes.find(node => node.nodeId == d.source);
+        return [node.x, node.y];
       })
-      .target(function(d) {
-        let node = network.nodes.find(node => node.id == d.target);
+      .target(function (d) {
+        let node = network.nodes.find(node => node.nodeId == d.target);
         return [node.x, node.y];
       });
 
-
-
-
-
-  var link = svg.selectAll(".linePath")
+    var link = svg.append("g")
+      .attr("class", "links").selectAll(".linePath")
       .data(network.links)
       .join("path")
       .attr("d", link_template)
-  		.attr("class", "linePath")
-  		.attr("id", function(d, i) { return "linePath_"+i; })
-  		.attr("stroke-width", lineWidth)
+      .attr("class", "linePath")
+      .attr("id", function (d, i) { return "linePath_" + i; })
+      .attr("stroke-width", lineWidth)
       .attr("stroke", lineColor)
       .attr("fill", "none")
-  		.classed("link", true); 
+      .classed("link", true);
 
 
-  var linkText = svg.selectAll(".lineText")
-      .data(network.links)
-      .enter().append("text")
-  		.attr("class", "lineText")
-      .attr("fill", lineColor)
-  		.attr('dy', -4)
-      .append("textPath")
-  		.attr("xlink:href", function(d,i) { return "#linePath_"+i; })
-      .style("text-anchor", d => d.dir == 'forward' ? "end" : "start" )
-  		.attr("startOffset", d => d.dir == 'forward' ? "85%" : "45px" )
-  		.text(function(d) {return ""+d.pathName; });//+d.pathName
 
-  //add mouse over chart
-  var tooltip = d3.select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("z-index", "10")
-      .style("visibility", "hidden")
-      .style("background", "#fff")
-      .text("a simple tooltip");
 
-  var node = svg.append("g")
-      	.attr("class", "nodes")
+    //GENERATING NODES
+    var node = svg.append("g")
+      .attr("class", "nodes")
       .selectAll("g")
       .data(network.nodes)
       .enter().append("g")
-      .on("mouseover", function(event, d){
-        console.log('in mouseover: ' + d.name );
-        
-  var message = `<dl><dt>${d.name}</dt>`;
-        // d.listeners.forEach(listener => {
-  	    //   message += `<dt>${listener}</dt>`;    	
-        // });
-  			message += '</dl>';
-        tooltip.html(message); 
-        return tooltip.style("visibility", "visible");})
-      .on("mousemove", function(event){
-        console.log('in mousemove');
-        return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-      .on("mouseout", function(){
-        console.log('in mouseout');
-        return tooltip.style("visibility", "hidden");})
-  		.call(d3.drag().on("drag", dragged));
+      .attr("id", d => d.nodeId).attr("class", d => d.nodeType + "_group")
+      .call(d3.drag().on("drag", dragged));
 
-      var cityG = node.append("g").attr("class", (d)=>d.name);
-     
-  var image = cityG.append("svg:image")
-        .attr("xlink:href", (d)=>d.isStartingCity?"/resources/images/starting_city.png":"/resources/images/white_city.png")
-        .attr("class", "img")
-        .attr("id",function(d){"c"+d.id})
-        .attr("x",  -60)
-        .attr("y",  -60)
-        .attr("width", "120")
-        .attr("height", "120")
-        
-            
+    //CITIES GROUP
+    var cityG = svg.selectAll("g.city_group");
+    //POSITIONS GROUP
+    var positionG = svg.selectAll("g.position_group");
+    
+    var position = svg.selectAll("g.position_group")
+    var backCiricle = position.append("circle")
+    .attr("cx", 0)
+    .attr("cy", 0)
+      .attr("r", positionRadius)
+      .attr("stroke", "white")
+      .attr("stroke-width", "2")
+      .attr("fill", d => d.color)
 
-      //   var positionC = svg.selectAll(".cityG").data(network.nodes)
-      //   .append("text").text(function(d) {
-      //   return d.name;
-      // })
-      // .attr('fill' , "white")
-  		// .attr("text-anchor", "middle")
-  		// .attr('y', -circleRadius-15);
+    position.filter(d=> d.occupied).append("svg:image")
+      .attr("xlink:href", "/resources/images/troop_black.png")
+      .attr("class", "img")
+      .attr("width", positionRadius*1.5)
+      .attr("height", positionRadius*1.5)
+      .attr("x", -positionRadius/1.35)
+      .attr("y", -positionRadius/1.35)
 
 
-  var labels = cityG.append("text")
-      .text(function(d) {
+    var image = cityG.append("svg:image")
+      .attr("xlink:href", d => d.startingCity ? "/resources/images/starting_city.png" : "/resources/images/white_city.png")
+      .attr("class", "img")
+      .attr("id", function (d) { "c" + d.id })
+      .attr("x", -citySize / 2)
+      .attr("y", -citySize / 2)
+      .attr("width", citySize)
+      .attr("height", citySize)
+      .on("click", function () { window.open("https://media.criticalhit.net/2021/08/Halo-tv-series.jpg"); })
+
+
+
+
+    var labels = cityG.append("text")
+      .text(function (d) {
         return d.name;
       })
-      .attr('fill' ,  (d)=>{return d.isStartingCity?"#fff":"#000" })
-  		.attr("text-anchor", "middle")
-  		.attr("font-size", 10)
-  		.attr('y', -20);
+      .attr("text-anchor", "middle")
+      .attr("font-size", citySize/10)
+      .attr("fill", (d) => d.startingCity ? "white" : "black" )
+      .attr('y', -citySize/5.4);
 
-      var vp = cityG.append("text")
-      .text(function(d) {
-        return d.vp;
+    var vpEndgameValue = cityG.append("text")
+      .text(function (d) {
+        return d.vpEndgameValue;
       })
-      .attr('fill' , (d)=>{return d.isStartingCity?"#fff":"#000" })
-  		.attr("text-anchor", "middle")
-  		.attr('x', 40)
-      .attr("y",30);
+      .attr('fill', (d) => d.startingCity ? "#fff" : "#000")
+      .attr("text-anchor", "middle")
+      .attr("font-size", "23")
+      .attr('x', 1)
+      .attr("y",  citySize/3.2);
 
-  var div = svg.append("div")	
-      .attr("class", "tooltip")				
+    var div = svg.append("div")
+      .attr("class", "tooltip")
       .style("opacity", 0);
 
-  var simulation = d3.forceSimulation()
-      .force("link", d3.forceLink().id(function(d) { return d.id; }))
-      .force("charge", d3.forceManyBody())
-  		
-      .force("center", d3.forceCenter(width / 2, height / 2)
-      .strength(forceStrength));
 
-      for (let i = 0; i < cities.length; i++) {
-        var city = cities[i]
-        var gg=".cityG"+city.id
-        var singlecity = d3.select(gg)
-        let capacity = city.capacity
-        for (let positionIndex = 0; positionIndex < capacity; positionIndex++) {
-          const color = city.isStartingCity?"#fff":"#000"  
-          var position = singlecity.append("circle")
-        .attr("r", positionRadius)
-        .attr("stroke" , lineColor)
-        .attr("stroke-width","1")
-        .attr("fill",color)
-        .attr("cx",(()=>{
-          let c = city.capacity
-          let r = positionRadius
-          let i = positionIndex
-          console.log(city.name)
-          console.log("c:"+c)
-          console.log("i"+i)
-          return (i*2*r)-((c-1)*r)
-          // return positionIndex*50
 
-        }))
-        .attr("cy",0)
       
-      }
-      }
-
-
-  // var circle = circleG.append("circle") 
-  //     .attr("r", circleRadius)
-  //     .attr("fill", nodeColor); 
- async function addPositionsToCity(city,cityGroup) {
-    let capacity = city.capacity
-    for (let positionIndex = 0; positionIndex < capacity; positionIndex++) {
-      const color = city.isStartingCity?"#fff":"#000"  
-      var position = cityGroup.append("circle")
+      cities.forEach(city => {
+        var spyPositions = city.spyPositions;
+        var troopPositions = city.troopPositions;
+        var selectedCity = svg.select("#city_"+city.id)
+        var spies = selectedCity.append("g").attr("class","spies")
+        
+        for (let index = 0; index < spyPositions.length; index++) {
+          const spyPosition = spyPositions[index];
+        spies.append("circle")
+      .attr("cx", ((-1)**(index)) * citySize/2.2)
+      .attr("cy", (index<2) *  citySize/1.5 -citySize/2.9)
       .attr("r", positionRadius)
-      .attr("stroke" , strokeColor)
-      .attr("stroke-width","1")
-      .attr("fill","none")
-      .attr("cx",(()=>{
-        let c = city.capacity
-        let r = 2*positionRadius+5
-        let i = positionIndex
-        console.log(city.name)
-        console.log("c:"+c)
-        console.log("i"+positionIndex)
-        return (i*2*r)-((c-1)*r)
-        // return -8*positionRadius*(1-cap)+positionRadius*(1-cap)*offset
-      }))
-      .attr("cy",0).on("click", function() { window.open("https://media.criticalhit.net/2021/08/Halo-tv-series.jpg"); })
+      .attr("stroke", spyPosition.occupied?"#ffff":"#fff1")
+      .attr("stroke-width", "2")
+      .attr("fill", spyPosition.color===null?"#fff0":spyPosition.color)
+          //TODO get out of the for, is repeated. get the index by de d. ...
+      svg.selectAll("g.spies").filter(d=> d.spyPositions[index].occupied).append("svg:image")
+      .attr("xlink:href", "/resources/images/spy_black.png")
+      .attr("class", "img")
+      .attr("width", positionRadius*1.5)
+      .attr("height", positionRadius*1.5)
+      .attr("x", ((-1)**(index)) * citySize/2.2-12)
+      .attr("y", (index<2) *  citySize/1.5 -citySize/2.9 -14 )
  
-      
     }
- }
+    for (let index = 0; index < troopPositions.length; index++) {
+      const troopPosition = troopPositions[index];
+      
+      var troops = selectedCity.append("g").attr("class","troopsInCity")
+      troops.append("circle")
+  
+  .attr("cx", () => {
+    if(city.capacity<3){
+      let c = city.capacity;
+      let space = positionRadius + 3;
+      return ((index * 2 * space) - ((c - 1) * space));
+  
+    }else{
+      if(index<3){
+        let c = 3;
+        let space = positionRadius + 5;
+        return ((index * 2 * space) - ((c - 1) * space));
+      }else{
+        let c = city.capacity-3;
+        i = index -3;
+        let space = positionRadius + 5;
+        return ((i * 2 * space) - ((c - 1) * space));
+      }
+    }
+  })
+  .attr("cy", ()=>{
+    var offset =  citySize/40;
+    if(city.capacity<=3)return offset;
+    return ( ((-1)**(1+index<=3))*(positionRadius+3) ) + offset
+    // return index<3?-positionRadius:+positionRadius;
+  })
+  .attr("r", positionRadius)
+    .attr("stroke", () => city.startingCity ? "#fff" : "#000")
+    .attr("stroke-width", "2")
+    .attr("fill", troopPosition.color===null?"#fff0":troopPosition.color)
+      
+    
+    
+    
+    
+    
+    troops.filter(()=>{return troopPosition.occupied}).append("svg:image")
+      .attr("xlink:href", "/resources/images/troop_black.png")
+      .attr("class", "img")
+      .attr("width", positionRadius*1.5)
+      .attr("height", positionRadius*1.5)
+  .attr("x", () => {
+    if(city.capacity<3){
+      let c = city.capacity;
+      let space = positionRadius + 3;
+      return ((index * 2 * space) - ((c - 1) * space)) -positionRadius/1.35;
+  
+    }else{
+      if(index<3){
+        let c = 3;
+        let space = positionRadius + 5;
+        return ((index * 2 * space) - ((c - 1) * space)) -positionRadius/1.35;
+      }else{
+        let c = city.capacity-3;
+        i = index -3;
+        let space = positionRadius + 5;
+        return ((i * 2 * space) - ((c - 1) * space)) -positionRadius/1.35;
+      }
+    }
+  })
+  .attr("y", ()=>{
+    var offset =  citySize/40;
+    if(city.capacity<=3)return offset -positionRadius/1.3;
+    return ( ((-1)**(1+index<=3))*(positionRadius+3) ) + offset -positionRadius/1.3
+    // return index<3?-positionRadius:+positionRadius;
+  })
+    }
+  
+
+  
+});
 
 
 
-  simulation
+
+
+
+
+//SIMULATION
+
+    const simulation = d3.forceSimulation(nodes)
+      .force("charge", d3.forceManyBody().strength(d => {
+        return d.nodeType === "city" ? -2000 : -1000;
+      }))  // <-- agrega esta línea
+      .force("center", d3.forceCenter(width / 4, height / 4))
+      .force("x", d3.forceX())
+      .force("y", d3.forceY())
+
+  .alphaDecay(0.01).restart()
+
+    simulation
       .nodes(network.nodes)
-      .on("tick", ticked);
+      .force("link", d3.forceLink(links).id(d => d.nodeId).distance(d => {
+        if(d.source.nodeType === "position" && d.target.nodeType === "position"){
+          return linkSize / 10;
+        }else if(d.source.nodeType === "city" && d.target.nodeType === "city"){
+          return linkSize*3;
+        }else{
+          return linkSize;
+        }
 
-  simulation.force("link")
-      .links(network.links)
-  		.strength(linkStrength);
+      }).strength(0.7))
+      .on("tick", render);
 
-  function dragged(event, d) {
-    d.x = event.x; d.y = event.y;
-    d3.select(this).attr("cx", event.x).attr("cy", event.y);
-    render();
-  }
+    function dragged(event, d) {
+      d.x = event.x; d.y = event.y;
+      d3.select(this).attr("cx", event.x).attr("cy", event.y);
+      render();
+    }
 
-  function ticked() {
-    render();
-  }
+    function ticked() {
+      render();
+    }
 
-  function render() {
-    link.attr("d", d3.linkHorizontal()
-        .x(function(d) { return d.x; })
-        .y(function(d) { return d.y; }));
+    function render() {
+      link.attr("d", d3.linkHorizontal()
+        .x(function (d) { return d.x; })
+        .y(function (d) { return d.y; }));
 
-    node
-        .attr("transform", function(d) {
+      node
+        .attr("transform", function (d) {
           return "translate(" + d.x + "," + d.y + ")";
         });
-  }
-  d3.selectAll("#GRACKLSTUGH").append('circle').attr("r", positionRadius)
-      .attr("stroke" , strokeColor)
-      .attr("stroke-width","1")
-      .attr("fill","red")
-}(d3));
-</script>
+    }
+    let zoom = d3.zoom().on('zoom', handleZoom);
 
-</petclinic:layout>
+    function handleZoom(e) {
+      d3.select('svg g')
+        .attr('transform', e.transform);
+    }
+    function initZoom() {
+      d3.select('svg')
+        .call(zoom);
+    }
+    initZoom();
+  });
+
+
+</script>

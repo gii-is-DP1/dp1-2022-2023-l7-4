@@ -64,7 +64,9 @@ public class PopulatePositionService {
             for(int i = 0; i< path.getCapacity();i++){
                 Position p = Position.of(path.getGame());
                 p.setPath(path);
+                path.getPositions().add(p);
                 positionRepository.save(p);
+                pathService.save(path);
             }
 
 

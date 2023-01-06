@@ -25,7 +25,15 @@ public class PlayerMoveCardsService {
 
 
 	public void draw5CardsFromDeckToHand(@Valid Player player) throws Exception{
-		drawFromDeckToHand(5, player);
+		Integer maxCard=player.getDiscarded().size()+player.getDeck().size();
+		if (maxCard==0){
+			
+		}
+		else if (maxCard<5){
+			drawFromDeckToHand(maxCard, player);
+		} else{
+			drawFromDeckToHand(5, player);
+		}
 	}
 	
 	public void drawFromDeckToHand(Integer numberOfCards,Player player) throws Exception{
@@ -58,6 +66,10 @@ public class PlayerMoveCardsService {
 
 	public void moveAllHandToDiscard(@Valid Player player) throws Exception{
 		moveAllAndSave(player.getHand(), player.getDiscarded(), player);
+	}
+
+	public void moveAllDeckToDiscarded(@Valid Player player) throws Exception{
+		moveAllAndSave(player.getDeck(),player.getDiscarded(),player);
 	}
 
 //	PROMOTE

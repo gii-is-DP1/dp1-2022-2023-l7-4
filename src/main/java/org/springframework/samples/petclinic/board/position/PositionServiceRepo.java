@@ -28,6 +28,14 @@ public class PositionServiceRepo {
         return positionRepository.findAllPositionByPathId(path_id);
     }
 
+    public List<Position> getWhiteTroopPositionsFromPath(Path path){
+        return positionRepository.findAllWhiteTroopPositionsByPathId(path.getId());
+    }
+
+    public List<Position> getTroopPositionsFromGame(Game game){
+        return positionRepository.findAllTroopPositionsByGameId(game.getId());
+    }
+
     @Transactional(readOnly = true)
     public List<Position> getPositionsFromCityId(int city_id){
         return positionRepository.findAllPositionByCityId(city_id);

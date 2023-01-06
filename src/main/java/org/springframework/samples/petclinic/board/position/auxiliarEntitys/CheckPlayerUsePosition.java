@@ -95,6 +95,12 @@ public class CheckPlayerUsePosition {
         .formattedError("Cada jugador debe jugar en su turno");
     }
 
+    public static void playerHasChooseAPositionInTheSameSite(Position position, Player player) throws Exception{
+        Preconditions.check(player.getGame().getLastSpyLocation().getAdjacents().contains(position))
+        .formattedError("No puedes elegir una posición que no se encuentre en el último sitio utilizado");
+    }
+    
+
 
     
     

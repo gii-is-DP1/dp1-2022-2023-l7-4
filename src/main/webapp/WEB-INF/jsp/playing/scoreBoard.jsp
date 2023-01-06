@@ -12,6 +12,8 @@
 <body>
     <div class="score-container">
         <div class="podium">
+            <c:choose>
+                <c:when test="${players.size()==2}">
             <div class="podium-item">
                 <div class="podium-player">
                     <c:forEach var="rank" items="${ranking}" begin="1" end="1">
@@ -30,6 +32,26 @@
                 <div class="podium-rank first">1
                 </div>
             </div>
+            </c:when>
+            <c:otherwise>
+                <div class="podium-item">
+                    <div class="podium-player">
+                        <c:forEach var="rank" items="${ranking}" begin="1" end="1">
+                            <c:out value="${rank.key}"></c:out>
+                        </c:forEach>
+                    </div>
+                    <div class="podium-rank second">2
+                    </div>
+                </div>
+                <div class="podium-item">
+                    <div class="podium-player">
+                        <c:forEach var="rank" items="${ranking}" begin="0" end="0">
+                            <c:out value="${rank.key}"></c:out>
+                        </c:forEach>
+                    </div>
+                    <div class="podium-rank first">1
+                    </div>
+                </div>
             <div class="podium-item">
                 <div class="podium-player">
                     <c:forEach var="rank" items="${ranking}" begin="2" end="2">
@@ -39,6 +61,8 @@
                 <div class="podium-rank third">3
                 </div>
             </div>
+            </c:otherwise>
+            </c:choose>
 
         </div>
         <div class="scoreboard">
@@ -75,6 +99,8 @@
 
         </div>
 
+        <a href="/" class="do-button">Salir de la partida</a>
+
     </div>
 
 </body>
@@ -85,10 +111,12 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        margin-bottom: 2rem;
         
     }
     .scoreboard{
         margin-top: 2em;
+        width: 80%;
     }
     .podium{
         display: flex;
@@ -134,7 +162,36 @@
         display: table-cell;
         justify-content: center;
         align-items: center;
-    }
+        text-align: center;
+    }.do-button{
+            width: 20rem;
+            height: 5rem;
+            background-color: #8a2be2;
+            border-radius: 1vmax;
+            border-color: rgb(52, 10, 83);
+            border-style: solid;
+            border-width: 0.2vmax;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5vmax;
+            transition-duration: 0.5s;
+        }
+        .do-button:hover{
+            text-decoration: none;
+            background-color: #ffffff;
+            border-radius: 1vmax;
+            border-color: rgb(52, 10, 83);
+            border-style: solid;
+            border-width: 0.2vmax;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 1.5vmax;
+            transition-duration: 0.3s;
+        }
 .table-striped > tbody > tr:nth-child(1) {
     background-color: #f9db5c;
  }

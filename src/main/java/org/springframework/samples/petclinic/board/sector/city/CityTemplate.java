@@ -35,13 +35,17 @@ public class CityTemplate extends Sector{
     @Column(name="starting_city",columnDefinition = "boolean default false")
     private Boolean startingCity=false;
     
-    @Column(columnDefinition = "integer default 0")
+    @Column(name="vp_controlled",columnDefinition = "integer default 0")
     private Integer vpControlled=0;
 
-    @Column(columnDefinition = "integer default 0")
+    @Column(name="influence_total_controlled",columnDefinition = "integer default 0")
     private Integer influenceTotalControlled=0;
     
     public Boolean isStartingCity (){
         return this.startingCity;
     }
+
+    //Coordinates in map
+    private Double x;
+    private Double y;
 }

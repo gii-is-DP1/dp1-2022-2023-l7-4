@@ -34,5 +34,8 @@ public class CityService {
         return getCities().stream().filter(c -> c.getGame()==game && c.getCityTemplate()==cityTemplate).findFirst().get();
     }
 
+    public List<City> getCitiesByGame(Game game){
+        return cityRepository.findBygame(game);
+    }
     
 }

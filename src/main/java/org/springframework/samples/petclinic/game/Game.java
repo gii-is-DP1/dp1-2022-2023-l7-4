@@ -35,6 +35,9 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.VictoryPoints;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +45,8 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name="games")
+@JsonIgnoreProperties(allowGetters = false, value = {"qualifying","winner","chosenPieceToMove","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
+})
 public class Game extends BaseEntity{
 
     @NotEmpty
@@ -56,8 +61,8 @@ public class Game extends BaseEntity{
     @Temporal(TemporalType.DATE)
     Date date = new Date();
 
-    @Column(columnDefinition = "integer default 0")
-    private Integer round=0;
+    @Column(columnDefinition = "integer default -1")
+    private Integer round=-1;
 
     @Min(1)
     @Column(columnDefinition = "integer default 1")
@@ -75,22 +80,29 @@ public class Game extends BaseEntity{
     
     @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
+
+    @ManyToOne
+    Card cardInPlay;
     
     @Column(columnDefinition = "boolean default false")
     Boolean lastActionSkipped= false;
 
-    @Column(columnDefinition = "boolean default true")
+    @Column(columnDefinition = "boolean default true",name="automatic")
     Boolean automaticWhiteTroops= true;
     
     //TODO  esto es para las acciones que piden suplantar una tropa en donde pusiste/devolviste espia
     @OneToOne()
     Position lastSpyLocation;
+
+    @OneToOne()
+    Position chosenPieceToMove;
     
     @ManyToOne()
     MapTemplate mapTemplate ;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     List<City> cities = new ArrayList<>();
+    
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     List<Path> paths = new ArrayList<>();
@@ -122,10 +134,6 @@ public class Game extends BaseEntity{
     @ManyToMany
     private List<Card> lolths = new ArrayList<>();
 
-    
-    //TODO esto es nuevo, almacena las cartas a ascender a final de turno
-    @ManyToMany
-    private List<Card> toBePromoted;
 
 
     
@@ -139,8 +147,8 @@ public class Game extends BaseEntity{
     }
     
     public void setNextPlayer(){
-       this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
-       if(this.turnPlayer==1) {
+        this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
+        if(this.turnPlayer==1) {
             this.round++;
             Boolean anyPlayerHasNoTroops = players.stream().anyMatch(player->player.getTroops()<=0);
             if(gameDeck.isEmpty() || anyPlayerHasNoTroops) setFinished(true);
@@ -156,15 +164,10 @@ public class Game extends BaseEntity{
         return getFinished();
     }
 
-    /*public Boolean isNotLoaded(){
-        return (getRound()==0 && getCurrentPlayer().equals(this.players.get(0)));
-    }*/
 
-    public void finishGame(){
-        this.finished=true;
-    }
+
     //TODO: COMPROBAR ESO
-
+   
     public Map<Player,Integer> getQualifyingTotalVp(){
         Map<Player,Integer> map= new LinkedHashMap<>();
         for(Player player:this.players){
@@ -180,7 +183,7 @@ public class Game extends BaseEntity{
                         (map1, map2) -> map1, LinkedHashMap::new));
         return resultado;
     }
-    
+
     public Map<Player, VictoryPoints> getQualifying(){
         Map<Player,VictoryPoints> map= new LinkedHashMap<>();
         for(Player player:this.players){
@@ -232,6 +235,7 @@ public class Game extends BaseEntity{
         vp.setTrophyHallVP(trophyHallVP);
         vp.setHandVP(handVP);
         vp.setEarnedVP(vpEarned);
+        vp.setMarkerVP(player.getMarkerVP());
         vp.setTotalVp();
         
         return vp;

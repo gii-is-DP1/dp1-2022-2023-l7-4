@@ -82,10 +82,13 @@ public class PlayerUsePositionService {
 
     @Transactional(rollbackFor = Exception.class)
     public void returnPiece(@Valid Position position,@Valid Player player) throws DataAccessException,Exception{
-        List<Position> playerPositions=
-        customListingPositionService.getPresencePositions(player.getId(),true);
-        CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
+        
         Player enemy=position.getPlayer();
+        if(!player.equals(enemy)){
+            List<Position> playerPositions=
+            customListingPositionService.getPresencePositions(player.getId(),true);
+            CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(position, playerPositions);
+        }
         if(position.getForSpy()){
             enemy.setSpies(enemy.getSpies()+1);
         }else{
@@ -98,9 +101,11 @@ public class PlayerUsePositionService {
 
     @Transactional(rollbackFor = Exception.class)
     public void movePiece(@Valid Position source,@Valid Position target,@Valid Player player) throws DataAccessException,Exception{
-        List<Position> playerPositions=
-        customListingPositionService.getPresencePositions(player.getId(),true);
-        CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(source, playerPositions);
+        if(!source.getPlayer().equals(player)){
+            List<Position> playerPositions=
+            customListingPositionService.getPresencePositions(player.getId(),true);
+            CheckPlayerUsePosition.playerHasChooseAPositionUsingPresence(source, playerPositions);
+        }
         CheckPlayerUsePosition.playerHasChooseTwoPositionsOfSameType(target, source);
         target.setPlayer(source.getPlayer());
         source.setPlayer(null);
@@ -124,6 +129,13 @@ public class PlayerUsePositionService {
         playerRepository.save(player);
         position.setPlayer(player);
         save(position);
+    }
+    @Transactional(rollbackFor =
+    {Exception.class})
+    public void supplantTroopInSite(Position position, Player player) throws DataAccessException
+    ,Exception{
+        CheckPlayerUsePosition.playerHasChooseAPositionInTheSameSite(position,player);
+        supplantTroop(position, player, false);
     }
     
 }

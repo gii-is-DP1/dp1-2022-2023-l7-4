@@ -11,10 +11,13 @@ import org.springframework.dao.DataAccessException;
 
 import org.springframework.samples.petclinic.house.House;
 import org.springframework.samples.petclinic.house.HouseService;
+import org.springframework.samples.petclinic.play.PositionInGameService;
 import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
-
+import org.springframework.samples.petclinic.board.position.Position;
+import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
 import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 
@@ -31,6 +34,16 @@ public class GameService {
 
     @Autowired
 	CityService cityService;
+
+	@Autowired
+	PositionServiceRepo positionServiceRepo;
+	
+	@Autowired
+	PositionInGameService positionInGameService;
+
+	@Autowired
+	PlayerService playerService;
+
 
 	@Transactional
 	public Collection<Game> getGameByName(String name){
@@ -79,6 +92,10 @@ public class GameService {
 	}
 
 	public void nextPlayerAndSave(Game game) throws DataAccessException{
+		Player actualPlayer=game.getCurrentPlayer();
+		actualPlayer.setPower(0);
+        actualPlayer.setInfluence(0);
+		this.playerService.savePlayer(actualPlayer);
 		game.setNextPlayer();
 		save(game);
 	}
@@ -89,10 +106,20 @@ public class GameService {
         save(game);
     }
 
-    public boolean enoughUnaligned(GameService gameService) {
-		//TODO
-        return false;
+    public boolean enoughUnaligned(Game game) {
+		Boolean res=false;
+		List<Position> positions =this.positionServiceRepo.getTroopPositionsFromGame(game);
+        Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
+		if(this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size()==numberOfWhiteTroopsToDeploy
+		 | this.positionInGameService.getAvailableFreeWhiteTroopPositions(game).size()<=numberOfWhiteTroopsToDeploy) res=true;
+        return res;
     }
+
+	public Long getNumberOfWhiteTroopsLeftToDeploy(Game game){
+		List<Position> positions =this.positionServiceRepo.getTroopPositionsFromGame(game);
+        Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
+		return numberOfWhiteTroopsToDeploy-this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size();
+	}
 
     
 }
