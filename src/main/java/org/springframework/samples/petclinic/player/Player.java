@@ -32,7 +32,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "players")
-@JsonIgnoreProperties({"power", "influence", "vpEarned", "user", "game","hand","played","discarded","innerCircle","handVPs","deck","markerVP","trophyHallVPs", "house", "troops", "spies", "markerVp", "trophyHall","white","new"})
+@JsonIgnoreProperties({"power", "influence", "vpEarned", "user","controlMarker","totalControlMarker", "game","hand","played","discarded","innerCircle","handVPs","deck","markerVP","trophyHallVPs", "house", "troops", "spies", "markerVp", "trophyHall","white","new"})
 public class Player extends BaseEntity{
 
 

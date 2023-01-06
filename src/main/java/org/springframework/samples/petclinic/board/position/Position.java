@@ -93,5 +93,7 @@ public class Position{
     public Double getY(){
         return 50.;
     }
-    
+    public String getColor(){
+        return player==null?null:player.color();
+    }
 }
