@@ -17,10 +17,10 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'UNO Ini Z2',3,TRUE,2,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'DOS Ini Z2',3,TRUE,2,2,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'TRES blanca Z2',3,FALSE,2,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CUATRO Ini Z3',6,TRUE,3,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (6,'UNO Ini Z2',3,TRUE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (3,'DOS Ini Z2',3,TRUE,2,2,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (4,'TRES blanca Z2',3,FALSE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (5,'CUATRO Ini Z3',6,TRUE,3,1,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CINCO Ini Z1',6,TRUE,1,1,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'SEIS blanca Z1',6,FALSE,1,6,2);
 

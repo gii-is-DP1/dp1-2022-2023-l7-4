@@ -1,17 +1,18 @@
 
 
-  window.init = (n) => {
-    console.log("inicado el mapa")
-    function getGame(n) {
-    return fetch('/api/game/'+n)
-    // return fetch('/api/game/2')
+  window.init = (gameId,selectedPositions,URL) => {
+    function getGame(id) {
+      return fetch('/api/game/'+id)
       .then(response => response.json());
-  }
-  getGame(n).then(game => {
-    console.log("pepito")
+    }
+    getGame(gameId).then(game => {
+    console.log("iniciando el mapa del juego "+gameId)
+    console.log("posiciones destacadas: "+selectedPositions)
+    console.log("URL: "+URL)
+    selectedPositions= selectedPositions===undefined?[]:selectedPositions;
     const cities = game.cities;
     const paths = game.paths;
-    console.log(game)
+    console.log("game fetched",game)
     let nodes = []
     let links = []
     const network = {}
@@ -24,8 +25,6 @@
     const lineColor = "lightgrey";
     const strokeColor = "#000"
     const circleRadius = 20;
-    const forceStrength = 1.0;
-    const linkStrength = 1.0;
     const positionRadius = citySize / 12;
     function parentWidth(elem) { return elem.parentElement.clientWidth; }
     function parentHeight(elem) { return elem.parentElement.clientHeight; }
@@ -41,22 +40,7 @@
 
     }
 
-    function getCoordinate(x1, y1, x2, y2, index, capacity, offset) {
-      // Calculamos la longitud del segmento entre los dos puntos originales
-      const segmentLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-      // Calculamos el incremento en cada coordenada para ir del primer al último punto
-      const dx = (x2 - x1) / (capacity - 1);
-      const dy = (y2 - y1) / (capacity - 1);
-      // Añadimos el offset al punto inicial
-      x1 += offset * (x2 - x1) / segmentLength;
-      y1 += offset * (y2 - y1) / segmentLength;
-      // Calculamos el punto en el índice dado
-      const x = x1 + index * dx;
-      const y = y1 + index * dy;
 
-
-      return { x, y };
-    }
 
     function findCoordsForPath(path, capacity, index) {
 
@@ -138,8 +122,8 @@
         return [node.x, node.y];
       });
 
-    var link = svg.append("g")
-      .attr("class", "links").selectAll(".linePath")
+    var link = svg.append("g").attr("class", "links")
+      .selectAll(".linePath")
       .data(network.links)
       .join("path")
       .attr("d", link_template)
@@ -162,29 +146,36 @@
       .attr("id", d => d.nodeId).attr("class", d => d.nodeType + "_group")
       .call(d3.drag().on("drag", dragged));
 
-    //CITIES GROUP
-    var cityG = svg.selectAll("g.city_group");
-    //POSITIONS GROUP
-    var positionG = svg.selectAll("g.position_group");
-    
-    var position = svg.selectAll("g.position_group")
-    var backCiricle = position.append("circle")
-    .attr("cx", 0)
-    .attr("cy", 0)
+      //POSITIONS GROUP
+      
+      var position = svg.selectAll("g.position_group").classed("selection", (position) => selectedPositions.indexOf(position.id) !== -1)
+      .on("click",(event)=>{
+        console.log(event.target.__data__.id)
+        if(selectedPositions.indexOf(event.target.__data__.id) !== -1){
+          document.getElementById('chosen-position').value = event.target.__data__.id
+          document.getElementById('choose-position-form').submit();
+        }
+      } )
+      var backCircle = position.append("circle")
+      .attr("cx", 0)
+      .attr("cy", 0)
       .attr("r", positionRadius)
       .attr("stroke", "white")
       .attr("stroke-width", "2")
       .attr("fill", d => d.color)
-
-    position.filter(d=> d.occupied).append("svg:image")
+      
+      
+      position.filter(d=> d.occupied).append("svg:image")
       .attr("xlink:href", "/resources/images/troop_black.png")
       .attr("class", "img")
       .attr("width", positionRadius*1.5)
       .attr("height", positionRadius*1.5)
       .attr("x", -positionRadius/1.35)
       .attr("y", -positionRadius/1.35)
-
-
+      
+      //CITIES GROUP
+      var cityG = svg.selectAll("g.city_group");
+      
     var image = cityG.append("svg:image")
       .attr("xlink:href", d => d.startingCity ? "/resources/images/starting_city.png" : "/resources/images/white_city.png")
       .attr("class", "img")
@@ -193,7 +184,7 @@
       .attr("y", -citySize / 2)
       .attr("width", citySize)
       .attr("height", citySize)
-      .on("click", function () { window.open("https://media.criticalhit.net/2021/08/Halo-tv-series.jpg"); })
+      
 
 
 
@@ -228,51 +219,74 @@
         var spyPositions = city.spyPositions;
         var troopPositions = city.troopPositions;
         var selectedCity = svg.select("#city_"+city.id)
-        var spies = selectedCity.append("g").attr("class","spies")
         
         for (let index = 0; index < spyPositions.length; index++) {
           const spyPosition = spyPositions[index];
+          var spies = selectedCity.append("g").attr("class","spies").attr("id","spy_"+spyPosition.id)
+          .classed("selection", selectedPositions.indexOf(spyPosition.id) !== -1)
+          .on("click",()=>{
+            console.log(spyPosition.id)
+            if(selectedPositions.indexOf(spyPosition.id) !== -1){
+              document.getElementById('chosen-position').value = spyPosition.id
+              document.getElementById('choose-position-form').submit();
+            }
+          } )
+
+
         spies.append("circle")
       .attr("cx", ((-1)**(index)) * citySize/2.2)
       .attr("cy", (index<2) *  citySize/1.5 -citySize/2.9)
       .attr("r", positionRadius)
       .attr("stroke", spyPosition.occupied?"#ffff":"#fff1")
       .attr("stroke-width", "2")
-      .attr("fill", spyPosition.color===null?"#fff0":spyPosition.color)
-          //TODO get out of the for, is repeated. get the index by de d. ...
-      svg.selectAll("g.spies").filter(d=> d.spyPositions[index].occupied).append("svg:image")
+      .attr("fill", ()=>{
+        if(spyPosition.color===null) return (selectedPositions.indexOf(spyPosition.id) !== -1)?"#fff8":"#fff1";
+        return spyPosition.color
+      });
+
+      spies.filter(()=>spyPosition.occupied)
+      .append("svg:image")
       .attr("xlink:href", "/resources/images/spy_black.png")
       .attr("class", "img")
       .attr("width", positionRadius*1.5)
       .attr("height", positionRadius*1.5)
       .attr("x", ((-1)**(index)) * citySize/2.2-12)
       .attr("y", (index<2) *  citySize/1.5 -citySize/2.9 -14 )
- 
     }
+
     for (let index = 0; index < troopPositions.length; index++) {
       const troopPosition = troopPositions[index];
       
       var troops = selectedCity.append("g").attr("class","troopsInCity")
+      .classed("selection", () => selectedPositions.indexOf(troopPosition.id) !== -1)
+      .on("click",()=>{
+        console.log(troopPosition.id)
+        if( selectedPositions.indexOf(troopPosition.id) !== -1){
+          document.getElementById('chosen-position').value = troopPosition.id
+          document.getElementById('choose-position-form').submit();
+        }
+        
+        // window.location.assign(URL+"/"+troopPosition.id)
+      } )
+      
       troops.append("circle")
-  
-  .attr("cx", () => {
-    if(city.capacity<3){
-      let c = city.capacity;
-      let space = positionRadius + 3;
-      return ((index * 2 * space) - ((c - 1) * space));
-  
-    }else{
-      if(index<3){
-        let c = 3;
-        let space = positionRadius + 5;
-        return ((index * 2 * space) - ((c - 1) * space));
-      }else{
-        let c = city.capacity-3;
-        i = index -3;
-        let space = positionRadius + 5;
-        return ((i * 2 * space) - ((c - 1) * space));
-      }
-    }
+      .attr("cx", () => {
+        if(city.capacity<3){
+          let c = city.capacity;
+          let space = positionRadius + 3;
+          return ((index * 2 * space) - ((c - 1) * space));
+      
+        }else if(index<3){
+            let c = 3;
+            let space = positionRadius + 5;
+            return ((index * 2 * space) - ((c - 1) * space));
+          }else{
+            let c = city.capacity-3;
+            i = index -3;
+            let space = positionRadius + 5;
+            return ((i * 2 * space) - ((c - 1) * space));
+          }
+        
   })
   .attr("cy", ()=>{
     var offset =  citySize/40;
@@ -284,9 +298,18 @@
     .attr("stroke", () => city.startingCity ? "#fff" : "#000")
     .attr("stroke-width", "2")
     .attr("fill", troopPosition.color===null?"#fff0":troopPosition.color)
+    
       
     
-    
+    troops.filter(()=>{return troopPosition.occupied})
+    .classed("selection", selectedPositions.indexOf(troopPosition.id) !== -1)
+    .on("click",(event)=>{
+      console.log(troopPosition.id)
+      if(selectedPositions.indexOf(troopPosition.id) !== -1){
+        document.getElementById('chosen-position').value = troopPosition.id
+        document.getElementById('choose-position-form').submit();
+      }
+    } );
     
     
     
@@ -318,10 +341,25 @@
     var offset =  citySize/40;
     if(city.capacity<=3)return offset -positionRadius/1.3;
     return ( ((-1)**(1+index<=3))*(positionRadius+3) ) + offset -positionRadius/1.3
-    // return index<3?-positionRadius:+positionRadius;
   })
     }
-  
+
+
+
+    function pulse() {
+      svg.selectAll(".selection")
+        .transition()
+          .duration(500)
+          .attr("opacity", 0.2)
+          .delay(500)
+        .transition()
+          .duration(300)
+          .attr("opacity", 1)
+          .on("end", pulse)
+          
+    }
+    
+    pulse();
 
   
 });
@@ -337,12 +375,11 @@
     const simulation = d3.forceSimulation(nodes)
       .force("charge", d3.forceManyBody().strength(d => {
         return d.nodeType === "city" ? -2000 : -2000;
-      }))  // <-- agrega esta línea
-      .force("center", d3.forceCenter(width / 2, height / 2))
+      }))  
+      .force("center", d3.forceCenter(width / 2, height / 2.5))
       .force("x", d3.forceX())
       .force("y", d3.forceY())
 
-  .alphaDecay(0.01).restart()
 
     simulation
       .nodes(network.nodes)
@@ -389,5 +426,6 @@
         .call(zoom);
     }
     initZoom();
+
   });
   }

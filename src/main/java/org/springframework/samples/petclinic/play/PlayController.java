@@ -3,16 +3,13 @@ package org.springframework.samples.petclinic.play;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.position.CustomListingPositionService;
 import org.springframework.samples.petclinic.board.position.PlayerUsePositionService;
 import org.springframework.samples.petclinic.board.position.Position;
 import org.springframework.samples.petclinic.board.position.PositionServiceRepo;
-import org.springframework.samples.petclinic.board.position.PricedPositionService;
 import org.springframework.samples.petclinic.board.position.auxiliarEntitys.Idposition;
-import org.springframework.samples.petclinic.board.sector.city.CityService;
-import org.springframework.samples.petclinic.board.sector.path.PathService;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.cardsMovement.MarketPlayerMoveCardsService;
 import org.springframework.samples.petclinic.game.EndTurnService;
@@ -117,6 +114,7 @@ public class PlayController {
 
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
         putPlayerDataInModel(game, player, result);
+        result.addObject("game", game);
         result.addObject("positions", initialPositions);
         result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
@@ -125,20 +123,18 @@ public class PlayController {
     }
 
     @PostMapping("{gameId}/round/0")
-    public ModelAndView chooseInitialPosition(@Valid Idposition idpos,BindingResult br
+    public ModelAndView chooseInitialPosition( @PathParam("positionId") Integer positionId
     ,@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         Player player=game.getCurrentPlayer();
         ModelAndView result=null;
-        if(br.hasErrors()){
-            result=new ModelAndView("redirect:/play/"+gameId);
-        }
         try{
-            Position position= positionServiceRepo.findPositionById(idpos.getId());
+            Position position= positionServiceRepo.findPositionById(positionId);
             this.playerUsePositionService.occupyTroopPosition(position, player,false);
             gameService.nextPlayerAndSave(game);
             result=new ModelAndView("redirect:/play/"+gameId);
         }catch(Exception e){
+            System.out.println("que fallo wey");
             result=new ModelAndView("redirect:/play/"+gameId);
         }
         return result;

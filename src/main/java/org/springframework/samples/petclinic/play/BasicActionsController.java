@@ -74,6 +74,7 @@ public class BasicActionsController {
         result.addObject("turn", game.getTurnPlayer());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
+        result.addObject("game", game);
         result.addObject("vp", game.getPlayerScore(actualPlayer));
         result.addObject("totalVp", game.getPlayerScore(actualPlayer).getTotalVp());
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(actualPlayer));
@@ -84,9 +85,11 @@ public class BasicActionsController {
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Game game=this.gameService.getGameById(gameId);
         Player actualPlayer=game.getCurrentPlayer();
+        Boolean basicAction = true;
         putPlayerDataInModel(game, actualPlayer, result);
         List<Position> positions=customListingPositionService
         .getPresenceTroopPositions(actualPlayer.getId(),false);
+        result.addObject("basicAction", basicAction);
         Boolean price = true;
         result.addObject("price", price);
         if(positions.isEmpty()){
@@ -134,12 +137,14 @@ public class BasicActionsController {
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Game game=this.gameService.getGameById(gameId);
         Player actualPlayer=game.getCurrentPlayer();
+        Boolean basicAction = true;
         putPlayerDataInModel(game, actualPlayer, result);
         Boolean price = true;
         result.addObject("price", price);
         result.addObject("positions",
         customListingPositionService
         .getEnemyPositionsByTypeOfGame(actualPlayer.getId(),false, true, null, game));
+        result.addObject("basicAction", basicAction);
         return result;
     }
 
@@ -171,12 +176,14 @@ public class BasicActionsController {
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Game game=this.gameService.getGameById(gameId);
         Player actualPlayer=game.getCurrentPlayer();
+        Boolean basicAction = true;
         putPlayerDataInModel(game, actualPlayer, result);
         Boolean price = true;
         result.addObject("price", price);
         result.addObject("positions",
         customListingPositionService
         .getEnemyPositionsByTypeOfGame(actualPlayer.getId(),true, true, null, game));
+        result.addObject("basicAction", basicAction);
         return result;
     }
 
