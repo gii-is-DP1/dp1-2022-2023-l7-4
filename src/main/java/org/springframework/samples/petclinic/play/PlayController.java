@@ -64,6 +64,7 @@ public class PlayController {
 
 
     public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
+        result.addObject("game", game);
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
         result.addObject("turn", game.getTurnPlayer());
@@ -114,7 +115,6 @@ public class PlayController {
 
         List<Position> initialPositions=positionInGameService.getInitialPositions(game);
         putPlayerDataInModel(game, player, result);
-        result.addObject("game", game);
         result.addObject("positions", initialPositions);
         result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
@@ -149,6 +149,7 @@ public class PlayController {
         List<Position> initialPositions=this.positionInGameService.getAvailableFreeWhiteTroopPositions(game);
         putPlayerDataInModel(game, player, result);
         result.addObject("positions", initialPositions);
+        result.addObject("game", game);
         result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
         result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
@@ -157,16 +158,14 @@ public class PlayController {
     }
 
     @PostMapping("{gameId}/chooseWhitePositions")
-    public ModelAndView processChosenWhitePosition(@Valid Idposition idpos,BindingResult br
+    public ModelAndView processChosenWhitePosition(@PathParam("positionId") Integer positionId
     ,@PathVariable Integer gameId){
         Game game=gameService.getGameById(gameId);
         Player whitePlayer=this.playerService.getPlayerById(0);
         ModelAndView result=null;
-        if(br.hasErrors()){
-            result=new ModelAndView("redirect:/play/"+gameId);
-        }
+       
         try{
-            Position position= positionServiceRepo.findPositionById(idpos.getId());
+            Position position= positionServiceRepo.findPositionById(positionId);
             this.playerUsePositionService.occupyTroopPosition(position, whitePlayer,false);
             gameService.save(game);
             result=new ModelAndView("redirect:/play/"+gameId);
@@ -186,7 +185,6 @@ public class PlayController {
         List<Position> positions=positionServiceRepo.getAllPositionsByGame(game);
         List<Integer> sellZoneCounter = List.of(0,1,2,3,4,5);
         putPlayerDataInModel(game, player, result);
-        result.addObject("game", game);
         result.addObject("player", player);
         result.addObject("positions", positions);
         result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());

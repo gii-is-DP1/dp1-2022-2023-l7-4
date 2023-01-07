@@ -1,14 +1,13 @@
 
 
-  window.init = (gameId,selectedPositions,URL) => {
+  window.init = (gameId,selectedPositions) => {
     function getGame(id) {
       return fetch('/api/game/'+id)
       .then(response => response.json());
     }
     getGame(gameId).then(game => {
-    console.log("iniciando el mapa del juego "+gameId)
+    console.log("iniciando el mapa del juego: "+gameId)
     console.log("posiciones destacadas: "+selectedPositions)
-    console.log("URL: "+URL)
     selectedPositions= selectedPositions===undefined?[]:selectedPositions;
     const cities = game.cities;
     const paths = game.paths;
