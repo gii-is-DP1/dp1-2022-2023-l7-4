@@ -30,9 +30,14 @@ import org.springframework.samples.petclinic.board.sector.city.City;
 import org.springframework.samples.petclinic.board.sector.city.CityService;
 import org.springframework.samples.petclinic.board.sector.city.CityTemplate;
 import org.springframework.samples.petclinic.board.sector.path.PathService;
+import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.card.CardFormatter;
+import org.springframework.samples.petclinic.card.CardService;
 import org.springframework.samples.petclinic.cardsMovement.MarketPlayerMoveCardsService;
 import org.springframework.samples.petclinic.game.EndTurnService;
 import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.game.GameController;
+import org.springframework.samples.petclinic.game.GameFormatter;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.initializer.InitializeMapService;
 import org.springframework.samples.petclinic.initializer.InitializePositionService;
@@ -43,10 +48,19 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = PlayController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
+@WebMvcTest(controllers = PlayController.class,
+includeFilters = @ComponentScan.Filter(value = {GameFormatter.class,CardFormatter.class}, type = FilterType.ASSIGNABLE_TYPE),
+ excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
+  excludeAutoConfiguration = SecurityConfiguration.class)
 public class PlayControllerTest {
 
     private static final Integer TEST_GAME_ID=100;
+
+    private static final Integer DROW_HALFDECK=1;
+    private static final Integer DRAGON_HALFDECK=2;
+
+    private static final Integer ADALID_ID=7;
+
 
 
     @Autowired
@@ -91,6 +105,9 @@ public class PlayControllerTest {
     @MockBean
     private PlayerService playerService;
 
+    @MockBean
+    private CardService cardService;
+
     private Game game;
 
 
@@ -102,6 +119,15 @@ public class PlayControllerTest {
         game.setRound(0);
         game.setTurnPlayer(1);
         game.setFinished(false);
+        game.setLolths(List.of());
+        game.setHouseGuards(List.of());
+        game.setHouseGuards(List.of());
+        Card card=new Card();
+        card.setCost(2);
+        card.setId(ADALID_ID);
+        card.setName("Adalid");
+        given(this.cardService.getCardById(ADALID_ID)).willReturn(new Card());
+        game.setSellZone(List.of(this.cardService.getCardById(ADALID_ID)));
         CityTemplate cityTemplate1=new CityTemplate();
         cityTemplate1.setId(1);
         cityTemplate1.setStartingCity(true);
@@ -114,8 +140,10 @@ public class PlayControllerTest {
         city1.setPositions(positions);
         Player player1=new Player();
         player1.setId(1);
+        player1.setInfluence(3);
         Player player2=new Player();
         player2.setId(2);
+        player2.setInfluence(1);
         game.setPlayers(List.of(player1,player2));
         given(this.gameService.getGameById(TEST_GAME_ID)).willReturn(game);
 
@@ -162,6 +190,19 @@ public class PlayControllerTest {
         .andExpect(view().name("playing/roundN"))
         .andExpect(model().attribute("player", is(game.getPlayers().get(indexOfPlayer+1))));
     }
+
+    @WithMockUser(value="spring")
+    @Test
+    public void testBuyAvailableCardInMarketCorrectly() throws Exception{
+        Player actualPlayer=game.getCurrentPlayer();
+        Card adalid=this.cardService.getCardById(ADALID_ID);
+        game.setRound(1);
+        mockMvc.perform(get("/play/{gameId}/round/"+game.getRound()+"/buy/{card}",TEST_GAME_ID,adalid))
+        .andExpect(status().isOk())
+        .andExpect(view().name("playing/roundN"));
+    }
+
+
 
 
 
