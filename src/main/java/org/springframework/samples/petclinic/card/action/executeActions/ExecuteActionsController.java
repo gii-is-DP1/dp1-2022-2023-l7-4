@@ -251,6 +251,7 @@ public class ExecuteActionsController {
         ModelAndView mav = new ModelAndView(CHOOSE_VIEW);
         Action action = actionService.getActionById(actionId);
 		mav.addObject("action",action);
+        mav.addObject("game", game);
 		mav.addObject("round",game.getRound());
 		mav.addObject("gameId",game.getId());
         return mav;
@@ -312,6 +313,7 @@ public class ExecuteActionsController {
         List<Position> positions=this.customListingPositionService
         .getAvailableFreeTroopPositionsByGame(actualPlayer, game, withPresence);
         result.addObject("positions",positions);
+        result.addObject("game", game);
         if(this.customListingPositionService.isSpecialCaseOfFreeTroopPositions(game, withPresence))
             result.addObject("special","Como no tienes posiciones adyacentes libres, puedes colocar en cualquier"
             +" posición para tropas que este libre");
@@ -352,6 +354,7 @@ public class ExecuteActionsController {
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
         putPlayerDataInModel(game, actualPlayer, result);
+        result.addObject("game", game);
         result.addObject("positions", customListingPositionService
         .getFreeSpyPositionsForPlayer(actualPlayer.getId(), game));
         return result;
@@ -388,6 +391,7 @@ public class ExecuteActionsController {
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
         putPlayerDataInModel(game, actualPlayer, result);
+        result.addObject("game", game);
         result.addObject("positions",
         customListingPositionService
         .getAvailableEnemyPositionsByGame(actualPlayer, game, typeOfEnemy, withPresence, false));
@@ -423,6 +427,7 @@ public class ExecuteActionsController {
     ,@RequestParam("enemyPlayer") Boolean enemyPlayer,@RequestParam("piece") String piece){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
+        result.addObject("game", game);
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions",
         customListingPositionService
@@ -463,6 +468,7 @@ public class ExecuteActionsController {
     ,@RequestParam("typeOfEnemy") String typeOfEnemy,@RequestParam("withPresence") Boolean withPresence){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
+        result.addObject("game", game);
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions",
         customListingPositionService
@@ -499,6 +505,7 @@ public class ExecuteActionsController {
     ,@RequestParam("typeOfEnemy") String typeOfEnemy){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
+        result.addObject("game", game);
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions",this.customListingPositionService.getAdjacentEnemyTroopPositionsByLastPosition(game, typeOfEnemy));
         return result;
@@ -534,6 +541,7 @@ public class ExecuteActionsController {
         List<Position> movablePositions=this.customListingPositionService
         .getMovablePiecesForPlayer(game.getCurrentPlayer(), game, piece, enemyPlayer);
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        result.addObject("game", game);
         putPlayerDataInModel(game, game.getCurrentPlayer(), result);
         result.addObject("noSpyToPlace", noSpyToPlace);
         result.addObject("positions",movablePositions);
@@ -571,6 +579,7 @@ public class ExecuteActionsController {
         List<Position> freePositions=this.customListingPositionService.getAvailableFreePositionsToMoveChosenPiece(game);
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         putPlayerDataInModel(game, game.getCurrentPlayer(), result);
+        result.addObject("game", game);
         result.addObject("positions",freePositions);
         return result;
     }

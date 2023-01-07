@@ -26,7 +26,7 @@
                         </c:when>
                         <c:otherwise>
                             <div class="resume-text">
-                                Selecciona posición inicial
+                                Selecciona una posición inicial
                             </div>
                         </c:otherwise>
                     </c:choose>
@@ -100,7 +100,7 @@
             </div>
 
             <div class="positions-round0">
-                <div style="width: 45vmax; height: 45vmax; ">
+                <div style="width: 100%; height: 100%; ">
                     <!--MAPA===========================================================================================-->
                     <!-- IMPORTS NECESARIOS DE MAPA -->
                       <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
