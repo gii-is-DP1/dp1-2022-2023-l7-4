@@ -66,7 +66,8 @@ public class PlayController {
     private PlayerService playerService;
 
 
-    public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
+    public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){ 
+        result.addObject("game", game);
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
         result.addObject("turn", game.getTurnPlayer());
