@@ -24,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "paths")
 @Entity
-@JsonIgnoreProperties({"pathReference","game","firstCity","secondCity","new"})
+@JsonIgnoreProperties({"pathReference","game","new"})
 public class Path extends BaseEntity{
     @ManyToOne
     PathTemplate pathReference;
@@ -59,13 +59,6 @@ public class Path extends BaseEntity{
         return path;
     }
 
-    public Integer getFirstCityId(){
-        return firstCity.getId();
-    }
-
-    public Integer getSecondCityId(){
-        return secondCity.getId();
-    }
 
 
 }

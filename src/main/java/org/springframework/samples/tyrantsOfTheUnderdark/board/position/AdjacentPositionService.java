@@ -80,8 +80,10 @@ public class AdjacentPositionService {
 
         List<Position> adjacents = new ArrayList<>();
         adjacents.addAll(adjacentsInsideCity(position));
-        adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));
-        adjacents.addAll(adjacentsFromPathsIncomingCity(position.getCity()));
+        if(!position.getForSpy()){
+            adjacents.addAll(adjacentsFromPathsLeavingCity(position.getCity()));
+            adjacents.addAll(adjacentsFromPathsIncomingCity(position.getCity()));
+        }
         return adjacents;
     }
 

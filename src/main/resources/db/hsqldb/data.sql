@@ -17,17 +17,17 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'UNO Ini Z2',3,TRUE,2,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'DOS Ini Z2',3,TRUE,2,2,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'TRES blanca Z2',3,FALSE,2,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CUATRO Ini Z3',6,TRUE,3,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (6,'UNO Ini Z2',3,TRUE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (3,'DOS Ini Z2',3,TRUE,2,2,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (4,'TRES blanca Z2',3,FALSE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (5,'CUATRO Ini Z3',6,TRUE,3,1,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CINCO Ini Z1',6,TRUE,1,1,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'SEIS blanca Z1',6,FALSE,1,6,2);
 
 -- PATHS
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,1);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,3);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,0);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,5,3);-- GIVES ERROR
@@ -55,6 +55,7 @@ INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUE
     (2,1),
     (2,2),
     (2,3),
+
 
     (3,1),
     (3,2),
@@ -86,7 +87,8 @@ INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas'
 
 -- GAMES
 INSERT INTO games(id,date,name,map_template_id) VALUES  (1,'2002-04-08','Partida 1',1);
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',1,1,2,TRUE);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',2,1,2,FALSE);
+
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 G1', 'daviddhc',10,10,1,1);
@@ -96,7 +98,10 @@ INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 G1'
 
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 G2',1000,1000,1,2);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 G2',1000,1000,2,2);
-
+-- PARA TEST DE INTEGRACIÓN--
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,round) VALUES (3,'2002-04-09','Partida de prueba',1,1,2,TRUE,2);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (7, 'Player1',1000,1000,1,3);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (8, 'Player2',1000,1000,2,3);
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
     
@@ -328,7 +333,7 @@ INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,h
 INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id,action_id) VALUES      
             ('Soldado',0,'Los soldados defienden a sus superiores contra todos los enemigos','+1 de poder',0,1,0,3,5,100),
             ('Noble',0,'La voz de un drow de una casa noble tiene el peso de la de mil plebeyos','+1 de influencia',0,1,0,3,5,101),
-            ('Sacerdotisa de Lolth',2,'Elegidas por si devoración a Lolth, ahora hacen valer su voluntad','+2 de influencia',1,2,0,4,5,102),
+            ('Sacerdotisa de Lolth',2,'Elegidas por su devoción a Lolth, ahora hacen valer su voluntad','+2 de influencia',1,2,0,4,5,102),
             ('Guardia de la casa',3,'El cuerpo de guardia de una casa se nutre de los pocos drow que sobreviven a la instrucción','+2 de poder',1,3,0,4,5,103),
             ('Cuadrilla de mercenarios',3,'La única otra opción que les queda a quienes carecen de casa es el exilio.','Despliega 3 tropas.',1,4,2,1,2,104),
             ('Maestra de espías',2,'<<Puedo ayudarte a sortear las puertas y los guardias. Lo que hagas despues es cosa tuya>>','Pon un espía',1,2,2,1,4,105),

@@ -45,7 +45,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name="games")
-@JsonIgnoreProperties(allowGetters = false, value = {"qualifying","winner","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
+@JsonIgnoreProperties(allowGetters = false, value = {"qualifying","winner","cardInPlay","chosenPieceToMove","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
 })
 public class Game extends BaseEntity{
 
@@ -80,6 +80,9 @@ public class Game extends BaseEntity{
     
     @Column(columnDefinition = "boolean default false")
     Boolean loaded = false;
+
+    @ManyToOne
+    Card cardInPlay;
     
     @Column(columnDefinition = "boolean default false")
     Boolean lastActionSkipped= false;
@@ -144,8 +147,8 @@ public class Game extends BaseEntity{
     }
     
     public void setNextPlayer(){
-       this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
-       if(this.turnPlayer==1) {
+        this.turnPlayer= (this.turnPlayer)%this.players.size()+1;
+        if(this.turnPlayer==1) {
             this.round++;
             Boolean anyPlayerHasNoTroops = players.stream().anyMatch(player->player.getTroops()<=0);
             if(gameDeck.isEmpty() || anyPlayerHasNoTroops) setFinished(true);

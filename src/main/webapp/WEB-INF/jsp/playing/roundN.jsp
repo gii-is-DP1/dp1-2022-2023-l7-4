@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
 <link rel="stylesheet" href="/resources/styles/cardlisting.css">
+
 <head>
     <style>
         .popup {
@@ -103,7 +104,6 @@
             display: flex;
             justify-content: center;
             height: 100%;
-            overflow-y: scroll;
         }
         .card-action-box .market-box{
             width: 100%;
@@ -534,7 +534,7 @@
     transition-duration: 0.5s;
 }
 
-    
+
     </style>
 
 </head>
@@ -553,7 +553,13 @@
             overlay.style.opacity = 0;
         }
 </script>
-    
+<link rel="stylesheet" href="/resources/styles/mapUI.css"></link>
+<script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+<script src="/js/map.js"></script>
+    <script>
+        //INICIA EL MAPA
+        init('${game.id}')
+    </script>
     <div class="fullscreen-game">  
 
         <!--LOYOUT ZONA SUPERIOR-->
@@ -566,7 +572,7 @@
             <div class="tophud-box tophud-b2">
                 <div class="resume-div">
                     <div class="resume-text">
-                        Selecciona una ubicación inicial
+                        Realiza alguna acción disponible
                     </div>
                 </div>
             </div>
@@ -655,11 +661,11 @@
             <!--CUADRO GRANDE (ZONA DE JUEGO)-->
             <div class="playing-box-roundN">
                 <div class="card-action-box">
-                    <!--ZONA DE MERCADO-->
+                    <!--ZONA DE MERCADO - TERMINADO-->
                     <div class="market-box">
                         <div class="market-zone" >
                             <div class="top-market-cards">
-                                <!--Guardas de la casa-->
+                                <!--Guardas de la casa - TERMINADO-->
                                 <c:choose>
                                     <c:when test="${game.houseGuards.size()==0}">
                                         <div class="card-box" style="background-image: url(/resources/images/guardias_mercado.png);">
@@ -712,12 +718,12 @@
                                                                     </text>
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextDeckVP">
+                                                            <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.houseGuards[0].deckVP} " />
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextInnerCirclePV">
+                                                            <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.houseGuards[0].innerCirclePV} " />
                                                                 </b>
@@ -753,7 +759,7 @@
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
-                                <!--Sacerdotisas de Lolth-->
+                                <!--Sacerdotisas de Lolth - TERMINADO-->
                                 <c:choose>
                                     <c:when test="${game.lolths.size()==0}">
                                         <div class="card-box"  style="background-image: url(/resources/images/lolth_mercado.png);">
@@ -806,12 +812,12 @@
                                                                     </text>
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextDeckVP">
+                                                            <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.lolths[0].deckVP} " />
                                                                 </b>
                                                             </div>
-                                                            <div class="topTextInnerCirclePV">
+                                                            <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                 <b>
                                                                     <c:out value="${game.lolths[0].innerCirclePV} " />
                                                                 </b>
@@ -932,12 +938,12 @@
                                                                         </text>
                                                                     </b>
                                                                 </div>
-                                                                <div class="topTextDeckVP">
+                                                                <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                                     <b>
                                                                         <c:out value="${game.sellZone[counter.index].deckVP} " />
                                                                     </b>
                                                                 </div>
-                                                                <div class="topTextInnerCirclePV">
+                                                                <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                                     <b>
                                                                         <c:out value="${game.sellZone[counter.index].innerCirclePV} " />
                                                                     </b>
@@ -978,7 +984,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--ZONA DE CARTAS DEL JUGADOR-->
+                    <!--ZONA DE CARTAS DEL JUGADOR - TERMINADO-->
                     <div class="player-cards-box">
                         <div class="player-hand-zone-box">
                             <div class="player-hand-margin-box">
@@ -1028,12 +1034,12 @@
                                                                 </text>
                                                             </b>
                                                         </div>
-                                                        <div class="topTextDeckVP">
+                                                        <div class="topTextDeckVP"  style="margin-top: 0.2vmax;">
                                                             <b>
                                                                 <c:out value="${card.deckVP} " />
                                                             </b>
                                                         </div>
-                                                        <div class="topTextInnerCirclePV">
+                                                        <div class="topTextInnerCirclePV"  style="margin-top: 0.2vmax;">
                                                             <b>
                                                                 <c:out value="${card.innerCirclePV} " />
                                                             </b>
@@ -1156,8 +1162,9 @@
                 </div>
                 <!--MAPA-->
                 <div class="map-box">
-                    <motero2k:positionTable>
-                    </motero2k:positionTable>
+                    <svg id="graph"></svg>
+                    <!-- <motero2k:positionTable>
+                    </motero2k:positionTable> -->
                 </div>
             </div>
 

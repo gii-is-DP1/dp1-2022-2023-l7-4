@@ -26,7 +26,7 @@
                         </c:when>
                         <c:otherwise>
                             <div class="resume-text">
-                                Selecciona posición inicial
+                                Selecciona una posición inicial
                             </div>
                         </c:otherwise>
                     </c:choose>
@@ -100,26 +100,48 @@
             </div>
 
             <div class="positions-round0">
-                <div class="position-scroll">
-                    <div class="position-totally">
-                        <form:form modelAttribute="idposition">
-                            <motero2k:positionTable>   
-                            </motero2k:positionTable>
-                        </form:form>
-                    </div>
+                <div style="width: 100%; height: 100%; ">
+                    <!--MAPA===========================================================================================-->
+                    <!-- IMPORTS NECESARIOS DE MAPA -->
+                      <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+                      <link rel="stylesheet" href="/resources/styles/mapUI.css"></link>
+                      <script src="/js/map.js"></script>
+                      <script>const selectedPositions = [];</script>
+
+                      
+                      <svg id="graph"></svg>
+                      <form:form id="choose-position-form" method="post">
+
+                      <c:forEach items="${positions}" var="position">
+                          <script>
+                              selectedPositions.push(parseInt("${position.id}"))
+                          </script>
+                      </c:forEach>
+  
+                      <script>
+                           init('${game.id}',selectedPositions)
+                      </script>
+                      <input type="hidden" id="chosen-position" name="positionId"/>
+  
+                  </form:form>
+                  <!-- ================================================================================================ -->
                 </div>
+
                 <!--POPUPS AQUI!!!-->
                 <div class="popup" id="VpPopUp">
-                    <a onclick="dontShowPopUp('VpPopUp')" href="JavaScript:void(0)" class="x">x</a>
-                    <div class="ls">
-                        <p>Puntos por control simple: ${vp.controlVP}</p>
-                        <p>Puntos por control total: ${vp.totalControlVP}</p>
-                        <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
-                        <p>Puntos en mano: ${vp.handVP}</p>
-                        <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
-                        <p>Puntos en mazo: ${vp.deckVP}</p>
-                        <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
-                        <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
+                    <div class="popup-blue-box">
+                        <a onclick="dontShowPopUp('VpPopUp')" href="JavaScript:void(0)" class="x">&times;</a>
+                        <div class="ls">
+                            <p>Puntos por control simple: ${vp.controlVP}</p>
+                            <p>Puntos por control total: ${vp.totalControlVP}</p>
+                            <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
+                            <p>Puntos en mano: ${vp.handVP}</p>
+                            <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
+                            <p>Puntos en mazo: ${vp.deckVP}</p>
+                            <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
+                            <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
+                            <p>Puntos acumulados por marcadores de control: ${vp.markerVP}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -132,49 +154,58 @@
 
 
 <style>
-    .popup {
-    background-color: rgba(16, 64, 112, 0.814);
-    height: 80%;
-    width: 85%;
-    visibility: hidden;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    border: 3px;
-    border-radius: 10px;
-    font-size: 2vmax;
-}
-.popup .ls{
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    color: aliceblue;
-}
-.popup .x {
-    margin-left: 10px;
-    color: rgb(255, 0, 0);
-    user-select: none;
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    align-self: flex-start;
-    font-family: monospace;
-}
-p{
-    margin: 10px;
-
-}
-#icon{
-    width: 50px;
-    height: 50px;
-    color: red;
-
-}
+     .popup {
+        background-color: rgba(0, 0, 0, 0.563);
+        height: 100%;
+        width: 100%;
+        left: 0;
+        visibility: hidden;
+        top: 0;        
+        position:fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2vmax;
+    }
+    .popup-blue-box{
+        background-color: rgba(16, 64, 112, 0.814);
+        height: 85%;
+        width: 80%;
+        display: flex;
+        border: 3px;
+        font-size: 2vmax;
+        border-radius: 1vmax;
+    }
+    .popup .ls{
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        color: aliceblue;
+    }
+    .x {
+        margin-left: 10px;
+        color: rgb(255, 0, 0);
+        user-select: none;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        align-self: flex-start;
+        font-family: monospace;
+        cursor: pointer;
+    }
+    p{
+        margin: 10px;
+    
+    }
+    #icon{
+        width: 50px;
+        height: 50px;
+        color: red;
+    
+    }
 </style>
 <script>
     function showPopUp(popup) {
