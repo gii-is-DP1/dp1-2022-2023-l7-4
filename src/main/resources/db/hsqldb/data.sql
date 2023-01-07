@@ -1,4 +1,3 @@
-
 INSERT INTO users(username,password,enabled,name,email,birthdate)
 VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
 -- One admin user, named admin1 with passwor 4dm1n and authority admin
@@ -413,4 +412,3 @@ VALUES      (-10,'Test elegir',22,'lore','+1 de poder',22,22,1,1,2,-1),
             (-14,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-17),
             (-15,'Test devorar',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-19),
             (-16,'Test mover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-20); 
-

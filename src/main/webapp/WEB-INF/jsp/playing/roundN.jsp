@@ -223,7 +223,6 @@
             display: flex;
             justify-content: center;
             word-wrap: break-word;
-
         }
         .top-market-cards .empty-card-box{
             width: 15%;
@@ -436,7 +435,6 @@
             color: aliceblue;
     
         }
-
         .play-buy-card-button{
             color: aliceblue;
             width: 10vmax;
@@ -451,7 +449,6 @@
             background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(49,39,72,1) 50%, rgba(95,75,139,1) 100%);
             transition-duration: 0.5s;
         }
-
         .play-buy-card-button:hover{
             color: rgb(0, 0, 0);;
             width: 10vmax;
@@ -479,7 +476,6 @@
             background: rgb(114, 114, 114);
             background: linear-gradient(0deg, rgb(147, 147, 147) 0%, rgb(129, 129, 129) 50%, rgb(86, 86, 86) 100%);
         }
-
         
 .skip-turn-button{
     display:flex;
@@ -533,8 +529,6 @@
     background: linear-gradient(0deg, #edecc6 0%, #f1ef96 50%, #d7d557 100%);
     transition-duration: 0.5s;
 }
-
-
     </style>
 
 </head>
@@ -1194,7 +1188,3 @@
 </body>
 
 </html>
-
-
-
-
