@@ -100,14 +100,33 @@
             </div>
 
             <div class="positions-round0">
-                <div class="position-scroll">
-                    <div class="position-totally">
-                        <form:form modelAttribute="idposition">
-                            <motero2k:positionTable>   
-                            </motero2k:positionTable>
-                        </form:form>
-                    </div>
+                <div style="width: 45vmax; height: 45vmax; ">
+                    <!--MAPA===========================================================================================-->
+                    <!-- IMPORTS NECESARIOS DE MAPA -->
+                      <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+                      <link rel="stylesheet" href="/resources/styles/mapUI.css"></link>
+                      <script src="/js/map.js"></script>
+                      <script>const selectedPositions = [];</script>
+
+                      
+                      <svg id="graph"></svg>
+                      <form:form id="choose-position-form" method="post">
+
+                      <c:forEach items="${positions}" var="position">
+                          <script>
+                              selectedPositions.push(parseInt("${position.id}"))
+                          </script>
+                      </c:forEach>
+  
+                      <script>
+                           init('${game.id}',selectedPositions)
+                      </script>
+                      <input type="hidden" id="chosen-position" name="positionId"/>
+  
+                  </form:form>
+                  <!-- ================================================================================================ -->
                 </div>
+
                 <!--POPUPS AQUI!!!-->
                 <div class="popup" id="VpPopUp">
                     <div class="popup-blue-box">

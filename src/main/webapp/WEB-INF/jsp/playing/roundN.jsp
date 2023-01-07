@@ -535,11 +535,7 @@
     transition-duration: 0.5s;
 }
 
-#graph {
-    background-color: rgba(39, 11, 65, 0.42);
-    width: 100%;
-    height: 100%;
-  }
+
     </style>
 
 </head>
@@ -558,9 +554,11 @@
             overlay.style.opacity = 0;
         }
 </script>
+<link rel="stylesheet" href="/resources/styles/mapUI.css"></link>
 <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
 <script src="/js/map.js"></script>
     <script>
+        //INICIA EL MAPA
         init('${game.id}')
     </script>
     <div class="fullscreen-game">  
