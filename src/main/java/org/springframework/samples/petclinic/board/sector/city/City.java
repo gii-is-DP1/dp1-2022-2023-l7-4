@@ -124,9 +124,9 @@ public class City extends BaseEntity{
         public Integer getCapacity() {return cityTemplate.getCapacity();}
         public String getName() {return cityTemplate.getName();}
         public Integer getZone() {return cityTemplate.getZone();}
-        public Integer getVpControlled() {return cityTemplate.getVpControlled();}
+        public Integer getVpControlled() {return cityTemplate.getMarkerVp();}
         public Integer getVpEndgameValue() {return cityTemplate.getVpEndgameValue();}
-        public Integer getInfluenceTotalControlled() {return cityTemplate.getInfluenceTotalControlled();}
+        public Integer getInfluenceTotalControlled() {return cityTemplate.getMarkerInfluence();}
         public Boolean isStartingCity(){
             return cityTemplate.getStartingCity();
         }

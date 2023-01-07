@@ -35,11 +35,11 @@ public class CityTemplate extends Sector{
     @Column(name="starting_city",columnDefinition = "boolean default false")
     private Boolean startingCity=false;
     
-    @Column(name="vp_controlled",columnDefinition = "integer default 0")
-    private Integer vpControlled=0;
+    @Column(name="marker_vp",columnDefinition = "integer default 0")
+    private Integer markerVp=0;
 
-    @Column(name="influence_total_controlled",columnDefinition = "integer default 0")
-    private Integer influenceTotalControlled=0;
+    @Column(name="marker_influence",columnDefinition = "integer default 0")
+    private Integer markerInfluence=0;
     
     public Boolean isStartingCity (){
         return this.startingCity;
