@@ -33,7 +33,7 @@ public class PricedPositionServiceTest {
     @Autowired
     protected PricedPositionService pricedPositionService;
 
-    @Autowired
+    @Mock
     protected PlayerUsePositionService playerUsePositionService;
 
     @Mock
@@ -71,29 +71,126 @@ public class PricedPositionServiceTest {
     }
 
     //PENDIENTE DE REALIZACIÓN
-    /*
-     * @Test
-    public void testOccupyTroopWithPower(){
+    @Test
+    public void testOccupyTroopWithPowerCorrectly(){
         emptyPosition.setForSpy(false);
+        emptyPosition.setPlayer(null);
         positionOfPlayer1.setAdjacents(new ArrayList<>(List.of(emptyPosition)));
         player1.setPower(7);
+        player1.setTroops(3);
         Integer numTroops=player1.getTroops();
         Integer currentPower=player1.getPower();
         emptyPosition.setAdjacents(new ArrayList<>(List.of(positionOfPlayer1)));
         Mockito.lenient().when(customListingPositionService.getPresencePositions(player1.getId(), false)).thenReturn(new ArrayList<>(List.of(emptyPosition)));
+        playerUsePositionService=
+        new PlayerUsePositionService(positionRepository,playerRepository,customListingPositionService);
         pricedPositionService=
         new PricedPositionService(playerUsePositionService,playerRepository);
                 try {
-                    pricedPositionService.placeTroopWithPrice(player1 ,emptyPosition);
+                    pricedPositionService.placeTroopWithPrice(player1, emptyPosition, false);;
                 } catch (Exception e) {
                     fail("No deberia salir error");
                 }    
-        assertThat(emptyPosition.getPlayer().getId()).isEqualTo(player1.getId());
         assertThat(emptyPosition.isOccupied()).isTrue();
+        assertThat(emptyPosition.getPlayer().getId()).isEqualTo(player1.getId());
         assertThat(player1.getTroops()).isEqualTo(numTroops-1);
         assertThat(player1.getPower()).isEqualTo(currentPower-1);
         }
-     */
+
+        @Test
+    public void testOccupyTroopWithPowerInSpecialCaseCorrectly(){
+        emptyPosition.setForSpy(false);
+        emptyPosition.setPlayer(null);
+        emptyPosition.setAdjacents(List.of());
+        positionOfPlayer1.setAdjacents(List.of());
+        player1.setPower(7);
+        player1.setTroops(3);
+        Integer numTroops=player1.getTroops();
+        Integer currentPower=player1.getPower();
+        assertThat(!emptyPosition.getAdjacents().contains(positionOfPlayer1)).isTrue();
+                try {
+                    pricedPositionService.placeTroopWithPrice(player1, emptyPosition, true);
+                } catch (Exception e) {
+                    fail("No deberia salir error");
+                }    
+        assertThat(emptyPosition.isOccupied()).isTrue();
+        assertThat(emptyPosition.getPlayer().getId()).isEqualTo(player1.getId());
+        assertThat(player1.getTroops()).isEqualTo(numTroops-1);
+        assertThat(player1.getPower()).isEqualTo(currentPower-1);
+        }
+
+        @Test
+        public void testOccupyTroopWithoutEnoughPower(){
+            emptyPosition.setForSpy(false);
+            emptyPosition.setPlayer(null);
+            player1.setPower(0);
+            assertThrows(Exception.class,()->pricedPositionService.placeTroopWithPrice(player1, emptyPosition, true));
+            }
+
+
+        @Test
+    public void testKillEnemyTroopWithPowerCorrectly(){
+        positionOfPlayer2.setForSpy(false);
+        positionOfPlayer1.setAdjacents(new ArrayList<>(List.of(positionOfPlayer2)));
+        player1.setPower(7);
+        player1.setTroops(3);
+        player1.setTrophyHall(new ArrayList<>());
+        Integer trophyHall=player1.getTrophyHallVPs();
+        Integer currentPower=player1.getPower();
+        positionOfPlayer2.setAdjacents(new ArrayList<>(List.of(positionOfPlayer1)));
+        Mockito.lenient().when(customListingPositionService.getPresencePositions(player1.getId(), true)).thenReturn(new ArrayList<>(List.of(positionOfPlayer2)));
+        playerUsePositionService=
+        new PlayerUsePositionService(positionRepository,playerRepository,customListingPositionService);
+        pricedPositionService=
+        new PricedPositionService(playerUsePositionService,playerRepository);
+                try {
+                    pricedPositionService.killEnemyTroopWithPrice(player1, positionOfPlayer2);
+                } catch (Exception e) {
+                    fail("No deberia salir error");
+                }    
+        assertThat(positionOfPlayer2.isOccupied()).isFalse();
+        assertThat(player1.getTrophyHallVPs()).isEqualTo(trophyHall+1);
+        assertThat(player1.getPower()).isEqualTo(currentPower-3);
+        }
+
+        @Test
+        public void testKillEnemyTroopWithoutEnoughPower(){
+            player1.setPower(0);
+            assertThrows(Exception.class,()->pricedPositionService.killEnemyTroopWithPrice(player1, positionOfPlayer2));
+         }
+
+         @Test
+    public void testReturnEnemySpyWithPowerCorrectly(){
+        positionOfPlayer2.setForSpy(true);
+        positionOfPlayer1.setAdjacents(new ArrayList<>(List.of(positionOfPlayer2)));
+        player1.setPower(7);
+        player2.setSpies(3);
+        Integer numerOfSpyOfPlayer2=player2.getSpies();
+        Integer currentPower=player1.getPower();
+        positionOfPlayer2.setAdjacents(new ArrayList<>(List.of(positionOfPlayer1)));
+        Mockito.lenient().when(customListingPositionService.getPresencePositions(player1.getId(), true)).thenReturn(new ArrayList<>(List.of(positionOfPlayer2)));
+        playerUsePositionService=
+        new PlayerUsePositionService(positionRepository,playerRepository,customListingPositionService);
+        pricedPositionService=
+        new PricedPositionService(playerUsePositionService,playerRepository);
+                try {
+                    pricedPositionService.returnEnemySpyWithPrice(player1, positionOfPlayer2);
+                } catch (Exception e) {
+                    fail("No deberia salir error");
+                }    
+        assertThat(positionOfPlayer2.isOccupied()).isFalse();
+        assertThat(player2.getSpies()).isEqualTo(numerOfSpyOfPlayer2+1);
+        assertThat(player1.getPower()).isEqualTo(currentPower-3);
+        }
+
+        @Test
+        public void testReturnEnemySpyWithoutEnoughPower(){
+            player1.setPower(0);
+            assertThrows(Exception.class,()->pricedPositionService.returnEnemySpyWithPrice(player1, positionOfPlayer2));
+         }
     }
+    
+
+    
     
 

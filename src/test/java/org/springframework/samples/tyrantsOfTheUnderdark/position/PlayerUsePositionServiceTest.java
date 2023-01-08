@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PlayerUs
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionRepository;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.City;
-import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
+
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerRepository;
 import org.springframework.stereotype.Service;
