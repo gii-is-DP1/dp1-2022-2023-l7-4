@@ -67,9 +67,13 @@
                    <c:out value="${user.birthdate}"/> 
                 </td>
                 <td>
-                    <a href="/users/${user.username}/delete"  class="btn btn-default">Delete user</a>
+                <c:if test="${user.canBeDeleted()==true}">
+                        <a href="/users/${user.username}/delete"  class="btn btn-default">Delete user</a>
+                </c:if>
+                <c:if test="${user.canBeDeleted()==false}">
+                        <c:out value="Este jugador todavia esta jugando"/>
+                </c:if>
                 </td>
-
                 
             </tr>
         </c:forEach>
