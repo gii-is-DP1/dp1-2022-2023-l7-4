@@ -116,7 +116,7 @@ INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas'
 
 
 -- GAMES
-INSERT INTO games(id,date,name,map_template_id,automatic) VALUES  (1,'2002-04-08','Partida big mapa',1,FALSE);
+INSERT INTO games(id,date,name,map_template_id,automatic) VALUES  (1,'2002-04-08','Partida mapa original',1,FALSE);
 INSERT INTO games(id,date,name,map_template_id,automatic) VALUES (2,'2002-04-09','Partida zona media',1,FALSE);
 
 
