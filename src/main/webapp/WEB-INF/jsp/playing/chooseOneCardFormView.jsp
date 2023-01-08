@@ -265,7 +265,7 @@
             <div class="positions-round0" style="justify-content: space-between;">
                 <!--Carta en juego-->
                 <div class="card-action-box">
-                    <div class="this-action-box">
+                    <div class="this-action-box"  style="font-size: 1.1vmax;">
                         <b>CARTA EN JUEGO:</b>
                     </div>
                     <div class="principalCard" style="width: 23vmax; height: 32vmax">

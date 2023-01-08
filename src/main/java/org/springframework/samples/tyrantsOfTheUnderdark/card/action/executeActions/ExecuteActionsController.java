@@ -246,6 +246,8 @@ public class ExecuteActionsController {
     public ModelAndView chooseSubaction(@PathVariable("gameId") Game game,@PathVariable Integer actionId){
         ModelAndView mav = new ModelAndView(CHOOSE_VIEW);
         Action action = actionService.getActionById(actionId);
+        Player actualPlayer = game.getCurrentPlayer();
+        putPlayerDataInModel(game, actualPlayer, mav);
 		mav.addObject("action",action);
         mav.addObject("game", game);
 		mav.addObject("round",game.getRound());

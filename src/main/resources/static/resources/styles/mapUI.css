@@ -11,7 +11,7 @@
   }
 
   .selection circle {
-    animation: pulse 1s infinite;
+    animation: pulse 1.5s infinite;
   }
   
   @keyframes pulse {

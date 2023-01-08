@@ -219,7 +219,7 @@
                     </c:when>
                     <c:otherwise>
                         <div class="card-action-box2" style="background-color: rgba(255, 255, 255, 0.384);">
-                            <div class="this-action-box">
+                            <div class="this-action-box"  style="font-size: 1.1vmax;">
                                 <b>CARTA EN JUEGO:</b>
                             </div>
                             <div class="principalCard" style="width: 23vmax; height: 32vmax">
@@ -279,14 +279,14 @@
                     <c:when test="${basicAction==true}">
                         <div style="flex-direction: column;width: 100%;height: 100%;display: flex; align-items: center; justify-content: center;">
                             <c:if test="${special!=null}">
-                                <div class="special-box" style="text-align: center;">
-                                    <o:out><b>${special}</b></o:out> 
+                                <div class="special-box" style="margin-top: 1vmax;" >
+                                    <div style="text-align: center;"><o:out><b>${special}</b></o:out> </div>
                                 </div>
                             </c:if>
                             <c:if test="${noSpyToPlace!=null}">
                                 <c:if test="${noSpyToPlace==true}">
-                                    <div class="special-box">
-                                        <o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> 
+                                    <div class="special-box" style="margin-top: 1vmax;">
+                                        <div  style="text-align: center;"><o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> </div>
                                     </div>
                                 </c:if>
                             </c:if>
@@ -334,15 +334,15 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="positions-round0" style="flex-direction: column;width: 73%;height: 100%;">
+                        <div class="positions-round0" style="flex-direction: column;width: 73%;height: 100%; ">
                             <c:if test="${special!=null}">
-                                <div class="special-box">
+                                <div class="special-box"  style="margin-top: 1vmax;">
                                     <div style="text-align: center;"><o:out><b>${special}</b></o:out> </div>
                                 </div>
                             </c:if>
                             <c:if test="${noSpyToPlace!=null}">
                                 <c:if test="${noSpyToPlace==true}">
-                                    <div class="special-box">
+                                    <div class="special-box"  style="margin-top: 1vmax;">
                                         <div style="text-align: center;"><o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> </div>
                                     </div>
                                 </c:if>
