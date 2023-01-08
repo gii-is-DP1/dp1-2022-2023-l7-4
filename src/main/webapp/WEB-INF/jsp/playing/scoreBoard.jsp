@@ -87,7 +87,7 @@
                     <td><c:out value="${rank.value.totalControlVP}"></c:out></td>
                     <td><c:out value="${rank.value.trophyHallVP}"></c:out></td>
                     <td><c:out value="${rank.value.handVP}"></c:out></td>
-                    <td><c:out value="${rank.value.dicardPileVP}"></c:out></td>
+                    <td><c:out value="${rank.value.discardPileVP}"></c:out></td>
                     <td><c:out value="${rank.value.deckVP}"></c:out></td>
                     <td><c:out value="${rank.value.innerCircleVP}"></c:out></td>
                     <td><c:out value="${rank.value.totalVp}"></c:out></td>

@@ -26,7 +26,7 @@
                     <br>
                     <div class="nameanddeck-filter-box">
                         <div class="filter-cardanddeck-text">
-                            <label for="lname">Nombre de la carta:&nbsp&nbsp</label>
+                            <label for="lname">Nombre del mazo:&nbsp&nbsp</label>
                         </div>
                         <input style="width:135px; height: 24px;" type="text" id="fname" name="name">
                     </div>

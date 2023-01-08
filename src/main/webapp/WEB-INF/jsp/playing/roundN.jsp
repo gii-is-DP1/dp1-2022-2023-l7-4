@@ -104,7 +104,6 @@
             display: flex;
             justify-content: center;
             height: 100%;
-            overflow-y: scroll;
         }
         .card-action-box .market-box{
             width: 100%;
@@ -167,24 +166,24 @@
             color: goldenrod;
             margin-top: 1vmax;
         }
-        .card-box .card-name-box{
+        .card-name-box{
             height: 67%;
             width: 100%;
             justify-content: center;
             display: flex;
         }
-        .card-name-box .card-name-center {
+        .card-name-center {
             margin-top: 1.75vmax;
             width: 85%;
             text-align: center;
             font-size: 1vmax;
         }
-        .card-box .card-cost-vp-box{
+        .card-cost-vp-box{
             height: 32%;
             width: 100%;
             display: flex;
         }
-        .card-cost-vp-box .card-cost{
+        .card-cost{
             width: 33%;
             color: aliceblue;
             text-align: center;
@@ -192,7 +191,7 @@
             margin-left: 0.15vmax;
             margin-top: 0.30vmax;
         }
-        .card-cost-vp-box .card-deckVP{
+        .card-deckVP{
             width: 33%;
             color: aliceblue;
             text-align: center;
@@ -200,7 +199,7 @@
             margin-left: -0.09vmax;
             margin-top: 0.35vmax;
         }
-        .card-cost-vp-box .card-innerCirclePV{
+        .card-innerCirclePV{
             margin-top: 0.19vmax;
             width: 30%;
             color: aliceblue;
@@ -208,12 +207,7 @@
             font-size: 1.2vmax;
             margin-top: 0.30vmax;
         }
-        .card-hand-box .card-name-center {
-            margin-top: 1.8vmax;
-            width: 85%;
-            text-align: center;
-            font-size: 1vmax;
-        }
+
         .card-hand-box{
             width: 15%;
             height: 10vmax;
@@ -222,9 +216,10 @@
             background-size:contain;
             background-repeat: no-repeat;
             display: flex;
-            justify-content: center;
             word-wrap: break-word;
-
+            align-items: center;
+            flex-direction: column;
+            word-wrap: break-word;
         }
         .top-market-cards .empty-card-box{
             width: 15%;
@@ -243,7 +238,7 @@
             width: 93%;
             height: 85%;
             background-image: url(/resources/images/fondo_mano.png);
-            background-position: 0px -130px;
+            background-position: 0% 50%;
             background-size:cover;
             background-repeat: no-repeat;
             background-color:rgb(25, 24, 24);
@@ -437,7 +432,6 @@
             color: aliceblue;
     
         }
-
         .play-buy-card-button{
             color: aliceblue;
             width: 10vmax;
@@ -452,7 +446,6 @@
             background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(49,39,72,1) 50%, rgba(95,75,139,1) 100%);
             transition-duration: 0.5s;
         }
-
         .play-buy-card-button:hover{
             color: rgb(0, 0, 0);;
             width: 10vmax;
@@ -480,7 +473,6 @@
             background: rgb(114, 114, 114);
             background: linear-gradient(0deg, rgb(147, 147, 147) 0%, rgb(129, 129, 129) 50%, rgb(86, 86, 86) 100%);
         }
-
         
 .skip-turn-button{
     display:flex;
@@ -534,12 +526,6 @@
     background: linear-gradient(0deg, #edecc6 0%, #f1ef96 50%, #d7d557 100%);
     transition-duration: 0.5s;
 }
-
-#graph {
-    background-color: rgba(39, 11, 65, 0.42);
-    width: 100%;
-    height: 100%;
-  }
     </style>
 
 </head>
@@ -558,11 +544,10 @@
             overlay.style.opacity = 0;
         }
 </script>
+<link rel="stylesheet" href="/resources/styles/mapUI.css"></link>
 <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
 <script src="/js/map.js"></script>
-    <script>
-        init('${game.id}')
-    </script>
+    
     <div class="fullscreen-game">  
 
         <!--LOYOUT ZONA SUPERIOR-->
@@ -575,7 +560,7 @@
             <div class="tophud-box tophud-b2">
                 <div class="resume-div">
                     <div class="resume-text">
-                        Selecciona una ubicación inicial
+                        Realiza alguna acción disponible
                     </div>
                 </div>
             </div>
@@ -664,11 +649,11 @@
             <!--CUADRO GRANDE (ZONA DE JUEGO)-->
             <div class="playing-box-roundN">
                 <div class="card-action-box">
-                    <!--ZONA DE MERCADO-->
+                    <!--ZONA DE MERCADO - TERMINADO-->
                     <div class="market-box">
                         <div class="market-zone" >
                             <div class="top-market-cards">
-                                <!--Guardas de la casa-->
+                                <!--Guardas de la casa - TERMINADO-->
                                 <c:choose>
                                     <c:when test="${game.houseGuards.size()==0}">
                                         <div class="card-box" style="background-image: url(/resources/images/guardias_mercado.png);">
@@ -762,7 +747,7 @@
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
-                                <!--Sacerdotisas de Lolth-->
+                                <!--Sacerdotisas de Lolth - TERMINADO-->
                                 <c:choose>
                                     <c:when test="${game.lolths.size()==0}">
                                         <div class="card-box"  style="background-image: url(/resources/images/lolth_mercado.png);">
@@ -987,7 +972,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--ZONA DE CARTAS DEL JUGADOR-->
+                    <!--ZONA DE CARTAS DEL JUGADOR - TERMINADO-->
                     <div class="player-cards-box">
                         <div class="player-hand-zone-box">
                             <div class="player-hand-margin-box">
@@ -1054,7 +1039,13 @@
                                         </div>
                                     </div>
                                     <div class="card-hand-box" title="${card.rulesText}" onclick="showPopUp('HandCardPopUp${card.id}')" style="cursor: pointer;">
-                                        <div class="card-name-center"><b>${card.name}</b></div>
+                                        <div class="card-name-box">   
+                                            <div class="card-name-center"><b>${card.name}</b></div>
+                                        </div>
+                                        <div class="card-cost-vp-box">
+                                            <div class="card-deckVP" style="margin-left: 0.7vmax; font-size: 1.3vmax; margin-top: 0.25vmax;">${card.deckVP}</div>
+                                            <div class="card-innerCirclePV" style="margin-left: 0.72vmax; font-size: 1.3vmax; margin-top: 0.22vmax;">${card.innerCirclePV}</div>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>
@@ -1166,10 +1157,12 @@
                 <!--MAPA-->
                 <div class="map-box">
                     <svg id="graph"></svg>
-                    <!-- <motero2k:positionTable>
-                    </motero2k:positionTable> -->
                 </div>
             </div>
+            <script>
+                //INICIA EL MAPA
+                init('${game.id}')
+            </script>
 
                 <!--POPUPS AQUI!!!-->
                 <div class="popup" id="VpPopUp">
@@ -1180,7 +1173,7 @@
                             <p>Puntos por control total: ${vp.totalControlVP}</p>
                             <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
                             <p>Puntos en mano: ${vp.handVP}</p>
-                            <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
+                            <p>Puntos en la pila de descarte: ${vp.discardPileVP}</p>
                             <p>Puntos en mazo: ${vp.deckVP}</p>
                             <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                             <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
@@ -1197,7 +1190,3 @@
 </body>
 
 </html>
-
-
-
-

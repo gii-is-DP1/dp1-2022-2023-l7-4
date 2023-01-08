@@ -265,7 +265,7 @@
             <div class="positions-round0" style="justify-content: space-between;">
                 <!--Carta en juego-->
                 <div class="card-action-box">
-                    <div class="this-action-box">
+                    <div class="this-action-box"  style="font-size: 1.1vmax;">
                         <b>CARTA EN JUEGO:</b>
                     </div>
                     <div class="principalCard" style="width: 23vmax; height: 32vmax">
@@ -397,7 +397,7 @@
                             <p>Puntos por control total: ${vp.totalControlVP}</p>
                             <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
                             <p>Puntos en mano: ${vp.handVP}</p>
-                            <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
+                            <p>Puntos en la pila de descarte: ${vp.discardPileVP}</p>
                             <p>Puntos en mazo: ${vp.deckVP}</p>
                             <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                             <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>

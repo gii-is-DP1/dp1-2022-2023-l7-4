@@ -1,4 +1,3 @@
-
 INSERT INTO users(username,password,enabled,name,email,birthdate)
 VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
 -- One admin user, named admin1 with passwor 4dm1n and authority admin
@@ -17,14 +16,51 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
 -- CITIES
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'UNO Ini Z2',3,TRUE,2,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'DOS Ini Z2',3,TRUE,2,2,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'TRES blanca Z2',3,FALSE,2,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CUATRO Ini Z3',6,TRUE,3,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'CINCO Ini Z1',6,TRUE,1,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,vp_controlled,influence_total_controlled) VALUES (2,'SEIS blanca Z1',6,FALSE,1,6,2);
+INSERT INTO city_templates(id,x,y,unaligned,capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES --ORIGINAL MAP
+(1,0,1,'0,1',3,'Gauntlgrym',2,FALSE,1,1,1),
+(2,0,0,'',3,'Los Retuercegusanos',3,FALSE,1,0,0),
+(3,0,2,'',4,'Jhachalkhyn',4,TRUE,1,0,0),
+(4,0,3,'0',3,'Buiyrandyn',3,FALSE,1,0,0),
+(5,0,4,'0,1',2,'Bastion del clan stoneshaft',4,FALSE,1,0,0),
+(6,0,5,'0,1',3,'Ch`chitil',2,FALSE,1,1,1),
+(7,1,0,'0,1',2,'Blingdenstone',4,FALSE,2,0,0),
+(8,1,1,'0,1',5,'Mantol-Delrith',4,TRUE,2,0,0),
+(9,1,2,'0,1',4,'Gracklstugh',3,FALSE,2,0,0),
+(10,1,3,'0',3,'El laberinto',3,FALSE,2,0,0),
+(11,1,4,'0,1',5,'Skullport',4,TRUE,2,0,0),
+(12,1,5,'',3,'Kanaglym',3,FALSE,2,0,0),
+(13,2,1,'0,1,2',6,'Menzoberranzan',5,FALSE,2,2,1),
+(14,2,2,'',1,'Puente de Chasmleap',1,FALSE,2,0,0),
+(15,2,3,'0,1,2,3',4,'Aramuycos',3,FALSE,2,3,1),
+(16,2,4,'',3,'Eryndlyn',3,TRUE,2,0,0),
+(17,2,5,'0,1,2',3,'Tsenviilyq',4,FALSE,2,1,1),
+(18,3,2,'',3,'Fuego Eterno',3,FALSE,2,0,0),
+(19,3,3,'1',2,'Salones de la Legion Flagelante',3,FALSE,2,0,0),
+(20,3,4,'',4,'Ched Nasad',3,TRUE,2,0,0),
+(21,3,5,'',2,'Llacerellyn',2,FALSE,2,0,0),
+(22,4,2,'',5,'Chaulssin',4,TRUE,3,0,0),
+(23,5,2,'0,1',3,'El Phaerlin',2,FALSE,3,1,1),
+(24,4,3,'0,1',2,'Yathchol',4,FALSE,3,0,0),
+(25,4,4,'0,1',6,'Ruinas De Dekanter',5,FALSE,3,0,0),
+(26,4,5,'0,1',3,'SS`zuraass`nee',2,FALSE,3,1,1);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (6,'UNO Ini Z2',3,TRUE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (3,'DOS Ini Z2',3,TRUE,2,2,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (4,'TRES blanca Z2',3,FALSE,2,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (5,'CUATRO Ini Z3',6,TRUE,3,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (2,'CINCO Ini Z1',6,TRUE,1,1,2);
+INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (2,'SEIS blanca Z1',6,FALSE,1,6,2);
 
--- PATHS
+
+-- Original map paths with white troops
+INSERT INTO path_templates(id,unaligned,city_id_1,city_id_2,capacity) VALUES 
+(11,'0',7,8,1),(17,'1',10,15,2),(23,'0',14,15,1),(25,'0',15,16,1),(26,'0',15,20,1);
+--Original map paths
+INSERT INTO path_templates(id,city_id_1,city_id_2,capacity) VALUES 
+(1,1,2,0),(2,1,3,1),(3,2,8,1),(4,3,9,1),(5,3,4,1),(6,4,5,1),(7,4,10,1),(8,5,6,1),(9,5,11,2),(10,6,12,1),(12,8,9,1),(13,8,13,3),(14,9,10,1),(15,9,14,2),(16,10,11,2),(18,11,12,1),
+(19,12,16,2),(20,12,17,2),(21,13,14,2),(22,13,18,2),(24,14,18,1),(27,16,21,1),(28,17,21,1),(29,18,19,1),(30,18,22,1),(31,19,20,2),(32,19,24,1),(33,20,21,2),(34,20,24,1),(35,20,25,1),
+(36,21,26,2),(37,22,23,1),(38,23,24,1),(39,23,25,2),(40,25,26,1);
+
+
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,1);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,0);
@@ -36,26 +72,20 @@ INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (4,6,1);
 
 
 -- MAPS
-INSERT INTO map_templates(name) VALUES ('default Map 4');
+INSERT INTO map_templates(name) VALUES ('Original map');
 INSERT INTO map_templates(name) VALUES ('small Map 2');
 INSERT INTO map_templates(name) VALUES ('medium Map 3');
 INSERT INTO map_templates(name) VALUES ('Bad made medium Map 3no -> 2 yes');
 
---POPULATE MAPS
-
+--Paths -->MAPS
 INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUES
-    (1,1),
-    (1,2),
-    (1,3),
-    (1,4),
-    (1,5),
-    (1,7),
-    (1,8),
+    --Original map
+    (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),
+    (1,27),(1,28),(1,29),(1,30),(1,31),(1,32),(1,33),(1,34),(1,35),(1,36),(1,37),(1,38),(1,39),(1,40),
 
     (2,1),
     (2,2),
     (2,3),
-
 
     (3,1),
     (3,2),
@@ -86,22 +116,19 @@ INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas'
 
 
 -- GAMES
-INSERT INTO games(id,date,name,map_template_id) VALUES  (1,'2002-04-08','Partida 1',1);
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (2,'2002-04-09','Partida 2 (recursos ilimitados)',2,1,2,TRUE);
+INSERT INTO games(id,date,name,map_template_id,automatic) VALUES  (1,'2022-04-08','Partida mapa original',1,FALSE);
+INSERT INTO games(id,date,name,map_template_id,automatic) VALUES (2,'2022-04-09','Partida zona media',1,FALSE);
 
 
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
-INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 G1', 'daviddhc',10,10,1,1);
-INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'P2 G1', 'anddomrui',10,10,2,1);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'P3 G1',10,10,3,1);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 G1',10,10,4,1);
+INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 daviddhc', 'daviddhc',10,10,1,1);
+INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'P2 anddomrui', 'anddomrui',10,10,2,1);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'P3 manotebar',10,10,3,1);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 javiFdz',10,10,4,1);
 
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 G2',1000,1000,1,2);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 G2',1000,1000,2,2);
--- PARA TEST DE INTEGRACIÓN--
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,round) VALUES (3,'2002-04-09','Partida de prueba',1,1,2,TRUE,2);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (7, 'Player1',1000,1000,1,3);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (8, 'Player2',1000,1000,2,3);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 javiTopG',1000,1000,1,2);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 davidZ',1000,1000,2,2);
+
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
     
@@ -167,8 +194,8 @@ INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES
 --CARD ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
     
-    (100,1,'POWER',1,'+1 de poder'),--Soldado HECHA Y COMPROBADA
-    (101,1,'INFLUENCE',1,'+1 de influencia'),--Noble HECHA Y COMPROBADA
+    (100,1,'POWER',10,'+1 de poder'),--Soldado HECHA Y COMPROBADA
+    (101,1,'INFLUENCE',10,'+1 de influencia'),--Noble HECHA Y COMPROBADA
     (102,1,'INFLUENCE',2,'+2 de influencia'),--Lolth HECHA Y COMPROBADA
     (103,1,'POWER',2,'+2 de poder'),--Guardia HECHA Y COMPROBADA
     (104,3,'DEPLOY_OWN_TROOP',null,'Despliega 3 tropas'),--Cuadrilla de mercenarios HECHA Y COMPROBADA
@@ -327,8 +354,6 @@ INSERT INTO aspects(id,name,description,image) VALUES (5,'Obediencia','Los sierv
 INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id) VALUES      
         (0,'Espaciador',0,'','',0,0,0,3,5);
 
-
-
 -- CARDS
 INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id,action_id) VALUES      
             ('Soldado',0,'Los soldados defienden a sus superiores contra todos los enemigos','+1 de poder',0,1,0,3,5,100),
@@ -376,41 +401,8 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Dragón blanco',6,'<<No son los más espabilados, pero si huelen tu sangre, estarán cazándote hasta el fin de los tiempos>> --Caldoum Truespear, cazador de dragones','Despliega 3 tropas. Obtén 1 PV por cada 2 ubicaciones que controles',2,5,1,2,2,142),
             ('Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3,143); 
             
-INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
-    -- test of choose
-    (-1,2,'CHOOSE',null,'a'),
-    (-2,2,'THEN',null,'a'),
 
-    (-10,4,'POWER',1,'+1 de poder'),
-    (-11,1,'DEPLOY_OWN_TROOP',null,'a'),
-    (-12,1,'INFLUENCE',+50,'a'),
-    (-13,5,'POWER',+10,'a'),
-    -- test of promote
-    (-14,1,'PROMOTE_OWN_DISCARDED_CARD',null,'a'),
-    (-15,2,'PROMOTE_OWN_DISCARDED_CARD',null,'a'),
-    (-16,2,'PROMOTE_OWN_PLAYED_CARD',null,'a'),
-    (-17,1,'PROMOTE_OWN_PLAYED_CARD',null,'a'),
-    (-18,1,'AT_END_TURN',null,'a'),
-    (-19,2,'DEVORE_MARKET_CARD',null,'a'),
-    (-20,2,'MOVE_ENEMY_TROOP',null,'a'),
-    (-21,1,'AT_END_TURN',null,'a')
-    ;
-INSERT INTO subactions(action_id,subaction_id) VALUES 
-    --choose twice
-    (-1,-10), --power
-    (-1,-2), --then
-        (-2,-11),--dploy
-        (-2,-12),
-        (-2,-13),
-    (-21,-15)        
-    ;
-
-INSERT INTO cards(id,name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half_deck_id,aspect_id,action_id) 
-VALUES      (-10,'Test elegir',22,'lore','+1 de poder',22,22,1,1,2,-1),
-            (-11,'Test promover',0,'mondongo','ascender ahora 1 carta descartada',1,2,3,4,2,-14),
-            (-12,'Test promover',0,'mondongo','ascender 2 cartas descartadas al final del turno',1,2,3,4,2,-21),
-            (-13,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-16),
-            (-14,'Test promover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-17),
-            (-15,'Test devorar',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-19),
-            (-16,'Test mover',0,'mondongo','ascender 2 cartas jugadas al final del turno',1,2,3,4,2,-20); 
-
+-- PARA TEST--
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,round) VALUES (3,'2022-04-09','Partida de prueba',1,1,2,TRUE,2);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (7, 'Player1',1000,1000,1,3);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (8, 'Player2',1000,1000,2,3);
