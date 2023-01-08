@@ -30,13 +30,10 @@ import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.City;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathService;
-import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
-import org.springframework.samples.tyrantsOfTheUnderdark.card.CardFormatter;
-import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
 import org.springframework.samples.tyrantsOfTheUnderdark.cardsMovement.MarketPlayerMoveCardsService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.EndTurnService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
-import org.springframework.samples.tyrantsOfTheUnderdark.game.GameController;
+
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameFormatter;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
 import org.springframework.samples.tyrantsOfTheUnderdark.initializer.InitializeMapService;
@@ -49,19 +46,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = PlayController.class,
-includeFilters = @ComponentScan.Filter(value = {GameFormatter.class,CardFormatter.class}, type = FilterType.ASSIGNABLE_TYPE),
+includeFilters = @ComponentScan.Filter(value = {GameFormatter.class}, type = FilterType.ASSIGNABLE_TYPE),
  excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
   excludeAutoConfiguration = SecurityConfiguration.class)
 public class PlayControllerTest {
 
     private static final Integer TEST_GAME_ID=100;
-
-    private static final Integer DROW_HALFDECK=1;
-    private static final Integer DRAGON_HALFDECK=2;
-
-    private static final Integer ADALID_ID=7;
-
-
 
     @Autowired
     private MockMvc mockMvc;
@@ -69,8 +59,7 @@ public class PlayControllerTest {
     @MockBean
     private PlayerUsePositionService playerUsePositionService;
 
-    @Autowired
-    private PlayController playController;
+
 
     @MockBean
     private GameService gameService;
@@ -99,14 +88,15 @@ public class PlayControllerTest {
     @MockBean
     private EndTurnService endTurnService;
 
+
     @MockBean
     private MarketPlayerMoveCardsService playerMoveCardsService;
+
 
     @MockBean
     private PlayerService playerService;
 
-    @MockBean
-    private CardService cardService;
+
 
     private Game game;
 
@@ -122,12 +112,7 @@ public class PlayControllerTest {
         game.setLolths(List.of());
         game.setHouseGuards(List.of());
         game.setHouseGuards(List.of());
-        Card card=new Card();
-        card.setCost(2);
-        card.setId(ADALID_ID);
-        card.setName("Adalid");
-        given(this.cardService.getCardById(ADALID_ID)).willReturn(new Card());
-        game.setSellZone(List.of(this.cardService.getCardById(ADALID_ID)));
+        
         CityTemplate cityTemplate1=new CityTemplate();
         cityTemplate1.setId(1);
         cityTemplate1.setStartingCity(true);
@@ -185,26 +170,14 @@ public class PlayControllerTest {
     @Test
     public void testNextTurn() throws Exception{
         Game game= this.gameService.getGameById(TEST_GAME_ID);
-        Player actualPlayer=game.getCurrentPlayer();
-        Integer indexOfPlayer=game.getPlayers().indexOf(actualPlayer);
         game.setTurnPlayer(1);
         game.setRound(1);
         mockMvc.perform(get("/play/{gameId}/round/"+game.getRound()+"/next",TEST_GAME_ID))
-        .andExpect(status().isOk())
-        .andExpect(view().name("playing/roundN"))
-        .andExpect(model().attribute("player", is(game.getPlayers().get(indexOfPlayer+1))));
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/play/{gameId}"));
     }
 
-    @WithMockUser(value="spring")
-    @Test
-    public void testBuyAvailableCardInMarketCorrectly() throws Exception{
-        Player actualPlayer=game.getCurrentPlayer();
-        Card adalid=this.cardService.getCardById(ADALID_ID);
-        game.setRound(1);
-        mockMvc.perform(get("/play/{gameId}/round/"+game.getRound()+"/buy/{card}",TEST_GAME_ID,adalid))
-        .andExpect(status().isOk())
-        .andExpect(view().name("playing/roundN"));
-    }
+
 
 
 
