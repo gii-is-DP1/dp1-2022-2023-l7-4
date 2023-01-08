@@ -168,7 +168,7 @@ public class ExecuteActionsController {
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_3_WHITE_KILLED_TROOPS){
             AutomaticActions.earnVpFor3WhiteKilled(game, action);
         }else if(action.getActionName()== ActionName.DEVORE_MARKET_CARD){
-            return REDIRECT+"/devoreMarketCard?devoreAll=false";
+            return REDIRECT+"/devoreMarketCard";
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_2_CONTROLED_SITES){
             AutomaticActions.earnVpFor2ControlledSites(game, action);
         }else if(action.getActionName()== ActionName.VP_FOR_EVERY_TOTAL_CONTROLLED_SITE){

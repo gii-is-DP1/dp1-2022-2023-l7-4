@@ -41,7 +41,7 @@ public class UserService {
 	@Autowired
 	private AuthoritiesService authoritiesService;
 
-	
+	@Autowired
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
@@ -69,10 +69,13 @@ public class UserService {
 		return userRepository.findUserByName(name);
 	}
 
-	public void deleteUser(String username){
-		userRepository.deleteById(username);
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteUser(User user) throws DataAccessException,Exception{
+		if(!user.canBeDeleted()) throw new Exception();
+		userRepository.deleteById(user.getUsername());
 
 	}
+	
 
 	public List<User> getUsersList() {
 		return (List<User>) userRepository.findAll();

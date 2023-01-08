@@ -71,6 +71,21 @@ public class Card {
     @NotNull
     @JoinColumn(name = "aspect_id")
     private Aspect aspect;
+
+    public static Card createCardToDevore(){
+        Card card=new Card();
+        card.setName("El devorador");
+        card.setCost(4);
+        card.setStory("Cuidado, es poderoso");
+        card.setAction(Action.ofDevoreCard());
+        card.setRulesText("Debes devorar una carta tope wapa que te guste");
+        card.setDeckVP(8);
+        card.setInnerCirclePV(8);
+        card.setRarity(2);
+        card.setAspect(Aspect.newAspect());
+        return card;
+
+    }
     
 }
 
