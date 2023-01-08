@@ -121,7 +121,13 @@ public class UserController {
 	public ModelAndView deleteUser(@PathVariable("username") String username){
 		ModelAndView mav = new ModelAndView("redirect:/users/list");
 		User user=this.userService.getUserByUsername(username);
-		userService.deleteUser(user);
+		String canBe=user.canBeDeleted()?null:"No puedes borrar a un usuario que esta jugando todavía";
+		mav.addObject("text", canBe);
+		try{
+			userService.deleteUser(user);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return mav;
 	}
 	@GetMapping("/myprofile")

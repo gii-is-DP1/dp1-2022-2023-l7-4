@@ -44,4 +44,8 @@ public class User{
 
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
 	private Set<Player> players;
+
+	public Boolean canBeDeleted(){
+		return players.isEmpty();
+	}
 }

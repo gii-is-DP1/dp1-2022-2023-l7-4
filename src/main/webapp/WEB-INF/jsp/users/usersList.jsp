@@ -6,9 +6,34 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="users">
+    <style>
+        .special-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 10%;
+    background-color: rgba(16, 64, 112, 0.814);
+    color: aliceblue;
+    margin-bottom: 1vmax;
+    font-size: 1.2vmax;
+    border-color: black;
+    border-radius: 1vmax;
+    border-style: solid;
+    border-width: 0.3vmax;
+}
+    </style>
     <h2>Users</h2>
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
-
+    <head>
+            
+    </head>
+    <body>
+        <c:if test="${text!=null}">
+                                <div class="special-box" style="margin-top: 1vmax;" >
+                                    <div style="text-align: center;"><o:out><b>${text}</b></o:out> </div>
+                                </div>
+            </c:if>
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
@@ -52,5 +77,7 @@
     </table>
 
     <a class="btn btn-default" href='<spring:url value="/users/find" htmlEscape="true"/>'>Find a user</a>
+    
+</body>
 </petclinic:layout>
 

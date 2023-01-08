@@ -69,11 +69,13 @@ public class UserService {
 		return userRepository.findUserByName(name);
 	}
 
-	@Transactional
-	public void deleteUser(User user) throws DataAccessException{
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteUser(User user) throws DataAccessException,Exception{
+		if(!user.canBeDeleted()) throw new Exception();
 		userRepository.deleteById(user.getUsername());
 
 	}
+	
 
 	public List<User> getUsersList() {
 		return (List<User>) userRepository.findAll();
