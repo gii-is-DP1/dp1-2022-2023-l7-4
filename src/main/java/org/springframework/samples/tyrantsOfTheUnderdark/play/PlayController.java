@@ -2,14 +2,12 @@ package org.springframework.samples.tyrantsOfTheUnderdark.play;
 
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PlayerUsePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionServiceRepo;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.position.auxiliarEntitys.Idposition;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
 import org.springframework.samples.tyrantsOfTheUnderdark.cardsMovement.MarketPlayerMoveCardsService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.EndTurnService;
@@ -20,7 +18,6 @@ import org.springframework.samples.tyrantsOfTheUnderdark.initializer.IntializeGa
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerService;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,7 +80,7 @@ public class PlayController {
         game = gameInitializer.loadGame(game);
         
         if(game.getRound()==-1){
-            if(gameService.enoughUnaligned(game)){
+            if(gameService.enoughUnaligned(game)||gameService.preloadedUnaligned(game)){
                 game.setRound(0);
                 gameService.save(game);
             }else{
@@ -147,11 +144,8 @@ public class PlayController {
         
         List<Position> initialPositions=this.positionInGameService.getAvailableFreeWhiteTroopPositions(game);
         putPlayerDataInModel(game, player, result);
-        result.addObject("game", game);
         result.addObject("positions", initialPositions);
-        result.addObject("totalVp", game.getPlayerScore(player).getTotalVp());
         result.addObject("vp", game.getPlayerScore(player));
-        result.addObject("totalinnerCirclevp", game.getInnerCircleVP(player));
         result.addObject("whiteTroopsLeft",gameService.getNumberOfWhiteTroopsLeftToDeploy(game));
         return result;
     }

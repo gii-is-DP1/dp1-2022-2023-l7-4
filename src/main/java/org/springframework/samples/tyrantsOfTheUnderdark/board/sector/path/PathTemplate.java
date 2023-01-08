@@ -21,7 +21,7 @@ public class PathTemplate extends Sector{
     @ManyToOne
     @JoinColumn(name="city_id_1")
     private CityTemplate firstCityTemplate;
-
+    String unaligned;
     @ManyToOne
     @JoinColumn(name="city_id_2")
     private CityTemplate secondCityTemplate;

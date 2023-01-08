@@ -96,8 +96,9 @@ public class Game extends BaseEntity{
 
     @OneToOne()
     Position chosenPieceToMove;
-    
+
     @ManyToOne()
+    @JoinColumn(columnDefinition = "integer default 1")
     MapTemplate mapTemplate ;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")

@@ -9,6 +9,7 @@ import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityS
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.Path;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
+import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,13 +17,17 @@ public class PopulatePositionService {
     private PositionRepository positionRepository;
     CityService cityService;
     PathService pathService;
+    PlayerService playerService;
     @Autowired
-    private PopulatePositionService(PositionRepository posRepo,CityService cityService,PathService pathService){
-        this.positionRepository=posRepo;
-        this.cityService=cityService;
-        this.pathService=pathService;
+    public PopulatePositionService(PositionRepository positionRepository, CityService cityService,
+            PathService pathService, PlayerService playerService) {
+        this.positionRepository = positionRepository;
+        this.cityService = cityService;
+        this.pathService = pathService;
+        this.playerService = playerService;
     }
-
+    
+    
     
     /**
      * Given the list of sectors (cities and paths) it calculates all the positions of the board based on
@@ -45,24 +50,41 @@ public class PopulatePositionService {
     }
 
 
+
+
     private void populateCities(List<City> cities) {
         cities.forEach(city-> populateCity(city));
     }
+    
+    
+
+    private void populateCity(City city) {
+            newTroopsInCity(city);
+            IntStream.range(0, 4).forEach(x->saveNewSpyPositionLinkedTo(city));
+            cityService.save(city);
+        }
+        private void newTroopsInCity(City city) {
+            for (int i = 0; i < city.getCapacity(); i++) {
+            Position p = Position.of(city.getGame());
+            try {                
+                p.setCity(city);
+                if(city.getUnaligned().contains(i)) p.setPlayer(playerService.getPlayerById(0));
+                city.getPositions().add(p);
+                positionRepository.save(p);
+            } catch (Exception e) { }
+            
+        }
+    }
+    
     private void populatePaths(List<Path> paths) {
             paths.forEach(path -> populatePath(path));
 
     }
 
-
-
-    private void populateCity(City city) {
-            IntStream.range(0, city.getCapacity()).forEach(x->saveNewPositionLinkedTo(city));
-            IntStream.range(0, 4).forEach(x->saveNewSpyPositionLinkedTo(city));
-            cityService.save(city);
-    }
     private void populatePath(Path path) {
             for(int i = 0; i< path.getCapacity();i++){
                 Position p = Position.of(path.getGame());
+                if(path.getUnaligned().contains(i)) p.setPlayer(playerService.getPlayerById(0));
                 p.setPath(path);
                 path.getPositions().add(p);
                 positionRepository.save(p);
@@ -75,14 +97,6 @@ public class PopulatePositionService {
 
     
 
-
-
-    private void saveNewPositionLinkedTo(City city) {
-        Position p = Position.of(city.getGame());
-        p.setCity(city);
-        city.getPositions().add(p);
-        positionRepository.save(p);
-    }
     private void saveNewSpyPositionLinkedTo(City city) {
         Position p = Position.of(city.getGame());
         p.setCity(city);

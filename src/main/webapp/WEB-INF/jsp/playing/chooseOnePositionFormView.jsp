@@ -116,6 +116,11 @@
         overlay.style.opacity = 0;
     }
 </script>
+                                        <!-- IMPORTS NECESARIOS DE MAPA -->
+                                        <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+                                        <link rel="stylesheet" href="/resources/styles/mapUI.css"></link>
+                                        <script src="/js/map.js"></script>
+                                        <script>const selectedPositions = [];</script>
     <div class="fullscreen-game">  
         <!--HUD superior-->
         <div class="tophud">
@@ -127,7 +132,7 @@
             <div class="tophud-box tophud-b2">
                 <div class="resume-div">
                     <div class="resume-text">
-                        Selecciona una ubicación inicial
+                        Selecciona una ubicación disponible
                     </div>
                 </div>
             </div>
@@ -285,14 +290,29 @@
                                     </div>
                                 </c:if>
                             </c:if>
-                            <div class="position-scroll">
-                                <div class="position-totally">
-                                    <form:form modelAttribute="idposition">
-                                        <motero2k:positionTable>
-                                        </motero2k:positionTable>
+                            <div style="width: 100%; height: 100%; ">
+                                        <!--MAPA===========================================================================================-->
+                                        <!-- IMPORTS NECESARIOS DE MAPA -->
+
+                                        
+                                        <svg id="graph"></svg>
+                                        <form:form id="choose-position-form" method="post">
+
+                                        <c:forEach items="${positions}" var="position">
+                                            <script>
+                                                   console.log("cargando posicion: ${position.id}")
+                                                selectedPositions.push(parseInt("${position.id}"))
+                                            </script>
+                                        </c:forEach>
+                    
+                                        <script>
+                                            init('${game.id}',selectedPositions)
+                                        </script>
+                                        <input type="hidden" id="chosen-position" name="positionId"/>
+                    
                                     </form:form>
+                                    <!-- ================================================================================================ -->
                                 </div>
-                            </div>
             
                             <!--POPUPS AQUI!!!-->
                             <div class="popup" id="VpPopUp">
@@ -327,14 +347,29 @@
                                     </div>
                                 </c:if>
                             </c:if>
-                            <div class="position-scroll">
-                                <div class="position-totally">
-                                    <form:form modelAttribute="idposition">
-                                        <motero2k:positionTable>
-                                        </motero2k:positionTable>
+                            <div style="width: 100%; height: 100%; ">
+                                    <!--MAPA===========================================================================================-->
+
+
+                                        
+                                        <svg id="graph"></svg>
+                                        <form:form id="choose-position-form" method="post">
+
+                                        <c:forEach items="${positions}" var="position">
+                                            <script>
+                                                console.log("cargando posicion: ${position.id}")
+                                                selectedPositions.push(parseInt("${position.id}"))
+                                            </script>
+                                        </c:forEach>
+                    
+                                        <script>
+                                            init('${game.id}',selectedPositions)
+                                        </script>
+                                        <input type="hidden" id="chosen-position" name="positionId"/>
+                    
                                     </form:form>
+                                    <!-- ================================================================================================ -->
                                 </div>
-                            </div>
             
                             <!--POPUPS AQUI!!!-->
                             <div class="popup" id="VpPopUp">

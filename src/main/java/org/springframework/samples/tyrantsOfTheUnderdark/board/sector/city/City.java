@@ -27,7 +27,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "cities")
-@JsonIgnoreProperties({"cityTemplate","game","freeTroopPosition","positions","new"})
+@JsonIgnoreProperties({"cityTemplate","game","freeTroopPosition","positions","new","unaligned"})
 public class City extends BaseEntity{
    
     //this contains all constant data.
@@ -124,11 +124,25 @@ public class City extends BaseEntity{
         public Integer getCapacity() {return cityTemplate.getCapacity();}
         public String getName() {return cityTemplate.getName();}
         public Integer getZone() {return cityTemplate.getZone();}
-        public Integer getVpControlled() {return cityTemplate.getMarkerVp();}
+        public Integer getMarkerVp() {return cityTemplate.getMarkerVp();}
         public Integer getVpEndgameValue() {return cityTemplate.getVpEndgameValue();}
-        public Integer getInfluenceTotalControlled() {return cityTemplate.getMarkerInfluence();}
+        public Integer getMarkerInfluence() {return cityTemplate.getMarkerInfluence();}
         public Boolean isStartingCity(){
             return cityTemplate.getStartingCity();
+        }
+        public List<Integer> getUnaligned(){
+            List<Integer> res = new ArrayList<>();
+            try {
+                String [] s = cityTemplate.getUnaligned().split(",");
+                for (String n : s) {
+                        res.add(Integer.parseInt(n));
+    
+                }
+                
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+            return res;
         }
         
     public Boolean hasNoPlayerTroops(){

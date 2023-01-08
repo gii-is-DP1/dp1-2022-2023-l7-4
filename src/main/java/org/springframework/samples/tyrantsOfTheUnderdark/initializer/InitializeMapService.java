@@ -44,7 +44,7 @@ public class InitializeMapService {
                 City secondCity;
                 Path path = Path.of(game);
     
-                path.setPathReference(pathTemplate);
+                path.setPathTemplate(pathTemplate);
     
                 CityTemplate firstCityTemplate= pathTemplate.getFirstCityTemplate();
                 if(done.contains(firstCityTemplate)){

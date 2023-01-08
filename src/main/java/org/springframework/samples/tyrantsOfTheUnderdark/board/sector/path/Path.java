@@ -24,10 +24,10 @@ import lombok.Setter;
 @Setter
 @Table(name = "paths")
 @Entity
-@JsonIgnoreProperties({"pathReference","game","new"})
+@JsonIgnoreProperties({"pathReference","game","new","unaligned"})
 public class Path extends BaseEntity{
     @ManyToOne
-    PathTemplate pathReference;
+    PathTemplate pathTemplate;
 
     @ManyToOne
     private Game game;
@@ -50,7 +50,7 @@ public class Path extends BaseEntity{
     
 
     public Integer getCapacity(){
-        return this.pathReference.getCapacity();
+        return this.pathTemplate.getCapacity();
     }
 
     public static Path of(Game game) {
@@ -59,6 +59,18 @@ public class Path extends BaseEntity{
         return path;
     }
 
+    public List<Integer> getUnaligned(){
+        List<Integer> res = new ArrayList<>();
+        try {
+            String [] s = pathTemplate.getUnaligned().split(",");
+            for (String n : s) {
+                try {
+                    res.add(Integer.parseInt(n));
+                } catch (Exception e) {}
+            }
+        } catch (Exception e) {}
+        return res;
+    }
 
 
 }

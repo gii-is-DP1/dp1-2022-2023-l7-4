@@ -26,6 +26,7 @@ public class CityTemplate extends Sector{
     @Column(columnDefinition = "integer default 0")
     Integer zone;
 
+    String unaligned ="";
     @NotBlank
     @Min(0) 
     @Column(name="vp_endgame_value")

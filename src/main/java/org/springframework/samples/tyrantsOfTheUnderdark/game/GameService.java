@@ -3,6 +3,7 @@ package org.springframework.samples.tyrantsOfTheUnderdark.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -108,8 +109,8 @@ public class GameService {
 		Boolean res=false;
 		List<Position> positions =this.positionServiceRepo.getTroopPositionsFromGame(game);
         Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
-		if(this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size()==numberOfWhiteTroopsToDeploy
-		 | this.positionInGameService.getAvailableFreeWhiteTroopPositions(game).size()<=numberOfWhiteTroopsToDeploy) res=true;
+		if(this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size()>=numberOfWhiteTroopsToDeploy
+		 || this.positionInGameService.getAvailableFreeWhiteTroopPositions(game).size()<=numberOfWhiteTroopsToDeploy) res=true;
         return res;
     }
 
@@ -117,6 +118,12 @@ public class GameService {
 		List<Position> positions =this.positionServiceRepo.getTroopPositionsFromGame(game);
         Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
 		return numberOfWhiteTroopsToDeploy-this.positionServiceRepo.getTroopPositionsOfPlayer(0, game).size();
+	}
+
+	public boolean preloadedUnaligned(Game game) {
+		Boolean emptyCities = game.getCities().stream().allMatch(c->c.getUnaligned().isEmpty());
+		Boolean emptyPaths = game.getPaths().stream().allMatch(c->c.getUnaligned().isEmpty());
+		return !(emptyCities && emptyPaths); 
 	}
 
     

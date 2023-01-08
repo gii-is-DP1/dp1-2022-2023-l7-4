@@ -47,7 +47,7 @@ public class EndTurnService {
             playerMoveCardsService.draw5CardsFromDeckToHand(player);
             for(City city:game.getCities()){
                 if(city.whoTotallyControls() !=null && city.whoTotallyControls().equals(player))
-                 player.setMarkerVP(player.getMarkerVP()+city.getVpControlled());
+                 player.setMarkerVP(player.getMarkerVP()+city.getMarkerVp());
             }
             this.playerService.savePlayer(player);
             
@@ -57,7 +57,7 @@ public class EndTurnService {
 		    for(City city:game.getCities()){
 			    if((city.whoControls() !=null && city.whoControls().equals(nextPlayer))
                  || (city.whoTotallyControls()!=null && city.whoTotallyControls().equals(nextPlayer))){
-                    nextPlayer.earnInfluence(city.getInfluenceTotalControlled());
+                    nextPlayer.earnInfluence(city.getMarkerInfluence());
                 }
 		    }
 		    this.playerService.savePlayer(nextPlayer);

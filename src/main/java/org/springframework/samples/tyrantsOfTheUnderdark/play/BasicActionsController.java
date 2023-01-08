@@ -1,44 +1,31 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.play;
 import java.util.List;
 
-import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.CustomListingPositionService;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PlayerUsePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionServiceRepo;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PricedPositionService;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.position.auxiliarEntitys.CheckPlayerUsePosition;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.position.auxiliarEntitys.Idposition;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityService;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
 import org.springframework.samples.tyrantsOfTheUnderdark.initializer.InitializePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.initializer.IntializeGame;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("play")
 public class BasicActionsController {
-    private static final String ROUND_ZERO = "playing/roundZero";
 
-    private static final String ROUND_N = "playing/roundN";
-    
-    private static final String SCORE_BOARD = null;
 
     private static final String CHOOSE_ONE_POSITION_FORM_VIEW="playing/chooseOnePositionFormView";
-    
-    @Autowired
-    private PositionInGameService positionInGameService;
+
     
     @Autowired
     private GameService gameService;
@@ -46,8 +33,6 @@ public class BasicActionsController {
     @Autowired
     IntializeGame gameInitializer;
     
-    @Autowired
-    private PlayerUsePositionService playerUsePositionService;
     @Autowired
     InitializePositionService positionInitialiter;
 
@@ -62,11 +47,6 @@ public class BasicActionsController {
     @Autowired
     private PositionServiceRepo positionServiceRepo;
 
-    @Autowired
-    private CityService cityService;
-
-    @Autowired
-    private PathService pathService;
 
     public void putPlayerDataInModel(Game game, Player actualPlayer,ModelAndView result ){
         result.addObject("player", game.getCurrentPlayer());
@@ -104,17 +84,12 @@ public class BasicActionsController {
     }
 
     @PostMapping("{gameId}/round/{round}/basicPlaceTroop")
-    public ModelAndView processBasicPlaceTroopForm(@Valid Idposition idposition,
-    @PathVariable Integer gameId, BindingResult br){
+    public ModelAndView processBasicPlaceTroopForm(@PathParam("positionId") Integer positionId,
+    @PathVariable Integer gameId){
         ModelAndView res=null;
-        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
-        if(br.hasErrors()){
-            res=errorRes;
-            res.addObject("message", "Ha ocurrido un error");
-            res.addObject("message", br.getAllErrors().toString());
-        }else{
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
             try{
-                Position position= positionServiceRepo.findPositionById(idposition.getId());
+                Position position= positionServiceRepo.findPositionById(positionId);
                 Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
                 Boolean isSpecialCase=this.customListingPositionService
                 .getPresenceTroopPositions(player.getId(), false).isEmpty();
@@ -125,10 +100,10 @@ public class BasicActionsController {
                 //el 
                 res=new ModelAndView("redirect:/play/"+gameId);
             }catch(Exception e){
-                br.rejectValue("position","occupied","already occupy");
+
                 res=errorRes;
             }
-        }
+
         return res;
     }
 
@@ -149,25 +124,19 @@ public class BasicActionsController {
     }
 
     @PostMapping("{gameId}/round/{round}/basicKillTroop")
-    public ModelAndView processBasicKillTroopForm(@Valid Idposition idposition,@PathVariable Integer gameId,
-    BindingResult br){
+    public ModelAndView processBasicKillTroopForm(@PathParam("positionId") Integer positionId , @PathVariable Integer gameId){
         ModelAndView res=null;
-        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
-        if(br.hasErrors()){
-            res=errorRes;
-            res.addObject("message", "Ha ocurrido un error");
-            res.addObject("message", br.getAllErrors().toString());
-        }else{
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
             try{
-                Position position= this.positionServiceRepo.findPositionById(idposition.getId());
+                Position position= this.positionServiceRepo.findPositionById(positionId);
                 Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
                 this.pricedPositionService.killEnemyTroopWithPrice(player, position);
                 res=new ModelAndView("redirect:/play/"+gameId);
             }catch(Exception e){
-                br.rejectValue("position","not right","something happen");
+
                 res=errorRes;
             }
-        }
+
         return res;
     }
 
@@ -188,25 +157,19 @@ public class BasicActionsController {
     }
 
     @PostMapping("{gameId}/round/{round}/basicReturnEnemySpy")
-    public ModelAndView processBasicReturnEnemySpy(@Valid Idposition idposition,@PathVariable Integer gameId,
-    BindingResult br){
+    public ModelAndView processBasicReturnEnemySpy(@PathParam("positionId") Integer positionId,@PathVariable Integer gameId){
         ModelAndView res=null;
-        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW,br.getModel());
-        if(br.hasErrors()){
-            res=errorRes;
-            res.addObject("message", "Ha ocurrido un error");
-            res.addObject("message", br.getAllErrors().toString());
-        }else{
+        ModelAndView errorRes=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+
             try{
-                Position position= this.positionServiceRepo.findPositionById(idposition.getId());
+                Position position= this.positionServiceRepo.findPositionById(positionId);
                 Player player=this.gameService.getGameById(gameId).getCurrentPlayer();
                 this.pricedPositionService.returnEnemySpyWithPrice(player, position);
                 res=new ModelAndView("redirect:/play/"+gameId);
             }catch(Exception e){
-                br.rejectValue("position","not right","something happen");
                 res=errorRes;
             }
-        }
+
         return res;
     }
 }

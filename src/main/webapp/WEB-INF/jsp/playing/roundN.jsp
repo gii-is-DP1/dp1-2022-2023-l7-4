@@ -1157,8 +1157,6 @@
                 <!--MAPA-->
                 <div class="map-box">
                     <svg id="graph"></svg>
-                    <!-- <motero2k:positionTable>
-                    </motero2k:positionTable> -->
                 </div>
             </div>
 
