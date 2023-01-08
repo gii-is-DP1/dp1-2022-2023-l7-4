@@ -41,7 +41,7 @@ public class UserService {
 	@Autowired
 	private AuthoritiesService authoritiesService;
 
-	
+	@Autowired
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
@@ -69,8 +69,9 @@ public class UserService {
 		return userRepository.findUserByName(name);
 	}
 
-	public void deleteUser(String username){
-		userRepository.deleteById(username);
+	@Transactional
+	public void deleteUser(User user) throws DataAccessException{
+		userRepository.deleteById(user.getUsername());
 
 	}
 
