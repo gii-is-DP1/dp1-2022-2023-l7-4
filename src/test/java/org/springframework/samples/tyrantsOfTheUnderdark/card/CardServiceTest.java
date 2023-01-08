@@ -39,8 +39,20 @@ class CardServiceTest {
     }
 
     @Test
+    public void shouldntFindAnyHalfDeckByAInexistentName(){
+        List<HalfDeck> halfDeck = this.cardService.getHalfDeckByCard("hola");
+        assertThat(halfDeck.size()).isEqualTo(0);  
+    }
+
+    @Test
     public void shouldFindCardByNameAndByHalfDeck() {
         List<Card> cards = this.cardService.getCardsFilteredBy("Adalid", "Drow");
         assertThat(cards.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldntFindCardByInexistentNameAndByInexistentHalfDeck() {
+        List<Card> cards = this.cardService.getCardsFilteredBy("Caballero Artorias", "ntoTo");
+        assertThat(cards.size()).isEqualTo(0);
     }
 }
