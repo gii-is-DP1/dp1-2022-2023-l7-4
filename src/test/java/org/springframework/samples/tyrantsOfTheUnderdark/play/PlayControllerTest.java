@@ -126,18 +126,22 @@ public class PlayControllerTest {
         Player player1=new Player();
         player1.setId(1);
         player1.setInfluence(3);
+        player1.setGame(game);
         Player player2=new Player();
         player2.setId(2);
         player2.setInfluence(1);
+        player2.setGame(game);
+        game.setCities(new ArrayList<>(List.of(city1)));
         game.setPlayers(List.of(player1,player2));
         given(this.gameService.getGameById(TEST_GAME_ID)).willReturn(game);
+        given(this.positionServiceRepo.getAllPositionsByGame(game)).willReturn(List.of(new Position()));
 
 
     }
 
     @WithMockUser(value="spring")
     @Test
-    public void testShowRoundZero() throws Exception{
+    public void testShowRoundZero() throws Exception{ //HISTORIAS DE USUARIOS MENCIONADAS: H30
         mockMvc.perform(get("/play/{gameId}/round/0",TEST_GAME_ID))
         .andExpect(status().isOk())
         .andExpect(view().name("playing/roundZero"))
@@ -146,7 +150,7 @@ public class PlayControllerTest {
 
     @WithMockUser(value="spring")
     @Test
-    public void testProcessRoundZero() throws Exception{
+    public void testProcessRoundZero() throws Exception{ //HISTORIAS DE USUARIOS MENCIONADAS: H30
         mockMvc.perform(post("/play/{gameId}/round/0",TEST_GAME_ID)
         .with(csrf()).param("positionId", "1"))
         .andExpect(status().is3xxRedirection())
@@ -155,7 +159,7 @@ public class PlayControllerTest {
 
     @WithMockUser(value="spring")
     @Test
-    public void testShowRoundN() throws Exception{
+    public void testShowRoundN() throws Exception{ // HISTORIAS DE USUARIOS MENCIONADAS: H28,H29,H31
         game.setRound(1);
         Player actualPlayer=game.getCurrentPlayer();
         mockMvc.perform(get("/play/{gameId}/round/"+game.getRound(),TEST_GAME_ID))
@@ -163,7 +167,10 @@ public class PlayControllerTest {
         .andExpect(view().name("playing/roundN"))
         .andExpect(model().attribute("player", is(actualPlayer)))
         .andExpect(model().attribute("turn", is(game.getTurnPlayer())))
-        .andExpect(model().attribute("totalinnerCirclevp",is( game.getInnerCircleVP(actualPlayer))));
+        .andExpect(model().attribute("totalinnerCirclevp",is( game.getInnerCircleVP(actualPlayer))))
+        .andExpect(model().attribute("controlMarkers",is(game.getActualControlMarker())))
+        .andExpect(model().attribute("totalControlMarkers",is(game.getActualTotalControlMarker())))
+        .andExpect(model().attribute("positions", is(this.positionServiceRepo.getAllPositionsByGame(game))));
     }
 
     @WithMockUser(value="spring")

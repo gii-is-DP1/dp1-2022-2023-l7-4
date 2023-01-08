@@ -64,6 +64,8 @@ public class PlayController {
         result.addObject("game", game);
         result.addObject("player", game.getCurrentPlayer());
         result.addObject("round", game.getRound());
+        result.addObject("controlMarkers",game.getActualControlMarker());
+        result.addObject("totalControlMarkers",game.getActualTotalControlMarker());
         result.addObject("turn", game.getTurnPlayer());
         result.addObject("cities", game.getCities());
         result.addObject("paths", game.getPaths());
