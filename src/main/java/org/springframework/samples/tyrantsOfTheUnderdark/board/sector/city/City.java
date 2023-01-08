@@ -160,5 +160,14 @@ public class City extends BaseEntity{
     public Double getY(){
         return cityTemplate.getY();
     }
-
+    public String getControlColor(){
+        Player controlling = whoControls();
+        if(controlling==null) return "#fff";
+        return controlling.color();
+    }
+    public String getTotalControlColor(){
+        Player controlling = whoTotallyControls();
+        if(controlling==null) return "#fff";
+        return controlling.color();
+    }
 }

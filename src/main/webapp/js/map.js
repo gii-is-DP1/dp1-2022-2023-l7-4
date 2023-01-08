@@ -24,6 +24,7 @@ window.init = (gameId, selectedPositions) => {
     const lineWidth = "0.5%";
     const lineColor = "lightgrey";
     const positionRadius = citySize / 12;
+    const markerSize = citySize/3;
     const gold = "#FFD700";
     function parentWidth(elem) { return elem.parentElement.clientWidth; }
     function parentHeight(elem) { return elem.parentElement.clientHeight; }
@@ -38,6 +39,14 @@ window.init = (gameId, selectedPositions) => {
       city.x = scaleXY(city.x);
       city.y = scaleXY(city.y);
       nodes.push(city);
+      if(city.markerVp>0 || city.markerInfluence>0){
+        nodes.push({color:city.controlColor,nodeId:"controlMarker_"+city.id,markerVp:city.markerVp,markerInfluence: city.markerInfluence, nodeType:"controlMarker",x: city.x - citySize*0.8,y: city.y + -citySize*0.5})
+        nodes.push({color:city.totalControlColor,nodeId:"totalControlMarker_"+city.id,markerVp:city.markerVp,markerInfluence: city.markerInfluence, nodeType:"totalControlMarker",x: city.x + citySize*0.8,y: city.y + -citySize*0.5})
+        links.push({ source: "city_"+city.id , target: "controlMarker_" + city.id })
+        links.push({ source: "city_"+city.id , target: "totalControlMarker_" + city.id })
+        links.push({ source: "controlMarker_" + city.id , target: "totalControlMarker_" + city.id })
+      
+      }
 
     }
 
@@ -131,7 +140,11 @@ window.init = (gameId, selectedPositions) => {
       .attr("class", "linePath")
       .attr("id", function (d, i) { return "linePath_" + i; })
       .attr("stroke-width", lineWidth)
-      .attr("stroke", lineColor)
+      .attr("stroke",(d)=> {
+        if(d.source.indexOf("k")!=-1)   return "#0000";
+        if(d.target.indexOf("k")!=-1)   return "#000";
+        return lineColor;
+      })
       .attr("fill", "none")
       .classed("link", true);
 
@@ -147,11 +160,73 @@ window.init = (gameId, selectedPositions) => {
       .attr("id", d => d.nodeId).attr("class", d => d.nodeType + "_group")
       .call(d3.drag().on("drag", dragged));
 
-    //POSITIONS GROUP
+      var controlMarker = svg.selectAll("g.controlMarker_group")
+      controlMarker.append('circle')
+      .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", markerSize/2)
+        .attr("stroke", (d)=>d.color)
+        .attr("stroke-width", (d)=>d.color=="#fff" || d.color=="#dddddd"?2:6)
+        .attr("fill", '#990')
 
+        controlMarker.append("svg:image")
+        .attr("xlink:href", "/resources/images/control_marker.png")
+        .attr("class", "img")
+        .attr("width", markerSize)
+        .attr("height", markerSize)
+        .attr("x", -markerSize/2 )
+        .attr("y", -markerSize/2 )
+
+        controlMarker.append("text")
+        .text(function (d) {
+          if (d.markerInfluence > 0) return d.markerInfluence;
+        })
+        .attr('fill', (d) => d.startingCity ? "#fff" : "#000")
+        .attr("text-anchor", "middle")
+        .attr("font-size", "23")
+        .attr("fill", "#fff")
+        .attr('x', -markerSize/15)
+        .attr("y", markerSize/10);
+
+
+
+        var totalControlMarker = svg.selectAll("g.totalControlMarker_group")
+        totalControlMarker.append('circle')
+        .attr("cx", 0)
+          .attr("cy", 0)
+          .attr("r", markerSize/2)
+          .attr("stroke", (d)=> d.color)
+          .attr("stroke-width", (d)=>d.color=="#fff" || d.color=="#dddddd"?2:6)
+          .attr("fill", '#990')
+  
+          totalControlMarker.append("svg:image")
+          .attr("xlink:href", "/resources/images/total_control_marker.png")
+          .attr("class", "img")
+          .attr("width", markerSize)
+          .attr("height", markerSize)
+          .attr("x", -markerSize/2 )
+          .attr("y", -markerSize/2 )
+
+      totalControlMarker.append("text")
+      .text( (d)=>d.markerVp)
+      .attr("text-anchor", "middle")
+      .attr("font-size", "23")
+      .attr("fill", gold)
+      .attr('x',  -markerSize/8)
+      .attr("y",  markerSize/4.5);
+
+    totalControlMarker.append("text")
+      .text((d)=>d.markerInfluence)
+      .attr('fill', (d) => d.startingCity ? "#fff" : "#000")
+      .attr("text-anchor", "middle")
+      .attr("font-size", "23")
+      .attr("fill", gold)
+      .attr('x', -markerSize/8)
+      .attr("y",  -markerSize/20);
+
+    //POSITIONS GROUP
     var position = svg.selectAll("g.position_group").classed("selection", (position) => selectedPositions.indexOf(position.id) !== -1)
       .on("click", (event) => {
-        console.log(event.target.__data__.id)
         if (selectedPositions.indexOf(event.target.__data__.id) !== -1) {
           document.getElementById('chosen-position').value = event.target.__data__.id
           document.getElementById('choose-position-form').submit();
@@ -179,7 +254,6 @@ window.init = (gameId, selectedPositions) => {
 
     var image = cityG.append("svg:image")
       .attr("xlink:href", (d) => {
-        console.log(d.markerInfluence > 0)
         if (d.startingCity) return "/resources/images/starting_city.png";
         if (d.markerVp > 0 || d.markerInfluence > 0) return "/resources/images/golden_city.png";
         return "/resources/images/white_city.png";
@@ -214,27 +288,7 @@ window.init = (gameId, selectedPositions) => {
       .attr('x', 1)
       .attr("y", citySize / 3.2);
 
-    var markerVP = cityG.append("text")
-      .text(function (d) {
-        if (d.markerVp > 0) return d.markerVp;
-      })
-      .attr('fill', (d) => d.startingCity ? "#fff" : "#000")
-      .attr("text-anchor", "middle")
-      .attr("font-size", "23")
-      .attr("color", gold)
-      .attr('x', citySize / 2 * 0.7)
-      .attr("y", citySize / 4);
-
-    var markerVP = cityG.append("text")
-      .text(function (d) {
-        if (d.markerInfluence > 0) return d.markerInfluence;
-      })
-      .attr('fill', (d) => d.startingCity ? "#fff" : "#000")
-      .attr("text-anchor", "middle")
-      .attr("font-size", "23")
-      .attr("color", gold)
-      .attr('x', -citySize / 2 * 0.7)
-      .attr("y", citySize / 4);
+    
 
     var div = svg.append("div")
       .attr("class", "tooltip")
@@ -418,7 +472,7 @@ window.init = (gameId, selectedPositions) => {
 
     const simulation = d3.forceSimulation(nodes)
       .force("charge", d3.forceManyBody().strength(d => {
-        return d.nodeType === "city" ? -2000 : -2000;
+        return -2000;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2.5))
       .force("x", d3.forceX())
@@ -434,6 +488,10 @@ window.init = (gameId, selectedPositions) => {
           return citySize / 14;
         } else if (d.source.nodeType === "city" && d.target.nodeType === "city") {
           return citySize * 1.5;
+        } else if (d.source.nodeType === "controlMarker" && d.target.nodeType === "totalControlMarker") {
+          return markerSize ;
+        } else if (d.target.nodeType === "controlMarker" || d.target.nodeType === "totalControlMarker") {
+          return citySize/2+markerSize ;
         } else {
           return citySize * 0.7;
         }
