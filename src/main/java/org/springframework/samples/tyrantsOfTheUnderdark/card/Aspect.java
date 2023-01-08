@@ -30,4 +30,11 @@ public class Aspect {
     @NotBlank
     private String image;
     
+    public static Aspect newAspect(){
+        Aspect aspect=new Aspect();
+        aspect.setName("hola");
+        aspect.setDescription("cuidado que te pego");
+        aspect.setImage("imagen.jpg");
+        return aspect;
+    }
 }

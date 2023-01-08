@@ -115,6 +115,38 @@
     border-style: solid;
     border-width: 0.3vmax;
 }
+.choose-button{
+    padding: 0.2vmax;
+    padding-left: 1vmax;
+    padding-right: 1vmax;
+    background-color: #8a2be2;
+    border-radius: 1vmax;
+    border-color: rgb(52, 10, 83);
+    border-style: solid;
+    border-width: 0.2vmax;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 1.1vmax;
+    transition-duration: 0.5s;
+}
+.choose-button:hover{
+    background-color: #ffffff;
+    padding: 0.2vmax;
+    padding-left: 1vmax;
+    padding-right: 1vmax;
+    border-radius: 1vmax;
+    border-color: rgb(52, 10, 83);
+    border-style: solid;
+    border-width: 0.2vmax;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 1.1vmax;
+    transition-duration: 0.5s;
+}
 
 </style>
 <!--IMPORT DEL MAPA-->
@@ -266,25 +298,24 @@
                         </div>
                     </div>
 
-                    <div class="positions-round0" style="flex-direction: column;width: 73%;height: 100%;">
-                        <div style="width: 100%; height: 15%; display: flex; align-items: center; justify-content: center;">
-                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: ;">
-                                <div style="padding:0.5vmax;display: flex; width: 95%; height: 71%; background-color: rgb(25, 24, 24);border-radius: 0.5vmax; align-items: center; justify-content: space-evenly; flex-direction: column;">
+                    <div class="positions-round0" style="flex-direction: column;width: 73%;height: 100%; justify-content: space-between;">
+                        <div style="width: 100%; height: 26.5%; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center; background-color:rgba(39, 11, 65, 0.42);">
+                                <div style="padding:0.5vmax;display: flex; width: 95%; background-color: rgb(25, 24, 24);border-radius: 1vmax; align-items: center; justify-content: space-evenly; flex-direction: column; margin-top: 1vmax;">
                                     <div style="font-size: 1.3vmax; color: aliceblue;">
                                         <b>Elige ${action.iterations} 
                                             <c:choose><c:when test="${action.iterations==1}"> vez.</c:when><c:otherwise> veces.</c:otherwise></c:choose> 
                                             Selecciona una opcion:</b>
+
                                     </div>
-                                    <div>
-                                        <c:forEach var="action" items="${action.getSubactions()}">
-                                            <a href="/play/${gameId}/round/${round}/chosenSubaction/${action.id}"
-                                                style="margin: 2vmax; background-color: aliceblue;">${action}</a>
-                                        </c:forEach>
-                                    </div>
+                                    <c:forEach var="action" items="${action.getSubactions()}">
+                                        <a href="/play/${gameId}/round/${round}/chosenSubaction/${action.id}"
+                                            class="choose-button" style="margin-top: 0.5vmax; text-align: center;">${action}</a>
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
-                        <div class="map-box" style="height: 85%; width: 100%;">
+                        <div class="map-box" style="height:73.5%; width: 100%;">
                             <svg id="graph"></svg>
                         </div>
                     

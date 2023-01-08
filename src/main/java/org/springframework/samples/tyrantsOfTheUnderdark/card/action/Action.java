@@ -127,6 +127,14 @@ public class Action extends BaseEntity {
         return action;
     }
 
+    public static Action ofDevoreCard(){
+        Action action= new Action();
+        action.setActionName(ActionName.DEVORE_MARKET_CARD);
+        action.setOriginalIterations(1);
+        action.setIterations(1);
+        return action;
+    }
+
     public boolean isMandatory(Action action) {
         return action.getActionName()==ActionName.THEN && action.getSubactions().get(0)==this;
     }
