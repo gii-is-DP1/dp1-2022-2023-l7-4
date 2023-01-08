@@ -166,24 +166,24 @@
             color: goldenrod;
             margin-top: 1vmax;
         }
-        .card-box .card-name-box{
+        .card-name-box{
             height: 67%;
             width: 100%;
             justify-content: center;
             display: flex;
         }
-        .card-name-box .card-name-center {
+        .card-name-center {
             margin-top: 1.75vmax;
             width: 85%;
             text-align: center;
             font-size: 1vmax;
         }
-        .card-box .card-cost-vp-box{
+        .card-cost-vp-box{
             height: 32%;
             width: 100%;
             display: flex;
         }
-        .card-cost-vp-box .card-cost{
+        .card-cost{
             width: 33%;
             color: aliceblue;
             text-align: center;
@@ -191,7 +191,7 @@
             margin-left: 0.15vmax;
             margin-top: 0.30vmax;
         }
-        .card-cost-vp-box .card-deckVP{
+        .card-deckVP{
             width: 33%;
             color: aliceblue;
             text-align: center;
@@ -199,7 +199,7 @@
             margin-left: -0.09vmax;
             margin-top: 0.35vmax;
         }
-        .card-cost-vp-box .card-innerCirclePV{
+        .card-innerCirclePV{
             margin-top: 0.19vmax;
             width: 30%;
             color: aliceblue;
@@ -207,12 +207,7 @@
             font-size: 1.2vmax;
             margin-top: 0.30vmax;
         }
-        .card-hand-box .card-name-center {
-            margin-top: 1.8vmax;
-            width: 85%;
-            text-align: center;
-            font-size: 1vmax;
-        }
+
         .card-hand-box{
             width: 15%;
             height: 10vmax;
@@ -221,7 +216,9 @@
             background-size:contain;
             background-repeat: no-repeat;
             display: flex;
-            justify-content: center;
+            word-wrap: break-word;
+            align-items: center;
+            flex-direction: column;
             word-wrap: break-word;
         }
         .top-market-cards .empty-card-box{
@@ -241,7 +238,7 @@
             width: 93%;
             height: 85%;
             background-image: url(/resources/images/fondo_mano.png);
-            background-position: 0px -130px;
+            background-position: 0% 50%;
             background-size:cover;
             background-repeat: no-repeat;
             background-color:rgb(25, 24, 24);
@@ -1042,7 +1039,13 @@
                                         </div>
                                     </div>
                                     <div class="card-hand-box" title="${card.rulesText}" onclick="showPopUp('HandCardPopUp${card.id}')" style="cursor: pointer;">
-                                        <div class="card-name-center"><b>${card.name}</b></div>
+                                        <div class="card-name-box">   
+                                            <div class="card-name-center"><b>${card.name}</b></div>
+                                        </div>
+                                        <div class="card-cost-vp-box">
+                                            <div class="card-deckVP" style="margin-left: 0.7vmax; font-size: 1.3vmax; margin-top: 0.25vmax;">${card.deckVP}</div>
+                                            <div class="card-innerCirclePV" style="margin-left: 0.72vmax; font-size: 1.3vmax; margin-top: 0.22vmax;">${card.innerCirclePV}</div>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>

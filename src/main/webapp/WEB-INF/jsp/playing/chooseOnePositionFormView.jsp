@@ -92,15 +92,14 @@
     justify-content: center;
     align-items: center;
     width: 60%;
-    height: 10%;
     background-color: rgba(16, 64, 112, 0.814);
     color: aliceblue;
-    margin-bottom: 1vmax;
     font-size: 1.2vmax;
     border-color: black;
     border-radius: 1vmax;
     border-style: solid;
     border-width: 0.3vmax;
+    padding: 0.5vmax;
 }
 
 </style>
@@ -279,14 +278,18 @@
                     <c:when test="${basicAction==true}">
                         <div style="flex-direction: column;width: 100%;height: 100%;display: flex; align-items: center; justify-content: center;">
                             <c:if test="${special!=null}">
-                                <div class="special-box" style="margin-top: 1vmax;" >
-                                    <div style="text-align: center;"><o:out><b>${special}</b></o:out> </div>
+                                <div style="width: 100%; height: 15%; display: flex; justify-content: center; align-items: center; background-color: rgba(39, 11, 65, 0.42);">
+                                    <div class="special-box" >
+                                        <div style="text-align: center;"><o:out><b>${special}</b></o:out> </div>
+                                    </div>
                                 </div>
                             </c:if>
                             <c:if test="${noSpyToPlace!=null}">
                                 <c:if test="${noSpyToPlace==true}">
-                                    <div class="special-box" style="margin-top: 1vmax;">
-                                        <div  style="text-align: center;"><o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> </div>
+                                    <div style="width: 100%; height: 15%; display: flex; justify-content: center; align-items: center; background-color: rgba(39, 11, 65, 0.42);">
+                                        <div class="special-box">
+                                            <div  style="text-align: center;"><o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> </div>
+                                        </div>
                                     </div>
                                 </c:if>
                             </c:if>
@@ -336,14 +339,18 @@
                     <c:otherwise>
                         <div class="positions-round0" style="flex-direction: column;width: 73%;height: 100%; ">
                             <c:if test="${special!=null}">
-                                <div class="special-box"  style="margin-top: 1vmax;">
-                                    <div style="text-align: center;"><o:out><b>${special}</b></o:out> </div>
+                                <div style="width: 100%; height: 15%; display: flex; justify-content: center; align-items: center; background-color: rgba(39, 11, 65, 0.42);">
+                                    <div class="special-box"  style="margin-top: 1vmax;">
+                                        <div style="text-align: center;"><o:out><b>${special}</b></o:out> </div>
+                                    </div>
                                 </div>
                             </c:if>
                             <c:if test="${noSpyToPlace!=null}">
                                 <c:if test="${noSpyToPlace==true}">
-                                    <div class="special-box"  style="margin-top: 1vmax;">
-                                        <div style="text-align: center;"><o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> </div>
+                                    <div style="width: 100%; height: 15%; display: flex; justify-content: center; align-items: center; background-color: rgba(39, 11, 65, 0.42);">
+                                        <div class="special-box">
+                                            <div style="text-align: center;"><o:out><b>Como no tienes más espías por colocar, puedes mover uno de tus espías</b></o:out> </div>
+                                        </div>
                                     </div>
                                 </c:if>
                             </c:if>
@@ -380,7 +387,7 @@
                                         <p>Puntos por control total: ${vp.totalControlVP}</p>
                                         <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
                                         <p>Puntos en mano: ${vp.handVP}</p>
-                                        <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
+                                        <p>Puntos en la pila de descarte: ${vp.discardPileVP}</p>
                                         <p>Puntos en mazo: ${vp.deckVP}</p>
                                         <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                                         <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
