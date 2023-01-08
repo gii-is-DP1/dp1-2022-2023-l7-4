@@ -323,7 +323,7 @@
                                         <p>Puntos por control total: ${vp.totalControlVP}</p>
                                         <p>Puntos por trofeos: ${vp.trophyHallVP}</p>
                                         <p>Puntos en mano: ${vp.handVP}</p>
-                                        <p>Puntos en la pila de descarte: ${vp.dicardPileVP}</p>
+                                        <p>Puntos en la pila de descarte: ${vp.discardPileVP}</p>
                                         <p>Puntos en mazo: ${vp.deckVP}</p>
                                         <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                                         <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>

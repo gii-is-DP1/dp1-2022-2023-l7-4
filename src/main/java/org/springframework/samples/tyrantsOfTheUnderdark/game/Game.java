@@ -3,6 +3,7 @@ package org.springframework.samples.tyrantsOfTheUnderdark.game;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,6 +166,22 @@ public class Game extends BaseEntity{
         return getFinished();
     }
 
+    public Map<Player,List<City>> getActualControlMarker(){
+        Map<Player,List<City>> map=new HashMap<>();
+        for(Player player:getPlayers()){
+            map.put(player,player.getControlMarker());
+        }
+        return map;
+    }
+
+    public Map<Player,List<City>> getActualTotalControlMarker(){
+        Map<Player,List<City>> map=new HashMap<>();
+        for(Player player:getPlayers()){
+            map.put(player,player.getTotalControlMarker());
+        }
+        return map;
+    }
+
 
 
     //TODO: COMPROBAR ESO
@@ -230,7 +247,7 @@ public class Game extends BaseEntity{
         Integer vpEarned = player.getVpEarned();
         vp.setControlVP(controlVP);
         vp.setDeckVP(deckVP);
-        vp.setDicardPileVP(dicardPileVP);
+        vp.setDiscardPileVP(dicardPileVP);
         vp.setInnerCircleVP(innerCircleVP);
         vp.setTotalControlVP(totalControlVP);
         vp.setTrophyHallVP(trophyHallVP);

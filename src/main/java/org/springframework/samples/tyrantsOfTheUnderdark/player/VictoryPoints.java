@@ -15,7 +15,7 @@ public class VictoryPoints implements Comparable<VictoryPoints> {
 
     Integer handVP;
 
-    Integer dicardPileVP;
+    Integer discardPileVP;
 
     Integer deckVP;
 
@@ -30,8 +30,12 @@ public class VictoryPoints implements Comparable<VictoryPoints> {
 
     public Integer setTotalVp(){
         Integer result=0;
-        result=this.controlVP+this.totalControlVP+this.trophyHallVP+this.handVP+this.dicardPileVP+this.deckVP+this.innerCircleVP+this.earnedVP+this.markerVP;
+        result=this.controlVP+this.totalControlVP+this.trophyHallVP+this.handVP+this.discardPileVP+this.deckVP+this.innerCircleVP+this.earnedVP+this.markerVP;
         return this.totalVp=result;
+    }
+
+    public Integer getTotalVPByCards(){
+        return deckVP+handVP+discardPileVP;
     }
 
     @Override
