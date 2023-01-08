@@ -550,10 +550,7 @@
 <link rel="stylesheet" href="/resources/styles/mapUI.css"></link>
 <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
 <script src="/js/map.js"></script>
-    <script>
-        //INICIA EL MAPA
-        init('${game.id}')
-    </script>
+    
     <div class="fullscreen-game">  
 
         <!--LOYOUT ZONA SUPERIOR-->
@@ -1159,6 +1156,10 @@
                     <svg id="graph"></svg>
                 </div>
             </div>
+            <script>
+                //INICIA EL MAPA
+                init('${game.id}')
+            </script>
 
                 <!--POPUPS AQUI!!!-->
                 <div class="popup" id="VpPopUp">
