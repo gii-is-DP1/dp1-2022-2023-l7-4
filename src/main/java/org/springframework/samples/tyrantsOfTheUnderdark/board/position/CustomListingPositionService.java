@@ -181,7 +181,7 @@ public class CustomListingPositionService {
             return enemyPlayer?getEnemyPositionsByTypeOfGame(player.getId(), false, true, false, game)
             :this.positionServiceRepo.getTroopPositionsOfPlayer(player.getId(), game);
         else if(piece.toLowerCase().trim().equals("spy"))
-            return enemyPlayer?getEnemyPositionsByTypeOfGame(player.getId(), false, true, false, game)
+            return enemyPlayer?getEnemyPositionsByTypeOfGame(player.getId(), true, true, false, game)
             :this.positionServiceRepo.getSpyPositionsOfPlayer(player.getId(), game);
         else
             return enemyPlayer?getPresencePositions(player.getId(),true)

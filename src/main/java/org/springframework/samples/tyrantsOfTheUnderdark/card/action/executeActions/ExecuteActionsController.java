@@ -308,6 +308,9 @@ public class ExecuteActionsController {
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
         putPlayerDataInModel(game, actualPlayer, result);
+        String deployTroop = "deploy";
+        result.addObject("withPresence",withPresence);
+        result.addObject("deployTroop",deployTroop);
         List<Position> positions=this.customListingPositionService
         .getAvailableFreeTroopPositionsByGame(actualPlayer, game, withPresence);
         result.addObject("positions",positions);
@@ -346,6 +349,8 @@ public class ExecuteActionsController {
     public ModelAndView initPlaceSpy(@PathVariable("gameId") Game game){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
+        Boolean placeSpy = true;
+        result.addObject("placeSpy", placeSpy);
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("game", game);
         result.addObject("positions", customListingPositionService
@@ -377,6 +382,10 @@ public class ExecuteActionsController {
     ,@RequestParam("typeOfEnemy") String typeOfEnemy,@RequestParam("withPresence") Boolean withPresence){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
+        String typeEnemy= typeOfEnemy;
+        Boolean withPres = withPresence;
+        result.addObject("typeEnemy",typeEnemy);
+        result.addObject("withPres",withPres);
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("game", game);
         result.addObject("positions",
@@ -408,7 +417,11 @@ public class ExecuteActionsController {
     public ModelAndView initReturnPiece(@PathVariable("gameId") Game game
     ,@RequestParam("enemyPlayer") Boolean enemyPlayer,@RequestParam("piece") String piece){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        String pces= piece;
+        Boolean enePlayer = enemyPlayer;
         Player actualPlayer=game.getCurrentPlayer();
+        result.addObject("pces", pces);
+        result.addObject("enePlayer", enePlayer);
         result.addObject("game", game);
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions",
@@ -445,6 +458,10 @@ public class ExecuteActionsController {
     ,@RequestParam("typeOfEnemy") String typeOfEnemy,@RequestParam("withPresence") Boolean withPresence){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
+        String typeOfEne = typeOfEnemy;
+        Boolean withPres = withPresence;
+        result.addObject("withPres", withPres);
+        result.addObject("typeOfEne", typeOfEne);
         result.addObject("game", game);
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions",
@@ -477,6 +494,8 @@ public class ExecuteActionsController {
     ,@RequestParam("typeOfEnemy") String typeOfEnemy){
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
         Player actualPlayer=game.getCurrentPlayer();
+        String typeOfEne = typeOfEnemy;
+        result.addObject("typeOfEne",typeOfEne);
         result.addObject("game", game);
         putPlayerDataInModel(game, actualPlayer, result);
         result.addObject("positions",this.customListingPositionService.getAdjacentEnemyTroopPositionsByLastPosition(game, typeOfEnemy));
@@ -506,7 +525,13 @@ public class ExecuteActionsController {
     ,@RequestParam("enemyPlayer") Boolean enemyPlayer,@RequestParam("noSpyToPlace") Boolean noSpyToPlace){
         List<Position> movablePositions=this.customListingPositionService
         .getMovablePiecesForPlayer(game.getCurrentPlayer(), game, piece, enemyPlayer);
+        String pce = piece;
+        Boolean enePlayer= enemyPlayer;
+        Boolean noSpyToPlac = noSpyToPlace;
         ModelAndView result=new ModelAndView(CHOOSE_ONE_POSITION_FORM_VIEW);
+        result.addObject("noSpyToPlac", noSpyToPlac);
+        result.addObject("enePlayer", enePlayer);
+        result.addObject("pce", pce);
         result.addObject("game", game);
         putPlayerDataInModel(game, game.getCurrentPlayer(), result);
         result.addObject("noSpyToPlace", noSpyToPlace);

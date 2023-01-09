@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
 <link rel="stylesheet" href="/resources/styles/cardlisting.css">
 <link rel="stylesheet" href="/resources/styles/passactionbutton.css">
+<link rel="stylesheet" href="/resources/styles/home-icon-pop.css">
 
 <style>
     .popup {
@@ -155,6 +156,9 @@
         <!--Loyout HUD parte superior-->
         <div class="tophud">
             <div class="tophud-box tophud-b1">
+                <a class="home-icon-menu" onclick="showPopUp('HomePopUp')" href="JavaScript:void(0)">
+                    
+                </a>
                 <div class="player-div"  style="color: ${player.house.hexColor};">
                     JUGADOR&nbsp${turn} - ${player.name}
                 </div>
@@ -402,6 +406,18 @@
                             <p>Puntos por cartas ascendidas: ${vp.innerCircleVP}</p>
                             <p>Puntos acumulados por acciones de cartas: ${vp.earnedVP}</p>
                             <p>Puntos acumulados por marcadores de control: ${vp.markerVP}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup" id="HomePopUp">
+                    <div class="popup-blue-box" style="width: 50%; height: 50%; background-color: rgba(0, 0, 0,0.6);">
+                        <a onclick="dontShowPopUp('HomePopUp')" href="JavaScript:void(0)" class="x">&times;</a>
+                        <div class="ls" style="justify-content: start; width: 100%; height: 100%;">
+                            <div style="margin-top: 1vmax; font-size: 3vmax;"><b>AJUSTES</b></div>
+                            <a href="http://localhost:8080" class="home-return-button" style="margin-top: 7vmax;">
+                                Salir de la partida
+                            </a>
                         </div>
                     </div>
                 </div>
