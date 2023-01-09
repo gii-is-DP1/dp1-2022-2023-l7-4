@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="/resources/styles/tyrants.css">
 <link rel="stylesheet" href="/resources/styles/passactionbutton.css">
 <link rel="stylesheet" href="/resources/styles/cardlisting.css">
+<link rel="stylesheet" href="/resources/styles/home-icon-pop.css">
 
 <body>
     
@@ -124,6 +125,9 @@
         <!--HUD superior-->
         <div class="tophud">
             <div class="tophud-box tophud-b1">
+                <a class="home-icon-menu" onclick="showPopUp('HomePopUp')" href="JavaScript:void(0)">
+                    
+                </a>
                 <div class="player-div"  style="color: ${player.house.hexColor};">
                     JUGADOR&nbsp${turn} - ${player.name}
                 </div>
@@ -131,7 +135,59 @@
             <div class="tophud-box tophud-b2">
                 <div class="resume-div">
                     <div class="resume-text">
-                        Selecciona una ubicación disponible
+                        <c:choose>
+                            <c:when test="${withPresence=true && deployTroop=='deploy'}">
+                                Despliega una tropa con presencia
+                            </c:when>
+                            <c:when test="${placeSpy==true}">
+                                Despliega un espía 
+                            </c:when>
+                            <c:when test="${typeEnemy=='any' && withPres==true}">
+                                Asesina una tropa enemiga con presencia
+                            </c:when>
+                            <c:when test="${typeEnemy=='white' && withPres==true}">
+                                Asesina una tropa blanca con presencia
+                            </c:when>
+                            <c:when test="${pces=='any' && enePlayer==true}">
+                                Devuelve una tropa o espía enemigo
+                            </c:when>
+                            <c:when test="${pces=='spy' && enePlayer==false}">
+                                Devuelve uno de tus espías desplegados
+                            </c:when>
+                            <c:when test="${pces=='spy' && enePlayer==true}">
+                                Devuelve un espía enemigo
+                            </c:when>
+                            <c:when test="${typeOfEne=='white' && withPres==true}">
+                                Suplanta una tropa blanca con presencia
+                            </c:when>
+                            <c:when test="${typeOfEne=='white' && withPres==false}">
+                                Suplanta una tropa blanca en cualquier lugar del mapa
+                            </c:when>
+                            <c:when test="${typeOfEne=='any' && withPres==true}">
+                                Suplanta una tropa enemiga con presencia
+                            </c:when>
+                            <c:when test="${typeOfEne=='any'}">
+                                Suplanta una tropa enemiga en la ciudad indicada
+                            </c:when>
+                            <c:when test="${pce=='troop' && enePlayer==true && noSpyToPlac==false}">
+                                Mueve una tropa enemiga
+                            </c:when>
+                            <c:when test="${pce=='spy' && enePlayer==false && noSpyToPlac==true}">
+                                Mueve un espía desplegado
+                            </c:when>
+                            <c:when test="${basicKill==true}">
+                                Asesina una tropa enemiga por 3 de poder
+                            </c:when>
+                            <c:when test="${basicReturnSpy==true}">
+                                Devuelve un espía enemigo por 3 de poder
+                            </c:when>
+                            <c:when test="${basicDeploy==true}">
+                                Despliega una tropa por 1 de poder
+                            </c:when>
+                            <c:otherwise>
+                                Selecciona una ubicación disponible
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -395,10 +451,22 @@
                                     </div>
                                 </div>
                             </div>
+
+                            
                         </div>
                     </c:otherwise>
                 </c:choose>
-                
+                <div class="popup" id="HomePopUp">
+                    <div class="popup-blue-box" style="width: 50%; height: 50%; background-color: rgba(0, 0, 0,0.6);">
+                        <a onclick="dontShowPopUp('HomePopUp')" href="JavaScript:void(0)" class="x">&times;</a>
+                        <div class="ls" style="justify-content: start; width: 100%; height: 100%;">
+                            <div style="margin-top: 1vmax; font-size: 3vmax;"><b>AJUSTES</b></div>
+                            <a href="http://localhost:8080" class="home-return-button" style="margin-top: 7vmax;">
+                                Salir de la partida
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             
