@@ -451,22 +451,22 @@
                                     </div>
                                 </div>
                             </div>
+
                             
-                            <div class="popup" id="HomePopUp">
-                                <div class="popup-blue-box" style="width: 50%; height: 50%; background-color: rgba(0, 0, 0,0.6);">
-                                    <a onclick="dontShowPopUp('HomePopUp')" href="JavaScript:void(0)" class="x">&times;</a>
-                                    <div class="ls" style="justify-content: start; width: 100%; height: 100%;">
-                                        <div style="margin-top: 1vmax; font-size: 3vmax;"><b>AJUSTES</b></div>
-                                        <a href="http://localhost:8080" class="home-return-button" style="margin-top: 7vmax;">
-                                            Salir de la partida
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </c:otherwise>
                 </c:choose>
-                
+                <div class="popup" id="HomePopUp">
+                    <div class="popup-blue-box" style="width: 50%; height: 50%; background-color: rgba(0, 0, 0,0.6);">
+                        <a onclick="dontShowPopUp('HomePopUp')" href="JavaScript:void(0)" class="x">&times;</a>
+                        <div class="ls" style="justify-content: start; width: 100%; height: 100%;">
+                            <div style="margin-top: 1vmax; font-size: 3vmax;"><b>AJUSTES</b></div>
+                            <a href="http://localhost:8080" class="home-return-button" style="margin-top: 7vmax;">
+                                Salir de la partida
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             
