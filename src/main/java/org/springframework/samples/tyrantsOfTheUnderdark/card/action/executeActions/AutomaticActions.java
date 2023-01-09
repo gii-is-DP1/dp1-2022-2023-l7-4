@@ -88,12 +88,15 @@ public class AutomaticActions {
     public static void earnVpForControlledSites(Game game, Action action) {
         Player player = game.getCurrentPlayer();
         Integer TotalControlledCities = (int) (long) game.getCities().stream()
+        .filter(city-> city.isCapital())
         .filter(city->(city.whoControls()!=null && city.whoControls().equals(player)) || (city.whoTotallyControls()!=null && city.whoTotallyControls().equals(player)))
         .count();
         Integer Vp= TotalControlledCities;
         Integer ActualVP=player.getVpEarned();
         player.setVpEarned(Vp+ActualVP);
     }
+
+    
 
 
 

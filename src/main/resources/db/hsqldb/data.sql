@@ -61,14 +61,14 @@ INSERT INTO path_templates(id,city_id_1,city_id_2,capacity) VALUES
 (36,21,26,2),(37,22,23,1),(38,23,24,1),(39,23,25,2),(40,25,26,1);
 
 
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,2,1);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,3,3);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,3,0);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,4,3);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (2,5,3);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (1,5,3);-- GIVES ERROR
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (5,6,2);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (4,6,1);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (27,28,1);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (27,29,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (28,29,0);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (28,30,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (28,31,3);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (27,31,3);-- GIVES ERROR
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (31,32,2);
+INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (30,32,1);
 
 
 -- MAPS
@@ -83,17 +83,17 @@ INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUE
     (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),
     (1,27),(1,28),(1,29),(1,30),(1,31),(1,32),(1,33),(1,34),(1,35),(1,36),(1,37),(1,38),(1,39),(1,40),
 
-    (2,1),
-    (2,2),
-    (2,3),
+    (2,41),
+    (2,42),
+    (2,43),
 
-    (3,1),
-    (3,2),
-    (3,3),
-    (3,4),
+    (3,41),
+    (3,42),
+    (3,43),
+    (3,44),
 
-    (4,1),
-    (4,6);
+    (4,41),
+    (4,44);
 
 
 
@@ -116,18 +116,26 @@ INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas'
 
 
 -- GAMES
-INSERT INTO games(id,date,name,map_template_id,automatic) VALUES  (1,'2022-04-08','Partida mapa original',1,FALSE);
-INSERT INTO games(id,date,name,map_template_id,automatic) VALUES (2,'2022-04-09','Partida zona media',1,FALSE);
-
-
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
+
+INSERT INTO games(id,date,name,map_template_id,automatic) VALUES  (1,'2022-04-08','Partida mapa original',1,FALSE);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 daviddhc', 'daviddhc',10,10,1,1);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'P2 anddomrui', 'anddomrui',10,10,2,1);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'P3 manotebar',10,10,3,1);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 javiFdz',10,10,4,1);
 
+
+INSERT INTO games(id,date,name,map_template_id,automatic) VALUES (2,'2022-04-09','Partida zona media',1,FALSE);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 javiTopG',1000,1000,1,2);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 davidZ',1000,1000,2,2);
+
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (3,'2022-04-09','Tropas blancas ',3,1,2,TRUE);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (7, 'Player1',1000,1000,1,3);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (8, 'Player2',1000,1000,2,3);
+
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (4,'2022-04-09','Partida de prueba',3,1,2,FALSE);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (9, 'Player1',1000,1000,1,4);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (10, 'Player2',1000,1000,2,4);
 
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
@@ -382,7 +390,7 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Negociadora Drow',3,'<<Puedo abrir puertas que están cerradas para todos excepto para las matronas.>>','Si hay 4 cartas o más en tu círculo interno => +3 influencia. Al final del turno, asciende otra carta jugada durante este turno',1,2,2,1,1,123), 
             ('Kobold',1,'Aunque pueden llegar a vivir más de un siglo, la mayoría parece antes de cumplir un puñado de décadas','Elige una opción:Despliega 1 tropa| Asesina 1 tropa blanca',1,2,3,2,2,124), 
             ('Sectario del Culto del Dragón',3,'Su misión en la vida es alumbrar una era de dominación','Elige una opción:+2 influencia| +2 poder',1,4,4,2,3,125),
-            ('Dragón verde',7,'Los dragones verdes miden sus planes en siglos','Elige una opción:Pon un espía y, a continuación, suplanta 1 tropa que esté en la misma ubicación que ese espía | Devuelve 1 de tus espías=>Suplanta una tropa que esté en la misma ubicación que ese espía y, a continuación, obtén 1 PV por cada marcador de control de ubicación que tengas',3,7,1,2,4,126), --FALTA HACER LOS MARCADORES
+            ('Dragón verde',7,'Los dragones verdes miden sus planes en siglos','Elige una opción:Pon un espía y, a continuación, suplanta 1 tropa que esté en la misma ubicación que ese espía | Devuelve 1 de tus espías=>Suplanta una tropa que esté en la misma ubicación que ese espía y, a continuación, obtén 1 PV por cada marcador de control de ubicación que tengas',3,7,1,2,4,126),
             ('Clérigo de Laogzed',4,'Lo único que supera su hedor es su hambre de carne fresca','Mueve 1 tropa enemiga. Al final del turno, asciende otra carta jugada durante este turno',2,4,2,2,1,127),
             ('Rath Modar',6,'<<Los dragones son herramientas, y con ellas construiré imperios>>','Roba 2 cartas. Pon 1 espía',2,5,1,2,4,128), 
             ('Cría de dragón negro',3,'Tantos bocaditos apetitosos y tan poco tiempo','+1 influencia. Asesina 1 tropa blanca',1,4,2,2,2,129), 
@@ -402,7 +410,3 @@ INSERT INTO cards(name,cost,story,rules_text,deck_pv,inner_circle_pv,rarity,half
             ('Dragón rojo',8,'<<Si alguna vez ves uno de estos, corre>> --Blacksoot, el Abrasador','Suplanta 1 tropa. Devuelve 1 espía enemigo. Obtén 1 PV por cada ubicación bajo tu control total',4,8,1,2,3,143); 
             
 
--- PARA TEST--
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,round) VALUES (3,'2022-04-09','Partida de prueba',1,1,2,TRUE,2);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (7, 'Player1',1000,1000,1,3);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (8, 'Player2',1000,1000,2,3);
