@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
+import org.springframework.samples.tyrantsOfTheUnderdark.card.action.Action;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.action.ActionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
@@ -31,13 +32,21 @@ public class ExecuteActionsControllerTest {
     private WebApplicationContext context;
     private MockMvc mockMvc;
 
-    @Autowired
-    private CardService cardService;
 
     @Autowired
     private GameService gameService;
 
-    
+    @Autowired
+    private ActionService actionService;
+
+    @Autowired
+    private CardService cardService;
+
+
+    //PASOS PARA OBTENER TEST E2E FUNCIONALES DE EXECUTEACTIONCONTROLLER:
+    //1-CREAR ACCIÓN DE PRUEBA CON LA ACCIÓN QUE QUIERES
+    //2-ASIGNARLE UNA CARTA
+    //3- GUARDAR ACCIÓN , AÑADIRSELA A GAME Y GUARDAR GAME
 
 
 
@@ -46,20 +55,21 @@ public class ExecuteActionsControllerTest {
         mockMvc=MockMvcBuilders.webAppContextSetup(context)
         .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
-    /*
-     * @WithMockUser(username="admin2",authorities = {"admin"})
+     @WithMockUser(username="admin2",authorities = {"admin"})
     @Test
     public void testExecuteDevoreByCard() throws Exception{
-        Card toDevore=Card.createCardToDevore();
-        toDevore.setId(100);
-        toDevore.setHalfDeck(this.cardService.getHalfDeckById(1));
+        Action actionToDevore=Action.ofDevoreCard();
+        actionToDevore.setCard(this.cardService.getCardById(1));
+        this.actionService.save(actionToDevore);
         Game game=this.gameService.getGameById(1);
         game.setRound(1);
-        mockMvc.perform(get("/play/{gameId}/round/1/play-card/{cardId}",1,toDevore.getId()))
+        game.setCurrentAction(actionToDevore);
+        this.gameService.save(game);
+        mockMvc.perform(get("/play/{gameId}/round/1/execute-action",1))
         .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/play/1/round/1/devoreMarketCard"));
+        .andExpect(view().name("redirect:/play/{gameId}/round/{round}/devoreMarketCard"));
     }
-     */
+     
 
     
 }

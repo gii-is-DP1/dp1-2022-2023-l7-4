@@ -89,6 +89,10 @@ public class CardService {
         return promotableCards;
     }
 
+    public void save(Card card){
+        cardRepository.save(card);
+    }
+
     
 
     
