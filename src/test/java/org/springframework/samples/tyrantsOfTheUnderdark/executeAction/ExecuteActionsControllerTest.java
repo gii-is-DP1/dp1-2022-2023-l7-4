@@ -2,14 +2,13 @@ package org.springframework.samples.tyrantsOfTheUnderdark.executeAction;
 
 import org.junit.jupiter.api.BeforeEach;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.action.Action;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.action.ActionService;
