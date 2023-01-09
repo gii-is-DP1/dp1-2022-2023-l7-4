@@ -1,7 +1,8 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.user;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
@@ -25,6 +27,8 @@ public class UserControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mockMvc;
+
+    
 
     @Autowired
     private UserService userService;
@@ -42,6 +46,32 @@ public class UserControllerTest {
         User deletableUser=this.userService.getUserByUsername("javfercas3");
         mockMvc.perform(get("/users/{username}/delete",deletableUser.getUsername())).andExpect(status().is3xxRedirection())
         .andExpect(view().name("redirect:/users/list"));
+    }
+
+    @WithMockUser(username="antoonio",authorities = {"player"})
+    @Test
+    public void testThatOnlyAdminsCanDeleteUsers() throws Exception{
+        User deletableUser=this.userService.getUserByUsername("javfercas3");
+        mockMvc.perform(get("/users/{username}/delete",deletableUser.getUsername()))
+        .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testInitEditUserAsAdmin() throws Exception{
+        User toEditUser=this.userService.getUserByUsername("javfercas3");
+        mockMvc.perform(get("/users/{username}/edit",toEditUser.getUsername()))
+        .andExpect(status().isOk())
+        .andExpect(model().attributeExists("user"));
+    }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testProcessEditUserAsAdmin() throws Exception{
+        User toEditUser=this.userService.getUserByUsername("javfercas3");
+        mockMvc.perform(post("/users/{username}/edit",toEditUser.getUsername()))
+        .andExpect(status().isOk())
+        .andExpect(model().attributeExists("user"));
     }
     
 }
