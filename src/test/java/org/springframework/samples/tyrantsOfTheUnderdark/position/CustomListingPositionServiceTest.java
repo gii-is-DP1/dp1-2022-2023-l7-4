@@ -77,6 +77,8 @@ public class CustomListingPositionServiceTest {
         City city2=City.of(cityTemplate2, game);
         city1.setId(1);
         city2.setId(2);
+
+
         Position spy1FromCity1=new Position();
         spy1FromCity1.setForSpy(true);
         spy1FromCity1.setPlayer(player1);
@@ -94,11 +96,11 @@ public class CustomListingPositionServiceTest {
         city1.setPositions(List.of(spy1FromCity1,spy2FromCity1));
         city2.setPositions(List.of(spy1FromCity2,spy2FromCity2));
         Position troop1FromCity1=new Position();
+        troop1FromCity1.setForSpy(false);
         troop1FromCity1.setId(5);
         troop1FromCity1.setCity(city1);
         Position troop2FromCity1=new Position();
-
-
+        troop2FromCity1.setForSpy(false);
         troop2FromCity1.setId(6);
         troop2FromCity1.setCity(city1);
         troop1FromCity1.setAdjacents(List.of(spy1FromCity1,spy2FromCity1,troop2FromCity1));
@@ -106,6 +108,8 @@ public class CustomListingPositionServiceTest {
         spy1FromCity1.setAdjacents(List.of(spy2FromCity1,troop1FromCity1,troop2FromCity1));
         spy2FromCity1.setAdjacents(List.of(spy1FromCity1,troop1FromCity1,troop2FromCity1));
         troop1FromCity1.setPlayer(player2);
+
+
         Player white=new Player();
         white.setId(0);
         troop2FromCity1.setPlayer(white);
