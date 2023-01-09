@@ -149,6 +149,28 @@ public class UserController {
 			return "redirect:/";
 		}
 	}
+
+	@GetMapping("/users/{username}/edit")
+	public ModelAndView editUserAsAdmin(@PathVariable("username") String username){
+		User userToEdit =userService.getUserByUsername(username);
+		ModelAndView res=new ModelAndView(VIEWS_CURRENT_USER_DETAILS_FORM);
+		res.addObject("user", userToEdit);
+		return res;
+
+	}
+
+	@PostMapping("/users/{username}/edit")
+	public String processEditUserAsAdmin(@Valid User updateUser, BindingResult result) {
+		if (result.hasErrors()) {
+			return VIEWS_CURRENT_USER_DETAILS_FORM;
+		}
+		else {
+			userService.saveUser(updateUser);
+			return "redirect:/users/{username}";
+		}
+	}
+
+
 	@GetMapping("/changepassword")
 	public String changeUserPassword(Principal user, Model model){
 		User currentUser =userService.getUserByUsername(user.getName());
