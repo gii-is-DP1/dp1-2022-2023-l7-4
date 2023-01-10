@@ -25,6 +25,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.samples.tyrantsOfTheUnderdark.auditory.AuditableEntity;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.City;
@@ -48,7 +49,7 @@ import lombok.Setter;
 @Table(name="games")
 @JsonIgnoreProperties(allowGetters = false, value = {"qualifying","winner","cardInPlay","chosenPieceToMove","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
 })
-public class Game extends BaseEntity{
+public class Game extends AuditableEntity{
 
     @NotEmpty
     String name= "";

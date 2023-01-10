@@ -76,6 +76,9 @@ public class UserController {
 			return "redirect:/";
 		}
 	}
+
+
+
 	@GetMapping(value = "/users/list")
 	public String proccesUsersListing(Map<String, Object> model){
 		model.put("selections", userService.getUsers());

@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
@@ -22,9 +23,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User{
+	
 	@Id
+	@NotBlank
 	String username;
 
+	@NotBlank
 	String password;
 	
 	boolean enabled;
@@ -37,6 +41,7 @@ public class User{
     String email;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
+	@NotNull
     LocalDate birthdate;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

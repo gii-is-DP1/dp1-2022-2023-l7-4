@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.tyrantsOfTheUnderdark.auditory.AuditorAwareImpl;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionServiceRepo;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.City;
@@ -60,7 +61,15 @@ public class GameService {
 	}
     @Transactional
 	public void saveGame(Game game) throws DataAccessException {
-		grepo.save(game);
+		AuditorAwareImpl auditorAwareImpl=new AuditorAwareImpl();
+		if(!getGames().contains(game)){
+			game.setCreator(auditorAwareImpl.getCurrentAuditor().get());
+			grepo.save(game);
+		}
+		else{
+			game.setModifier(game.getCurrentPlayer().getName());
+			grepo.save(game);
+		}
 	}
 
 	public void setGameAndHouseToPlayers(Game game){
