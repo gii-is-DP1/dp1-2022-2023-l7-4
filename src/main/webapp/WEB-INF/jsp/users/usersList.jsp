@@ -6,6 +6,79 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="users">
+    <form action="/users/pagination">
+        <div class="filter-bigbox">
+            <div class="filter-box">
+                <div class="filter-method">
+                    <div class="filter-tittle">
+                        <b>FILTRAR USUARIOS</b>
+                    </div>
+                    <br>
+                    <div class="name-filter-box">
+                        <div class="filter-cardanddeck-text">
+                            <label for="lname">Nombre deL usuario:&nbsp&nbsp</label>
+                        </div>
+                        <input style="width:135px; height: 24px;" type="text" id="fname" name="name">
+                    </div>
+
+                    <input type="text" name="page" value="1" hidden>
+        
+                    <div class="filter-resume-box">
+                        <div style="width: 41%">
+                            <div class="filter-cardanddeck-text">
+                                <b>Filtro aplicado →</b>
+                            </div>
+                        </div>
+                        <div class="filtered-in-box">
+                            <div class="filtered-box">
+                                Nombre: ${param.name} 
+                                <a href="http://localhost:8080/users/pagination?name=${param.name}&page=1" class="x-button2"><b>x</b></a>
+                            </div>
+                            <!-- <div class="filtered-box">
+                                Mazo: ${param.deck} 
+                                <a href="http://localhost:8080/cards/filter?name=${param.name}&deck=&page=1" class="x-button2"><b>x</b></a>
+                            </div> -->
+                            <div class="filtered-box">
+                                <a href="http://localhost:8080/users/pagination?name=&deck=&page=1" class="x-button"><b>x</b></a>
+                            </div>
+                        </div>
+                    </div>
+        
+        
+                </div>
+                <div class="filter-search">
+                    <div style="width: 80%; height: 80%;">
+                        <button type="submit" class="btn third">
+                            <div style="font-size: 0.8vmax"><b>APLICAR</b></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <br>
+
+    <c:if test="${notFound}">
+        <div class="card-not-found" style="color: aliceblue;">
+            <h1>
+                ¡No se han encontrado cartas! :(
+            </h1>
+        </div>
+        <br>
+    </c:if>
+
+
+    <div class="pagination-box">
+        <div style="color: aliceblue;"><b>Te
+            encuentras en la página: ${currentPage} / ${numberOfPages}
+        </b></div>
+        <motero2k:pageNav 
+            currentPage="${currentPage}" 
+            link="/users/pagination?name=${param.name}&page=" >
+        </motero2k:pageNav>
+    </div>
+    <br>
     <style>
         .special-box{
     display: flex;
@@ -25,8 +98,7 @@
     </style>
     <h2>Users</h2>
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
-    <head>
-            
+    <head>  
     </head>
     <body>
         <c:if test="${text!=null}">
@@ -46,7 +118,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${selections}" var="user">
+        <c:forEach items="${users}" var="user">
             <tr>
                 <td>
                     <spring:url value="/users/{username}" var="userUrl">
@@ -79,8 +151,15 @@
         </c:forEach>
         </tbody>
     </table>
-
-    <a class="btn btn-default" href='<spring:url value="/users/find" htmlEscape="true"/>'>Find a user</a>
+    <div class="pagination-box">
+        <motero2k:pageNav 
+        currentPage="${currentPage}" 
+        link="/cards/paginatio?name=${param.name}&deck=${param.deck}&page=" >
+        </motero2k:pageNav>
+        <div style="color: aliceblue;"><b>Te
+            encuentras en la página: ${currentPage} / ${numberOfPages}
+        </b></div>
+    </div>
     
 </body>
 </petclinic:layout>

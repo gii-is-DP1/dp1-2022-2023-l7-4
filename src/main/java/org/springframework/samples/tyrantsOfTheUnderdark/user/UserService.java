@@ -26,6 +26,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Mostly used as a facade for all Petclinic controllers Also a placeholder
@@ -84,5 +86,10 @@ public class UserService {
     public List<User> getAvailableUsers(Game game) {
 		List<User> usersInGame = game.getPlayers().stream().filter(p->p!=null).map(player -> player.getUser()).collect(Collectors.toList());
         return getUsersList().stream().filter(user-> ! usersInGame.contains(user)).collect(Collectors.toList());
+    }
+	@Transactional(readOnly = true)
+    public List<User> getUsersByNamePageable(String name,Integer actualPage, Integer usersByPage){
+        Pageable pageable = PageRequest.of(actualPage-1,usersByPage);
+        return userRepository.findUsersByNamePageable(name,pageable);
     }
 }
