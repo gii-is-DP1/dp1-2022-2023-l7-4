@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
 /**
  * @author Juergen Hoeller
@@ -174,13 +177,14 @@ public class UserController {
 	}
 	@PostMapping(value = "/myprofile")
 	public String processUserProfile(@Valid User newuser, BindingResult result,Principal user) {
+		System.out.println(newuser.name);
 		if (result.hasErrors()) {
 			return VIEWS_CURRENT_USER_DETAILS_FORM;
 		}
 		else {
-			User currenUser = userService.getUserByUsername(user.getName());
-			newuser.setUsername(currenUser.getUsername());
-			userService.saveUser(newuser);
+			User currentUser = userService.getUserByUsername(user.getName());
+			BeanUtils.copyProperties( newuser,currentUser, "players");
+			this.userService.saveUser(currentUser);
 			return "redirect:/";
 		}
 	}

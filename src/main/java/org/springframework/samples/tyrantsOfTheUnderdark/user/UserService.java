@@ -18,7 +18,6 @@ package org.springframework.samples.tyrantsOfTheUnderdark.user;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +53,9 @@ public class UserService {
 		userRepository.save(user);
 		authoritiesService.saveAuthorities(user.getUsername(), "player");
 	}
+
 	
-	public Optional<User> findUser(String username) {
-		return userRepository.findById(username);
-	}
+
 
 	public Collection<User> getUsers(){
 		return (Collection<User>) userRepository.findAll();
