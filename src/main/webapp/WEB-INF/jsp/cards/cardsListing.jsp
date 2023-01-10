@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -6,7 +6,6 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="motero2k" tagdir="/WEB-INF/tags/motero2k" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
     <link rel="stylesheet" href="/resources/styles/cardlisting.css">
     <link rel="stylesheet" href="/resources/styles/scrollbody.css">

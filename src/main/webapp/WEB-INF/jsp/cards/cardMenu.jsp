@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -7,7 +7,6 @@
 <%@ taglib prefix="sec"
 uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="cards">
     <link rel="stylesheet" href="/resources/styles/tyrants.css">

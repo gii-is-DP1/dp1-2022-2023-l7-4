@@ -25,7 +25,7 @@
 				<petclinic:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Home</span>
+					<span>Inicio</span>
 				</petclinic:menuItem>
 
 				<!-- <petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
@@ -52,40 +52,29 @@
 					<span>positions</span>
 				</petclinic:menuItem> -->
 
-
-
-				<sec:authorize url="/positions">
-				<petclinic:menuItem active="${name eq 'position'}" url="/positions"
-					title="positions">
-					<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-					<span>Positions</span>
-				</petclinic:menuItem>
-			    </sec:authorize>
-
-
 				<petclinic:menuItem active="${name eq 'cards'}" url="/cards/menu"
 					title="cards">
 					<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
-					<span>Cartas y mazos</span>
+					<span>Cartas y mapas</span>
 				</petclinic:menuItem>
 
 				<sec:authorize url="/users">
 				<petclinic:menuItem active="${name eq 'users'}" url="/users/list"
 					title="users">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-					<span>Users</span>
+					<span>Usuarios</span>
 				</petclinic:menuItem>
 			    </sec:authorize>
 
 				<petclinic:menuItem active="${name eq 'games'}" url="/games/list" title="games">
 				<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-				<span>Games</span>
+				<span>Partidas</span>
 				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'actions'}" url="/actions"
 					title="actions">
 					<span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
-					<span>Actions</span>
+					<span>Acciones</span>
 				</petclinic:menuItem>
 	
 			</ul>
@@ -95,8 +84,8 @@
 
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
-					<li><a href="<c:url value="/login" />">Login</a></li>
-					<!-- <li><a href="<c:url value="/users/new" />">Register</a></li> -->
+					<li><a href="<c:url value="/login" />">Iniciar Sesión</a></li>
+					<!-- <li><a href="<c:url value="/users/new" />">Registrarse</a></li> -->
 					<li><a href="<c:url value="/user/new" />">Register</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
