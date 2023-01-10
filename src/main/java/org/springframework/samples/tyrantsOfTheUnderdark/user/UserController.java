@@ -87,11 +87,6 @@ public class UserController {
 
 
 
-	/* @GetMapping(value = "/users/list")
-	public String proccesUsersListing(Map<String, Object> model){
-		model.put("selections", userService.getUsers());
-		return "users/usersList";
-	} */
 	@GetMapping("/users/list")
     public String showUsers(){
 		return "redirect:/users/pagination?name=&page=1";
@@ -102,7 +97,7 @@ public class UserController {
 	@RequestParam("page") Integer page){
         ModelAndView mav=new ModelAndView(USERS_LISTING_VIEW);
 		
-		Integer usersByPage = 9;
+		Integer usersByPage = 4;
 		Integer usersCount = userService.getUsersList().size();
 		Integer numOfPages=(int)Math.ceil((double) usersCount/usersByPage);
 		numOfPages = numOfPages==0?1:numOfPages;
