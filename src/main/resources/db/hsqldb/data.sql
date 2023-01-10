@@ -5,16 +5,34 @@ VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('manotebar','manotebar',TRUE,'Manuel', 'manotebar@gmail.com', '2000-10-20');
-INSERT INTO authorities(id,username,authority) VALUES (3,'manotebar','admin');
+INSERT INTO authorities(id,username,authority) VALUES (2,'manotebar','admin');
 
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('daviddhc','player1',TRUE,'David', 'daviddhc@gmail.com', '2002-04-08');
-INSERT INTO authorities(id,username,authority) VALUES (10,'daviddhc','player');
+INSERT INTO authorities(id,username,authority) VALUES (3,'daviddhc','player');
 
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('anddomrui','hola3',TRUE, 'Andres', 'andres@gmail.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (4,'anddomrui','player');
 
-INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
-INSERT INTO authorities(id,username,authority) VALUES (2,'javfercas3','admin');
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('melae','secret1',TRUE, 'Javier', 'javi@gmail.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (5,'melae','admin');
+
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('mannnnn','manotebar',TRUE,'Manuel', 'mantbar@gmail.com', '2000-10-20');
+INSERT INTO authorities(id,username,authority) VALUES (6,'mannnnn','admin');
+
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('daviddhcc','player1',TRUE,'David', 'davdhc@gmail.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (7,'daviddhcc','player');
+
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('anddomruii','hola3',TRUE, 'Andres', 'ands@gmail.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (8,'anddomruii','player');
+
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('javfercas3','secret1',TRUE, 'Javier', 'jai@gm.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (9,'javfercas3','admin');
+
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('anddoii','hola3',TRUE, 'Andres', 'as@gmail.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (10,'anddoii','player');
+
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('jaas3','secret1',TRUE, 'Javier', 'ai@gm.com', '2002-04-08');
+INSERT INTO authorities(id,username,authority) VALUES (11,'jaas3','admin');
 -- CITIES
 INSERT INTO city_templates(id,x,y,unaligned,capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES --ORIGINAL MAP
 (1,0,1,'0,1',3,'Gauntlgrym',2,FALSE,1,1,1),
