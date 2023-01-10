@@ -26,7 +26,7 @@ public class AuditableEntity extends BaseEntity{
 
     @CreatedDate
     private LocalDateTime createdDate;
-
+    
     @LastModifiedBy
     private String modifier;
 

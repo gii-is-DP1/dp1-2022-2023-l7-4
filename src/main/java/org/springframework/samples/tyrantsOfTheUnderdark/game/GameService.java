@@ -3,16 +3,13 @@ package org.springframework.samples.tyrantsOfTheUnderdark.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.tyrantsOfTheUnderdark.auditory.AuditorAwareImpl;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionServiceRepo;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.City;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityService;
 import org.springframework.samples.tyrantsOfTheUnderdark.house.House;
 import org.springframework.samples.tyrantsOfTheUnderdark.house.HouseService;
@@ -61,15 +58,7 @@ public class GameService {
 	}
     @Transactional
 	public void saveGame(Game game) throws DataAccessException {
-		AuditorAwareImpl auditorAwareImpl=new AuditorAwareImpl();
-		if(!getGames().contains(game)){
-			game.setCreator(auditorAwareImpl.getCurrentAuditor().get());
-			grepo.save(game);
-		}
-		else{
-			game.setModifier(game.getCurrentPlayer().getName());
-			grepo.save(game);
-		}
+		grepo.save(game);
 	}
 
 	public void setGameAndHouseToPlayers(Game game){
