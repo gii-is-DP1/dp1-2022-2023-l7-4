@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,9 +70,30 @@ public class UserControllerTest {
     @Test
     public void testProcessEditUserAsAdmin() throws Exception{
         User toEditUser=this.userService.getUserByUsername("javfercas3");
-        mockMvc.perform(post("/users/{username}/edit",toEditUser.getUsername()))
+        mockMvc.perform(post("/users/{username}/edit",toEditUser.getUsername())
+        .with(csrf())
+        .param("username","javfercas3")
+        .param("password","secret1")
+        .param("name","Antonio")
+        .param("email","javi@gmail.com")
+        .param("birthDate","2002-04-08"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/users/{username}"));
+    }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testProcessIncorrectlyEditUserAsAdmin() throws Exception{
+        User toEditUser=this.userService.getUserByUsername("javfercas3");
+        mockMvc.perform(post("/users/{username}/edit",toEditUser.getUsername())
+        .with(csrf())
+        .param("username","javfercas3")
+        .param("password","secret1")
+        .param("name","")
+        .param("email","javi@gmail.com")
+        .param("birthDate","2002-04-08"))
         .andExpect(status().isOk())
-        .andExpect(model().attributeExists("user"));
+        .andExpect(view().name("users/currentUserDetails"));
     }
     
 }
