@@ -53,6 +53,7 @@ public class UserController {
 
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
 	private static final String VIEWS_CURRENT_USER_DETAILS_FORM = "users/currentUserDetails";
+	private static final String VIEWS_DETAILS_OF_USER="users/userDetails";
 	private static final String VIEWS_CHANGE_USER_PASSWORD_FORM = "users/currentUserChangePassword";
 	private String USERS_LISTING_VIEW="users/usersList";
 
@@ -160,8 +161,9 @@ public class UserController {
 		return "users/findUser";
 	}
 	@GetMapping("/users/{username}")
-	public ModelAndView showUser(@PathVariable("username") String username) {
+	public ModelAndView showUser(@PathVariable("username") String username,Principal user) {
 		ModelAndView mav = new ModelAndView("users/userDetails");
+		mav.addObject("editOwn",false);
 		mav.addObject(userService.getUserByUsername(username));
 		return mav;
 	}
@@ -180,15 +182,24 @@ public class UserController {
 		return mav;
 	}
 	@GetMapping("/myprofile")
-	public String currentUserProfile(Principal user, Model model){
+	public String currentUserProfile(Principal user, ModelMap model){
+		User currentUser =userService.getUserByUsername(user.getName());
+		Boolean editing = true;
+		model.addAttribute("editOwn", true);
+		model.addAttribute("editing", editing);
+		model.addAttribute("user",currentUser);
+		return VIEWS_DETAILS_OF_USER;
+	}
+	@GetMapping("/editprofile")
+	public String initUpdateProfile(Principal user, ModelMap model){
 		User currentUser =userService.getUserByUsername(user.getName());
 		Boolean editing = true;
 		model.addAttribute("editing", editing);
-		model.addAttribute(currentUser);
+		model.addAttribute("user",currentUser);
 		return VIEWS_CURRENT_USER_DETAILS_FORM;
 
 	}
-	@PostMapping(value = "/myprofile")
+	@PostMapping(value = "/editprofile")
 	public String processUserProfile(@Valid User newuser, BindingResult result,ModelMap model,Principal loggedUser) {
 		if (result.hasErrors()) {
 			model.put("user",newuser);
@@ -196,9 +207,9 @@ public class UserController {
 		}
 		else {
 			try{
-				User currentUser = userService.getUserByUsername(loggedUser.getName());
+				User currentUser =this.userService.getUserByUsername(loggedUser.getName());
 				BeanUtils.copyProperties( newuser,currentUser, "players","authorities","username");
-				this.userService.saveUser(currentUser);
+				this.userService.updateUser(currentUser, userService.getUserByUsername(loggedUser.getName()));
 			}catch(DuplicateUsernameException ex){
 				result.rejectValue("username"
 				, "duplicate","already exists");
@@ -210,7 +221,7 @@ public class UserController {
 				model.put("user",newuser);
 				return VIEWS_CURRENT_USER_DETAILS_FORM;
 			}
-			return "redirect:/";
+			return "redirect:/myprofile";
 		}
 	}
 
@@ -226,16 +237,16 @@ public class UserController {
 	}
 
 	@PostMapping("/users/{username}/edit")
-	public String processEditUserAsAdmin(@Valid User updateUser, BindingResult result,ModelMap model) {
+	public String processEditUserAsAdmin(@PathVariable("username") String username,@Valid User updateUser, BindingResult result,ModelMap model,Principal loggedUser) {
 		if (result.hasErrors()) {
 			model.put("user",updateUser);
 			return VIEWS_CURRENT_USER_DETAILS_FORM;
 		}
 		else {
 			try{
-				User currentUser = userService.getUserByUsername(updateUser.getName());
-				BeanUtils.copyProperties( updateUser,currentUser, "players","authorities","username");
-				this.userService.saveUser(currentUser);
+				User currentUser = userService.getUserByUsername(username);
+				BeanUtils.copyProperties( updateUser,currentUser, "players","authorities");
+				this.userService.updateUser(updateUser, currentUser);
 			}catch(DuplicateUsernameException ex){
 				result.rejectValue("username"
 				, "duplicate","already exists");
@@ -247,7 +258,7 @@ public class UserController {
 				model.put("user",updateUser);
 				return VIEWS_CURRENT_USER_DETAILS_FORM;
 			}
-			return "redirect:/";
+			return "redirect:/users/{username}";
 		}
 	}
 

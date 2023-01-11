@@ -16,6 +16,7 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.user;
 
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,6 +65,16 @@ public class UserService {
 			}
 		}
 	}
+
+	@Transactional(rollbackFor = {DuplicateUsernameException.class,DuplicateEmailException.class})
+	public void updateUser(User updatedUser,User referenceUser) throws DataAccessException,DuplicateUsernameException,DuplicateEmailException{
+		if(getUserByUsername(updatedUser.getUsername())!=null &&
+		 !updatedUser.getUsername().equals(referenceUser.getUsername())) throw new DuplicateUsernameException();
+		else if(getUserByEmail(updatedUser.getEmail())!=null
+		&& !updatedUser.getEmail().equals(referenceUser.getEmail())) throw new DuplicateEmailException();
+			userRepository.save(updatedUser);
+		}
+	
 
 	@Transactional
 	public void changePasswordAndSave(User user,String newPassword) throws DataAccessException{
