@@ -55,7 +55,7 @@ public class GameController {
 		List<MapTemplate> availableMaps = mapTemplateService.getAvailableMaps(game);
 		game.getPlayers().removeIf(Objects::isNull);
 		List<User> availableUsers = userService.getAvailableUsers(game);
-		
+		System.out.println("ddddddddddddddddddddddddddddddd");
 		model.put("availableDecks", availableDecks);
 		model.put("availableMaps", availableMaps);
 		model.put("availableUsers", availableUsers);
@@ -99,7 +99,7 @@ public class GameController {
 	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model,Principal currentUser ) {
 		if (result.hasErrors()) {
             model.put("game", game);
-			System.out.println(result);
+			model.put("status","El nombre no debe estar en blanco");
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
