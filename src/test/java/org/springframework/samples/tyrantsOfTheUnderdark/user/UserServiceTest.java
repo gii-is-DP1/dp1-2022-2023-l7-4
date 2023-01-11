@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -58,6 +59,15 @@ public class UserServiceTest {
         user.setBirthdate(LocalDate.of(2002, 8, 13));
         this.userService.saveUser(user);
         assertThat(user).isIn(userService.getUsers());
+    }
+
+    @Test
+    @Transactional
+    public void testDeleteUser() throws DataAccessException, Exception {
+        User user = userService.getUserByUsername("javfercas3");
+        assertThat(userService.getUsers()).contains(user);
+        userService.deleteUser(user);
+        assertThat(userService.getUsers()).doesNotContain(user);
     }
 
     
