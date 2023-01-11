@@ -182,7 +182,6 @@ public class UserController {
 		return mav;
 	}
 
-	//NO FUNCIONA
 	@GetMapping("/deleteprofile")
 	public ModelAndView deleteMyProfile(Principal loggedUser){
 		ModelAndView mav = new ModelAndView("redirect:/logout");
