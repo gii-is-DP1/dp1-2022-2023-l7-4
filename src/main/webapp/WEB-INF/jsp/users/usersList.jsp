@@ -17,7 +17,7 @@
                     <br>
                     <div class="name-filter-box">
                         <div class="filter-cardanddeck-text">
-                            <label for="lname">Nombre deL usuario:&nbsp&nbsp</label>
+                            <label for="lname">Nombre de usuario:&nbsp&nbsp</label>
                         </div>
                         <input style="width:135px; height: 24px;" type="text" id="fname" name="name">
                     </div>
@@ -97,7 +97,7 @@
     border-width: 0.3vmax;
 }
     </style>
-    <h2>Users</h2>
+    <h2>Usuarios</h2>
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
     <head>  
     </head>
@@ -110,12 +110,12 @@
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Username</th>
-            <th style="width: 200px;">Password</th>
-            <th>Name</th>
+            <th style="width: 150px;">Nombre de usuario</th>
+            <th style="width: 200px;">Contraseña</th>
+            <th>Nombre</th>
             <th>Email</th>
-            <th>BirthDate</th>
-            <th>Delete</th>
+            <th>Fecha de nacimiento</th>
+            <th>Eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -141,7 +141,7 @@
                 </td>
                 <td>
                 <c:if test="${user.canBeDeleted()==true}">
-                        <a href="/users/${user.username}/delete"  class="btn btn-default">Delete user</a>
+                        <a href="/users/${user.username}/delete"  class="btn btn-default">Eliminar usuario</a>
                 </c:if>
                 <c:if test="${user.canBeDeleted()==false}">
                         <c:out value="Este jugador todavia esta jugando"/>

@@ -109,7 +109,7 @@
 											</p>
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Logout</a>
+													class="btn btn-primary btn-block btn-sm">Cerrar sesión</a>
 											</p>
 										</div>
 									</div>
@@ -121,9 +121,8 @@
 									<div class="row">
 										<div class="col-lg-12">
 											<p>
-												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">My Profile</a>
-												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Change
-													Password</a>
+												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">Mi perfil</a>
+												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Cambiar contraseña</a>
 											</p>
 										</div>
 									</div>

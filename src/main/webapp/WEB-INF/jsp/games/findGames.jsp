@@ -10,14 +10,14 @@
 
 <petclinic:layout pageName="games">
 
-    <h2>Find games</h2>
+    <h2>Buscar partida</h2>
 
     
     <form:form modelAttribute="game" action="/games" method="get" class="form-horizontal"
                id="search-game-form">
         <div class="form-group">
             <div class="control-group" id="name">
-                <label class="col-sm-2 control-label">Name </label>
+                <label class="col-sm-2 control-label">Nombre </label>
                 <div class="col-sm-10">
                     <form:input class="form-control" path="name" size="30" maxlength="80"/>
                     <span class="help-inline"><form:errors path="*"/></span>
@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Find game</button>
+                <button type="submit" class="btn btn-default">Buscar partida</button>
             </div>
         </div>
 
@@ -34,7 +34,7 @@
 
     <br/> 
     <sec:authorize access="hasAuthority('admin')">
-		<a class="btn btn-default" href='<spring:url value="/games/create" htmlEscape="true"/>'>Add game</a>
+		<a class="btn btn-default" href='<spring:url value="/games/create" htmlEscape="true"/>'>Crear juego</a>
 	</sec:authorize>
 	
 </petclinic:layout>

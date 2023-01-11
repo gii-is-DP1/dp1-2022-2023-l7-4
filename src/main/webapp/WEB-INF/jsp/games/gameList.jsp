@@ -6,16 +6,16 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="game">
-    <h2>Games</h2>
+    <h2>Partidas</h2>
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
-    <a class="btn btn-default" href='<spring:url value="/games/find" htmlEscape="true"/>'>Find a game</a>
+    <a class="btn btn-default" href='<spring:url value="/games/find" htmlEscape="true"/>'>Buscar una partida</a>
     <a class="btn btn-default" href='<spring:url value="/games/create" htmlEscape="true"/>'>Crear una partida</a>
 
     <table id="gameTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Name</th>
-            <th style="width: 200px;">Size</th>
+            <th style="width: 150px;">Nombre</th>
+            <th style="width: 200px;">Número de jugadores</th>
             <th style="width: 100px;"></th>
         </tr>
         </thead>
