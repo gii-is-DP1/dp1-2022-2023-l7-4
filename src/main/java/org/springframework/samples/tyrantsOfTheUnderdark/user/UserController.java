@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +32,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
 /**
  * @author Juergen Hoeller
@@ -45,6 +52,7 @@ public class UserController {
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
 	private static final String VIEWS_CURRENT_USER_DETAILS_FORM = "users/currentUserDetails";
 	private static final String VIEWS_CHANGE_USER_PASSWORD_FORM = "users/currentUserChangePassword";
+	private String USERS_LISTING_VIEW="users/usersList";
 
 
 
@@ -79,11 +87,33 @@ public class UserController {
 
 
 
-	@GetMapping(value = "/users/list")
-	public String proccesUsersListing(Map<String, Object> model){
-		model.put("selections", userService.getUsers());
-		return "users/usersList";
-	}
+	@GetMapping("/users/list")
+    public String showUsers(){
+		return "redirect:/users/pagination?name=&page=1";
+    }
+
+	@GetMapping("/users/pagination")
+    public ModelAndView showFilterdCards(User user,@RequestParam("name") String name,
+	@RequestParam("page") Integer page){
+        ModelAndView mav=new ModelAndView(USERS_LISTING_VIEW);
+		
+		Integer usersByPage = 4;
+		Integer usersCount = userService.getUsersList().size();
+		Integer numOfPages=(int)Math.ceil((double) usersCount/usersByPage);
+		numOfPages = numOfPages==0?1:numOfPages;
+		page = ((page<1) ? 1 :(page>numOfPages?numOfPages:page)); 
+		List<User> usersInPage = userService.getUsersByNamePageable(name, page, usersByPage);
+		List<Integer> pages=IntStream.rangeClosed(1, numOfPages).boxed().collect(Collectors.toList());
+		
+		if(usersInPage.isEmpty()) 
+			mav.addObject("notFound", true);
+		else 
+			mav.addObject("users", usersInPage);
+		mav.addObject("pages",pages);
+		mav.addObject("numberOfPages",numOfPages);
+		mav.addObject("currentPage",page);
+		return mav;
+    }
 	@GetMapping(value = "/users")
 	public String processFindForm(User user, BindingResult result, Map<String, Object> model) {
 
@@ -142,13 +172,14 @@ public class UserController {
 	}
 	@PostMapping(value = "/myprofile")
 	public String processUserProfile(@Valid User newuser, BindingResult result,Principal user) {
+		System.out.println(newuser.name);
 		if (result.hasErrors()) {
 			return VIEWS_CURRENT_USER_DETAILS_FORM;
 		}
 		else {
-			User currenUser = userService.getUserByUsername(user.getName());
-			newuser.setUsername(currenUser.getUsername());
-			userService.saveUser(newuser);
+			User currentUser = userService.getUserByUsername(user.getName());
+			BeanUtils.copyProperties( newuser,currentUser, "players");
+			this.userService.saveUser(currentUser);
 			return "redirect:/";
 		}
 	}

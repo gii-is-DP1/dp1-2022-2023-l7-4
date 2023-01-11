@@ -29,10 +29,10 @@ public class UserControllerTest {
     private WebApplicationContext context;
     private MockMvc mockMvc;
 
+    private final String TEST_USERNAME="javfercas3";
+
     
 
-    @Autowired
-    private UserService userService;
 
 
     @BeforeEach
@@ -44,24 +44,36 @@ public class UserControllerTest {
     @WithMockUser(username="admin2",authorities = {"admin"})
     @Test
     public void shouldDeleteAUserThatIsNotPlayingAnyGame() throws Exception{
-        User deletableUser=this.userService.getUserByUsername("javfercas3");
-        mockMvc.perform(get("/users/{username}/delete",deletableUser.getUsername())).andExpect(status().is3xxRedirection())
+        mockMvc.perform(get("/users/{username}/delete",TEST_USERNAME)).andExpect(status().is3xxRedirection())
         .andExpect(view().name("redirect:/users/list"));
+    }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void shouldSeeListOfUsers() throws Exception{
+        mockMvc.perform(get("/users/list"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("users/usersList"));
+    }
+
+    @WithMockUser(username="antoniojose",authorities = {"player"})
+    @Test
+    public void shouldntSeeListOfUsers() throws Exception{
+        mockMvc.perform(get("/users/list"))
+        .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
     }
 
     @WithMockUser(username="antoonio",authorities = {"player"})
     @Test
     public void testThatOnlyAdminsCanDeleteUsers() throws Exception{
-        User deletableUser=this.userService.getUserByUsername("javfercas3");
-        mockMvc.perform(get("/users/{username}/delete",deletableUser.getUsername()))
+        mockMvc.perform(get("/users/{username}/delete",TEST_USERNAME))
         .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
     }
 
     @WithMockUser(username="admin2",authorities = {"admin"})
     @Test
     public void testInitEditUserAsAdmin() throws Exception{
-        User toEditUser=this.userService.getUserByUsername("javfercas3");
-        mockMvc.perform(get("/users/{username}/edit",toEditUser.getUsername()))
+        mockMvc.perform(get("/users/{username}/edit",TEST_USERNAME))
         .andExpect(status().isOk())
         .andExpect(model().attributeExists("user"));
     }
@@ -69,32 +81,18 @@ public class UserControllerTest {
     @WithMockUser(username="admin2",authorities = {"admin"})
     @Test
     public void testProcessEditUserAsAdmin() throws Exception{
-        User toEditUser=this.userService.getUserByUsername("javfercas3");
-        mockMvc.perform(post("/users/{username}/edit",toEditUser.getUsername())
+        mockMvc.perform(post("/users/{username}/edit",TEST_USERNAME)
         .with(csrf())
         .param("username","javfercas3")
         .param("password","secret1")
         .param("name","Antonio")
         .param("email","javi@gmail.com")
         .param("birthDate","2002-04-08"))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/users/{username}"));
-    }
-
-    @WithMockUser(username="admin2",authorities = {"admin"})
-    @Test
-    public void testProcessIncorrectlyEditUserAsAdmin() throws Exception{
-        User toEditUser=this.userService.getUserByUsername("javfercas3");
-        mockMvc.perform(post("/users/{username}/edit",toEditUser.getUsername())
-        .with(csrf())
-        .param("username","javfercas3")
-        .param("password","secret1")
-        .param("name","")
-        .param("email","javi@gmail.com")
-        .param("birthDate","2002-04-08"))
         .andExpect(status().isOk())
         .andExpect(view().name("users/currentUserDetails"));
     }
+
+    
 
     @WithMockUser(username="javfercas3",authorities = {"player"})
     @Test
@@ -114,8 +112,8 @@ public class UserControllerTest {
         .param("name","Antonio")
         .param("email","javi@gmail.com")
         .param("birthDate","2002-04-08"))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/"));
+        .andExpect(status().isOk())
+        .andExpect(view().name("users/currentUserDetails"));
     }
 
     @WithMockUser(username="javfercas3",authorities = {"player"})
@@ -156,6 +154,20 @@ public class UserControllerTest {
         .param("name","antoni3")
         .param("email","")
         .param("birthDate","2002-04-08"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("users/currentUserDetails"));
+    }
+
+    @WithMockUser(username="javfercas3",authorities = {"player"})
+    @Test
+    public void testProcessInorrectlyEditMyProfileNotUsingNotValidBirthDate() throws Exception{
+        mockMvc.perform(post("/myprofile")
+        .with(csrf())
+        .param("username","javfercas3")
+        .param("password","secret1")
+        .param("name","antoni3")
+        .param("email","anddomrui@gmail.com")
+        .param("birthDate","20"))
         .andExpect(status().isOk())
         .andExpect(view().name("users/currentUserDetails"));
     }
