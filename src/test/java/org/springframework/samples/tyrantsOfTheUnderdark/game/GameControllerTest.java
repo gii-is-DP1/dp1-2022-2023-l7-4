@@ -43,24 +43,20 @@ public class GameControllerTest {
         .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
-    /*
-     * @WithMockUser(username="anddomrui",authorities = {"player"})
-    @Test
-    public void testProcessRoundZeroWhileAuditing() throws Exception{ //HISTORIAS DE USUARIOS MENCIONADAS: H30
-        mockMvc.perform(post("/play/{gameId}/round/0",TEST_GAME_ID)
-        .with(csrf()).param("positionId", "1"))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/play/"+TEST_GAME_ID))
-        .andExpect(model().attribute("game", hasProperty("modifier",is("anddomrui"))));        
-    }
-     */
-
      @WithMockUser(username="anddomrui",authorities = {"player"})
     @Test
     public void testShowMyGames() throws Exception{
         mockMvc.perform(get("/games/list"))
         .andExpect(status().isOk())
         .andExpect(view().name("games/gameList"));
+    }
+
+    @WithMockUser(username="anddomrui",authorities = {"player"})
+    @Test
+    public void testShowGameDetails() throws Exception{
+        mockMvc.perform(get("/games/{gameId}",TEST_GAME_ID))
+        .andExpect(status().isOk())
+        .andExpect(view().name("games/gameDetails"));
     }
      
     
