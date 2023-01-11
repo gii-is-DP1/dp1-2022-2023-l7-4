@@ -1,7 +1,6 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.card.action.executeActions;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.card.action.Action;
-import org.springframework.samples.tyrantsOfTheUnderdark.cardsMovement.PlayerMoveCardsService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 

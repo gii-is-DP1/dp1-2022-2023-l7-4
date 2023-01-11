@@ -19,7 +19,6 @@ import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.HalfDeck;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerService;
-import org.springframework.samples.tyrantsOfTheUnderdark.user.Authorities;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.AuthoritiesService;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.User;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.UserService;

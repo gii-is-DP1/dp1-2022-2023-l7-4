@@ -2,7 +2,6 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.board.map;
 
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;

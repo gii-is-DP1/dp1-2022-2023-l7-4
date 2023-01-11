@@ -54,5 +54,14 @@ public class GameControllerTest {
         .andExpect(model().attribute("game", hasProperty("modifier",is("anddomrui"))));        
     }
      */
+
+     @WithMockUser(username="anddomrui",authorities = {"player"})
+    @Test
+    public void testShowMyGames() throws Exception{
+        mockMvc.perform(get("/games/list"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("games/gameList"));
+    }
+     
     
 }

@@ -18,7 +18,6 @@ import javax.persistence.Table;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathTemplate;
-import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.model.BaseEntity;
 
 import lombok.Getter;
