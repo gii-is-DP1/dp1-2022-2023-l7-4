@@ -169,9 +169,9 @@
 .filter-box{
     width: 60%;
     height: 100%;
-    border-radius: 5vmax;
-    border-color: darkgoldenrod;
-    border-style: double;
+    border-radius: 2vmax;
+    border-color: black;
+    border-style: solid;
     border-width: 0.4vmax;
     background-image: url(/resources/images/round0-background.jpg);
     background-position: center;

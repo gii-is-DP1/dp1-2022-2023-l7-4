@@ -1,0 +1,39 @@
+.home-icon-menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12%;
+    height: 65%;
+    background-position: center;
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-image: url(/resources/images/home-icon.png);
+}
+.home-return-button{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 3vmax;
+    width: 18vmax;
+    font-size: 2vmax;
+    color: #000000;
+    border-radius: 0.5vmax;
+    border: 0.2vmax solid #616161; 
+    background: #ececec;
+    background: linear-gradient(0deg, #f8f8f8 0%, #ababab 50%, #878787 100%);
+    transition-duration: 0.5s;
+}
+.home-return-button:hover{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 3vmax;
+    width: 18vmax;
+    font-size: 2vmax;
+    color: #ffffff;
+    border-radius: 0.5vmax;
+    border: 0.2vmax solid #212121; 
+    background: #212121;
+    background: linear-gradient(0deg, #2f2f2f 0%, #676767 50%, #a8a8a8 100%);
+    transition-duration: 0.5s;
+}

@@ -1,0 +1,27 @@
+#graph {
+    background-color: rgba(39, 11, 65, 0.42);
+    width: 100%;
+    height: 100%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-stretch: ultra-condensed;
+    letter-spacing: -0.5;
+    word-spacing: -5;
+
+
+  }
+
+  .selection circle {
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+
+    50% {
+      fill: rgb(129, 41, 173);
+      stroke-width: 0;
+    }
+  
+  }
+
+  
+ 

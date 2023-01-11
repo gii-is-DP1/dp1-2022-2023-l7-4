@@ -35,7 +35,7 @@
 
 <style>
 	.bodybackground {
-		background-image: url(/resources/images/background-menu.jpg);
+		background-image: linear-gradient(rgba(255, 255, 255, 0.322), rgba(255, 255, 255, 0.295)), url(/resources/images/background-menu.jpg);;
 		background-size: cover;
 		background-position: center;
 		background-attachment: fixed;

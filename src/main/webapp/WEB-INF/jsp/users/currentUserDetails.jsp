@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -8,19 +8,26 @@
 
 <petclinic:layout pageName="users">
     <h2>
-        Edit my profile
+        Editar mi perfil
     </h2>
     <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="Username" name="username"/>
-            <petclinic:inputField label="Password" name="password" type="hidden"/>
-            <petclinic:inputField label="Name" name="name"/>
+            <c:choose>
+                <c:when test="${editing==true}">
+                    Nombre de usuario: <label>${user.username}</label>
+                </c:when>
+                <c:otherwise>
+                    <petclinic:inputField label="Nombre de usuario" name="username"/>
+                </c:otherwise>
+            </c:choose>
+            <petclinic:inputField label="Nombre" name="name"/>
             <petclinic:inputField label="Email" name="email"/>
-            <petclinic:inputField label="Birthdate" name="birthdate"/>
+            <petclinic:inputField label="Fecha de nacimiento" name="birthdate"/>
+            <form:input class="form-control" path="password" type="hidden"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-default" type="submit">Confirm</button>
+                        <button class="btn btn-default" type="submit">Confirmar</button>
             </div>
         </div>
     </form:form>

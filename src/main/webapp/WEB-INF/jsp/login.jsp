@@ -1,18 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <petclinic:layout pageName="login">
 <div id="content">
-    <h1>Login</h1>
+    <h1>Iniciar sesión</h1>
     <form action="/login" method="POST">
         <div class="input-bar">
-            <label for="name">username</label>
+            <label for="name">Nombre de usuario</label>
             <input type="text" id="name" class="input" name="username">
             <box-icon name='user'></box-icon>
         </div>
         <div class="input-bar">
-            <label for="password">password</label>
+            <label for="password">Contraseña</label>
             <input type="password" id="password" class="input" name="password">
             <box-icon name='lock-alt' ></box-icon>
             <a class="glyphicon glyphicon-eye-open" style="text-decoration: none; cursor: pointer;" onclick="mostrarContrasena()"></a>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2%;">
+            <p>¿No tienes ninguna cuenta? <a href="/user/new">Registrate</a></p>
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -71,6 +75,7 @@
     height: 100%;
     border: none;
     background: none;
+    border-radius: 20px;
     box-sizing: border-box;
     padding: 20px 45px 10px;
     font-size: 18px;

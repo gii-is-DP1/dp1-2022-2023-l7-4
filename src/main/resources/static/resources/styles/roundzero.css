@@ -53,6 +53,7 @@
     color: aliceblue;
 }
 
+
 /* Box general 2*/
 .game-flex{
     height: 94%;
@@ -101,8 +102,29 @@
 .innerCircle{
     background-image: url(/resources/images/innerCircle.png);
 }
-.vp{
+.resource-image-vp{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55%;
+    height: 100%;
+    background-position: center;
+    background-size: 90%;
+    background-repeat:no-repeat;
     background-image: url(/resources/images/vp_white.png);
+    transition-duration: 0.5s;
+}
+.resource-image-vp:hover{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55%;
+    height: 100%;
+    background-position: center;
+    background-size: 90%;
+    background-repeat:no-repeat;
+    background-image: url(/resources/images/vp_gold.png);
+    transition-duration: 0.5s;
 }
 .resource-valor{
     display: flex;
@@ -186,3 +208,4 @@ abbr{
     height: 100%; 
     text-decoration: none;
 }
+
