@@ -51,6 +51,22 @@ public class MarketPlayerMoveCardsServiceTest {
     }
 
     @Test
+    public void testBuy2CardsInMarket() throws Exception {
+        Game game = gameService.getGameById(1);
+        Player player = playerService.getPlayerById(1);
+        player.setInfluence(4);
+        List<Card> sellzone = new ArrayList<>(cardService.getAllCards()).subList(3, 8);
+        game.setSellZone(sellzone);
+        Card card1 = game.getSellZone().get(4);
+        Card card2 = game.getSellZone().get(3);
+        marketPlayerMoveCardsService.buyCard(card1, player);
+        marketPlayerMoveCardsService.buyCard(card2, player);
+        assertThat(player.getInfluence()).isEqualTo(0);
+        assertThat(player.getDiscarded().get(player.getDiscarded().size()-2).getId()).isEqualTo(7);        
+        assertThat(player.getDiscarded().get(player.getDiscarded().size()-1).getId()).isEqualTo(6);        
+    }
+
+    @Test
     public void testBuyCardWithoutInfluence() throws Exception {
         Game game = gameService.getGameById(1);
         Player player = playerService.getPlayerById(1);
@@ -59,5 +75,21 @@ public class MarketPlayerMoveCardsServiceTest {
         game.setSellZone(sellzone);
         Card card = game.getSellZone().get(4);
         assertThrows(Exception.class,() -> marketPlayerMoveCardsService.buyCard(card, player));
+    }
+
+    @Test
+    public void testBuy2CardsInMarketWithoutInfluence() throws Exception {
+        Game game = gameService.getGameById(1);
+        Player player = playerService.getPlayerById(1);
+        player.setInfluence(4);
+        List<Card> sellzone = new ArrayList<>(cardService.getAllCards()).subList(3, 8);
+        game.setSellZone(sellzone);
+        Card card1 = game.getSellZone().get(4);
+        Card card2 = game.getSellZone().get(3);
+        marketPlayerMoveCardsService.buyCard(card1, player);
+        marketPlayerMoveCardsService.buyCard(card2, player);
+        assertThat(player.getDiscarded().get(player.getDiscarded().size()-1).getId()).isEqualTo(6);        
+        assertThrows(Exception.class,() -> marketPlayerMoveCardsService.buyCard(card2, player));
+
     }
 }
