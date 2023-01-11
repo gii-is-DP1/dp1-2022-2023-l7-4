@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -18,6 +19,8 @@ import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.HalfDeck;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerService;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.Authorities;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.AuthoritiesService;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.User;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.UserService;
 import org.springframework.stereotype.Controller;
@@ -39,6 +42,8 @@ public class GameController {
 	UserService userService;
 	@Autowired
 	CardService cardService;
+	@Autowired
+	AuthoritiesService authService;
 
 	@Autowired
 	MapTemplateService mapTemplateService;
@@ -163,9 +168,18 @@ public class GameController {
 		}
 	}
 	@GetMapping(value = "/games/list")
-	public String proccesGameListing(Map<String, Object> model){
-		model.put("selections", gameService.getGames());
-		return "games/gameList";
+	public String proccesGameListing(Map<String, Object> model, Principal user){
+		String name= user.getName();
+		User user2= this.userService.getUserByUsername(name);
+		Player player= this.playerService.getPlayerByUsername(name);
+		if(authService.getAuthoritiesByName("admin").stream().filter(a->a.getUser()
+		.equals(user2)).collect(Collectors.toList()).size()==1){ 
+			model.put("selections", gameService.getGames());
+			return "games/gameList";
+		 }else{
+			model.put("selections", gameService.getGamesByUser(player));
+			return "games/gameList";
+			}
 	}
 
 	@InitBinder

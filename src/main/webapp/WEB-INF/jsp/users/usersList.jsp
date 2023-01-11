@@ -63,7 +63,7 @@
     <c:if test="${notFound}">
         <div class="card-not-found" style="color: aliceblue;">
             <h1>
-                ¡No se han encontrado cartas! :(
+                ¡No se han encontrado usuarios! :(
             </h1>
         </div>
         <br>

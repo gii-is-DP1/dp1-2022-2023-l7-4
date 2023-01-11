@@ -16,7 +16,9 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.user;
 
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -44,6 +46,10 @@ public class AuthoritiesService {
 	@Transactional
 	public void saveAuthorities(Authorities authorities) throws DataAccessException {
 		authoritiesRepository.save(authorities);
+	}
+	@Transactional
+	public List<Authorities> getAuthoritiesByName(String name){
+		return authoritiesRepository.findAuthoritiesByName(name);
 	}
 	
 	@Transactional
