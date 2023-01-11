@@ -116,10 +116,10 @@
                         <c:choose>
                             <c:when test="${counter.index == 0}">
                                 <a onclick="alert('no te puedes quitar a ti mismo')"
-                                    href="JavaScript:void(0)" class="username-text-color">${player.user.name}</a>
+                                    href="JavaScript:void(0)" class="username-text-color">${player.user.username}</a>
                             </c:when>
                             <c:otherwise>
-                                <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)" class="username-text-color">${player.user.name}</a>
+                                <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)" class="username-text-color">${player.user.username}</a>
                             </c:otherwise>
                         </c:choose>
             

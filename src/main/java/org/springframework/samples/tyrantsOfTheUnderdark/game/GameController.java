@@ -171,13 +171,12 @@ public class GameController {
 	public String proccesGameListing(Map<String, Object> model, Principal user){
 		String name= user.getName();
 		User user2= this.userService.getUserByUsername(name);
-		Player player= this.playerService.getPlayerByUsername(name);
 		if(authService.getAuthoritiesByName("admin").stream().filter(a->a.getUser()
 		.equals(user2)).collect(Collectors.toList()).size()==1){ 
 			model.put("selections", gameService.getGames());
 			return "games/gameList";
 		 }else{
-			model.put("selections", gameService.getGamesByUser(player));
+			model.put("selections", gameService.getGamesByUser(name));
 			return "games/gameList";
 			}
 	}

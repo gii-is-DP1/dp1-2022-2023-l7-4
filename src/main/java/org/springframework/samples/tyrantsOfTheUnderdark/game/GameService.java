@@ -63,9 +63,9 @@ public class GameService {
 	}
 
 	@Transactional
-	public List<Game> getGamesByUser(Player player){
+	public List<Game> getGamesByUser(String name){
 		Collection<Game> lista= (Collection<Game>) grepo.findAll(); 
-		return lista.stream().filter(g-> g.getPlayers().contains(player)).collect(Collectors.toList());
+		return lista.stream().filter(g-> g.getPlayers().stream().filter(p->p.getName().contains(name)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
 	}
 
 	public void setGameAndHouseToPlayers(Game game){
