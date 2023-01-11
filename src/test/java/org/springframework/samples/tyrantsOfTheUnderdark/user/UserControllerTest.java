@@ -52,8 +52,8 @@ public class UserControllerTest {
     @Test
     public void shouldSeeListOfUsers() throws Exception{
         mockMvc.perform(get("/users/list"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("users/usersList"));
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/users/pagination?name=&page=1"));
     }
 
     @WithMockUser(username="antoniojose",authorities = {"player"})

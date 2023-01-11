@@ -46,6 +46,7 @@ public class User{
 
     @Email
     @NotBlank
+	@NotNull
 	@Column(unique=true,length = 30)
     String email;
 
@@ -61,5 +62,10 @@ public class User{
 
 	public Boolean canBeDeleted(){
 		return players.isEmpty();
+	}
+
+	public Boolean isAdmin(){
+		return authorities!=null && !authorities.isEmpty()
+		 && authorities.stream().anyMatch(auth->auth.getAuthority().equals("admin"));
 	}
 }

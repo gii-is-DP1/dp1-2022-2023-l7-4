@@ -49,16 +49,21 @@ public class UserServiceTest {
     }
 
     @Test
-    @Transactional
     public void testCreateUser() {
         User user = new User();
         user.setUsername("destructor28");
-        user.setEmail("jorrrrrrgegutierrezzz@gmail.com");
+        user.setEmail("jorrrrl@gamil.com");
+        user.setEnabled(true);
         user.setPassword("******");
         user.setName("Lolo");
         user.setBirthdate(LocalDate.of(2002, 8, 13));
-        this.userService.saveUser(user);
-        assertThat(user).isIn(userService.getUsers());
+        assertThat(this.userService.getUserByUsername(user.getUsername())==null).isTrue();
+        try{
+            this.userService.saveUser(user);
+        }catch(Exception e){
+            fail("No deberia salir ningún error");
+        }
+        assertThat(this.userService.getUserByUsername(user.getUsername())!=null).isTrue();
     }
 
     @Test
