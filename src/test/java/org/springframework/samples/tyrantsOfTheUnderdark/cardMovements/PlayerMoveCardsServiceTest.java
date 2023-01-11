@@ -39,12 +39,12 @@ public class PlayerMoveCardsServiceTest {
     @Test
     public void testPlayCardPlayer() {
         Game game = gameService.getGameById(1);
-        List<Card> hand = cardService.getAllCards().subList(3, 8);
+        List<Card> hand = cardService.getAllCards().subList(0, 5);
         game.getCurrentPlayer().setHand(hand);
         Player player = game.getCurrentPlayer();
-        Card card = player.getHand().get(4);
+        Card card = player.getHand().get(2);
         playerMoveCardsService.moveFromHandToPlayed(card, player);
         assertThat(player.getHand().size()).isEqualTo(4);
-        assertThat(player.getPlayed().get(0).getName()).isEqualTo("Adalid");
+        assertThat(player.getPlayed().get(0).getName()).isEqualTo("Noble");
     }
 }
