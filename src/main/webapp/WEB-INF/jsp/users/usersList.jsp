@@ -33,14 +33,9 @@
                         <div class="filtered-in-box">
                             <div class="filtered-box">
                                 Nombre: ${param.name} 
-                                <a href="http://localhost:8080/users/pagination?name=${param.name}&page=1" class="x-button2"><b>x</b></a>
                             </div>
-                            <!-- <div class="filtered-box">
-                                Mazo: ${param.deck} 
-                                <a href="http://localhost:8080/cards/filter?name=${param.name}&deck=&page=1" class="x-button2"><b>x</b></a>
-                            </div> -->
                             <div class="filtered-box">
-                                <a href="http://localhost:8080/users/pagination?name=&deck=&page=1" class="x-button"><b>x</b></a>
+                                <a href="http://localhost:8080/users/pagination?name=&page=1" class="x-button"><b>x</b></a>
                             </div>
                         </div>
                     </div>
@@ -155,7 +150,7 @@
     <div class="pagination-box">
         <motero2k:pageNav 
         currentPage="${currentPage}" 
-        link="/cards/paginatio?name=${param.name}&deck=${param.deck}&page=" >
+        link="/users/pagination?name=${param.name}&page=" >
         </motero2k:pageNav>
         <div style="color: aliceblue;"><b>Te
             encuentras en la página: ${currentPage} / ${numberOfPages}
