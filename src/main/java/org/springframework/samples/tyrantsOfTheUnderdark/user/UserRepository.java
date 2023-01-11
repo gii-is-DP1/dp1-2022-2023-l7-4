@@ -19,7 +19,7 @@ public interface UserRepository extends  CrudRepository<User, String>{
     @Query("SELECT user FROM User user WHERE user.name = ?1")
     public User findUserByName(String name);
 
-    @Query("SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(concat('%',:name,'%'))")
+    @Query("SELECT u FROM User u WHERE LOWER(u.username) LIKE LOWER(concat('%',:name,'%'))")
     List<User> findUsersByNamePageable(String name,Pageable pageable);
 ;
 	

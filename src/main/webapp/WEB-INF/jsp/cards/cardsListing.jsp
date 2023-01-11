@@ -45,7 +45,7 @@
 
                     <div class="nameanddeck-filter-box">
                         <div class="filter-cardanddeck-text">
-                            <b>Selecciona un mazo:&nbsp&nbsp</b>
+                            <b>Escoge un mazo:&nbsp&nbsp</b>
                         </div>
                         <div>
                             <select name="deck" style="width: 100%;">
@@ -60,28 +60,29 @@
                     <br/>
 
                     <input type="text" name="page" value="1" hidden>
-        
-                    <div class="filter-resume-box">
-                        <div style="width: 41%">
-                            <div class="filter-cardanddeck-text">
-                                <b>Filtro aplicado →</b>
+                    <c:if test="${param.deck!='' || param.name!=''}">
+                        <div class="filter-resume-box">
+                            <div style="width: 41%">
+                                <div class="filter-cardanddeck-text">
+                                    <b>Filtro aplicado →</b>
+                                </div>
+                            </div>
+                            <div class="filtered-in-box">
+                                <c:if test="${param.name!=''}">
+                                    <div class="filtered-box">
+                                        Nombre: ${param.name} 
+                                        <a href="http://localhost:8080/cards/filter?name=&deck=${param.deck}&page=1" class="x-button2"><b>x</b></a>
+                                    </div>
+                                </c:if>
+                                <c:if test="${param.deck!=''}">
+                                    <div class="filtered-box">
+                                        Mazo: ${param.deck} 
+                                        <a href="http://localhost:8080/cards/filter?name=${param.name}&deck=&page=1" class="x-button2"><b>x</b></a>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
-                        <div class="filtered-in-box">
-                            <div class="filtered-box">
-                                Nombre: ${param.name} 
-                                <a href="http://localhost:8080/cards/filter?name=&deck=${param.deck}&page=1" class="x-button2"><b>x</b></a>
-                            </div>
-                            <div class="filtered-box">
-                                Mazo: ${param.deck} 
-                                <a href="http://localhost:8080/cards/filter?name=${param.name}&deck=&page=1" class="x-button2"><b>x</b></a>
-                            </div>
-                            <div class="filtered-box">
-                                <a href="http://localhost:8080/cards/filter?name=&deck=&page=1" class="x-button"><b>x</b></a>
-                            </div>
-                        </div>
-                    </div>
-        
+                    </c:if>
         
                 </div>
                 <div class="filter-search">
@@ -97,171 +98,176 @@
 
     <br>
 
-    <c:if test="${notFound}">
-        <div class="card-not-found" style="color: aliceblue;">
-            <h1>
-                ¡No se han encontrado cartas! :(
-            </h1>
-        </div>
-        <br>
-    </c:if>
-
-
-    <div class="pagination-box">
-        <div style="color: aliceblue;"><b>Te
-            encuentras en la página: ${currentPage} / ${numberOfPages}
-        </b></div>
-        <motero2k:pageNav 
-            currentPage="${currentPage}" 
-            link="/cards/filter?name=${param.name}&deck=${param.deck}&page=" >
-        </motero2k:pageNav>
-    </div>
-
-
-    <br>
-    <div class="parent">
-    <c:forEach var="card" items="${cards}">
-        <div class="child">
-            <div class="principalCard">
-                <spring:url value="/cards/{cardId}" var="cardUrl">
-                    <spring:param name="cardId" value="${card.id}" />
-                </spring:url>
-                    <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
-                    <div class="topTextName">
-                        <b>
-                            <c:out value="${card.name}" />
-                        </b>
-                    </div>
-                    <div class="topTextCost">
-                        <b>
-                            <c:out value="${card.cost} " />
-                        </b>
-                    </div>
-                    <div class="topTextAspect">
-                        <b>
-                            <c:out value="${card.aspect.name} " />
-                        </b>
-                    </div>
-                    <div class="topTextHalfDeck">
-                        <b>
-                            <c:out value="${card.halfDeck.name} " />
-                        </b>
-                    </div>
-                    <div class="topTextRulesText">
-                        <b>
-                            <c:out value="${card.rulesText} " />
-                        </b>
-                    </div>
-                    <div class="topTextRarity">
-                        <b>
-                            <text id="t${card.id}" style="font-size: 180%;">
-                                <script>
-                                    var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
-                                    document.getElementById("t${card.id}").innerHTML = rarity
-                                </script>
-                            </text>
-                        </b>
-                    </div>
-                    <div class="topTextDeckVP">
-                        <b>
-                            <c:out value="${card.deckVP} " />
-                        </b>
-                    </div>
-                    <div class="topTextInnerCirclePV">
-                        <b>
-                            <c:out value="${card.innerCirclePV} " />
-                        </b>
-                    </div>
+    <c:choose>
+        <c:when  test="${notFound}">
+            <div class="card-not-found" style="color: aliceblue;">
+                <h1>
+                    ¡No se han encontrado cartas! :(
+                </h1>
             </div>
-        </div>
-    </c:forEach>
-    <c:forEach var="card" items="${cards}">
-        <div class="popup" id="CardPopUp${card.id}">
-            <div class="popup-content">
-                <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
-                <div class="popup-content-box">
-                    <div class="principalCard" style="width: 23vmax; height: 33vmax;">
+            <br>
+        </c:when>
+        <c:otherwise>
+            <div class="pagination-box">
+                <div style="color: aliceblue;"><b>Te
+                    encuentras en la página: ${currentPage} / ${numberOfPages}
+                </b></div>
+                <motero2k:pageNav 
+                    currentPage="${currentPage}" 
+                    link="/cards/filter?name=${param.name}&deck=${param.deck}&page=" >
+                </motero2k:pageNav>
+            </div>
+        
+        
+            <br>
+            <div class="parent">
+            <c:forEach var="card" items="${cards}">
+                <div class="child">
+                    <div class="principalCard">
                         <spring:url value="/cards/{cardId}" var="cardUrl">
                             <spring:param name="cardId" value="${card.id}" />
                         </spring:url>
-                        <img src="/resources/images/cardsModel.png" class="cardImage"
-                            onclick="showPopUp('CardPopUp${card.id}')">
-                        <div class="topTextName">
-                            <b>
-                                <c:out value="${card.name}" />
-                            </b>
-                        </div>
-                        <div class="topTextCost">
-                            <b>
-                                <c:out value="${card.cost} " />
-                            </b>
-                        </div>
-                        <div class="topTextAspect">
-                            <b>
-                                <c:out value="${card.aspect.name} " />
-                            </b>
-                        </div>
-                        <div class="topTextHalfDeck">
-                            <b>
-                                <c:out value="${card.halfDeck.name} " />
-                            </b>
-                        </div>
-                        <div class="topTextRulesText">
-                            <b>
-                                <c:out value="${card.rulesText} " />
-                            </b>
-                        </div>
-                        <div class="topTextRarity">
-                            <b>
-                                <text id="t${card.id}" style="font-size: 180%;">
-                                    <script>
-                                        var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
-                                        document.getElementById("t${card.id}").innerHTML = rarity
-                                    </script>
-                                </text>
-                            </b>
-                        </div>
-                        <div class="topTextDeckVP">
-                            <b>
-                                <c:out value="${card.deckVP} " />
-                            </b>
-                        </div>
-                        <div class="topTextInnerCirclePV">
-                            <b>
-                                <c:out value="${card.innerCirclePV} " />
-                            </b>
+                            <img src="/resources/images/cardsModel.png" class="cardImage" onclick="showPopUp('CardPopUp${card.id}')" style="cursor: pointer;">
+                            <div class="topTextName">
+                                <b>
+                                    <c:out value="${card.name}" />
+                                </b>
+                            </div>
+                            <div class="topTextCost">
+                                <b>
+                                    <c:out value="${card.cost} " />
+                                </b>
+                            </div>
+                            <div class="topTextAspect">
+                                <b>
+                                    <c:out value="${card.aspect.name} " />
+                                </b>
+                            </div>
+                            <div class="topTextHalfDeck">
+                                <b>
+                                    <c:out value="${card.halfDeck.name} " />
+                                </b>
+                            </div>
+                            <div class="topTextRulesText">
+                                <b>
+                                    <c:out value="${card.rulesText} " />
+                                </b>
+                            </div>
+                            <div class="topTextRarity">
+                                <b>
+                                    <text id="t${card.id}" style="font-size: 180%;">
+                                        <script>
+                                            var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
+                                            document.getElementById("t${card.id}").innerHTML = rarity
+                                        </script>
+                                    </text>
+                                </b>
+                            </div>
+                            <div class="topTextDeckVP">
+                                <b>
+                                    <c:out value="${card.deckVP} " />
+                                </b>
+                            </div>
+                            <div class="topTextInnerCirclePV">
+                                <b>
+                                    <c:out value="${card.innerCirclePV} " />
+                                </b>
+                            </div>
+                    </div>
+                </div>
+            </c:forEach>
+            <c:forEach var="card" items="${cards}">
+                <div class="popup" id="CardPopUp${card.id}">
+                    <div class="popup-content">
+                        <a onclick="dontShowPopUp('CardPopUp${card.id}')" class="x">&times;</a>
+                        <div class="popup-content-box">
+                            <div class="principalCard" style="width: 23vmax; height: 33vmax;">
+                                <spring:url value="/cards/{cardId}" var="cardUrl">
+                                    <spring:param name="cardId" value="${card.id}" />
+                                </spring:url>
+                                <img src="/resources/images/cardsModel.png" class="cardImage"
+                                    onclick="showPopUp('CardPopUp${card.id}')">
+                                <div class="topTextName">
+                                    <b>
+                                        <c:out value="${card.name}" />
+                                    </b>
+                                </div>
+                                <div class="topTextCost">
+                                    <b>
+                                        <c:out value="${card.cost} " />
+                                    </b>
+                                </div>
+                                <div class="topTextAspect">
+                                    <b>
+                                        <c:out value="${card.aspect.name} " />
+                                    </b>
+                                </div>
+                                <div class="topTextHalfDeck">
+                                    <b>
+                                        <c:out value="${card.halfDeck.name} " />
+                                    </b>
+                                </div>
+                                <div class="topTextRulesText">
+                                    <b>
+                                        <c:out value="${card.rulesText} " />
+                                    </b>
+                                </div>
+                                <div class="topTextRarity">
+                                    <b>
+                                        <text id="t${card.id}" style="font-size: 180%;">
+                                            <script>
+                                                var rarity = " &#8226 ".repeat(parseInt("${card.rarity}"))
+                                                document.getElementById("t${card.id}").innerHTML = rarity
+                                            </script>
+                                        </text>
+                                    </b>
+                                </div>
+                                <div class="topTextDeckVP">
+                                    <b>
+                                        <c:out value="${card.deckVP} " />
+                                    </b>
+                                </div>
+                                <div class="topTextInnerCirclePV">
+                                    <b>
+                                        <c:out value="${card.innerCirclePV} " />
+                                    </b>
+                                </div>
+                            </div>
+                            <c:choose>
+                                <c:when test="${card.getStory().length()>0}">
+                                    <div class="story">
+                                        Historia: ${card.story}
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="story">
+                                        Esta carta no tiene descripción
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
-                    <c:choose>
-                        <c:when test="${card.getStory().length()>0}">
-                            <div class="story">
-                                Historia: ${card.story}
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="story">
-                                Esta carta no tiene descripción
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
                 </div>
+            </c:forEach>
             </div>
-        </div>
-    </c:forEach>
-    </div>
+        
+            
+        
+        
+            <div class="pagination-box">
+                <motero2k:pageNav 
+                currentPage="${currentPage}" 
+                link="/cards/filter?name=${param.name}&deck=${param.deck}&page=" >
+                </motero2k:pageNav>
+                <div style="color: aliceblue;"><b>Te
+                    encuentras en la página: ${currentPage} / ${numberOfPages}
+                </b></div>
+            </div>
+        </c:otherwise>
+    </c:choose>
+
 
     
-
-
-    <div class="pagination-box">
-        <motero2k:pageNav 
-        currentPage="${currentPage}" 
-        link="/cards/filter?name=${param.name}&deck=${param.deck}&page=" >
-        </motero2k:pageNav>
-        <div style="color: aliceblue;"><b>Te
-            encuentras en la página: ${currentPage} / ${numberOfPages}
-        </b></div>
-    </div>
 
 </body>
 </petclinic:layout>
