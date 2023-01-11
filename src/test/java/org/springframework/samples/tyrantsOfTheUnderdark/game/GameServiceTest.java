@@ -24,6 +24,17 @@ public class GameServiceTest {
         List<Game> gamesWithName=(List<Game>)this.gameService.getGameByName("Partida mapa original");
         assertThat(gamesWithName.size()).isEqualTo(1);
     }
+    @Test
+    public void testFindAllGames(){
+        List<Game> gamesWithName=(List<Game>)this.gameService.getGameByName("");
+        assertThat(gamesWithName.size()).isEqualTo(this.gameService.getGames().size());
+    }
+
+    @Test
+    public void testShouldntFindAnyGameWithInexistentName(){
+        List<Game> gamesWithName=(List<Game>)this.gameService.getGameByName("mapa que no existe");
+        assertThat(gamesWithName.size()).isEqualTo(0);
+    }
 
     @Test
     public void testCreateGame() {
