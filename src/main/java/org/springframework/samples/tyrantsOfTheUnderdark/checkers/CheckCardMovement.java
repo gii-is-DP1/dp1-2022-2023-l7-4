@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
 
+//Custom Exception class to card movement
 public class CheckCardMovement {
 
     public static void sellZoneLolthsGuardsContainsCard(List<Card> sellZone,List<Card> lolths, List<Card> houseGuards, Card card) throws Exception{

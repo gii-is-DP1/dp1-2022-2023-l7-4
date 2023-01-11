@@ -7,5 +7,5 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="users">
-    <h2>User <c:out style="color: blueviolet;" value="${user.name}"/> was deleted</h2>
+    <h2>Usuario <c:out style="color: blueviolet;" value="${user.name}"/> Fue borrado</h2>
 </petclinic:layout>

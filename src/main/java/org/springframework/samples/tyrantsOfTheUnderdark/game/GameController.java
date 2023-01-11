@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -18,6 +19,8 @@ import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.HalfDeck;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerService;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.Authorities;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.AuthoritiesService;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.User;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.UserService;
 import org.springframework.stereotype.Controller;
@@ -39,6 +42,8 @@ public class GameController {
 	UserService userService;
 	@Autowired
 	CardService cardService;
+	@Autowired
+	AuthoritiesService authService;
 
 	@Autowired
 	MapTemplateService mapTemplateService;
@@ -59,7 +64,6 @@ public class GameController {
 		model.put("availableDecks", availableDecks);
 		model.put("availableMaps", availableMaps);
 		model.put("availableUsers", availableUsers);
-		System.out.println(game);
 		return VIEWS_GAME_CREATE_FORM;
 	}
 
@@ -83,8 +87,6 @@ public class GameController {
 		
 		Player player1 = Player.of(loggedUser);
 		game.getPlayers().add(player1);
-		
-		System.out.println(game);
 		
 		model.put("availableUsers", availableUsers);
 		model.put("game", game);
@@ -163,8 +165,19 @@ public class GameController {
 		}
 	}
 	@GetMapping(value = "/games/list")
-	public String proccesGameListing(Map<String, Object> model){
-		model.put("selections", gameService.getGames());
+	public String proccesGameListing(Map<String, Object> model, Principal user){
+		String name= user.getName();
+		User user2= this.userService.getUserByUsername(name);
+		Boolean result=authService.getAuthoritiesByName("admin").stream().filter(a->a.getUser()
+		.equals(user2)).collect(Collectors.toList()).size()==1;
+		if(result){ 
+			model.put("selections", gameService.getGames());
+			model.put("text","Lista de partidas");
+		 }else{
+			model.put("selections", gameService.getGamesByUser(name));
+			model.put("text","Mis partidas");
+			}
+		model.put("result",result);
 		return "games/gameList";
 	}
 

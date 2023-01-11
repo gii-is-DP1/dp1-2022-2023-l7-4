@@ -6,20 +6,20 @@
 
 <petclinic:layout pageName="users">
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
-    <h2>User Information</h2>
+    <h2>Información de usuario</h2>
 
 
     <table class="table table-striped">
         <tr>
-            <th>Username</th>
+            <th>Nombre de usuario</th>
             <td><strong><c:out value="${user.username}"/></strong></td>
         </tr>
         <tr>
-            <th>Password</th>
+            <th>Contraseña</th>
             <td><c:out value="${user.password}"/></td>
         </tr>
         <tr>
-            <th>Name</th>
+            <th>Nombre</th>
             <td><c:out value="${user.name}"/></td>
         </tr>
         <tr>
@@ -27,7 +27,7 @@
             <td><c:out value="${user.email}"/></td>
         </tr>
         <tr>
-            <th>BirthDate</th>
+            <th>Fecha de nacimiento</th>
             <td><c:out value="${user.birthdate}"/></td>
         </tr>
     </table>
@@ -35,6 +35,6 @@
     <spring:url value="{username}/edit" var="editUrl">
         <spring:param name="username" value="${user.username}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit user</a>
+    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar usuario</a>
 
 </petclinic:layout>

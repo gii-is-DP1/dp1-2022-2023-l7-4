@@ -156,13 +156,14 @@ public class Player extends BaseEntity{
     public static Player of(User user){
         Player player = new Player();
         player.setUser(user);
-        return player;   
+        player.setName(user.getUsername());
+        return player;  
     }
 
     public static Player ofUser(User user) {
         Player player = new Player();
         player.setUser(user);
-        player.setName(user.getName());
+        player.setName(user.getUsername());
         return player;
     }
 

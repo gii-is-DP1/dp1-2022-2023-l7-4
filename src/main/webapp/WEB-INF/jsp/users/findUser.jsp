@@ -10,14 +10,14 @@
 
 <petclinic:layout pageName="users">
 
-    <h2>Find user</h2>
+    <h2>Buscar usuario</h2>
 
     
     <form:form modelAttribute="user" action="/users" method="get" class="form-horizontal"
                id="search-user-form">
         <div class="form-group">
             <div class="control-group" id="username">
-                <label class="col-sm-2 control-label">Username </label>
+                <label class="col-sm-2 control-label">Nombre de usuario </label>
                 <div class="col-sm-10">
                     <form:input class="form-control" path="name" size="30" maxlength="80"/>
                     <span class="help-inline"><form:errors path="*"/></span>
@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Find user</button>
+                <button type="submit" class="btn btn-default">Buscar usuario</button>
             </div>
         </div>
 
@@ -34,7 +34,7 @@
 
     <br/> 
     <sec:authorize access="hasAuthority('admin')">
-		<a class="btn btn-default" href='<spring:url value="/user/new" htmlEscape="true"/>'>Add user</a>
+		<a class="btn btn-default" href='<spring:url value="/user/new" htmlEscape="true"/>'>Crear usuario</a>
 	</sec:authorize>
 	
 </petclinic:layout>

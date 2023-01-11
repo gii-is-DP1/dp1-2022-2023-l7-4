@@ -3,6 +3,7 @@ package org.springframework.samples.tyrantsOfTheUnderdark.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -59,6 +60,12 @@ public class GameService {
     @Transactional
 	public void saveGame(Game game) throws DataAccessException {
 		grepo.save(game);
+	}
+
+	@Transactional
+	public List<Game> getGamesByUser(String name){
+		Collection<Game> lista= (Collection<Game>) grepo.findAll(); 
+		return lista.stream().filter(g-> g.getPlayers().stream().filter(p->p.getName().contains(name)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
 	}
 
 	public void setGameAndHouseToPlayers(Game game){
