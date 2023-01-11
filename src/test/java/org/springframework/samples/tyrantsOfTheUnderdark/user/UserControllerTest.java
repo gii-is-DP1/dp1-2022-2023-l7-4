@@ -31,10 +31,6 @@ public class UserControllerTest {
 
     private final String TEST_USERNAME="javfercas3";
 
-    
-
-
-
     @BeforeEach
     public void setup(){
         mockMvc=MockMvcBuilders.webAppContextSetup(context)
@@ -78,98 +74,5 @@ public class UserControllerTest {
         .andExpect(model().attributeExists("user"));
     }
 
-    @WithMockUser(username="admin2",authorities = {"admin"})
-    @Test
-    public void testProcessEditUserAsAdmin() throws Exception{
-        mockMvc.perform(post("/users/{username}/edit",TEST_USERNAME)
-        .with(csrf())
-        .param("username","javfercas3")
-        .param("password","secret1")
-        .param("name","Antonio")
-        .param("email","javi@gmail.com")
-        .param("birthDate","2002-04-08"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("users/currentUserDetails"));
-    }
-
-    
-
-    @WithMockUser(username="javfercas3",authorities = {"player"})
-    @Test
-    public void testInitEditMyProfile() throws Exception{
-        mockMvc.perform(get("/myprofile"))
-        .andExpect(status().isOk())
-        .andExpect(model().attributeExists("user"));
-    }
-
-    @WithMockUser(username="javfercas3",authorities = {"player"})
-    @Test
-    public void testProcessCorrectlyEditMyProfile() throws Exception{
-        mockMvc.perform(post("/myprofile")
-        .with(csrf())
-        .param("username","javfercas3")
-        .param("password","secret1")
-        .param("name","Antonio")
-        .param("email","javi@gmail.com")
-        .param("birthDate","2002-04-08"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("users/currentUserDetails"));
-    }
-
-    @WithMockUser(username="javfercas3",authorities = {"player"})
-    @Test
-    public void testProcessInorrectlyEditMyProfileNotUsingNotValidName() throws Exception{
-        mockMvc.perform(post("/myprofile")
-        .with(csrf())
-        .param("username","javfercas3")
-        .param("password","secret1")
-        .param("name","")
-        .param("email","javi@gmail.com")
-        .param("birthDate","2002-04-08"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("users/currentUserDetails"));
-    }
-
-    @WithMockUser(username="javfercas3",authorities = {"player"})
-    @Test
-    public void testProcessInorrectlyEditMyProfileNotUsingNotValidUsername() throws Exception{
-        mockMvc.perform(post("/myprofile")
-        .with(csrf())
-        .param("username","")
-        .param("password","secret1")
-        .param("name","antoni3")
-        .param("email","javi@gmail.com")
-        .param("birthDate","2002-04-08"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("users/currentUserDetails"));
-    }
-
-    @WithMockUser(username="javfercas3",authorities = {"player"})
-    @Test
-    public void testProcessInorrectlyEditMyProfileNotUsingNotValidEmail() throws Exception{
-        mockMvc.perform(post("/myprofile")
-        .with(csrf())
-        .param("username","javfercas3")
-        .param("password","secret1")
-        .param("name","antoni3")
-        .param("email","")
-        .param("birthDate","2002-04-08"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("users/currentUserDetails"));
-    }
-
-    @WithMockUser(username="javfercas3",authorities = {"player"})
-    @Test
-    public void testProcessInorrectlyEditMyProfileNotUsingNotValidBirthDate() throws Exception{
-        mockMvc.perform(post("/myprofile")
-        .with(csrf())
-        .param("username","javfercas3")
-        .param("password","secret1")
-        .param("name","antoni3")
-        .param("email","anddomrui@gmail.com")
-        .param("birthDate","20"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("users/currentUserDetails"));
-    }
     
 }

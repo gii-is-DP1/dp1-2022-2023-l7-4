@@ -27,6 +27,10 @@ import org.springframework.web.context.WebApplicationContext;
 @DirtiesContext
 public class ExecuteActionsControllerTest {
 
+    private final Integer CARD_DEVOUR_ID=37;
+
+    
+
     @Autowired
     private WebApplicationContext context;
     private MockMvc mockMvc;
@@ -58,7 +62,7 @@ public class ExecuteActionsControllerTest {
     @Test
     public void testExecuteDevoreByCard() throws Exception{
         Action actionToDevore=Action.ofDevoreCard();
-        actionToDevore.setCard(this.cardService.getCardById(1));
+        actionToDevore.setCard(this.cardService.getCardById(CARD_DEVOUR_ID));
         this.actionService.save(actionToDevore);
         Game game=this.gameService.getGameById(1);
         game.setRound(1);
