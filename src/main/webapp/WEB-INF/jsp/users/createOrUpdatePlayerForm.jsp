@@ -15,7 +15,14 @@
             <petclinic:inputField label="Nombre" name="name"/>
             <petclinic:inputField label="Email" name="email"/>
             <petclinic:inputField label="Fecha de nacimiento" name="birthdate"/>
-            <petclinic:inputField label="Nombre de usuario" name="user.username"/>
+            <c:choose>
+                <c:when test="${editing==true}">
+                    Nombre de usuario: <label>${user.username}</label>
+                </c:when>
+                <c:otherwise>
+                    <petclinic:inputField label="Nombre de usuario" name="user.username"/>
+                </c:otherwise>
+            </c:choose>
             <petclinic:inputField label="Contraseña" name="user.password"/>
         </div>
         <div class="form-group">

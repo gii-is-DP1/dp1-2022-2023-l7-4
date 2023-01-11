@@ -166,6 +166,8 @@ public class UserController {
 	@GetMapping("/myprofile")
 	public String currentUserProfile(Principal user, Model model){
 		User currentUser =userService.getUserByUsername(user.getName());
+		Boolean editing = true;
+		model.addAttribute("editing", editing);
 		model.addAttribute(currentUser);
 		return VIEWS_CURRENT_USER_DETAILS_FORM;
 
@@ -188,6 +190,8 @@ public class UserController {
 	public ModelAndView editUserAsAdmin(@PathVariable("username") String username){
 		User userToEdit =userService.getUserByUsername(username);
 		ModelAndView res=new ModelAndView(VIEWS_CURRENT_USER_DETAILS_FORM);
+		Boolean editing = true;
+		res.addObject("editing", editing);
 		res.addObject("user", userToEdit);
 		return res;
 
