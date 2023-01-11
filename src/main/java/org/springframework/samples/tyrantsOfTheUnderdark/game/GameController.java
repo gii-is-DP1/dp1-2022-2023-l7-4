@@ -64,7 +64,6 @@ public class GameController {
 		model.put("availableDecks", availableDecks);
 		model.put("availableMaps", availableMaps);
 		model.put("availableUsers", availableUsers);
-		System.out.println(game);
 		return VIEWS_GAME_CREATE_FORM;
 	}
 
@@ -88,8 +87,6 @@ public class GameController {
 		
 		Player player1 = Player.of(loggedUser);
 		game.getPlayers().add(player1);
-		
-		System.out.println(game);
 		
 		model.put("availableUsers", availableUsers);
 		model.put("game", game);
@@ -171,14 +168,17 @@ public class GameController {
 	public String proccesGameListing(Map<String, Object> model, Principal user){
 		String name= user.getName();
 		User user2= this.userService.getUserByUsername(name);
-		if(authService.getAuthoritiesByName("admin").stream().filter(a->a.getUser()
-		.equals(user2)).collect(Collectors.toList()).size()==1){ 
+		Boolean result=authService.getAuthoritiesByName("admin").stream().filter(a->a.getUser()
+		.equals(user2)).collect(Collectors.toList()).size()==1;
+		if(result){ 
 			model.put("selections", gameService.getGames());
-			return "games/gameList";
+			model.put("text","Lista de partidas");
 		 }else{
 			model.put("selections", gameService.getGamesByUser(name));
-			return "games/gameList";
+			model.put("text","Mis partidas");
 			}
+		model.put("result",result);
+		return "games/gameList";
 	}
 
 	@InitBinder
