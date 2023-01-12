@@ -170,4 +170,7 @@ public class City extends BaseEntity{
         if(controlling==null) return "#fff";
         return controlling.color();
     }
+    public Boolean isCapital() {
+        return getMarkerVp()>0 || getMarkerInfluence()>0 ;
+    }
 }

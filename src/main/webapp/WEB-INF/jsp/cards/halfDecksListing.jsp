@@ -1,11 +1,10 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
 <petclinic:layout pageName="halfDecks">
@@ -34,20 +33,22 @@
                     <br/>
 
                     <input type="text" name="page" value="1" hidden>
-        
-                    <div class="filter-resume-box">
-                        <div style="width: 41%">
-                            <div class="filter-cardanddeck-text">
-                                <b>Filtro aplicado →</b>
+                    <c:if test="${param.name!=''}">
+                        <div class="filter-resume-box">
+                            <div style="width: 41%">
+                                <div class="filter-cardanddeck-text">
+                                    <b>Filtro aplicado →</b>
+                                </div>
+                            </div>
+                            <div class="filtered-in-box">
+                                <div class="filtered-box">
+                                    Nombre: ${param.name} 
+                                    <a href="http://localhost:8080/cards/decks/filter?name=" class="x-button2"><b>x</b></a>
+                                </div>
                             </div>
                         </div>
-                        <div class="filtered-in-box">
-                            <div class="filtered-box">
-                                Nombre: ${param.name} 
-                                <a href="http://localhost:8080/cards/decks/filter?name=" class="x-button2"><b>x</b></a>
-                            </div>
-                        </div>
-                    </div>
+                    </c:if>
+                    
                 </div>
                 <div class="filter-search">
                     <div style="width: 80%; height: 80%;">
@@ -62,30 +63,43 @@
 
     <br><br>
 
-    <table id="positionsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="halfDeck" items="${halfDecks}" >
-            <tr>
-                <td>
-                    <c:out value="${halfDeck.id}"/>
-                </td>
-                <td>
-                    <c:out value="${halfDeck.name}"/>
-                </td>
-                <td>
-                    <c:out value="${halfDeck.description} "/>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    <c:choose>
+        <c:when  test="${halfDecks.size()==0}">
+            <div class="card-not-found" style="color: aliceblue;">
+                <h1>
+                    ¡No se han encontrado mazos! :(
+                </h1>
+            </div>
+            <br>
+        </c:when>
+        <c:otherwise>
+            <table id="positionsTable" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="halfDeck" items="${halfDecks}" >
+                    <tr>
+                        <td>
+                            <c:out value="${halfDeck.id}"/>
+                        </td>
+                        <td>
+                            <c:out value="${halfDeck.name}"/>
+                        </td>
+                        <td>
+                            <c:out value="${halfDeck.description} "/>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </c:otherwise>
+    </c:choose>
+    
 
 </petclinic:layout>
 

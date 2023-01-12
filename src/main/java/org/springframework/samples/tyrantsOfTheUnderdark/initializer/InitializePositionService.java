@@ -1,6 +1,6 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.initializer;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Random;
 
@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.AdjacentPositionService;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.position.CustomListingPositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PlayerUsePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PopulatePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
@@ -34,8 +33,6 @@ public class InitializePositionService {
     @Autowired
     private PlayerService playerService;
 
-    @Autowired
-    private CustomListingPositionService customListingPositionService;
 
     @Autowired
     private PlayerUsePositionService playerUsePositionService;
@@ -72,10 +69,10 @@ public class InitializePositionService {
         List<Position> availablePositions=this.positionInGameService.getAvailableFreeWhiteTroopPositions(game);
         Long numberOfWhiteTroopsToDeploy=Math.round(positions.size()*0.28);
         Random rand= new Random();
-        while(numberOfWhiteTroopsToDeploy>=1 & numberOfWhiteTroopsToDeploy<=availablePositions.size()){
+        while(numberOfWhiteTroopsToDeploy>=1 && numberOfWhiteTroopsToDeploy<=availablePositions.size()){
             Integer randomIndex=rand.nextInt(availablePositions.size());
             Position randomPosition= availablePositions.get(randomIndex);
-            if(canDeployWhiteInCity(randomPosition, game) & canDeployWhiteInPath(randomPosition, game) & !randomPosition.isOccupied()){
+            if(canDeployWhiteInCity(randomPosition, game) && canDeployWhiteInPath(randomPosition, game) & !randomPosition.isOccupied()){
                 availablePositions.remove(randomPosition);
                 randomPosition.setPlayer(whitePlayer);
                 numberOfWhiteTroopsToDeploy--;

@@ -80,15 +80,16 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         String result="redirect:{gameId}";// redirect aqui mismo (recursividad)
         game = gameInitializer.loadGame(game);
+
+        if(game.isFinished())
+            result="redirect:"+gameId+"/scoreboard";
         
-        if(game.getRound()==-1){
+        else if(game.getRound()==-1){
             if(gameService.enoughUnaligned(game)||gameService.preloadedUnaligned(game)){
                 game.setRound(0);
                 gameService.save(game);
             }else{
                 if(game.getAutomaticWhiteTroops()){
-                    //TODO llamas a automatic y no haces nada (recursivo)
-                    // fichas blancas = posiciones de tropa * 0.28  !!!!!!!!!!
                     this.gameInitializer.loadAutomaticWhitePositions(game);
 
                 }else{
@@ -98,8 +99,7 @@ public class PlayController {
         }else if(game.getRound()==0){
             result="redirect:"+gameId+"/round/0";
         }
-        else if(game.isFinished())
-            result="redirect:"+gameId+"/scoreboard";
+        
         else
             result="redirect:"+gameId+"/round/"+game.getRound();
         return result;
@@ -208,10 +208,6 @@ public class PlayController {
 
 
 
-    @GetMapping("{gameId}/round/{round}/card-action/{cardId}")
-    public String playCard (@PathVariable Integer gameId,@PathVariable Integer cardId){
-        return null;
-    }
     @GetMapping("{game}/round/{round}/buy/{card}")
     public String buyCard (@PathVariable Game game,@PathVariable Card card){
         try {

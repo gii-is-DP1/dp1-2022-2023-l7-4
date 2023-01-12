@@ -2,15 +2,20 @@ package org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.Sector;
 
 import lombok.Getter;
 import lombok.Setter;
+
 
 
 @Getter
@@ -27,12 +32,15 @@ public class CityTemplate extends Sector{
     Integer zone;
 
     String unaligned ="";
-    @NotBlank
+    @NotNull
     @Min(0) 
     @Column(name="vp_endgame_value")
     private Integer vpEndgameValue=0;
+    
+    @ManyToOne()
+    @JoinColumn(name = "map_template_id")
+    private MapTemplate mapTemplate;
 
-    @NotBlank
     @Column(name="starting_city",columnDefinition = "boolean default false")
     private Boolean startingCity=false;
     
@@ -45,7 +53,10 @@ public class CityTemplate extends Sector{
     public Boolean isStartingCity (){
         return this.startingCity;
     }
-
+    @Override
+    public String toString(){
+        return name;
+    }
     //Coordinates in map
     private Double x;
     private Double y;

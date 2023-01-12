@@ -1,15 +1,17 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.user;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
@@ -26,8 +28,9 @@ public class UserControllerTest {
     private WebApplicationContext context;
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserService userService;
+    private final String TEST_USERNAME="javfercas3";
+
+    private final String TEST_NOT_DELETABLE_USERNAME="anddomrui";
 
 
     @BeforeEach
@@ -36,12 +39,58 @@ public class UserControllerTest {
         .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
-    @WithMockUser(username="admin2",authorities = {"admin"})
+    @WithMockUser(username="admin1",authorities = {"admin"})
     @Test
     public void shouldDeleteAUserThatIsNotPlayingAnyGame() throws Exception{
-        User deletableUser=this.userService.getUserByUsername("javfercas3");
-        mockMvc.perform(get("/users/{username}/delete",deletableUser.getUsername())).andExpect(status().is3xxRedirection())
+        mockMvc.perform(get("/users/{username}/delete",TEST_USERNAME)).andExpect(status().is3xxRedirection())
         .andExpect(view().name("redirect:/users/list"));
     }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void shouldSeeListOfUsers() throws Exception{
+        mockMvc.perform(get("/users/list"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/users/pagination?name=&page=1"));
+    }
+
+    @WithMockUser(username="antoniojose",authorities = {"player"})
+    @Test
+    public void shouldntSeeListOfUsers() throws Exception{
+        mockMvc.perform(get("/users/list"))
+        .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @WithMockUser(username="antoonio",authorities = {"player"})
+    @Test
+    public void testThatOnlyAdminsCanDeleteUsers() throws Exception{
+        mockMvc.perform(get("/users/{username}/delete",TEST_USERNAME))
+        .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testInitEditUserAsAdmin() throws Exception{
+        mockMvc.perform(get("/users/{username}/edit",TEST_USERNAME))
+        .andExpect(status().isOk())
+        .andExpect(model().attributeExists("user"));
+    }
+
+    @WithMockUser(username=TEST_USERNAME,authorities = {"player"})
+    @Test
+    public void testDeleteMyProfileCorrectly() throws Exception{
+        mockMvc.perform(get("/deleteprofile"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/logout"));
+    }
+
+    @WithMockUser(username=TEST_NOT_DELETABLE_USERNAME,authorities = {"player"})
+    @Test
+    public void testDeleteMyProfileWithNotFinishedGames() throws Exception{
+        mockMvc.perform(get("/deleteprofile"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/"));
+    }
+
     
 }

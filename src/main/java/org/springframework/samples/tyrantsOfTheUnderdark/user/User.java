@@ -4,14 +4,18 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 
 import lombok.Getter;
@@ -22,21 +26,31 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User{
+
 	@Id
+	@NotBlank
+	@Column(unique=true,length = 30)
 	String username;
 
+
+	@NotBlank
+	@NotNull
 	String password;
 	
 	boolean enabled;
 
 	@NotBlank
+	@NotNull
     String name;
 
     @Email
     @NotBlank
+	@NotNull
+	@Column(length = 30)
     String email;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
+	@NotNull
     LocalDate birthdate;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -47,5 +61,10 @@ public class User{
 
 	public Boolean canBeDeleted(){
 		return players.isEmpty();
+	}
+
+	public Boolean isAdmin(){
+		return authorities!=null && !authorities.isEmpty()
+		 && authorities.stream().anyMatch(auth->auth.getAuthority().equals("admin"));
 	}
 }

@@ -3,15 +3,15 @@ package org.springframework.samples.tyrantsOfTheUnderdark.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionServiceRepo;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.City;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityService;
 import org.springframework.samples.tyrantsOfTheUnderdark.house.House;
 import org.springframework.samples.tyrantsOfTheUnderdark.house.HouseService;
@@ -63,6 +63,30 @@ public class GameService {
 		grepo.save(game);
 	}
 
+	@Transactional
+	public List<Game> getGamesByUser(String name){
+		Collection<Game> lista= (Collection<Game>) grepo.findAll(); 
+		return lista.stream().filter(g-> g.getPlayers().stream().filter(p->p.getName().contains(name)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
+	}
+
+	@Transactional
+	public List<Game> getGamesByNameAndState(String name,String state){
+		if(state.toLowerCase().trim().equals("acabados")){
+			return grepo.findGameByNameAndFinishedOrNotGame(name, true);
+		}else if(state.toLowerCase().trim().equals("pendientes")){
+			return grepo.findGameByNameAndFinishedOrNotGame(name, false);
+		}else{
+			return (List<Game>)getGameByName(name);
+		}
+	}
+
+	@Transactional
+	public List<Game> getMyGamesByNameAndState(String username,String name,String state){
+		List<Game> filteredGames=getGamesByNameAndState(name, state);
+		return filteredGames.stream().filter(g-> g.getPlayers().stream()
+		.filter(p->p.getName().contains(username)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
+	}
+
 	public void setGameAndHouseToPlayers(Game game){
 		List<Player> players = game.getPlayers();
 		List<Player> playerAux = new ArrayList<>(players);
@@ -85,6 +109,9 @@ public class GameService {
 		game.addCurrentPlayer(player);
 	}
 
+	public void quickSave(Game game) throws DataAccessException{
+		grepo.save(game);
+	}
 
 	public void save(Game game) throws DataAccessException {
 		grepo.saveAndFlush(game);
@@ -104,6 +131,8 @@ public class GameService {
 		game.setEndTurnAction(null);
         save(game);
     }
+
+
 
     public boolean enoughUnaligned(Game game) {
 		Boolean res=false;
@@ -125,6 +154,21 @@ public class GameService {
 		Boolean emptyPaths = game.getPaths().stream().allMatch(c->c.getUnaligned().isEmpty());
 		return !(emptyCities && emptyPaths); 
 	}
+
+    public Game ofMapTemplate(MapTemplate mapTemplate) {
+        Game game= new Game();
+		game.setName("map visualizer");
+		game.setMapTemplate(mapTemplate);
+		for (int i = 0; i < 4; i++) {
+			game.getPlayers().add(playerService.getPlayerById(0));
+		}
+		save(game);
+		return game;
+    }
+
+    public void delete(Game game) {
+		grepo.delete(game);
+    }
 
     
 }

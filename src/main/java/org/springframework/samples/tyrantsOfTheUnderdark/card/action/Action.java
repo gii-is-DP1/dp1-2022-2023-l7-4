@@ -132,6 +132,15 @@ public class Action extends BaseEntity {
         action.setActionName(ActionName.DEVORE_MARKET_CARD);
         action.setOriginalIterations(1);
         action.setIterations(1);
+        action.setSubactions(new ArrayList<>());
+        return action;
+    }
+
+    public static Action create(){
+        Action action= new Action();
+        action.setOriginalIterations(1);
+        action.setIterations(1);
+        action.setSubactions(new ArrayList<>());
         return action;
     }
 

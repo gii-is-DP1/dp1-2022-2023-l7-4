@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.Sector;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 
@@ -25,6 +26,9 @@ public class PathTemplate extends Sector{
     @ManyToOne
     @JoinColumn(name="city_id_2")
     private CityTemplate secondCityTemplate;
+
+    @ManyToOne
+    private MapTemplate mapTemplate;
 
     @Override
     public String toString() {

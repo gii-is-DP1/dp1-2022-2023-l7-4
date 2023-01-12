@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
-import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
+
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
 import org.springframework.stereotype.Service;

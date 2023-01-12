@@ -2,16 +2,17 @@ package org.springframework.samples.tyrantsOfTheUnderdark.executeAction;
 
 import org.junit.jupiter.api.BeforeEach;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
+import org.springframework.samples.tyrantsOfTheUnderdark.card.action.Action;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.action.ActionService;
+import org.springframework.samples.tyrantsOfTheUnderdark.card.action.enums.ActionName;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -27,17 +28,31 @@ import org.springframework.web.context.WebApplicationContext;
 @DirtiesContext
 public class ExecuteActionsControllerTest {
 
+    private final Integer CARD_DEVOUR_ID=37;
+
+    private final Integer CARD_END_TURN_ID=7;
+
+    private final Integer TEST_CARD_ID=1;
+
     @Autowired
     private WebApplicationContext context;
     private MockMvc mockMvc;
 
-    @Autowired
-    private CardService cardService;
 
     @Autowired
     private GameService gameService;
 
-    
+    @Autowired
+    private ActionService actionService;
+
+    @Autowired
+    private CardService cardService;
+
+
+    //PASOS PARA OBTENER TEST E2E FUNCIONALES DE EXECUTEACTIONCONTROLLER:
+    //1-CREAR ACCIÓN DE PRUEBA CON LA ACCIÓN QUE QUIERES
+    //2-ASIGNARLE UNA CARTA
+    //3- GUARDAR ACCIÓN , AÑADIRSELA A GAME Y GUARDAR GAME
 
 
 
@@ -46,20 +61,87 @@ public class ExecuteActionsControllerTest {
         mockMvc=MockMvcBuilders.webAppContextSetup(context)
         .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
-    /*
-     * @WithMockUser(username="admin2",authorities = {"admin"})
+     @WithMockUser(username="admin2",authorities = {"admin"})
     @Test
     public void testExecuteDevoreByCard() throws Exception{
-        Card toDevore=Card.createCardToDevore();
-        toDevore.setId(100);
-        toDevore.setHalfDeck(this.cardService.getHalfDeckById(1));
+        Action actionToDevore=Action.ofDevoreCard();
+        actionToDevore.setCard(this.cardService.getCardById(CARD_DEVOUR_ID));
+        this.actionService.save(actionToDevore);
         Game game=this.gameService.getGameById(1);
         game.setRound(1);
-        mockMvc.perform(get("/play/{gameId}/round/1/play-card/{cardId}",1,toDevore.getId()))
+        game.setCurrentAction(actionToDevore);
+        this.gameService.save(game);
+        mockMvc.perform(get("/play/{gameId}/round/1/execute-action",1))
         .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/play/1/round/1/devoreMarketCard"));
+        .andExpect(view().name("redirect:/play/{gameId}/round/{round}/devoreMarketCard"));
     }
-     */
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testExecuteActionEndOfTurn() throws Exception{
+        Action endOfTurnAction=Action.ofEndOfTurn();
+        endOfTurnAction.setCard(this.cardService.getCardById(CARD_END_TURN_ID));
+        this.actionService.save(endOfTurnAction);
+        Game game=this.gameService.getGameById(1);
+        game.setRound(1);
+        game.setEndTurnAction(endOfTurnAction);
+        this.gameService.save(game);
+        mockMvc.perform(get("/play/{gameId}/round/1/next",1))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/play/{gameId}/round/{round}/execute-action"));
+    }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testExecuteEarnPowerByCard() throws Exception{
+        Action actionToEarn=Action.create();
+        actionToEarn.setActionName(ActionName.POWER);
+        actionToEarn.setValue(1);
+        actionToEarn.setCard(this.cardService.getCardById(TEST_CARD_ID));
+        this.actionService.save(actionToEarn);
+        Game game=this.gameService.getGameById(1);
+        game.setRound(1);
+        game.setCurrentAction(actionToEarn);
+        this.gameService.save(game);
+        mockMvc.perform(get("/play/{gameId}/round/1/execute-action",1))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/play/{gameId}/round/{round}/execute-action"));
+    }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testExecutePromoteByCard() throws Exception{
+        Action actionToEarn=Action.create();
+        actionToEarn.setActionName(ActionName.PROMOTE_CARD_FROM_OWN_DECK);
+        actionToEarn.setCard(this.cardService.getCardById(TEST_CARD_ID));
+        this.actionService.save(actionToEarn);
+        Game game=this.gameService.getGameById(1);
+        game.setRound(1);
+        game.setCurrentAction(actionToEarn);
+        this.gameService.save(game);
+        mockMvc.perform(get("/play/{gameId}/round/1/execute-action",1))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/play/{gameId}/round/{round}/promoteCard/"+TEST_CARD_ID+"?locationOfCard=deck"));
+    }
+
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testExecuteChooseActionByCard() throws Exception{
+        Action actionToEarn=Action.create();
+        actionToEarn.setActionName(ActionName.CHOOSE);
+        actionToEarn.setCard(this.cardService.getCardById(TEST_CARD_ID));
+        this.actionService.save(actionToEarn);
+        Game game=this.gameService.getGameById(1);
+        game.setRound(1);
+        game.setCurrentAction(actionToEarn);
+        this.gameService.save(game);
+        mockMvc.perform(get("/play/{gameId}/round/1/execute-action",1))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/play/{gameId}/round/{round}/choose/"+actionToEarn.getId()));
+    }
+
+
+     
 
     
 }

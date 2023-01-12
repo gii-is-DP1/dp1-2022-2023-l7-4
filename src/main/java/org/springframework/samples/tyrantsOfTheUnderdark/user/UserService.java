@@ -16,16 +16,20 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.user;
 
 
+
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.exceptions.DuplicateUsernameException;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.exceptions.DuplicateEmailException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Mostly used as a facade for all Petclinic controllers Also a placeholder
@@ -46,15 +50,43 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	@Transactional
-	public void saveUser(User user) throws DataAccessException {
+	@Transactional(rollbackFor = {DuplicateUsernameException.class,DuplicateEmailException.class})
+	public void saveUser(User user) throws DataAccessException,DuplicateUsernameException,DuplicateEmailException {
 		user.setEnabled(true);
-		userRepository.save(user);
-		authoritiesService.saveAuthorities(user.getUsername(), "player");
+		if(getUserByUsername(user.getUsername())!=null) throw new DuplicateUsernameException();
+		else if(getUserByEmail(user.getEmail())!=null) throw new DuplicateEmailException();
+		else{
+			user.setEnabled(true);
+			userRepository.save(user);
+			if(user.isAdmin()){
+				authoritiesService.saveAuthorities(user.getUsername(), "admin");
+			}else{
+				authoritiesService.saveAuthorities(user.getUsername(), "player");
+			}
+		}
 	}
+
+	@Transactional(rollbackFor = {DuplicateUsernameException.class,DuplicateEmailException.class})
+	public void updateUser(User updatedUser,User referenceUser) throws DataAccessException,DuplicateUsernameException,DuplicateEmailException{
+		if(getUserByUsername(updatedUser.getUsername())!=null &&
+		 !updatedUser.getUsername().equals(referenceUser.getUsername())) throw new DuplicateUsernameException();
+		else if(getUserByEmail(updatedUser.getEmail())!=null
+		&& !updatedUser.getEmail().equals(referenceUser.getEmail())) throw new DuplicateEmailException();
+			userRepository.save(updatedUser);
+		}
 	
-	public Optional<User> findUser(String username) {
-		return userRepository.findById(username);
+
+	@Transactional
+	public void changePasswordAndSave(User user,String newPassword) throws DataAccessException{
+		user.setPassword(newPassword);
+		this.userRepository.save(user);
+	}
+
+	
+
+
+	public User getUserByEmail(String email) {
+		return userRepository.findUserByEmail(email);
 	}
 
 	public Collection<User> getUsers(){
@@ -76,6 +108,9 @@ public class UserService {
 
 	}
 	
+	public List<User> getFilteredUsersList(String name) {
+		return (List<User>) userRepository.findFilteredUsersList(name);
+	}
 
 	public List<User> getUsersList() {
 		return (List<User>) userRepository.findAll();
@@ -84,5 +119,10 @@ public class UserService {
     public List<User> getAvailableUsers(Game game) {
 		List<User> usersInGame = game.getPlayers().stream().filter(p->p!=null).map(player -> player.getUser()).collect(Collectors.toList());
         return getUsersList().stream().filter(user-> ! usersInGame.contains(user)).collect(Collectors.toList());
+    }
+	@Transactional(readOnly = true)
+    public List<User> getUsersByNamePageable(String name,Integer actualPage, Integer usersByPage){
+        Pageable pageable = PageRequest.of(actualPage-1,usersByPage);
+        return userRepository.findUsersByNamePageable(name,pageable);
     }
 }

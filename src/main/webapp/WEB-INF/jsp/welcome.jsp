@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
@@ -8,9 +8,9 @@
 <petclinic:layout pageName="home">
 <div class="mainmenu">
     <img src="/resources/images/logo-menu.png" alt="">
-    <a href="/games/list">Jugar</a>
+    <a href="/games?name=&state=">Jugar</a>
     <div class="botmenu">
-        <a href="" >Mapas</a>
+        <a href="/maps" >Mapas</a>
         <a href="/resources/rules/tyrants-of-the-underdark-reglas-es.pdf" target="_blank">Reglas</a>
         <a href="/cards/all">Cartas</a>
     </div>

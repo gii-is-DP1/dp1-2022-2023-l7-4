@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -8,11 +8,11 @@
 
 <petclinic:layout pageName="users">
     <h2>
-        Edit my profile
+        Editar mi perfil
     </h2>
     <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="Password" name="password" type="password"/>
+            <petclinic:inputField label="Contraseña" name="password" type="password"/>
             <form:input class="form-control" path="username" type="hidden"/>
             <form:input class="form-control" path="name" type="hidden"/>
             <form:input class="form-control" path="email" type="hidden"/>
@@ -20,7 +20,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-default" type="submit">Confirm</button>
+                        <button class="btn btn-default" type="submit">Confirmar</button>
             </div>
         </div>
     </form:form>

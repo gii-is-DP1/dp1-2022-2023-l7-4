@@ -2,7 +2,7 @@ package org.springframework.samples.tyrantsOfTheUnderdark.play;
 
 
 
-import static org.hamcrest.Matchers.hasProperty;
+
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -17,12 +17,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.samples.tyrantsOfTheUnderdark.configuration.SecurityConfiguration;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PlayerUsePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionServiceRepo;
@@ -33,22 +33,20 @@ import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathS
 import org.springframework.samples.tyrantsOfTheUnderdark.cardsMovement.MarketPlayerMoveCardsService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.EndTurnService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
-
-import org.springframework.samples.tyrantsOfTheUnderdark.game.GameFormatter;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
 import org.springframework.samples.tyrantsOfTheUnderdark.initializer.InitializeMapService;
 import org.springframework.samples.tyrantsOfTheUnderdark.initializer.InitializePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.initializer.IntializeGame;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerService;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = PlayController.class,
-includeFilters = @ComponentScan.Filter(value = {GameFormatter.class}, type = FilterType.ASSIGNABLE_TYPE),
- excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-  excludeAutoConfiguration = SecurityConfiguration.class)
+@RunWith(SpringRunner.class)
+@ComponentScan(basePackages = {"com.mypackage"})
+@SpringBootTest
+@AutoConfigureMockMvc
 public class PlayControllerTest {
 
     private static final Integer TEST_GAME_ID=100;
@@ -139,7 +137,7 @@ public class PlayControllerTest {
 
     }
 
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
     @Test
     public void testShowRoundZero() throws Exception{ //HISTORIAS DE USUARIOS MENCIONADAS: H30
         mockMvc.perform(get("/play/{gameId}/round/0",TEST_GAME_ID))
@@ -148,7 +146,7 @@ public class PlayControllerTest {
         .andExpect(model().attribute("player", is(game.getPlayers().get(0))));
     }
 
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
     @Test
     public void testProcessRoundZero() throws Exception{ //HISTORIAS DE USUARIOS MENCIONADAS: H30
         mockMvc.perform(post("/play/{gameId}/round/0",TEST_GAME_ID)
@@ -157,9 +155,9 @@ public class PlayControllerTest {
         .andExpect(view().name("redirect:/play/"+TEST_GAME_ID));        
     }
 
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
     @Test
-    public void testShowRoundN() throws Exception{ // HISTORIAS DE USUARIOS MENCIONADAS: H28,H29,H31
+    public void testShowRoundN() throws Exception{ // HISTORIAS DE USUARIOS MENCIONADAS: H28,H29,H31,H34
         game.setRound(1);
         Player actualPlayer=game.getCurrentPlayer();
         mockMvc.perform(get("/play/{gameId}/round/"+game.getRound(),TEST_GAME_ID))
@@ -170,10 +168,11 @@ public class PlayControllerTest {
         .andExpect(model().attribute("totalinnerCirclevp",is( game.getInnerCircleVP(actualPlayer))))
         .andExpect(model().attribute("controlMarkers",is(game.getActualControlMarker())))
         .andExpect(model().attribute("totalControlMarkers",is(game.getActualTotalControlMarker())))
-        .andExpect(model().attribute("positions", is(this.positionServiceRepo.getAllPositionsByGame(game))));
+        .andExpect(model().attribute("positions", is(this.positionServiceRepo.getAllPositionsByGame(game))))
+        .andExpect(model().attribute("vp", is(game.getPlayerScore(actualPlayer))));
     }
 
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
     @Test
     public void testNextTurn() throws Exception{
         Game game= this.gameService.getGameById(TEST_GAME_ID);
@@ -183,6 +182,16 @@ public class PlayControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(view().name("redirect:/play/{gameId}"));
     }
+
+    @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
+    @Test
+    public void testShowScoreBoardWhenGameEnd() throws Exception{
+        mockMvc.perform(get("/play/{gameId}/scoreboard",TEST_GAME_ID))
+        .andExpect(status().isOk())
+        .andExpect(view().name("playing/scoreBoard"));
+    }
+
+
 
 
 

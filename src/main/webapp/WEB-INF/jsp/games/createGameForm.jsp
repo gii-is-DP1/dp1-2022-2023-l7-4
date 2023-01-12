@@ -1,11 +1,10 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="false" trimDirectiveWhitespaces="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <petclinic:layout pageName="games">
     <link rel="stylesheet" href="/resources/styles/scrollbody.css">
@@ -32,6 +31,8 @@
                     <form:form modelAttribute="game" class="form-horizontal" id="game-form" method="post" action="/games/create/plus">
                         <label class="name">Nombre del juego:</label>
                         <input type="text" name="name" value="${game.name}" style="width: 9vmax; border-radius: 0.5vmax;" >
+                        <br>
+                        <span style="color: red;">${status}</span>
                         
                         <input id="selected-map" type="hidden" name="mapTemplate" value="${game.mapTemplate.id}">
                         <input id="selected-deck-1" type="hidden" name="firstHalfDeck" value="${game.firstHalfDeck.id}">
@@ -117,10 +118,10 @@
                         <c:choose>
                             <c:when test="${counter.index == 0}">
                                 <a onclick="alert('no te puedes quitar a ti mismo')"
-                                    href="JavaScript:void(0)" class="username-text-color">${player.user.name}</a>
+                                    href="JavaScript:void(0)" class="username-text-color">${player.user.username}</a>
                             </c:when>
                             <c:otherwise>
-                                <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)" class="username-text-color">${player.user.name}</a>
+                                <a onclick="removePlayer('${counter.index +1}')" href="JavaScript:void(0)" class="username-text-color">${player.user.username}</a>
                             </c:otherwise>
                         </c:choose>
             
@@ -180,18 +181,18 @@
                 <a onclick="dontShowPopUp('restrictions')" class="x">x</a>
                 <pre class="ls">
                     Para crear la partida necesitas:
-                                Nombre de partida    
-                                Dos Mazos seleccionados
-                                Entre 2 y 4 jugadores
-                                Un mapa seleccionado
-                                como minimo debe tener una ciudad 
-                                inicial por jugador
-                                (mientras menos jugadores mas mapas
-                                podras seleccionar)
+                        Nombre de partida    
+                        Dos Mazos seleccionados
+                        Entre 2 y 4 jugadores
+                        Un mapa seleccionado
+                        como minimo debe tener una ciudad 
+                        inicial por jugador
+                        (mientras menos jugadores mas mapas
+                        podras seleccionar)
                 </pre>
             </div>
     </div>
-        
+   
     <c:choose>
         <c:when test="${game.mapTemplate != null && game.name != null && game.players.size() >= 2 && game.firstHalfDeck != null && game.secondHalfDeck != null}">
             <div style="display: flex; justify-content: center; width: 100%; align-items: center;">
