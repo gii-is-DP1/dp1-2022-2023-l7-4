@@ -41,7 +41,7 @@
 				</petclinic:menuItem>
 			    </sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'games'}" url="/games/list" title="games">
+				<petclinic:menuItem active="${name eq 'games'}" url="/games?name=&state=" title="games">
 				<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 				<span>Partidas</span>
 				</petclinic:menuItem>
