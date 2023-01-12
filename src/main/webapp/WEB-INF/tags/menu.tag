@@ -61,8 +61,8 @@
 
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
-					<li><a href="<c:url value="/login" />">Iniciar Sesión</a></li>
-					<li><a href="<c:url value="/user/new" />">Register</a></li>
+					<li><a href="<c:url value="/login" />">Iniciar Sesion</a></li>
+					<li><a href="<c:url value="/user/new" />">Registrarte</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -85,7 +85,7 @@
 											</p>
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Cerrar sesión</a>
+													class="btn btn-primary btn-block btn-sm">Cerrar sesion</a>
 											</p>
 										</div>
 									</div>
@@ -98,8 +98,8 @@
 										<div class="col-lg-12">
 											<p>
 												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">Mi perfil</a>
-												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Cambiar contraseña</a>
-												<a href="<c:url value="/deleteprofile" />" class="btn btn-danger btn-block"> Borrar perfil</a>
+												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Cambiar clave</a>
+												<a href="<c:url value="/deleteprofile" />" class="btn btn-danger btn-block"> Borrar usuario</a>
 											</p>
 										</div>
 									</div>

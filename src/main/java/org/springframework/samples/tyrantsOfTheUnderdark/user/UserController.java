@@ -87,12 +87,12 @@ public class UserController {
 				userService.saveUser(user);
 			}catch(DuplicateUsernameException ex){
 				result.rejectValue("username"
-				, "duplicate","already exists");
+				, "","Utiliza otro nombre, este nombre ya tiene asociado una cuenta");
 				model.put("user",user);
 				return VIEWS_USER_CREATE_FORM;
 			}catch(DuplicateEmailException ex){
 				result.rejectValue("email"
-				, "duplicate","already exists");
+				, "","Utiliza otro correo, este correo ya tiene asociado una cuenta");
 				model.put("user",user);
 				return VIEWS_USER_CREATE_FORM;
 			}
