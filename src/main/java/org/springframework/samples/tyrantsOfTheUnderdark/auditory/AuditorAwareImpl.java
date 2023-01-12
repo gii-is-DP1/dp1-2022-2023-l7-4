@@ -2,7 +2,6 @@ package org.springframework.samples.tyrantsOfTheUnderdark.auditory;
 
 import java.util.Optional;
 
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

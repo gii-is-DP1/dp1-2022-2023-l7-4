@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "users",uniqueConstraints={@UniqueConstraint(columnNames={"username","email"})})
+@Table(name = "users")
 public class User{
 
 	@Id
@@ -46,7 +45,8 @@ public class User{
 
     @Email
     @NotBlank
-	@Column(unique=true,length = 30)
+	@NotNull
+	@Column(length = 30)
     String email;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
@@ -61,5 +61,10 @@ public class User{
 
 	public Boolean canBeDeleted(){
 		return players.isEmpty();
+	}
+
+	public Boolean isAdmin(){
+		return authorities!=null && !authorities.isEmpty()
+		 && authorities.stream().anyMatch(auth->auth.getAuthority().equals("admin"));
 	}
 }

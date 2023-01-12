@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionServiceRepo;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityService;
@@ -130,6 +131,17 @@ public class GameService {
 		Boolean emptyPaths = game.getPaths().stream().allMatch(c->c.getUnaligned().isEmpty());
 		return !(emptyCities && emptyPaths); 
 	}
+
+    public Game ofMapTemplate(MapTemplate mapTemplate) {
+        Game game= new Game();
+		game.setName("map visualizer");
+		game.setMapTemplate(mapTemplate);
+		for (int i = 0; i < 4; i++) {
+			game.getPlayers().add(playerService.getPlayerById(0));
+		}
+		save(game);
+		return game;
+    }
 
     
 }

@@ -16,6 +16,7 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.user;
 
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.exceptions.DuplicateUsernameException;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.exceptions.DuplicateEmailException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.PageRequest;
@@ -47,15 +50,44 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	@Transactional
-	public void saveUser(User user) throws DataAccessException {
+	@Transactional(rollbackFor = {DuplicateUsernameException.class,DuplicateEmailException.class})
+	public void saveUser(User user) throws DataAccessException,DuplicateUsernameException,DuplicateEmailException {
 		user.setEnabled(true);
-		userRepository.save(user);
-		authoritiesService.saveAuthorities(user.getUsername(), "player");
+		if(getUserByUsername(user.getUsername())!=null) throw new DuplicateUsernameException();
+		else if(getUserByEmail(user.getEmail())!=null) throw new DuplicateEmailException();
+		else{
+			user.setEnabled(true);
+			userRepository.save(user);
+			if(user.isAdmin()){
+				authoritiesService.saveAuthorities(user.getUsername(), "admin");
+			}else{
+				authoritiesService.saveAuthorities(user.getUsername(), "player");
+			}
+		}
+	}
+
+	@Transactional(rollbackFor = {DuplicateUsernameException.class,DuplicateEmailException.class})
+	public void updateUser(User updatedUser,User referenceUser) throws DataAccessException,DuplicateUsernameException,DuplicateEmailException{
+		if(getUserByUsername(updatedUser.getUsername())!=null &&
+		 !updatedUser.getUsername().equals(referenceUser.getUsername())) throw new DuplicateUsernameException();
+		else if(getUserByEmail(updatedUser.getEmail())!=null
+		&& !updatedUser.getEmail().equals(referenceUser.getEmail())) throw new DuplicateEmailException();
+			userRepository.save(updatedUser);
+		}
+	
+
+	@Transactional
+	public void changePasswordAndSave(User user,String newPassword) throws DataAccessException{
+		user.setPassword(newPassword);
+		this.userRepository.save(user);
 	}
 
 	
 
+
+	public User getUserByEmail(String email) {
+		return userRepository.findUserByEmail(email);
+	}
 
 	public Collection<User> getUsers(){
 		return (Collection<User>) userRepository.findAll();

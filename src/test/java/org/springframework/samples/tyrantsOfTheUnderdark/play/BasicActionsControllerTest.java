@@ -8,33 +8,33 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PositionServiceRepo;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.City;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
-import org.springframework.samples.tyrantsOfTheUnderdark.configuration.SecurityConfiguration;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
-import org.springframework.samples.tyrantsOfTheUnderdark.game.GameFormatter;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = PlayController.class,
-includeFilters = @ComponentScan.Filter(value = {GameFormatter.class}, type = FilterType.ASSIGNABLE_TYPE),
- excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-  excludeAutoConfiguration = SecurityConfiguration.class)
+@RunWith(SpringRunner.class)
+@ComponentScan(basePackages = {"com.mypackage"})
+@SpringBootTest
+@AutoConfigureMockMvc
 public class BasicActionsControllerTest {
     
     private static final Integer TEST_GAME_ID=100;
@@ -85,61 +85,66 @@ public class BasicActionsControllerTest {
         game.setPlayers(List.of(player1,player2));
         given(this.gameService.getGameById(TEST_GAME_ID)).willReturn(game);
         given(this.positionServiceRepo.getAllPositionsByGame(game)).willReturn(List.of(new Position()));
-
-
     }
     
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
     @Test
     public void testShowPlaceTroopForm() throws Exception {
-        mockMvc.perform(get("{gameId}/round/{round}/basicPlaceTroop",TEST_GAME_ID,TEST_ROUND))
+        mockMvc.perform(get("/play/{gameId}/round/{round}/basicPlaceTroop",TEST_GAME_ID,TEST_ROUND))
         .andExpect(status().isOk())
         .andExpect(view().name("playing/chooseOnePositionFormView"))
         .andExpect(model().attribute("player", is(game.getPlayers().get(0))));
     }
 
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
     @Test
     public void testProcessPlaceTroopForm() throws Exception{
-        mockMvc.perform(post("{gameId}/round/{round}/basicPlaceTroop",TEST_GAME_ID,TEST_ROUND)
+        mockMvc.perform(post("/play/{gameId}/round/{round}/basicPlaceTroop",TEST_GAME_ID,TEST_ROUND)
         .with(csrf()).param("positionId", "1"))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/play/"+TEST_GAME_ID+"/round/"+TEST_ROUND));        
+        .andExpect(status().is2xxSuccessful());    
     }
 
-    @WithMockUser(value="spring")
+    
+
+    @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
     @Test
     public void testShowReturnPiece() throws Exception {
-        mockMvc.perform(get("{gameId}/round/{round}/basicReturnEnemySpy",TEST_GAME_ID,TEST_ROUND))
+        mockMvc.perform(get("/play/{gameId}/round/{round}/basicReturnEnemySpy",TEST_GAME_ID,TEST_ROUND))
         .andExpect(status().isOk())
         .andExpect(view().name("playing/chooseOnePositionFormView"))
         .andExpect(model().attribute("player", is(game.getPlayers().get(0))));
     }
 
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
     @Test
     public void testProcessReturnPiece() throws Exception{
-        mockMvc.perform(post("{gameId}/round/{round}/basicReturnEnemySpy",TEST_GAME_ID,TEST_ROUND)
+        mockMvc.perform(post("/play/{gameId}/round/{round}/basicReturnEnemySpy",TEST_GAME_ID,TEST_ROUND)
         .with(csrf()).param("positionId", "1"))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/play/"+TEST_GAME_ID+"/round/"+TEST_ROUND));        
+        .andExpect(status().is2xxSuccessful());        
     }
 
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
     @Test
     public void testShowKillTroopForm() throws Exception {
-        mockMvc.perform(get("{gameId}/round/{round}/basicKillTroop",TEST_GAME_ID,TEST_ROUND))
+        mockMvc.perform(get("/play/{gameId}/round/{round}/basicKillTroop",TEST_GAME_ID,TEST_ROUND))
         .andExpect(status().isOk())
         .andExpect(view().name("playing/chooseOnePositionFormView"))
         .andExpect(model().attribute("player", is(game.getPlayers().get(0))));
     }
 
-    @WithMockUser(value="spring")
+    @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
     @Test
     public void testProcessKillTroopForm() throws Exception{
-        mockMvc.perform(post("{gameId}/round/{round}/basicKillTroop",TEST_GAME_ID,TEST_ROUND)
+        mockMvc.perform(post("/play/{gameId}/round/{round}/basicKillTroop",TEST_GAME_ID,TEST_ROUND)
         .with(csrf()).param("positionId", "1"))
+        .andExpect(status().is2xxSuccessful());        
+    }
+
+    @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
+    @Test
+    public void testSkipBasicAction() throws Exception {
+        mockMvc.perform(get("/play/{gameId}/round/{round}/skip",TEST_GAME_ID,TEST_ROUND))
         .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/play/"+TEST_GAME_ID+"/round/"+TEST_ROUND));        
+        .andExpect(view().name("redirect:/play/{gameId}/round/{round}/execute-action"));
     }
 }

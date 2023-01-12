@@ -24,8 +24,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.exceptions.DuplicateEmailException;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.exceptions.DuplicateUsernameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +41,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
 /**
  * @author Juergen Hoeller
@@ -51,6 +53,7 @@ public class UserController {
 
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
 	private static final String VIEWS_CURRENT_USER_DETAILS_FORM = "users/currentUserDetails";
+	private static final String VIEWS_DETAILS_OF_USER="users/userDetails";
 	private static final String VIEWS_CHANGE_USER_PASSWORD_FORM = "users/currentUserChangePassword";
 	private String USERS_LISTING_VIEW="users/usersList";
 
@@ -75,14 +78,28 @@ public class UserController {
     
 
 	@PostMapping(value = "/user/new")
-	public String processCreationUserForm(@Valid User user, BindingResult result) {
+	public String processCreationUserForm(@Valid User user, BindingResult result,ModelMap model) {
 		if (result.hasErrors()) {
+			model.put("user",user);
 			return VIEWS_USER_CREATE_FORM;
 		}
 		else {
-			userService.saveUser(user);
-			return "redirect:/";
+			try{
+				userService.saveUser(user);
+			}catch(DuplicateUsernameException ex){
+				result.rejectValue("username"
+				, "duplicate","already exists");
+				model.put("user",user);
+				return VIEWS_USER_CREATE_FORM;
+			}catch(DuplicateEmailException ex){
+				result.rejectValue("email"
+				, "duplicate","already exists");
+				model.put("user",user);
+				return VIEWS_USER_CREATE_FORM;
+			}
+			return "redirect:/login";
 		}
+		
 	}
 
 
@@ -144,8 +161,9 @@ public class UserController {
 		return "users/findUser";
 	}
 	@GetMapping("/users/{username}")
-	public ModelAndView showUser(@PathVariable("username") String username) {
+	public ModelAndView showUser(@PathVariable("username") String username,Principal user) {
 		ModelAndView mav = new ModelAndView("users/userDetails");
+		mav.addObject("editOwn",false);
 		mav.addObject(userService.getUserByUsername(username));
 		return mav;
 	}
@@ -163,26 +181,63 @@ public class UserController {
 		}
 		return mav;
 	}
+
+	@GetMapping("/deleteprofile")
+	public ModelAndView deleteMyProfile(Principal loggedUser){
+		ModelAndView mav = new ModelAndView("redirect:/logout");
+		User user=this.userService.getUserByUsername(loggedUser.getName());
+		String canBe=user.canBeDeleted()?null:"No puedes borrar tu cuenta hasta acabar las partidas pendientes";
+		mav.addObject("text", canBe);
+		try{
+			userService.deleteUser(user);
+		}catch(Exception e){
+			e.printStackTrace();
+			mav = new ModelAndView("redirect:/");
+		}
+		return mav;
+	}
+
 	@GetMapping("/myprofile")
-	public String currentUserProfile(Principal user, Model model){
+	public String currentUserProfile(Principal user, ModelMap model){
+		User currentUser =userService.getUserByUsername(user.getName());
+		Boolean editing = true;
+		model.addAttribute("editOwn", true);
+		model.addAttribute("editing", editing);
+		model.addAttribute("user",currentUser);
+		return VIEWS_DETAILS_OF_USER;
+	}
+	@GetMapping("/editprofile")
+	public String initUpdateProfile(Principal user, ModelMap model){
 		User currentUser =userService.getUserByUsername(user.getName());
 		Boolean editing = true;
 		model.addAttribute("editing", editing);
-		model.addAttribute(currentUser);
+		model.addAttribute("user",currentUser);
 		return VIEWS_CURRENT_USER_DETAILS_FORM;
 
 	}
-	@PostMapping(value = "/myprofile")
-	public String processUserProfile(@Valid User newuser, BindingResult result,Principal user) {
-		System.out.println(newuser.name);
+	@PostMapping(value = "/editprofile")
+	public String processUserProfile(@Valid User newuser, BindingResult result,ModelMap model,Principal loggedUser) {
 		if (result.hasErrors()) {
+			model.put("user",newuser);
 			return VIEWS_CURRENT_USER_DETAILS_FORM;
 		}
 		else {
-			User currentUser = userService.getUserByUsername(user.getName());
-			BeanUtils.copyProperties( newuser,currentUser, "players");
-			this.userService.saveUser(currentUser);
-			return "redirect:/";
+			try{
+				User currentUser =this.userService.getUserByUsername(loggedUser.getName());
+				BeanUtils.copyProperties( newuser,currentUser, "players","authorities","username");
+				this.userService.updateUser(currentUser, userService.getUserByUsername(loggedUser.getName()));
+			}catch(DuplicateUsernameException ex){
+				result.rejectValue("username"
+				, "duplicate","already exists");
+				model.put("user",newuser);
+				return VIEWS_CURRENT_USER_DETAILS_FORM;
+			}catch(DuplicateEmailException ex){
+				result.rejectValue("email"
+				, "duplicate","already exists");
+				model.put("user",newuser);
+				return VIEWS_CURRENT_USER_DETAILS_FORM;
+			}
+			return "redirect:/myprofile";
 		}
 	}
 
@@ -198,12 +253,27 @@ public class UserController {
 	}
 
 	@PostMapping("/users/{username}/edit")
-	public String processEditUserAsAdmin(@Valid User updateUser, BindingResult result) {
+	public String processEditUserAsAdmin(@PathVariable("username") String username,@Valid User updateUser, BindingResult result,ModelMap model,Principal loggedUser) {
 		if (result.hasErrors()) {
+			model.put("user",updateUser);
 			return VIEWS_CURRENT_USER_DETAILS_FORM;
 		}
 		else {
-			userService.saveUser(updateUser);
+			try{
+				User currentUser = userService.getUserByUsername(username);
+				BeanUtils.copyProperties( updateUser,currentUser, "players","authorities");
+				this.userService.updateUser(updateUser, currentUser);
+			}catch(DuplicateUsernameException ex){
+				result.rejectValue("username"
+				, "duplicate","already exists");
+				model.put("user",updateUser);
+				return VIEWS_CURRENT_USER_DETAILS_FORM;
+			}catch(DuplicateEmailException ex){
+				result.rejectValue("email"
+				, "duplicate","already exists");
+				model.put("user",updateUser);
+				return VIEWS_CURRENT_USER_DETAILS_FORM;
+			}
 			return "redirect:/users/{username}";
 		}
 	}
@@ -217,14 +287,14 @@ public class UserController {
 
 	}
 	@PostMapping(value = "/changepassword")
-	public String processUserPassword(@Valid User newuser, BindingResult result,Principal user) {
+	public String processUserPassword(@Valid User newuser, BindingResult result,ModelMap model,Principal user) {
 		if (result.hasErrors()) {
+			model.put("user",newuser);
 			return VIEWS_CHANGE_USER_PASSWORD_FORM;
 		}
 		else {
-			User currenUser = userService.getUserByUsername(user.getName());
-			newuser.setUsername(currenUser.getUsername());
-			userService.saveUser(newuser);
+			User currentUser = userService.getUserByUsername(user.getName());
+			this.userService.changePasswordAndSave(currentUser, newuser.getPassword());
 			return "redirect:/";
 		}
 	}

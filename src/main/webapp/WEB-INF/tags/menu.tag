@@ -99,11 +99,13 @@
 											<p>
 												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">Mi perfil</a>
 												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Cambiar contraseña</a>
+												<a href="<c:url value="/deleteprofile" />" class="btn btn-danger btn-block"> Borrar perfil</a>
 											</p>
 										</div>
 									</div>
 								</div>
 							</li>
+							
 						</ul></li>
 				</sec:authorize>
 			</ul>

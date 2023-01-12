@@ -32,9 +32,18 @@
         </tr>
     </table>
 
-    <spring:url value="{username}/edit" var="editUrl">
-        <spring:param name="username" value="${user.username}"/>
-    </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar usuario</a>
+    <c:choose>
+        <c:when test="${editOwn==false}">
+            <spring:url value="{username}/edit" var="editUrl">
+                <spring:param name="username" value="${user.username}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar usuario</a>
+        </c:when>
+        <c:otherwise>
+            <spring:url value="editprofile" var="editUrl">
+            </spring:url>
+            <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar perfil</a>
+        </c:otherwise>
+    </c:choose>
 
 </petclinic:layout>

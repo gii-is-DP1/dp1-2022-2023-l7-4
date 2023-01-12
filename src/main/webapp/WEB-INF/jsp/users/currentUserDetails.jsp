@@ -8,20 +8,16 @@
 
 <petclinic:layout pageName="users">
     <h2>
-        Editar mi perfil
+        Editar perfil : ${user.username}
+    </h2>
+    <h2>
+        Gmail: ${user.email}
     </h2>
     <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
         <div class="form-group has-feedback">
-            <c:choose>
-                <c:when test="${editing==true}">
-                    Nombre de usuario: <label>${user.username}</label>
-                </c:when>
-                <c:otherwise>
-                    <petclinic:inputField label="Nombre de usuario" name="username"/>
-                </c:otherwise>
-            </c:choose>
+            <input type="hidden" name="username" value="${user.username}"/>
             <petclinic:inputField label="Nombre" name="name"/>
-            <petclinic:inputField label="Email" name="email"/>
+            <input type="hidden" name="email" value="${user.email}"/>
             <petclinic:inputField label="Fecha de nacimiento" name="birthdate"/>
             <form:input class="form-control" path="password" type="hidden"/>
         </div>

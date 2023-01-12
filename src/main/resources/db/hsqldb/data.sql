@@ -90,7 +90,7 @@ INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (30,32,1);
 
 
 -- MAPS
-INSERT INTO map_templates(name) VALUES ('Original map');
+INSERT INTO map_templates(name,description) VALUES ('Mapa Original','Este es el mapa real del juego.<br> Tiene las 26 ciudades y los 40 caminos <br> y al rededor de 140 posiciones jugables!');
 INSERT INTO map_templates(name) VALUES ('small Map 2');
 INSERT INTO map_templates(name) VALUES ('medium Map 3');
 INSERT INTO map_templates(name) VALUES ('Bad made medium Map 3no -> 2 yes');

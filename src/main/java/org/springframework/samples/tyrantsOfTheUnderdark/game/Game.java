@@ -33,7 +33,6 @@ import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.Path;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.HalfDeck;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.action.Action;
-import org.springframework.samples.tyrantsOfTheUnderdark.model.BaseEntity;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.VictoryPoints;
 

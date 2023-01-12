@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="game">
-    <h2>Partidas</h2>
+    <h2>${text}</h2>
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
     <a class="btn btn-default" href='<spring:url value="/games/find" htmlEscape="true"/>'>Buscar una partida</a>
     <a class="btn btn-default" href='<spring:url value="/games/create" htmlEscape="true"/>'>Crear una partida</a>
@@ -17,6 +17,15 @@
             <th style="width: 150px;">Nombre</th>
             <th style="width: 200px;">Número de jugadores</th>
             <th style="width: 100px;"></th>
+            <c:choose>
+                <c:when test="${result==true}">
+                    <th style="width: 100px;">Creador</th>
+                    <th style="width: 100px;">Fecha de creación</th>
+                    <th style="width: 100px;">Fecha exacta de última modificación</th>
+                    <th style="width: 100px;">Último modificador</th>
+                </c:when>
+                <c:otherwise></c:otherwise>
+            </c:choose>
         </tr>
         </thead>
         <tbody>
@@ -43,6 +52,23 @@
                         </c:otherwise>
                     </c:choose>
                 </td>
+                <c:choose>
+                <c:when test="${result==true}">
+                    <td>
+                        <c:out value="${game.creator}"/>
+                    </td>
+                    <td>
+                        <c:out value="${game.date}"/>
+                    </td>
+                    <td>
+                        <c:out value="${game.lastModifiedDate}"/>
+                    </td>
+                    <td>
+                        <c:out value="${game.modifier}"/>
+                    </td>
+                </c:when>
+                <c:otherwise></c:otherwise>
+            </c:choose>
 
                 
             </tr>

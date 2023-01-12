@@ -208,10 +208,6 @@ public class PlayController {
 
 
 
-    @GetMapping("{gameId}/round/{round}/card-action/{cardId}")
-    public String playCard (@PathVariable Integer gameId,@PathVariable Integer cardId){
-        return null;
-    }
     @GetMapping("{game}/round/{round}/buy/{card}")
     public String buyCard (@PathVariable Game game,@PathVariable Card card){
         try {

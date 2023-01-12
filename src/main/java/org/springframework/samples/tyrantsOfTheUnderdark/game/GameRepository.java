@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 
 public interface GameRepository extends CrudRepository<Game,Integer>{
-    @Query("SELECT game FROM Game game WHERE game.name = ?1")
+    @Query("SELECT game FROM Game game WHERE LOWER(game.name) LIKE LOWER(concat('%',:name,'%'))")
     public Collection<Game> findGameByName(String name);
     
    
