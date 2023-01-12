@@ -46,7 +46,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name="games")
-@JsonIgnoreProperties(allowGetters = false, value = {"qualifying","winner","cardInPlay","chosenPieceToMove","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
+@JsonIgnoreProperties(allowGetters = false, value = {"actualControlMarker","actualTotalControlMarker","creator","modifier","lastModifiedDate","qualifying","winner","cardInPlay","chosenPieceToMove","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
 })
 public class Game extends AuditableEntity{
 

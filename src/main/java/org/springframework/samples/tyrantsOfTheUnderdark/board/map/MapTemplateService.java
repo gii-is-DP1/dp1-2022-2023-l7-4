@@ -42,13 +42,19 @@ public class MapTemplateService {
     }
 
     public Game findGame(MapTemplate map) {
-        Optional<Game> game = gameService.getGames().stream().filter(g-> g.getMapTemplate().equals(map)).filter(g->g.getPlayers().size()==1).findFirst();
-        Game finalGame  = game.orElse(gameService.ofMapTemplate(map));
-        intializeGame.loadGame(finalGame);
+        Optional<Game> game = gameService.getGames().stream().filter(g-> g.getMapTemplate().equals(map)).filter(g->g.getPlayers().size()==0).findFirst();
+        Game finalGame  = game.isPresent()?game.get():(gameService.ofMapTemplate(map));
+        intializeGame.loadGameForMapVisual(finalGame);
         return finalGame;
     }
 
     public Boolean isEditable(MapTemplate map) {
-        return gameService.getGames().stream().filter(g->g.getMapTemplate().equals(map)).noneMatch(g-> g.isNotLoaded());
+        return gameService.getGames().stream().filter(g->g.getMapTemplate().equals(map)).collect(Collectors.toList()).size()<2;
     }
+
+    public void save(MapTemplate map) {
+        mapTemplateRepository.save(map);
+    }
+
+
 }

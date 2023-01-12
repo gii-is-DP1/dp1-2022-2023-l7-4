@@ -154,5 +154,9 @@ public class GameService {
 		return game;
     }
 
+    public void delete(Game game) {
+		grepo.delete(game);
+    }
+
     
 }
