@@ -9,7 +9,7 @@
     <h2>${text}</h2>
     
     <link rel="stylesheet" href="/resources/styles/tyrants.css">
-    <a class="btn btn-default" href='<spring:url value="/games/find?name=" htmlEscape="true"/>'>Buscar una partida</a>
+    <a class="btn btn-default" href='<spring:url value="/games/find?name=&state=" htmlEscape="true"/>'>Buscar una partida</a>
     <a class="btn btn-default" href='<spring:url value="/games/create" htmlEscape="true"/>'>Crear una partida</a>
 
     <table id="gameTable" class="table table-striped">

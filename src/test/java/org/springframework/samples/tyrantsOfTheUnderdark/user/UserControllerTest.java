@@ -30,13 +30,15 @@ public class UserControllerTest {
 
     private final String TEST_USERNAME="javfercas3";
 
+    private final String TEST_NOT_DELETABLE_USERNAME="anddomrui";
+
     @BeforeEach
     public void setup(){
         mockMvc=MockMvcBuilders.webAppContextSetup(context)
         .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
-    @WithMockUser(username="admin2",authorities = {"admin"})
+    @WithMockUser(username="admin1",authorities = {"admin"})
     @Test
     public void shouldDeleteAUserThatIsNotPlayingAnyGame() throws Exception{
         mockMvc.perform(get("/users/{username}/delete",TEST_USERNAME)).andExpect(status().is3xxRedirection())
@@ -73,12 +75,20 @@ public class UserControllerTest {
         .andExpect(model().attributeExists("user"));
     }
 
-    @WithMockUser(username="admin2",authorities = {"admin"})
+    @WithMockUser(username=TEST_USERNAME,authorities = {"player"})
     @Test
-    public void testDeleteMyProfile() throws Exception{
-        mockMvc.perform(get("/users/{username}/edit",TEST_USERNAME))
-        .andExpect(status().isOk())
-        .andExpect(model().attributeExists("user"));
+    public void testDeleteMyProfileCorrectly() throws Exception{
+        mockMvc.perform(get("/deleteprofile"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/logout"));
+    }
+
+    @WithMockUser(username=TEST_NOT_DELETABLE_USERNAME,authorities = {"player"})
+    @Test
+    public void testDeleteMyProfileWithNotFinishedGames() throws Exception{
+        mockMvc.perform(get("/deleteprofile"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/"));
     }
 
     

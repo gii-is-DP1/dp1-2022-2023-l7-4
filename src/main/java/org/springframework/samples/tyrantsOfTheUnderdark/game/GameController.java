@@ -138,12 +138,15 @@ public class GameController {
 			return "welcome";
 	}
 	@GetMapping("/games/find")
-	public ModelAndView showGamesByFilteredName(@RequestParam("name") String name){
+	public ModelAndView showGamesByFilteredName(@RequestParam("name") String name,
+	@RequestParam("state") String state){
 		if(name==null) name="";
+		if(state==null) state="";
 		ModelAndView res=new ModelAndView(GAME_FINDER_VIEW);
-		Collection<Game> filteredGames=this.gameService.getGameByName(name);
+		Collection<Game> filteredGames=this.gameService.getGamesByNameAndState(name, state);
 		System.out.println(filteredGames.size());
 		res.addObject("games",filteredGames);
+		res.addObject("states", List.of("Acabados","Pendientes","Todos"));
 		res.addObject("search",filteredGames.isEmpty());
 		return res;
 	}

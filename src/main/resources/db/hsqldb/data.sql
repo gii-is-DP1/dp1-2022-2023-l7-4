@@ -136,24 +136,32 @@ INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas'
 -- GAMES
 INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
 
-INSERT INTO games(id,date,name,map_template_id,automatic) VALUES  (1,'2022-04-08','Partida mapa original',1,FALSE);
+INSERT INTO games(id,date,name,map_template_id,automatic,creator) VALUES  (1,'2022-04-08','Partida mapa original',1,FALSE,'anddomrui');
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 daviddhc', 'daviddhc',10,10,1,1);
 INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'P2 anddomrui', 'anddomrui',10,10,2,1);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'P3 manotebar',10,10,3,1);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 javiFdz',10,10,4,1);
 
 
-INSERT INTO games(id,date,name,map_template_id,automatic) VALUES (2,'2022-04-09','Partida zona media',1,FALSE);
+INSERT INTO games(id,date,name,map_template_id,automatic,creator) VALUES (2,'2022-04-09','Partida zona media',1,FALSE,'javiFdz');
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 javiTopG',1000,1000,1,2);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 davidZ',1000,1000,2,2);
 
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (3,'2022-04-09','Tropas blancas ',3,1,2,TRUE);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,creator) VALUES (3,'2022-04-09','Tropas blancas ',3,1,2,TRUE,'admin1');
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (7, 'Player1',1000,1000,1,3);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (8, 'Player2',1000,1000,2,3);
 
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic) VALUES (4,'2022-04-09','Partida de prueba',3,1,2,FALSE);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,creator) VALUES (4,'2022-04-09','Partida de prueba',3,1,2,FALSE,'admin1');
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (9, 'Player1',1000,1000,1,4);
 INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (10, 'Player2',1000,1000,2,4);
+
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,finished,creator) VALUES (5,'2022-04-09','Partida acabada 1',3,1,2,FALSE,TRUE,'admin1');
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (11, 'Player1',1000,1000,1,5);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (12, 'Player2',1000,1000,2,5);
+
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,finished,creator) VALUES (6,'2022-04-09','Partida acabada 2',3,1,2,FALSE,TRUE,'admin1');
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (13, 'Player1',1000,1000,1,6);
+INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (14, 'Player2',1000,1000,2,6);
 
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 

@@ -41,11 +41,24 @@
                                 
                                 <div class="filtered-box">
                                     Nombre de partida: ${param.name}&nbsp 
-                                    <a href="http://localhost:8080/games/find?name=" class="x-button"><b>x</b></a>
+
                                 </div>
                             </div>
                         </div>
                     </c:if>
+                    <div class="nameanddeck-filter-box">
+                        <div class="filter-cardanddeck-text">
+                            <b>Escoge un estado:&nbsp&nbsp</b>
+                        </div>
+                        <div>
+                            <select name="state" style="width: 100%;">
+                                <option value="" label="">Escoge un estado</option>
+                                <c:forEach var="isFinish" items="${states}">
+                                    <option value="${isFinish}">${isFinish}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
                     
         
         
