@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -50,6 +51,8 @@ public class GameController {
 
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
+	private static final String GAME_LISTING_VIEW="games/gameList";
+	private static final String GAME_FINDER_VIEW="games/findGames";
     
 
 
@@ -59,7 +62,6 @@ public class GameController {
 		List<MapTemplate> availableMaps = mapTemplateService.getAvailableMaps(game);
 		game.getPlayers().removeIf(Objects::isNull);
 		List<User> availableUsers = userService.getAvailableUsers(game);
-		System.out.println("ddddddddddddddddddddddddddddddd");
 		model.put("availableDecks", availableDecks);
 		model.put("availableMaps", availableMaps);
 		model.put("availableUsers", availableUsers);
@@ -135,34 +137,17 @@ public class GameController {
 			playerService.savePlayer(player);
 			return "welcome";
 	}
-
-	@GetMapping(value = "/games/find")
-	public String initFindForm(Map<String, Object> model) {
-		model.put("game", new Game());
-		return "games/findGames";
+	@GetMapping("/games/find")
+	public ModelAndView showGamesByFilteredName(@RequestParam("name") String name){
+		if(name==null) name="";
+		ModelAndView res=new ModelAndView(GAME_FINDER_VIEW);
+		Collection<Game> filteredGames=this.gameService.getGameByName(name);
+		System.out.println(filteredGames.size());
+		res.addObject("games",filteredGames);
+		res.addObject("search",filteredGames.isEmpty());
+		return res;
 	}
-	@GetMapping(value = "/games")
-	public String processFindForm(Game game, BindingResult result, Map<String, Object> model) {
 
-		
-		if (game.getName()== null) {
-			game.setName("");
-		}
-		Collection<Game> results = this.gameService.getGameByName(game.getName());
-		
-		if (results.isEmpty()) {
-			result.rejectValue("name", "notFound", "not found");
-			return "games/findGames";
-		}
-		else if (results.size() == 1) {
-			game = results.iterator().next();
-			return "redirect:/games/" + game.getId();
-		}
-		else {
-			model.put("selections", results);
-			return "games/gamesList";
-		}
-	}
 	@GetMapping(value = "/games/list")
 	public String proccesGameListing(Map<String, Object> model, Principal user){
 		String name= user.getName();

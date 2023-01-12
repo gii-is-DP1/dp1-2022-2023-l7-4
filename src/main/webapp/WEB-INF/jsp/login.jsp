@@ -18,7 +18,7 @@
         <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2%;">
             <p>¿No tienes ninguna cuenta? <a href="/user/new">Registrate</a></p>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default">Iniciar sesión</button>
     </form>
     
 </div>

@@ -108,6 +108,9 @@ public class UserService {
 
 	}
 	
+	public List<User> getFilteredUsersList(String name) {
+		return (List<User>) userRepository.findFilteredUsersList(name);
+	}
 
 	public List<User> getUsersList() {
 		return (List<User>) userRepository.findAll();

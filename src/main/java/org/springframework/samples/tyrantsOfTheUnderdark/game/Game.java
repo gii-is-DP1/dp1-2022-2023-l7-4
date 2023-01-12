@@ -91,7 +91,6 @@ public class Game extends AuditableEntity{
     @Column(columnDefinition = "boolean default true",name="automatic")
     Boolean automaticWhiteTroops= true;
     
-    //TODO  esto es para las acciones que piden suplantar una tropa en donde pusiste/devolviste espia
     @OneToOne()
     Position lastSpyLocation;
 
@@ -181,10 +180,6 @@ public class Game extends AuditableEntity{
         }
         return map;
     }
-
-
-
-    //TODO: COMPROBAR ESO
    
     public Map<Player,Integer> getQualifyingTotalVp(){
         Map<Player,Integer> map= new LinkedHashMap<>();

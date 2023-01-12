@@ -25,6 +25,9 @@ public interface UserRepository extends  CrudRepository<User, String>{
 
     @Query("SELECT user FROM User user WHERE user.email = ?1")
     public User findUserByEmail(String email);
+
+    @Query("SELECT u FROM User u WHERE LOWER(u.username) LIKE LOWER(concat('%',:name,'%'))")
+    public List<User> findFilteredUsersList(String name);
 ;
 	
 }
