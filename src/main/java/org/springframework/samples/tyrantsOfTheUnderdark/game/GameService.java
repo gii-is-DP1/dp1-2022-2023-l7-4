@@ -70,6 +70,24 @@ public class GameService {
 		return lista.stream().filter(g-> g.getPlayers().stream().filter(p->p.getName().contains(name)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
 	}
 
+	@Transactional
+	public List<Game> getGamesByNameAndState(String name,String state){
+		if(state.toLowerCase().trim().equals("acabados")){
+			return grepo.findGameByNameAndFinishedOrNotGame(name, true);
+		}else if(state.toLowerCase().trim().equals("pendientes")){
+			return grepo.findGameByNameAndFinishedOrNotGame(name, false);
+		}else{
+			return (List<Game>)getGameByName(name);
+		}
+	}
+
+	@Transactional
+	public List<Game> getMyGamesByNameAndState(String username,String name,String state){
+		List<Game> filteredGames=getGamesByNameAndState(name, state);
+		return filteredGames.stream().filter(g-> g.getPlayers().stream()
+		.filter(p->p.getName().contains(username)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
+	}
+
 	public void setGameAndHouseToPlayers(Game game){
 		List<Player> players = game.getPlayers();
 		List<Player> playerAux = new ArrayList<>(players);
@@ -92,6 +110,9 @@ public class GameService {
 		game.addCurrentPlayer(player);
 	}
 
+	public void quickSave(Game game) throws DataAccessException{
+		grepo.save(game);
+	}
 
 	public void save(Game game) throws DataAccessException {
 		grepo.saveAndFlush(game);
@@ -111,6 +132,8 @@ public class GameService {
 		game.setEndTurnAction(null);
         save(game);
     }
+
+
 
     public boolean enoughUnaligned(Game game) {
 		Boolean res=false;

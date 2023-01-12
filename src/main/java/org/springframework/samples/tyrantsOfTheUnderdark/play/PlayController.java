@@ -80,8 +80,11 @@ public class PlayController {
         Game game=gameService.getGameById(gameId);
         String result="redirect:{gameId}";// redirect aqui mismo (recursividad)
         game = gameInitializer.loadGame(game);
+
+        if(game.isFinished())
+            result="redirect:"+gameId+"/scoreboard";
         
-        if(game.getRound()==-1){
+        else if(game.getRound()==-1){
             if(gameService.enoughUnaligned(game)||gameService.preloadedUnaligned(game)){
                 game.setRound(0);
                 gameService.save(game);
@@ -96,8 +99,7 @@ public class PlayController {
         }else if(game.getRound()==0){
             result="redirect:"+gameId+"/round/0";
         }
-        else if(game.isFinished())
-            result="redirect:"+gameId+"/scoreboard";
+        
         else
             result="redirect:"+gameId+"/round/"+game.getRound();
         return result;

@@ -90,11 +90,8 @@ public class CardController {
 
 		List<HalfDeck> filteredHalfDecks = cardService.getHalfDeckByCard(name);
 
-		if(filteredHalfDecks.isEmpty()){
-			result.rejectValue("name", "notFound", "not found");
-		}else{
-			result2.addObject("halfDecks", filteredHalfDecks);
-		}
+
+		result2.addObject("halfDecks", filteredHalfDecks);
 		return result2;
     }
 

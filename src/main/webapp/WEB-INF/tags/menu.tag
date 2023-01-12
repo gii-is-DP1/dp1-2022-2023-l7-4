@@ -41,7 +41,7 @@
 				</petclinic:menuItem>
 			    </sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'games'}" url="/games/list" title="games">
+				<petclinic:menuItem active="${name eq 'games'}" url="/games?name=&state=" title="games">
 				<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 				<span>Partidas</span>
 				</petclinic:menuItem>
@@ -99,7 +99,6 @@
 											<p>
 												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">Mi perfil</a>
 												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Cambiar clave</a>
-												<a href="<c:url value="/deleteprofile" />" class="btn btn-danger btn-block"> Borrar usuario</a>
 											</p>
 										</div>
 									</div>

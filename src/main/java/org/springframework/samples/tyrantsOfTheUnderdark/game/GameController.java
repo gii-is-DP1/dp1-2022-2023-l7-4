@@ -52,7 +52,8 @@ public class GameController {
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
 	private static final String GAME_LISTING_VIEW="games/gameList";
-	private static final String GAME_FINDER_VIEW="games/findGames";
+	private static final String TO_PLAY="redirect:/play/{gameId}";
+
     
 
 
@@ -97,7 +98,6 @@ public class GameController {
 
 
 
-	//confirmar juego TODO SALVAR TODOS LOS JUGADORES AÑADIENDO EL GAME Y DESPUES SALVAR EL GAME
 	@PostMapping(value = "/games/create/confirm")
 	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model,Principal currentUser ) {
 		if (result.hasErrors()) {
@@ -122,9 +122,43 @@ public class GameController {
 		public ModelAndView showgame(@PathVariable("gameId") int gameId) {
 			ModelAndView mav = new ModelAndView("games/gameDetails");
 			mav.addObject(this.gameService.getGameById(gameId));
-
 			return mav;
 		}
+
+	@GetMapping("/games/{gameId}/choose-mode")
+	public ModelAndView chooseMode(@PathVariable("gameId") Integer gameId){
+		ModelAndView result=null;
+		Game game=this.gameService.getGameById(gameId);
+		if(!game.isNotLoaded()){
+			result=new ModelAndView(TO_PLAY);
+		}else{
+			result=new ModelAndView("games/chooseMode");
+			result.addObject("gameId",gameId);
+			result.addObject("modes",List.of("Automatico","Manual"));
+		}
+		return result;
+	}
+
+	@GetMapping("/games/{gameId}/process-mode")
+	public ModelAndView processMode(@PathVariable("gameId") Integer gameId
+	,@RequestParam("mode") String mode){
+		Game game=this.gameService.getGameById(gameId);
+		System.out.println(mode);
+		System.out.println(game.isNotLoaded());
+		if(game.isNotLoaded()){
+			game.setRound(-1);
+			if(mode.toLowerCase().trim().equals("manual")){
+				game.setAutomaticWhiteTroops(false);
+			}else{
+				game.setAutomaticWhiteTroops(true);
+			}
+		}
+		this.gameService.save(game);
+		System.out.println(this.gameService.getGameById(gameId).getAutomaticWhiteTroops());
+		ModelAndView result=new ModelAndView(TO_PLAY);
+		return result;
+
+	}
 
 	@GetMapping("/games/join/{gameId}")
 		public String joinGame(@PathVariable("gameId") int gameId, Principal user) {
@@ -137,33 +171,28 @@ public class GameController {
 			playerService.savePlayer(player);
 			return "welcome";
 	}
-	@GetMapping("/games/find")
-	public ModelAndView showGamesByFilteredName(@RequestParam("name") String name){
+	@GetMapping("/games")
+	public ModelAndView showGamesByFilteredName(@RequestParam("name") String name,
+	@RequestParam("state") String state,Principal user){
 		if(name==null) name="";
-		ModelAndView res=new ModelAndView(GAME_FINDER_VIEW);
-		Collection<Game> filteredGames=this.gameService.getGameByName(name);
-		System.out.println(filteredGames.size());
-		res.addObject("games",filteredGames);
+		if(state==null) state="";
+		ModelAndView res=new ModelAndView(GAME_LISTING_VIEW);
+		User loggedUser=this.userService.getUserByUsername(user.getName());
+		List<Game> filteredGames=null;
+		if(!loggedUser.isAdmin()){
+			filteredGames=this.gameService.getMyGamesByNameAndState(loggedUser.getUsername(), name, state);
+			res.addObject("text","Mis partidas");
+		}else{
+			filteredGames=this.gameService.getGamesByNameAndState(name, state);
+			res.addObject("text","Lista de partidas del sistema");
+		}
+		res.addObject("selections",filteredGames);
+		res.addObject("states", List.of("Acabados","Pendientes","Todos"));
+		res.addObject("result",loggedUser.isAdmin());
 		res.addObject("search",filteredGames.isEmpty());
 		return res;
 	}
 
-	@GetMapping(value = "/games/list")
-	public String proccesGameListing(Map<String, Object> model, Principal user){
-		String name= user.getName();
-		User user2= this.userService.getUserByUsername(name);
-		Boolean result=authService.getAuthoritiesByName("admin").stream().filter(a->a.getUser()
-		.equals(user2)).collect(Collectors.toList()).size()==1;
-		if(result){ 
-			model.put("selections", gameService.getGames());
-			model.put("text","Lista de partidas");
-		 }else{
-			model.put("selections", gameService.getGamesByUser(name));
-			model.put("text","Mis partidas");
-			}
-		model.put("result",result);
-		return "games/gameList";
-	}
 
 	@InitBinder
 	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {

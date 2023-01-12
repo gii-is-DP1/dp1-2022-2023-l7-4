@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,9 +24,9 @@ import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityR
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathRepository;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
-import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
+
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
-import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerService;
+
 import org.springframework.stereotype.Service;
 import static org.assertj.core.api.Assertions.assertThat;
 
