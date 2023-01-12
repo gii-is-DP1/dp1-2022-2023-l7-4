@@ -2,6 +2,8 @@ package org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,13 @@ public class PathTemplateService {
     }
     public List<PathTemplate> getAll(){
         return (List<PathTemplate>) pathTemplateRepository.findAll();
+    }
+
+    public PathTemplate getById(Integer pathTemplateId) {
+        return pathTemplateRepository.findById(pathTemplateId).orElse(new PathTemplate());
+    }
+
+    public void save(@Valid PathTemplate pathTemplate) {
+        pathTemplateRepository.save(pathTemplate);
     }
 }

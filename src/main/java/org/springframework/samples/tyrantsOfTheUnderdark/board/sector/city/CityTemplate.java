@@ -5,17 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.Sector;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 
 @Getter
@@ -24,18 +25,19 @@ import lombok.ToString;
 @Table(name = "city_templates")
 public class CityTemplate extends Sector{
 
-    @NotBlank
+    @NotBlank(message = "Es obligatorio")
     private String name="";
     
-    @Positive
+    @Min(value = 1,message = "zona debe ser minimo 1 ")
+    @Max(value = 3,message = "zona debe ser maximo 3 ")
     @Column(columnDefinition = "integer default 0")
-    Integer zone;
+    Integer zone = 2;
 
     String unaligned ="";
     @NotNull
-    @Min(0) 
+    @Min(value = 0, message = "No se permiten VP negativos") 
     @Column(name="vp_endgame_value")
-    private Integer vpEndgameValue=0;
+    private Integer vpEndgameValue=2;
     
     @ManyToOne()
     @JoinColumn(name = "map_template_id")
@@ -43,7 +45,8 @@ public class CityTemplate extends Sector{
 
     @Column(name="starting_city",columnDefinition = "boolean default false")
     private Boolean startingCity=false;
-    
+    @Min(value = 0, message = "Debe ser mayor/igual que 0")
+    @Max(value = 9, message = "Debe ser menor/igual que 9")
     @Column(name="marker_vp",columnDefinition = "integer default 0")
     private Integer markerVp=0;
 

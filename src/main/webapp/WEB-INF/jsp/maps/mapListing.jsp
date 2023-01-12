@@ -30,7 +30,6 @@
             <th>Nombre</th>
             <th>Descipción</th>
             <th></th>
-            <th>Eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -46,9 +45,7 @@
                 <td>
                     <a href="/maps/${map.id}"  class="btn btn-default">Ver</a>
                 </td>
-                <td>
-                    <a href="/maps/${map.id}/delete"  class="btn btn-default">Eliminar</a>
-                </td>
+
                 
             </tr>
         </c:forEach>

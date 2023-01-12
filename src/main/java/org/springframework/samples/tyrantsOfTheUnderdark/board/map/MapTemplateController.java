@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplateService;
+import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathTemplateService;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
@@ -39,13 +40,42 @@ public class MapTemplateController {
         return MAP_LISTING;
     }
 
+    @GetMapping("/new")
+    public String newMap(Map<String,Object> model ){
+        model.put("cityTemplate",new CityTemplate());
+        model.put("pathTemplate",new PathTemplate());
+        MapTemplate map = new MapTemplate();
+        mapTemplateService.save(map);
+        Game game = mapTemplateService.findGame(map);
+        model.put("game",game);
+        model.put("map",game.getMapTemplate());
+        model.put("editable",true);
+
+        return MAP_DETAILS;
+    }
+
     @GetMapping("{mapId}")
     public String mapDetails(Map<String,Object> model,@PathVariable("mapId") MapTemplate map){
-        CityTemplate cityTemplate = new CityTemplate();
-        model.put("cityTemplate",cityTemplate);
+        model.put("cityTemplate",new CityTemplate());
+        model.put("pathTemplate",new PathTemplate());
         model.put("map", map);
         model.put("game",mapTemplateService.findGame(map));
         model.put("editable",mapTemplateService.isEditable(map));
+        return MAP_DETAILS;
+    }
+    @PostMapping("{mapId}")
+    public String mapDetailsSaveName(Map<String,Object> model,@PathVariable("mapId") MapTemplate mapBeforeChanges,@Valid  MapTemplate map,BindingResult result){
+        model.put("errors",result);
+        if(!result.hasErrors()){
+            mapBeforeChanges.setName(map.getName());
+            mapBeforeChanges.setDescription(map.getDescription());
+            mapTemplateService.save(mapBeforeChanges);
+        }
+        model.put("cityTemplate",new CityTemplate());
+        model.put("pathTemplate",new PathTemplate());
+        model.put("map", map);
+        model.put("game",mapTemplateService.findGame(mapBeforeChanges));
+        model.put("editable",mapTemplateService.isEditable(mapBeforeChanges));
         return MAP_DETAILS;
     }
     
@@ -54,6 +84,7 @@ public class MapTemplateController {
         if(result.hasErrors()){
             model.put("errors", result); 
             model.put("cityTemplate",cityTemplate);//with errors
+            model.put("pathTemplate",new PathTemplate());
             model.put("editable",mapTemplateService.isEditable(map));
             model.put("map", map);
             model.put("game",mapTemplateService.findGame(map));
@@ -80,6 +111,38 @@ public class MapTemplateController {
         return "redirect:/maps/{mapId}";
     }
 
+    @PostMapping("{mapId}/addPath")
+    public String addPath(Map<String,Object> model,@PathVariable("mapId") MapTemplate map,@Valid PathTemplate pathTemplate,BindingResult result){
+        if(result.hasErrors()){
+            model.put("errors", result);
+            model.put("cityTemplate",new CityTemplate());
+            model.put("pathTemplate",pathTemplate);//with errors
+            model.put("editable",mapTemplateService.isEditable(map));
+            model.put("map", map);
+            model.put("game",mapTemplateService.findGame(map));
+            return MAP_DETAILS;
+            
+        }else{
+            Game game = mapTemplateService.findGame(map);
+            gameService.delete(game);
+            pathTemplate.setMapTemplate(map);
+            pathTemplateService.save(pathTemplate);
+            map.getPathTemplates().add(pathTemplate);
+            System.out.println("path "+map.getPathTemplates().get(map.getPathTemplates().size()-1));
+            mapTemplateService.save(map);
+            return "redirect:";
+        }
+    }
 
+    @GetMapping("{mapId}/deletePath/{pathId}")
+    public String deletePath(Map<String,Object> model,@PathVariable("mapId") MapTemplate map,@PathVariable("pathId") Integer pathTemplateId ){
+        Game game = mapTemplateService.findGame(map);
+        gameService.delete(game);
+        PathTemplate pathTemplate= pathTemplateService.getById(pathTemplateId);
+        map.getPathTemplates().remove(pathTemplate);
+        mapTemplateService.save(map);
+        pathTemplateService.delete(pathTemplate);
+        return "redirect:/maps/{mapId}";
+    }
 
 }

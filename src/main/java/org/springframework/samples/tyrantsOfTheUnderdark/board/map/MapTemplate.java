@@ -34,11 +34,11 @@ public class MapTemplate extends BaseEntity{
 
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mapTemplate")
-    List<PathTemplate> pathTemplates;
+    List<PathTemplate> pathTemplates= new ArrayList<>();
 
     
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mapTemplate")
-    List<CityTemplate> cityTemplates;
+    List<CityTemplate> cityTemplates = new ArrayList<>();
 
 
     public Integer startingCityCount(Integer playerCount){
@@ -59,7 +59,6 @@ public class MapTemplate extends BaseEntity{
                 if (secondCity.isStartingCity() ) cities.add(secondCity);
             }
         });
-        System.out.println(getName()+" ct "+cities.size());
         return cities.size();
         
 
@@ -69,7 +68,6 @@ public class MapTemplate extends BaseEntity{
         .flatMap(path-> Stream.of(path.getFirstCityTemplate(),path.getSecondCityTemplate()))
         .filter(cityT-> cityT.isStartingCity())
         .collect(Collectors.toSet()).size();
-        System.out.println(" max "+ct);
             return ct;
     }
 

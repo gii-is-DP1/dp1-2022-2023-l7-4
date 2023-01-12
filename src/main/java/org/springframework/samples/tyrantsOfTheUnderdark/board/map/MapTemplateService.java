@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.game.GameService;
 import org.springframework.samples.tyrantsOfTheUnderdark.initializer.IntializeGame;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,8 @@ public class MapTemplateService {
     GameService gameService;
     @Autowired
     IntializeGame intializeGame;
+    @Autowired
+    UserService userService;
 
     public MapTemplate defaultMap(){
         List<MapTemplate> maps = findAll();
@@ -42,14 +45,31 @@ public class MapTemplateService {
     }
 
     public Game findGame(MapTemplate map) {
-        Optional<Game> game = gameService.getGames().stream().filter(g-> g.getMapTemplate().equals(map)).filter(g->g.getPlayers().size()==0).findFirst();
-        Game finalGame  = game.isPresent()?game.get():(gameService.ofMapTemplate(map));
+        System.out.println("hooooooooooola");
+        System.out.println(gameService.getGames().stream().map(x->x.getPlayers()).collect(Collectors.toList()));
+        Optional<Game> game = gameService.getGames().stream()
+        // .filter(g-> g.getMapTemplate().equals(map))
+        .filter(g->g.getPlayers().size()==1).findFirst();
+        Game finalGame;
+        if(game.isPresent()){
+            finalGame= game.get();
+            System.out.println("se ha encontrado existente");
+        }else{
+            System.out.println("No habia CREANDO");
+            finalGame = gameService.ofMapTemplate(map);
+            System.out.println(finalGame.getPlayers());
+        }
         intializeGame.loadGameForMapVisual(finalGame);
+        gameService.save(finalGame);
         return finalGame;
     }
 
     public Boolean isEditable(MapTemplate map) {
-        return gameService.getGames().stream().filter(g->g.getMapTemplate().equals(map)).collect(Collectors.toList()).size()<2;
+        return 
+        gameService.getGames().stream()
+        .filter(g->g.getMapTemplate().equals(map))
+        .filter(g->g.getPlayers().size()>1)
+        .collect(Collectors.toList()).size()==0;
     }
 
     public void save(MapTemplate map) {

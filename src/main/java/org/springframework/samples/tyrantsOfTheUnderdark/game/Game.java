@@ -284,6 +284,11 @@ public class Game extends AuditableEntity{
         List<Integer> zones = new ArrayList<>();
         zones.add(2);
         int playerCount = players.size();
+        if(playerCount == 1){// map edit (no players in game)
+            zones.add(1);
+            zones.add(3);
+            return zones;
+        }
         if(playerCount>=3) zones.add(3);
         if(playerCount==4) zones.add(1);
         return zones;
