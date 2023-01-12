@@ -99,7 +99,6 @@
 											<p>
 												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">Mi perfil</a>
 												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Cambiar clave</a>
-												<a href="<c:url value="/deleteprofile" />" class="btn btn-danger btn-block"> Borrar usuario</a>
 											</p>
 										</div>
 									</div>

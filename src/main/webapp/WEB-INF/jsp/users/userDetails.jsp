@@ -45,5 +45,14 @@
             <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar perfil</a>
         </c:otherwise>
     </c:choose>
+        <c:choose>
+            <c:when test="${user.canBeDeleted()==true}">
+                <a href="/deleteprofile" class="btn btn-default"> Borrar usuario</a>
+
+            </c:when>
+            <c:otherwise>
+                Este usuario no puede eliminado porque está en una partida
+            </c:otherwise>
+        </c:choose>
 
 </petclinic:layout>
