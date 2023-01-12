@@ -66,46 +66,57 @@
 	</sec:authorize>
 
             <body>
-                <table id="gameTable" class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th style="width: 150px;">Nombre</th>
-                        <th style="width: 200px;">Número de jugadores</th>
-                        <th style="width: 100px;"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="game" items="${games}" >
-                        <tr>
-                            <td>
-                                <spring:url value="/games/{gameId}" var="gameUrl">
-                                    <spring:param name="gameId" value="${game.id}"/>
-                                </spring:url>
-                                <a href="${fn:escapeXml(gameUrl)}"><c:out value="${game.name}"/></a>
-                            </td>
-                            <td>
-                                <c:out value="${game.size}"/>
-                            </td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${game.finished=='FALSE'}">
-                                    <div id="greenball"></div>
-                                    <br />
-                                    </c:when>    
-                                     <c:otherwise>
-                                         <div id="redball"></div>
-                                        <br />
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                            
-            
-                            
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </body>
+                <c:choose>
+                    <c:when test="${search==true}">
+                        <div class="card-not-found" style="color: aliceblue;">
+                            <h1>
+                                ¡No se han encontrado partidas con el nombre buscado! :(
+                            </h1>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <table id="gameTable" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th style="width: 150px;">Nombre</th>
+                                <th style="width: 200px;">Número de jugadores</th>
+                                <th style="width: 100px;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="game" items="${games}" >
+                                <tr>
+                                    <td>
+                                        <spring:url value="/games/{gameId}" var="gameUrl">
+                                            <spring:param name="gameId" value="${game.id}"/>
+                                        </spring:url>
+                                        <a href="${fn:escapeXml(gameUrl)}"><c:out value="${game.name}"/></a>
+                                    </td>
+                                    <td>
+                                        <c:out value="${game.size}"/>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${game.finished=='FALSE'}">
+                                            <div id="greenball"></div>
+                                            <br />
+                                            </c:when>    
+                                             <c:otherwise>
+                                                 <div id="redball"></div>
+                                                <br />
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    
+                    
+                                    
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </body>
+                    </c:otherwise>
+                </c:choose>
 
 
     
