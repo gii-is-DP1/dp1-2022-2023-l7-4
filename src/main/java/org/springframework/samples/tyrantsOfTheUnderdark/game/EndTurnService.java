@@ -46,7 +46,6 @@ public class EndTurnService {
 
             playerMoveCardsService.draw5CardsFromDeckToHand(player);
 
-            //TODO sacar a una función llamada earnMarkerPoints()
             for(City city:game.getCities()){
                 if(city.whoTotallyControls() !=null && city.whoTotallyControls().equals(player))
                  player.setMarkerVP(player.getMarkerVP()+city.getMarkerVp());

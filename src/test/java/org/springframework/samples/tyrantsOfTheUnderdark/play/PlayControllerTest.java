@@ -182,6 +182,20 @@ public class PlayControllerTest {
         .andExpect(view().name("redirect:/play/{gameId}"));
     }
 
+    @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
+    @Test
+    public void testShowScoreBoardWhenGameEnd() throws Exception{
+        game.setFinished(true);
+        game.setRound(70);
+        game.setTurnPlayer(1);
+        gameService.save(game);
+        mockMvc.perform(get("/play/{gameId}",TEST_GAME_ID))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/play/{gameId}/scoreboard"));
+    }
+
+
+
 
 
 

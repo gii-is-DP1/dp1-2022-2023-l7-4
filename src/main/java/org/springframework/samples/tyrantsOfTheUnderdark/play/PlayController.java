@@ -87,8 +87,6 @@ public class PlayController {
                 gameService.save(game);
             }else{
                 if(game.getAutomaticWhiteTroops()){
-                    //TODO llamas a automatic y no haces nada (recursivo)
-                    // fichas blancas = posiciones de tropa * 0.28  !!!!!!!!!!
                     this.gameInitializer.loadAutomaticWhitePositions(game);
 
                 }else{
