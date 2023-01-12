@@ -73,5 +73,13 @@ public class UserControllerTest {
         .andExpect(model().attributeExists("user"));
     }
 
+    @WithMockUser(username="admin2",authorities = {"admin"})
+    @Test
+    public void testDeleteMyProfile() throws Exception{
+        mockMvc.perform(get("/users/{username}/edit",TEST_USERNAME))
+        .andExpect(status().isOk())
+        .andExpect(model().attributeExists("user"));
+    }
+
     
 }
