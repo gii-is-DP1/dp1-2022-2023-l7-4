@@ -272,4 +272,19 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/deleteprofile")
+	public ModelAndView deleteMyProfile(Principal loggedUser){
+		ModelAndView mav = new ModelAndView("redirect:/logout");
+		User user=this.userService.getUserByUsername(loggedUser.getName());
+		String canBe=user.canBeDeleted()?null:"No puedes borrar tu cuenta hasta acabar las partidas pendientes";
+		mav.addObject("text", canBe);
+		try{
+			userService.deleteUser(user);
+		}catch(Exception e){
+			e.printStackTrace();
+			mav = new ModelAndView("redirect:/");
+		}
+		return mav;
+	}
+
 }
