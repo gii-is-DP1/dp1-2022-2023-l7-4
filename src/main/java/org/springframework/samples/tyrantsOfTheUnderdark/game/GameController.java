@@ -52,6 +52,7 @@ public class GameController {
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
 	private static final String GAME_LISTING_VIEW="games/gameList";
+	private static final String TO_PLAY="redirect:/play/{gameId}";
 
     
 
@@ -123,6 +124,41 @@ public class GameController {
 			mav.addObject(this.gameService.getGameById(gameId));
 			return mav;
 		}
+
+	@GetMapping("/games/{gameId}/choose-mode")
+	public ModelAndView chooseMode(@PathVariable("gameId") Integer gameId){
+		ModelAndView result=null;
+		Game game=this.gameService.getGameById(gameId);
+		if(!game.isNotLoaded()){
+			result=new ModelAndView(TO_PLAY);
+		}else{
+			result=new ModelAndView("games/chooseMode");
+			result.addObject("gameId",gameId);
+			result.addObject("modes",List.of("Automatico","Manual"));
+		}
+		return result;
+	}
+
+	@GetMapping("/games/{gameId}/process-mode")
+	public ModelAndView processMode(@PathVariable("gameId") Integer gameId
+	,@RequestParam("mode") String mode){
+		Game game=this.gameService.getGameById(gameId);
+		System.out.println(mode);
+		System.out.println(game.isNotLoaded());
+		if(game.isNotLoaded()){
+			game.setRound(-1);
+			if(mode.toLowerCase().trim().equals("manual")){
+				game.setAutomaticWhiteTroops(false);
+			}else{
+				game.setAutomaticWhiteTroops(true);
+			}
+		}
+		this.gameService.save(game);
+		System.out.println(this.gameService.getGameById(gameId).getAutomaticWhiteTroops());
+		ModelAndView result=new ModelAndView(TO_PLAY);
+		return result;
+
+	}
 
 	@GetMapping("/games/join/{gameId}")
 		public String joinGame(@PathVariable("gameId") int gameId, Principal user) {
