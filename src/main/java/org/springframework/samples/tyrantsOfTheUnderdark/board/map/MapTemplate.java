@@ -67,17 +67,7 @@ public class MapTemplate extends BaseEntity{
         System.out.println(getName()+" ct "+cities.size());
         return cities.size();
         
-        // List<Integer> playableZones = game.getPlayableZones();
-        // Predicate<PathTemplate> bothCitiesPlayable = 
-        //     pathT->  playableZones.contains(pathT.getFirstCityTemplate().getZone()) && playableZones.contains(pathT.getSecondCityTemplate().getZone())
-        // ;
-        // Integer ct= pathTemplates.stream()
-        // .filter(bothCitiesPlayable)
-        // .flatMap(path-> Stream.of(path.getFirstCityTemplate(),path.getSecondCityTemplate()))
-        // .filter(cityT-> cityT.isStartingCity())
-        // .collect(Collectors.toSet()).size();
-        // System.out.println(game.getMapTemplate().getName()+" ct "+ct);
-        //     return ct;
+
     }
     public Integer maxStartingCityCount(){
         Integer ct= pathTemplates.stream()

@@ -10,7 +10,7 @@
     <img src="/resources/images/logo-menu.png" alt="">
     <a href="/games/list">Jugar</a>
     <div class="botmenu">
-        <a href="" >Mapas</a>
+        <a href="/maps" >Mapas</a>
         <a href="/resources/rules/tyrants-of-the-underdark-reglas-es.pdf" target="_blank">Reglas</a>
         <a href="/cards/all">Cartas</a>
     </div>
