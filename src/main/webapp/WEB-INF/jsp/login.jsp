@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <petclinic:layout pageName="login">
 <div id="content">
     <h1>Iniciar sesión</h1>
@@ -19,6 +21,11 @@
             <p>¿No tienes ninguna cuenta? <a href="/user/new">Registrate</a></p>
         </div>
         <button type="submit" class="btn btn-default">Iniciar sesión</button>
+        <c:if test="${hasErrors}">
+            <div style="display: flex; align-items: center; justify-content: center; margin: 2%;">
+                <p style="color: rgb(145, 0, 0); font-weight: 700;">Los datos introducidos no eran correctos</p>
+        </c:if>
+        </div>
     </form>
     
 </div>
