@@ -33,6 +33,19 @@ public class IntializeGame {
         return game;
     }
 
+    public Game loadGameForMapVisual(Game game) {
+        try {
+            if (game.isNotLoaded()) {
+                game.setLoaded(true);
+                game = mapInitializer.loadGameMap(game);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return game;
+    }
+
     public void loadAutomaticWhitePositions(Game game){
         positionInitialiter.setWhiteTroopsPositions(game);
         gameService.save(game);

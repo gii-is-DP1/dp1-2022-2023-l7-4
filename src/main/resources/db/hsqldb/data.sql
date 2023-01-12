@@ -33,34 +33,41 @@ INSERT INTO authorities(id,username,authority) VALUES (10,'anddoii','player');
 
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('jaas3','secret1',TRUE, 'Javier', 'ai@gm.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (11,'jaas3','admin');
+
+-- MAPS
+INSERT INTO map_templates(id,name,description) VALUES (1,'Mapa Original','Este es el mapa real del juego.<br> Tiene las 26 ciudades y los 40 caminos <br> y al rededor de 140 posiciones jugables!');
+INSERT INTO map_templates(name) VALUES ('small Map 2');
+INSERT INTO map_templates(name) VALUES ('medium Map 3');
+INSERT INTO map_templates(name) VALUES ('Bad made medium Map 3no -> 2 yes');
+
 -- CITIES
-INSERT INTO city_templates(id,x,y,unaligned,capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES --ORIGINAL MAP
-(1,0,1,'0,1',3,'Gauntlgrym',2,FALSE,1,1,1),
-(2,0,0,'',3,'Los Retuercegusanos',3,FALSE,1,0,0),
-(3,0,2,'',4,'Jhachalkhyn',4,TRUE,1,0,0),
-(4,0,3,'0',3,'Buiyrandyn',3,FALSE,1,0,0),
-(5,0,4,'0,1',2,'Bastion del clan stoneshaft',4,FALSE,1,0,0),
-(6,0,5,'0,1',3,'Ch`chitil',2,FALSE,1,1,1),
-(7,1,0,'0,1',2,'Blingdenstone',4,FALSE,2,0,0),
-(8,1,1,'0,1',5,'Mantol-Delrith',4,TRUE,2,0,0),
-(9,1,2,'0,1',4,'Gracklstugh',3,FALSE,2,0,0),
-(10,1,3,'0',3,'El laberinto',3,FALSE,2,0,0),
-(11,1,4,'0,1',5,'Skullport',4,TRUE,2,0,0),
-(12,1,5,'',3,'Kanaglym',3,FALSE,2,0,0),
-(13,2,1,'0,1,2',6,'Menzoberranzan',5,FALSE,2,2,1),
-(14,2,2,'',1,'Puente de Chasmleap',1,FALSE,2,0,0),
-(15,2,3,'0,1,2,3',4,'Aramuycos',3,FALSE,2,3,1),
-(16,2,4,'',3,'Eryndlyn',3,TRUE,2,0,0),
-(17,2,5,'0,1,2',3,'Tsenviilyq',4,FALSE,2,1,1),
-(18,3,2,'',3,'Fuego Eterno',3,FALSE,2,0,0),
-(19,3,3,'1',2,'Salones de la Legion Flagelante',3,FALSE,2,0,0),
-(20,3,4,'',4,'Ched Nasad',3,TRUE,2,0,0),
-(21,3,5,'',2,'Llacerellyn',2,FALSE,2,0,0),
-(22,4,2,'',5,'Chaulssin',4,TRUE,3,0,0),
-(23,5,2,'0,1',3,'El Phaerlin',2,FALSE,3,1,1),
-(24,4,3,'0,1',2,'Yathchol',4,FALSE,3,0,0),
-(25,4,4,'0,1',6,'Ruinas De Dekanter',5,FALSE,3,0,0),
-(26,4,5,'0,1',3,'SS`zuraass`nee',2,FALSE,3,1,1);
+INSERT INTO city_templates(id,map_template_id,x,y,unaligned,capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES --ORIGINAL MAP
+(1,1,0,1,'0,1',3,'Gauntlgrym',2,FALSE,1,1,1),
+(2,1,0,0,'',3,'Los Retuercegusanos',3,FALSE,1,0,0),
+(3,1,0,2,'',4,'Jhachalkhyn',4,TRUE,1,0,0),
+(4,1,0,3,'0',3,'Buiyrandyn',3,FALSE,1,0,0),
+(5,1,0,4,'0,1',2,'Bastion del clan stoneshaft',4,FALSE,1,0,0),
+(6,1,0,5,'0,1',3,'Ch`chitil',2,FALSE,1,1,1),
+(7,1,1,0,'0,1',2,'Blingdenstone',4,FALSE,2,0,0),
+(8,1,1,1,'0,1',5,'Mantol-Delrith',4,TRUE,2,0,0),
+(9,1,1,2,'0,1',4,'Gracklstugh',3,FALSE,2,0,0),
+(10,1,1,3,'0',3,'El laberinto',3,FALSE,2,0,0),
+(11,1,1,4,'0,1',5,'Skullport',4,TRUE,2,0,0),
+(12,1,1,5,'',3,'Kanaglym',3,FALSE,2,0,0),
+(13,1,2,1,'0,1,2',6,'Menzoberranzan',5,FALSE,2,2,1),
+(14,1,2,2,'',1,'Puente de Chasmleap',1,FALSE,2,0,0),
+(15,1,2,3,'0,1,2,3',4,'Aramuycos',3,FALSE,2,3,1),
+(16,1,2,4,'',3,'Eryndlyn',3,TRUE,2,0,0),
+(17,1,2,5,'0,1,2',3,'Tsenviilyq',4,FALSE,2,1,1),
+(18,1,3,2,'',3,'Fuego Eterno',3,FALSE,2,0,0),
+(19,1,3,3,'1',2,'Salones de la Legion Flagelante',3,FALSE,2,0,0),
+(20,1,3,4,'',4,'Ched Nasad',3,TRUE,2,0,0),
+(21,1,3,5,'',2,'Llacerellyn',2,FALSE,2,0,0),
+(22,1,4,2,'',5,'Chaulssin',4,TRUE,3,0,0),
+(23,1,5,2,'0,1',3,'El Phaerlin',2,FALSE,3,1,1),
+(24,1,4,3,'0,1',2,'Yathchol',4,FALSE,3,0,0),
+(25,1,4,4,'0,1',6,'Ruinas De Dekanter',5,FALSE,3,0,0),
+(26,1,4,5,'0,1',3,'SS`zuraass`nee',2,FALSE,3,1,1);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (6,'UNO Ini Z2',3,TRUE,2,1,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (3,'DOS Ini Z2',3,TRUE,2,2,2);
 INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (4,'TRES blanca Z2',3,FALSE,2,1,2);
@@ -70,13 +77,15 @@ INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,mar
 
 
 -- Original map paths with white troops
-INSERT INTO path_templates(id,unaligned,city_id_1,city_id_2,capacity) VALUES 
-(11,'0',7,8,1),(17,'1',10,15,2),(23,'0',14,15,1),(25,'0',15,16,1),(26,'0',15,20,1);
+INSERT INTO path_templates(id,unaligned,city_id_1,city_id_2,capacity,map_template_id) VALUES 
+(11,'0',7,8,1,1),(17,'1',10,15,2,1),(23,'0',14,15,1,1),(25,'0',15,16,1,1),(26,'0',15,20,1,1);
 --Original map paths
-INSERT INTO path_templates(id,city_id_1,city_id_2,capacity) VALUES 
-(1,1,2,0),(2,1,3,1),(3,2,8,1),(4,3,9,1),(5,3,4,1),(6,4,5,1),(7,4,10,1),(8,5,6,1),(9,5,11,2),(10,6,12,1),(12,8,9,1),(13,8,13,3),(14,9,10,1),(15,9,14,2),(16,10,11,2),(18,11,12,1),
-(19,12,16,2),(20,12,17,2),(21,13,14,2),(22,13,18,2),(24,14,18,1),(27,16,21,1),(28,17,21,1),(29,18,19,1),(30,18,22,1),(31,19,20,2),(32,19,24,1),(33,20,21,2),(34,20,24,1),(35,20,25,1),
-(36,21,26,2),(37,22,23,1),(38,23,24,1),(39,23,25,2),(40,25,26,1);
+INSERT INTO path_templates(id,city_id_1,city_id_2,capacity,map_template_id) VALUES 
+(1,1,2,0,1),(2,1,3,1,1),(3,2,8,1,1),(4,3,9,1,1),(5,3,4,1,1),(6,4,5,1,1),(7,4,10,1,1),(8,5,6,1,1),(9,5,11,2,1),(10,6,12,1,1),
+(12,8,9,1,1),(13,8,13,3,1),(14,9,10,1,1),(15,9,14,2,1),(16,10,11,2,1),(18,11,12,1,1),
+(19,12,16,2,1),(20,12,17,2,1),(21,13,14,2,1),(22,13,18,2,1),(24,14,18,1,1),(27,16,21,1,1),(28,17,21,1,1),(29,18,19,1,1),
+(30,18,22,1,1),(31,19,20,2,1),(32,19,24,1,1),(33,20,21,2,1),(34,20,24,1,1),(35,20,25,1,1),
+(36,21,26,2,1),(37,22,23,1,1),(38,23,24,1,1),(39,23,25,2,1),(40,25,26,1,1);
 
 
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (27,28,1);
@@ -87,34 +96,6 @@ INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (28,31,3);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (27,31,3);-- GIVES ERROR
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (31,32,2);
 INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (30,32,1);
-
-
--- MAPS
-INSERT INTO map_templates(name,description) VALUES ('Mapa Original','Este es el mapa real del juego.<br> Tiene las 26 ciudades y los 40 caminos <br> y al rededor de 140 posiciones jugables!');
-INSERT INTO map_templates(name) VALUES ('small Map 2');
-INSERT INTO map_templates(name) VALUES ('medium Map 3');
-INSERT INTO map_templates(name) VALUES ('Bad made medium Map 3no -> 2 yes');
-
---Paths -->MAPS
-INSERT INTO map_templates_path_templates(map_template_id,path_template_id) VALUES
-    --Original map
-    (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),
-    (1,27),(1,28),(1,29),(1,30),(1,31),(1,32),(1,33),(1,34),(1,35),(1,36),(1,37),(1,38),(1,39),(1,40),
-
-    (2,41),
-    (2,42),
-    (2,43),
-
-    (3,41),
-    (3,42),
-    (3,43),
-    (3,44),
-
-    (4,41),
-    (4,44);
-
-
-
 
 
 
