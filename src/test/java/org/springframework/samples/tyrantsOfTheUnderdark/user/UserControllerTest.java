@@ -32,6 +32,7 @@ public class UserControllerTest {
 
     private final String TEST_NOT_DELETABLE_USERNAME="anddomrui";
 
+
     @BeforeEach
     public void setup(){
         mockMvc=MockMvcBuilders.webAppContextSetup(context)
