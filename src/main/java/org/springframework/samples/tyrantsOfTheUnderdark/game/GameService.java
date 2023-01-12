@@ -109,6 +109,9 @@ public class GameService {
 		game.addCurrentPlayer(player);
 	}
 
+	public void quickSave(Game game) throws DataAccessException{
+		grepo.save(game);
+	}
 
 	public void save(Game game) throws DataAccessException {
 		grepo.saveAndFlush(game);
@@ -128,6 +131,8 @@ public class GameService {
 		game.setEndTurnAction(null);
         save(game);
     }
+
+
 
     public boolean enoughUnaligned(Game game) {
 		Boolean res=false;
