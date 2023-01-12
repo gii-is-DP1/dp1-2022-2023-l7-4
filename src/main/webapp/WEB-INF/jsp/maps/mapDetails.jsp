@@ -18,40 +18,50 @@
         padding: 1vmax;
         margin-bottom: 0.5vmax;
     }
-    .container xd-container{
-        width: 100%;
-        display: flex;
-        margin: 0;
-        padding: 0;
-        justify-content: center;
-        height: 100%;
-    }
     .map-details{
             width: 50%;
             display: flex;
             justify-content: center;
             height: 100%;
+            background-color: aqua;
     }
     .map-box{
             width: 50%;
             display: flex;
             justify-content: center;
             height: 100%;
+            background-color: antiquewhite;
     }
+    .map-page-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+
 </style>
 <petclinic:layout pageName="map details">
-<div class="map-page-container">
-    <div class="details">
-        ${map.name}aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    </div>
-    <div class="map-box">
-        <svg id="graph"></svg>
-    </div>
-    <script>
-        //INICIA EL MAPA
-        init('${game.id}')
-    </script>
-    
+    <style>
+    .xd-container{
+        margin-top: 0px;
+        margin-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    </style>
+    <div class="map-page-container">
+        <div class="map-details">
+            ${map.name}
+        </div>
+        <div class="map-box">
+            <svg id="graph" style="width: 100%; height: 100%;"></svg>
+        </div>
+        <script>
+            //INICIA EL MAPA
+            init('${game.id}')
+        </script>
+        
 </div>
-
 </petclinic:layout>
