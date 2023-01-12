@@ -165,7 +165,7 @@ public class GameController {
 			model.put("text","Mis partidas");
 			}
 		model.put("result",result);
-		return "games/gameList";
+		return GAME_LISTING_VIEW;
 	}
 
 	@InitBinder

@@ -1,6 +1,6 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.initializer;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Random;
 
@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.AdjacentPositionService;
-import org.springframework.samples.tyrantsOfTheUnderdark.board.position.CustomListingPositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PlayerUsePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.PopulatePositionService;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.position.Position;
@@ -34,8 +33,6 @@ public class InitializePositionService {
     @Autowired
     private PlayerService playerService;
 
-    @Autowired
-    private CustomListingPositionService customListingPositionService;
 
     @Autowired
     private PlayerUsePositionService playerUsePositionService;
