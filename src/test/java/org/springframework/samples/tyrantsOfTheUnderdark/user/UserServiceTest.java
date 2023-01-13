@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.exceptions.DuplicateEmailException;
+import org.springframework.samples.tyrantsOfTheUnderdark.user.exceptions.DuplicateUsernameException;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -49,7 +51,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateUser() {
+    public void testCreateUser() throws DataAccessException, DuplicateUsernameException, DuplicateEmailException {
         User user = new User();
         user.setUsername("destructor28");
         user.setEmail("jorrrrl@gamil.com");
@@ -58,11 +60,7 @@ public class UserServiceTest {
         user.setName("Lolo");
         user.setBirthdate(LocalDate.of(2002, 8, 13));
         assertThat(this.userService.getUserByUsername(user.getUsername())==null).isTrue();
-        try{
-            this.userService.saveUser(user);
-        }catch(Exception e){
-            fail("No deberia salir ningún error");
-        }
+        this.userService.saveUser(user);
         assertThat(this.userService.getUserByUsername(user.getUsername())!=null).isTrue();
     }
 
