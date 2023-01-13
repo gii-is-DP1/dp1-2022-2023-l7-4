@@ -136,6 +136,14 @@ public class Action extends BaseEntity {
         return action;
     }
 
+    public static Action create(){
+        Action action= new Action();
+        action.setOriginalIterations(1);
+        action.setIterations(1);
+        action.setSubactions(new ArrayList<>());
+        return action;
+    }
+
     public boolean isMandatory(Action action) {
         return action.getActionName()==ActionName.THEN && action.getSubactions().get(0)==this;
     }

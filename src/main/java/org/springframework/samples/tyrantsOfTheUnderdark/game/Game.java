@@ -24,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.auditory.AuditableEntity;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
@@ -33,7 +34,6 @@ import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.Path;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.Card;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.HalfDeck;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.action.Action;
-import org.springframework.samples.tyrantsOfTheUnderdark.model.BaseEntity;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.VictoryPoints;
 
@@ -47,11 +47,12 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name="games")
-@JsonIgnoreProperties(allowGetters = false, value = {"qualifying","winner","cardInPlay","chosenPieceToMove","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
+@JsonIgnoreProperties(allowGetters = false, value = {"actualControlMarker","actualTotalControlMarker","creator","modifier","lastModifiedDate","qualifying","winner","cardInPlay","chosenPieceToMove","qualifyingTotalVp","new","id","name","notLoaded","playableZones","currentPlayer","currentAction","endTurnAction","date","round","turnPlayer", "players", "finished", "loaded", "lastActionSkipped", "automaticWhiteTroops", "lastSpyLocation", "mapTemplate", "players", "firstHalfDeck", "secondHalfDeck", "gameDeck", "sellZone", "devoured", "houseGuards", "lolths", "round", "maxCards"
 })
 public class Game extends AuditableEntity{
 
     @NotEmpty
+    @Size(min = 0,max = 30)
     String name= "";
     
     @ManyToOne
@@ -92,7 +93,6 @@ public class Game extends AuditableEntity{
     @Column(columnDefinition = "boolean default true",name="automatic")
     Boolean automaticWhiteTroops= true;
     
-    //TODO  esto es para las acciones que piden suplantar una tropa en donde pusiste/devolviste espia
     @OneToOne()
     Position lastSpyLocation;
 
@@ -182,26 +182,8 @@ public class Game extends AuditableEntity{
         }
         return map;
     }
-
-
-
-    //TODO: COMPROBAR ESO
    
-    public Map<Player,Integer> getQualifyingTotalVp(){
-        Map<Player,Integer> map= new LinkedHashMap<>();
-        for(Player player:this.players){
-            Integer result=getPlayerScore(player).getTotalVp();
-            map.put(player,result);
-        }
-        Map<Player, Integer> resultado = map.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (map1, map2) -> map1, LinkedHashMap::new));
-        return resultado;
-    }
+
 
     public Map<Player, VictoryPoints> getQualifying(){
         Map<Player,VictoryPoints> map= new LinkedHashMap<>();
@@ -233,9 +215,7 @@ public class Game extends AuditableEntity{
     }
        
 
-    public Player getWinner(){
-        return getQualifyingTotalVp().entrySet().stream().findFirst().get().getKey();
-    }
+  
     public VictoryPoints getPlayerScore(Player player){
         VictoryPoints vp= new VictoryPoints();
         Integer controlVP=getControlCityVP(player);
@@ -290,6 +270,11 @@ public class Game extends AuditableEntity{
         List<Integer> zones = new ArrayList<>();
         zones.add(2);
         int playerCount = players.size();
+        if(playerCount == 1){// map edit (no players in game)
+            zones.add(1);
+            zones.add(3);
+            return zones;
+        }
         if(playerCount>=3) zones.add(3);
         if(playerCount==4) zones.add(1);
         return zones;

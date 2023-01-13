@@ -32,9 +32,27 @@
         </tr>
     </table>
 
-    <spring:url value="{username}/edit" var="editUrl">
-        <spring:param name="username" value="${user.username}"/>
-    </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar usuario</a>
+    <c:choose>
+        <c:when test="${editOwn==false}">
+            <spring:url value="{username}/edit" var="editUrl">
+                <spring:param name="username" value="${user.username}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar usuario</a>
+        </c:when>
+        <c:otherwise>
+            <spring:url value="editprofile" var="editUrl">
+            </spring:url>
+            <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar perfil</a>
+        </c:otherwise>
+    </c:choose>
+        <c:choose>
+            <c:when test="${user.canBeDeleted()==true}">
+                <a href="/deleteprofile" class="btn btn-default"> Borrar usuario</a>
+
+            </c:when>
+            <c:otherwise>
+                Este usuario no puede eliminado porque está en una partida
+            </c:otherwise>
+        </c:choose>
 
 </petclinic:layout>

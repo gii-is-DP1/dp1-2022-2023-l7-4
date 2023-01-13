@@ -24,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "paths")
 @Entity
-@JsonIgnoreProperties({"pathReference","game","new","unaligned"})
+@JsonIgnoreProperties({"pathReference","game","new","unaligned","pathTemplate"})
 public class Path extends BaseEntity{
     @ManyToOne
     PathTemplate pathTemplate;

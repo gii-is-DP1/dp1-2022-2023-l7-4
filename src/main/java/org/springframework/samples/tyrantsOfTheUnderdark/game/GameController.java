@@ -19,7 +19,6 @@ import org.springframework.samples.tyrantsOfTheUnderdark.card.CardService;
 import org.springframework.samples.tyrantsOfTheUnderdark.card.HalfDeck;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.Player;
 import org.springframework.samples.tyrantsOfTheUnderdark.player.PlayerService;
-import org.springframework.samples.tyrantsOfTheUnderdark.user.Authorities;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.AuthoritiesService;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.User;
 import org.springframework.samples.tyrantsOfTheUnderdark.user.UserService;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -51,6 +51,9 @@ public class GameController {
 
 
     private static final String VIEWS_GAME_CREATE_FORM = "games/createGameForm";
+	private static final String GAME_LISTING_VIEW="games/gameList";
+	private static final String TO_PLAY="redirect:/play/{gameId}";
+
     
 
 
@@ -60,7 +63,6 @@ public class GameController {
 		List<MapTemplate> availableMaps = mapTemplateService.getAvailableMaps(game);
 		game.getPlayers().removeIf(Objects::isNull);
 		List<User> availableUsers = userService.getAvailableUsers(game);
-		System.out.println("ddddddddddddddddddddddddddddddd");
 		model.put("availableDecks", availableDecks);
 		model.put("availableMaps", availableMaps);
 		model.put("availableUsers", availableUsers);
@@ -96,12 +98,11 @@ public class GameController {
 
 
 
-	//confirmar juego TODO SALVAR TODOS LOS JUGADORES AÑADIENDO EL GAME Y DESPUES SALVAR EL GAME
 	@PostMapping(value = "/games/create/confirm")
 	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model,Principal currentUser ) {
 		if (result.hasErrors()) {
             model.put("game", game);
-			model.put("status","El nombre no debe estar en blanco");
+			model.put("status","Entre  1 y 30 caracteres");
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
@@ -121,9 +122,43 @@ public class GameController {
 		public ModelAndView showgame(@PathVariable("gameId") int gameId) {
 			ModelAndView mav = new ModelAndView("games/gameDetails");
 			mav.addObject(this.gameService.getGameById(gameId));
-
 			return mav;
 		}
+
+	@GetMapping("/games/{gameId}/choose-mode")
+	public ModelAndView chooseMode(@PathVariable("gameId") Integer gameId){
+		ModelAndView result=null;
+		Game game=this.gameService.getGameById(gameId);
+		if(!game.getMapTemplate().hasPreloadedTroops() || !game.isNotLoaded()){
+			result=new ModelAndView(TO_PLAY);
+		}else{
+			result=new ModelAndView("games/chooseMode");
+			result.addObject("gameId",gameId);
+			result.addObject("modes",List.of("Automatico","Manual"));
+		}
+		return result;
+	}
+
+	@GetMapping("/games/{gameId}/process-mode")
+	public ModelAndView processMode(@PathVariable("gameId") Integer gameId
+	,@RequestParam("mode") String mode){
+		Game game=this.gameService.getGameById(gameId);
+		System.out.println(mode);
+		System.out.println(game.isNotLoaded());
+		if(game.isNotLoaded()){
+			game.setRound(-1);
+			if(mode.toLowerCase().trim().equals("manual")){
+				game.setAutomaticWhiteTroops(false);
+			}else{
+				game.setAutomaticWhiteTroops(true);
+			}
+		}
+		this.gameService.save(game);
+		System.out.println(this.gameService.getGameById(gameId).getAutomaticWhiteTroops());
+		ModelAndView result=new ModelAndView(TO_PLAY);
+		return result;
+
+	}
 
 	@GetMapping("/games/join/{gameId}")
 		public String joinGame(@PathVariable("gameId") int gameId, Principal user) {
@@ -136,50 +171,28 @@ public class GameController {
 			playerService.savePlayer(player);
 			return "welcome";
 	}
+	@GetMapping("/games")
+	public ModelAndView showGamesByFilteredName(@RequestParam("name") String name,
+	@RequestParam("state") String state,Principal user){
+		if(name==null) name="";
+		if(state==null) state="";
+		ModelAndView res=new ModelAndView(GAME_LISTING_VIEW);
+		User loggedUser=this.userService.getUserByUsername(user.getName());
+		List<Game> filteredGames=null;
+		if(!loggedUser.isAdmin()){
+			filteredGames=this.gameService.getMyGamesByNameAndState(loggedUser.getUsername(), name, state);
+			res.addObject("text","Mis partidas");
+		}else{
+			filteredGames=this.gameService.getGamesByNameAndState(name, state);
+			res.addObject("text","Lista de partidas del sistema");
+		}
+		res.addObject("selections",filteredGames);
+		res.addObject("states", List.of("Acabados","Pendientes","Todos"));
+		res.addObject("result",loggedUser.isAdmin());
+		res.addObject("search",filteredGames.isEmpty());
+		return res;
+	}
 
-	@GetMapping(value = "/games/find")
-	public String initFindForm(Map<String, Object> model) {
-		model.put("game", new Game());
-		return "games/findGames";
-	}
-	@GetMapping(value = "/games")
-	public String processFindForm(Game game, BindingResult result, Map<String, Object> model) {
-
-		
-		if (game.getName()== null) {
-			game.setName("");
-		}
-		Collection<Game> results = this.gameService.getGameByName(game.getName());
-		
-		if (results.isEmpty()) {
-			result.rejectValue("name", "notFound", "not found");
-			return "games/findGames";
-		}
-		else if (results.size() == 1) {
-			game = results.iterator().next();
-			return "redirect:/games/" + game.getId();
-		}
-		else {
-			model.put("selections", results);
-			return "games/gamesList";
-		}
-	}
-	@GetMapping(value = "/games/list")
-	public String proccesGameListing(Map<String, Object> model, Principal user){
-		String name= user.getName();
-		User user2= this.userService.getUserByUsername(name);
-		Boolean result=authService.getAuthoritiesByName("admin").stream().filter(a->a.getUser()
-		.equals(user2)).collect(Collectors.toList()).size()==1;
-		if(result){ 
-			model.put("selections", gameService.getGames());
-			model.put("text","Lista de partidas");
-		 }else{
-			model.put("selections", gameService.getGamesByUser(name));
-			model.put("text","Mis partidas");
-			}
-		model.put("result",result);
-		return "games/gameList";
-	}
 
 	@InitBinder
 	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {

@@ -3,6 +3,7 @@ package org.springframework.samples.tyrantsOfTheUnderdark.board.position;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,7 +56,7 @@ public class Position{
     @Column(name="for_spy")
     private Boolean forSpy;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         inverseJoinColumns = @JoinColumn(name = "adjacent_id"))
     private List<Position> adjacents=new ArrayList<>();

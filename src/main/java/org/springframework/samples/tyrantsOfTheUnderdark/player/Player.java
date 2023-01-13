@@ -37,7 +37,7 @@ public class Player extends BaseEntity{
 
 
     @NotBlank
-    String name;
+    String name= "newPlayer";
     
     @Column(columnDefinition = "integer default 0")
     @Min(0)

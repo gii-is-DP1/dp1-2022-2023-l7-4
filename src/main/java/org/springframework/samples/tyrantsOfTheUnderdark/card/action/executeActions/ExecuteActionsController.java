@@ -72,17 +72,15 @@ public class ExecuteActionsController {
     @GetMapping("play-card/{cardId}")
     public String generateGameAction(@PathVariable(name = "gameId") Game game,@PathVariable(name = "cardId") Card card){
         List<Card> hand = game.getCurrentPlayer().getHand();
-        //TODO cuando se termine de testear por rutas, cambiar el if
-        // if(hand.contains(card)){ 
-        if(true){
+        //if(hand.contains(card)){
             Action currentAction = actionService.of(card.getAction(),card);
             actionService.save(currentAction);
             game.setCurrentAction(currentAction);
             playerMoveCardsService.moveFromHandToPlayed(card, game.getCurrentPlayer());
             gameService.save(game);
             return EXECUTE_ACTION;
-        }
-        return REDIRECT;
+        //}
+        //return REDIRECT;
     }
 
     @GetMapping("skip")

@@ -64,11 +64,15 @@ public class PopulatePositionService {
             cityService.save(city);
         }
         private void newTroopsInCity(City city) {
+            Integer whiteTroopsCounter= 0;
             for (int i = 0; i < city.getCapacity(); i++) {
             Position p = Position.of(city.getGame());
             try {                
                 p.setCity(city);
-                if(city.getUnaligned().contains(i)) p.setPlayer(playerService.getPlayerById(0));
+                if(city.getUnaligned().contains(i) && whiteTroopsCounter<city.getCapacity()-1) {
+                    p.setPlayer(playerService.getPlayerById(0));
+                    if(city.isStartingCity())whiteTroopsCounter++;
+                }
                 city.getPositions().add(p);
                 positionRepository.save(p);
             } catch (Exception e) { }

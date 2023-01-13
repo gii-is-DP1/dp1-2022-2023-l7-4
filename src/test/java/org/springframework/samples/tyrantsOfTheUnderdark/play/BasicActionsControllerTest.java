@@ -104,6 +104,8 @@ public class BasicActionsControllerTest {
         .andExpect(status().is2xxSuccessful());    
     }
 
+    
+
     @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
     @Test
     public void testShowReturnPiece() throws Exception {
@@ -136,5 +138,13 @@ public class BasicActionsControllerTest {
         mockMvc.perform(post("/play/{gameId}/round/{round}/basicKillTroop",TEST_GAME_ID,TEST_ROUND)
         .with(csrf()).param("positionId", "1"))
         .andExpect(status().is2xxSuccessful());        
+    }
+
+    @WithMockUser(username = "admin1", password = "4dm1n", authorities = {"admin"})
+    @Test
+    public void testSkipBasicAction() throws Exception {
+        mockMvc.perform(get("/play/{gameId}/round/{round}/skip",TEST_GAME_ID,TEST_ROUND))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/play/{gameId}/round/{round}/execute-action"));
     }
 }

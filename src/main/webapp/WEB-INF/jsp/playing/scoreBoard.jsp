@@ -69,14 +69,14 @@
             
                 <thead>
                     <th>Jugador</th>
-                    <th>Puntos por control simple</th>
-                    <th>Puntos por control total</th>
-                    <th>Puntos por trofeos</th>
-                    <th>Puntos en mano</th>
-                    <th>Puntos en la pila de descarte</th>
-                    <th>Puntos en mazo</th>
-                    <th>Puntos por cartas ascendidas</th>
-                    <th>Puntos totales</th>
+                    <th>Control simple</th>
+                    <th>Control total</th>
+                    <th>Sala trofeos</th>
+                    <th>Cartas en posesion</th>
+                    <th>Cartas ascendidas</th>
+                    <th>Marcadores de control</th>
+                    <th>Acciones de carta</th>
+                    <th>TOTAL</th>
                 </thead>
                 <tbody>
                     <c:forEach var="rank" items="${ranking}">
@@ -85,11 +85,11 @@
                     <td><c:out value="${rank.value.controlVP}"></c:out></td>
                     <td><c:out value="${rank.value.totalControlVP}"></c:out></td>
                     <td><c:out value="${rank.value.trophyHallVP}"></c:out></td>
-                    <td><c:out value="${rank.value.handVP}"></c:out></td>
-                    <td><c:out value="${rank.value.discardPileVP}"></c:out></td>
-                    <td><c:out value="${rank.value.deckVP}"></c:out></td>
+                    <td><c:out value="${rank.value.handVP+rank.value.discardPileVP+rank.value.deckVP}"></c:out></td>
                     <td><c:out value="${rank.value.innerCircleVP}"></c:out></td>
-                    <td><c:out value="${rank.value.totalVp}"></c:out></td>
+                    <td><c:out value="${rank.value.markerVP}"></c:out></td>
+                    <td><c:out value="${rank.value.earnedVP}"></c:out></td>
+                    <td><b><c:out value="${rank.value.totalVp}"></c:out></b></td>
                     </tr>
                     </c:forEach>
                 </tbody>
@@ -156,6 +156,8 @@
     }
     body{
         background-image: url(/resources/images/round0-background.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
     }
     td{
         display: table-cell;
@@ -163,8 +165,8 @@
         align-items: center;
         text-align: center;
     }.do-button{
-            width: 20rem;
-            height: 5rem;
+            width: 20vmax;
+            height: 5vmax;
             background-color: #8a2be2;
             border-radius: 1vmax;
             border-color: rgb(52, 10, 83);

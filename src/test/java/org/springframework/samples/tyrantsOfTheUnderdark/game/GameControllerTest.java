@@ -1,13 +1,9 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.game;
 
-import static org.hamcrest.Matchers.is;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.hamcrest.Matchers.hasProperty;
 
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,8 +30,7 @@ public class GameControllerTest {
     private WebApplicationContext context;
     private MockMvc mockMvc;
 
-    @Autowired
-    private GameService gameService;
+
 
     @BeforeEach
     public void setup(){
@@ -43,16 +38,22 @@ public class GameControllerTest {
         .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
-    /*
-     * @WithMockUser(username="anddomrui",authorities = {"player"})
+     @WithMockUser(username="anddomrui",authorities = {"player"})
     @Test
-    public void testProcessRoundZeroWhileAuditing() throws Exception{ //HISTORIAS DE USUARIOS MENCIONADAS: H30
-        mockMvc.perform(post("/play/{gameId}/round/0",TEST_GAME_ID)
-        .with(csrf()).param("positionId", "1"))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(view().name("redirect:/play/"+TEST_GAME_ID))
-        .andExpect(model().attribute("game", hasProperty("modifier",is("anddomrui"))));        
+    public void testShowMyGames() throws Exception{
+        mockMvc.perform(get("/games?name=&state="))
+        .andExpect(status().isOk())
+        .andExpect(view().name("games/gameList"));
+
     }
-     */
+
+    @WithMockUser(username="anddomrui",authorities = {"player"})
+    @Test
+    public void testShowGameDetails() throws Exception{
+        mockMvc.perform(get("/games/{gameId}",TEST_GAME_ID))
+        .andExpect(status().isOk())
+        .andExpect(view().name("games/gameDetails"));
+    }
+     
     
 }

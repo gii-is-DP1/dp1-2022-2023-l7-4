@@ -157,7 +157,7 @@ public class PlayControllerTest {
 
     @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
     @Test
-    public void testShowRoundN() throws Exception{ // HISTORIAS DE USUARIOS MENCIONADAS: H28,H29,H31
+    public void testShowRoundN() throws Exception{ // HISTORIAS DE USUARIOS MENCIONADAS: H28,H29,H31,H34
         game.setRound(1);
         Player actualPlayer=game.getCurrentPlayer();
         mockMvc.perform(get("/play/{gameId}/round/"+game.getRound(),TEST_GAME_ID))
@@ -168,7 +168,8 @@ public class PlayControllerTest {
         .andExpect(model().attribute("totalinnerCirclevp",is( game.getInnerCircleVP(actualPlayer))))
         .andExpect(model().attribute("controlMarkers",is(game.getActualControlMarker())))
         .andExpect(model().attribute("totalControlMarkers",is(game.getActualTotalControlMarker())))
-        .andExpect(model().attribute("positions", is(this.positionServiceRepo.getAllPositionsByGame(game))));
+        .andExpect(model().attribute("positions", is(this.positionServiceRepo.getAllPositionsByGame(game))))
+        .andExpect(model().attribute("vp", is(game.getPlayerScore(actualPlayer))));
     }
 
     @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
@@ -181,6 +182,16 @@ public class PlayControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(view().name("redirect:/play/{gameId}"));
     }
+
+    @WithMockUser(username = "daviddhc", password = "player1", authorities = {"player"})
+    @Test
+    public void testShowScoreBoardWhenGameEnd() throws Exception{
+        mockMvc.perform(get("/play/{gameId}/scoreboard",TEST_GAME_ID))
+        .andExpect(status().isOk())
+        .andExpect(view().name("playing/scoreBoard"));
+    }
+
+
 
 
 

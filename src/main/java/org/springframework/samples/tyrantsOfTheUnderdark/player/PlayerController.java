@@ -21,9 +21,6 @@ public class PlayerController {
 
     private static final String VIEWS_PLAYER_CREATE_FORM = "users/createPlayerForm";
 
-	private static final String VIEWS_CURRENT_PLAYER_DETAILS = "players/currentPlayerDetails";
-
-	private static final String VIEWS_CURRENT_PLAYER_CHANGE_PASSWORD = "players/currentPlayerChangePassword";
 	
 
 	

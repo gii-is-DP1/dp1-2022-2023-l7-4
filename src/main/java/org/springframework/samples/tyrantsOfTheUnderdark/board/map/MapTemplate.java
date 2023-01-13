@@ -7,18 +7,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathTemplate;
-import org.springframework.samples.tyrantsOfTheUnderdark.game.Game;
 import org.springframework.samples.tyrantsOfTheUnderdark.model.BaseEntity;
 
 import lombok.Getter;
@@ -29,22 +25,17 @@ import lombok.Setter;
 @Setter
 public class MapTemplate extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
-
     String name="";
     String description="";
 
 
 
-    @ManyToMany
-    @JoinTable(
-        name = "map_templates_path_templates",
-        joinColumns = @JoinColumn(name = "map_template_id"),
-        inverseJoinColumns = @JoinColumn(name = "path_template_id"))
-    List<PathTemplate> pathTemplates;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mapTemplate")
+    List<PathTemplate> pathTemplates= new ArrayList<>();
 
+    
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mapTemplate")
+    List<CityTemplate> cityTemplates = new ArrayList<>();
 
 
     public Integer startingCityCount(Integer playerCount){
@@ -65,27 +56,21 @@ public class MapTemplate extends BaseEntity{
                 if (secondCity.isStartingCity() ) cities.add(secondCity);
             }
         });
-        System.out.println(getName()+" ct "+cities.size());
         return cities.size();
         
-        // List<Integer> playableZones = game.getPlayableZones();
-        // Predicate<PathTemplate> bothCitiesPlayable = 
-        //     pathT->  playableZones.contains(pathT.getFirstCityTemplate().getZone()) && playableZones.contains(pathT.getSecondCityTemplate().getZone())
-        // ;
-        // Integer ct= pathTemplates.stream()
-        // .filter(bothCitiesPlayable)
-        // .flatMap(path-> Stream.of(path.getFirstCityTemplate(),path.getSecondCityTemplate()))
-        // .filter(cityT-> cityT.isStartingCity())
-        // .collect(Collectors.toSet()).size();
-        // System.out.println(game.getMapTemplate().getName()+" ct "+ct);
-        //     return ct;
+
     }
+    public Boolean hasPreloadedTroops(){
+        return cityTemplates.stream().allMatch(city-> city.getUnaligned()=="")
+        ||
+        pathTemplates.stream().allMatch(path-> path.getUnaligned()=="");
+    }
+
     public Integer maxStartingCityCount(){
         Integer ct= pathTemplates.stream()
         .flatMap(path-> Stream.of(path.getFirstCityTemplate(),path.getSecondCityTemplate()))
         .filter(cityT-> cityT.isStartingCity())
         .collect(Collectors.toSet()).size();
-        System.out.println(" max "+ct);
             return ct;
     }
 

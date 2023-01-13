@@ -3,7 +3,6 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-<!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
 
@@ -28,30 +27,6 @@
 					<span>Inicio</span>
 				</petclinic:menuItem>
 
-				<!-- <petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
-					title="find owners">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Find owners</span>
-				</petclinic:menuItem> -->
-
-				<!-- <petclinic:menuItem active="${name eq 'vets'}" url="/vets"
-					title="veterinarians">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Veterinarians</span>
-				</petclinic:menuItem> -->
-
-				<!-- <petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>Error</span>
-				</petclinic:menuItem> -->
-
-				<!-- <petclinic:menuItem active="${name eq 'position'}" url="/positions"
-					title="positions">
-					<span class="glyphicon glyphicon-map" aria-hidden="true"></span>
-					<span>positions</span>
-				</petclinic:menuItem> -->
-
 				<petclinic:menuItem active="${name eq 'cards'}" url="/cards/menu"
 					title="cards">
 					<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
@@ -66,16 +41,18 @@
 				</petclinic:menuItem>
 			    </sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'games'}" url="/games/list" title="games">
+				<petclinic:menuItem active="${name eq 'games'}" url="/games?name=&state=" title="games">
 				<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 				<span>Partidas</span>
 				</petclinic:menuItem>
 				
+				<sec:authorize url="/actions">
 				<petclinic:menuItem active="${name eq 'actions'}" url="/actions"
 					title="actions">
 					<span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
 					<span>Acciones</span>
 				</petclinic:menuItem>
+			</sec:authorize>
 	
 			</ul>
 
@@ -84,9 +61,8 @@
 
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
-					<li><a href="<c:url value="/login" />">Iniciar Sesión</a></li>
-					<!-- <li><a href="<c:url value="/users/new" />">Registrarse</a></li> -->
-					<li><a href="<c:url value="/user/new" />">Register</a></li>
+					<li><a href="<c:url value="/login" />">Iniciar Sesion</a></li>
+					<li><a href="<c:url value="/user/new" />">Registrarte</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -109,7 +85,7 @@
 											</p>
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Cerrar sesión</a>
+													class="btn btn-primary btn-block btn-sm">Cerrar sesion</a>
 											</p>
 										</div>
 									</div>
@@ -122,12 +98,13 @@
 										<div class="col-lg-12">
 											<p>
 												<a href="<c:url value="/myprofile" />"class="btn btn-primary btn-block">Mi perfil</a>
-												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Cambiar contraseña</a>
+												<a href="<c:url value="/changepassword" />" class="btn btn-danger btn-block">Cambiar clave</a>
 											</p>
 										</div>
 									</div>
 								</div>
 							</li>
+							
 						</ul></li>
 				</sec:authorize>
 			</ul>
