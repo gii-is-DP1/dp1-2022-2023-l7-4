@@ -181,21 +181,7 @@ public class Game extends AuditableEntity{
         return map;
     }
    
-    public Map<Player,Integer> getQualifyingTotalVp(){
-        Map<Player,Integer> map= new LinkedHashMap<>();
-        for(Player player:this.players){
-            Integer result=getPlayerScore(player).getTotalVp();
-            map.put(player,result);
-        }
-        Map<Player, Integer> resultado = map.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (map1, map2) -> map1, LinkedHashMap::new));
-        return resultado;
-    }
+
 
     public Map<Player, VictoryPoints> getQualifying(){
         Map<Player,VictoryPoints> map= new LinkedHashMap<>();
@@ -227,9 +213,7 @@ public class Game extends AuditableEntity{
     }
        
 
-    public Player getWinner(){
-        return getQualifyingTotalVp().entrySet().stream().findFirst().get().getKey();
-    }
+  
     public VictoryPoints getPlayerScore(Player player){
         VictoryPoints vp= new VictoryPoints();
         Integer controlVP=getControlCityVP(player);
