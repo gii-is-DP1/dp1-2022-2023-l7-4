@@ -109,7 +109,7 @@ public class UserController {
     }
 
 	@GetMapping("/users/pagination")
-    public ModelAndView showFilterdCards(User user,@RequestParam("name") String name,
+    public ModelAndView showFilterdUsers(User user,@RequestParam("name") String name,
 	@RequestParam("page") Integer page){
         ModelAndView mav=new ModelAndView(USERS_LISTING_VIEW);
 
