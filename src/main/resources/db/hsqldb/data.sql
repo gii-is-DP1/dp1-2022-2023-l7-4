@@ -1,7 +1,4 @@
-INSERT INTO users(username,password,enabled,name,email,birthdate)
-VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
--- One admin user, named admin1 with passwor 4dm1n and authority admin
--- INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
+INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('admin1','4dm1n',TRUE, 'Admin', 'admin@email.com', '2002-04-08');
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 
 INSERT INTO users(username,password,enabled,name,email,birthdate) VALUES ('manotebar','manotebar',TRUE,'Manuel', 'manotebar@gmail.com', '2000-10-20');
@@ -36,9 +33,7 @@ INSERT INTO authorities(id,username,authority) VALUES (11,'jaas3','admin');
 
 -- MAPS
 INSERT INTO map_templates(id,name,description) VALUES (1,'Mapa Original','Este es el mapa real del juego.<br> Tiene las 26 ciudades y los 40 caminos <br> y al rededor de 140 posiciones jugables!');
-INSERT INTO map_templates(name) VALUES ('small Map 2');
-INSERT INTO map_templates(name) VALUES ('medium Map 3');
-INSERT INTO map_templates(name) VALUES ('Bad made medium Map 3no -> 2 yes');
+
 
 -- CITIES
 INSERT INTO city_templates(id,map_template_id,x,y,unaligned,capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES --ORIGINAL MAP
@@ -68,12 +63,7 @@ INSERT INTO city_templates(id,map_template_id,x,y,unaligned,capacity,name,vp_end
 (24,1,4,3,'0,1',2,'Yathchol',4,FALSE,3,0,0),
 (25,1,4,4,'0,1',6,'Ruinas De Dekanter',5,FALSE,3,0,0),
 (26,1,4,5,'0,1',3,'SS`zuraass`nee',2,FALSE,3,1,1);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (6,'UNO Ini Z2',3,TRUE,2,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (3,'DOS Ini Z2',3,TRUE,2,2,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (4,'TRES blanca Z2',3,FALSE,2,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (5,'CUATRO Ini Z3',6,TRUE,3,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (2,'CINCO Ini Z1',6,TRUE,1,1,2);
-INSERT INTO city_templates(capacity,name,vp_endgame_value,starting_city,zone,marker_vp,marker_influence) VALUES (2,'SEIS blanca Z1',6,FALSE,1,6,2);
+
 
 
 -- Original map paths with white troops
@@ -88,18 +78,7 @@ INSERT INTO path_templates(id,city_id_1,city_id_2,capacity,map_template_id) VALU
 (36,21,26,2,1),(37,22,23,1,1),(38,23,24,1,1),(39,23,25,2,1),(40,25,26,1,1);
 
 
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (27,28,1);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (27,29,3);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (28,29,0);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (28,30,3);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (28,31,3);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (27,31,3);-- GIVES ERROR
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (31,32,2);
-INSERT INTO path_templates(city_id_1,city_id_2,capacity) VALUES (30,32,1);
-
-
-
-
+--HOUSES (For players)
 INSERT INTO house(id,name,hex_color) VALUES (0,'Unaligned','#dddddd');
 INSERT INTO house(id,name,hex_color) VALUES (1,'Baerne','#81ed05');
 INSERT INTO house(id,name,hex_color) VALUES (2,'Mizzrym','#ff9922');
@@ -113,36 +92,32 @@ INSERT INTO halfdecks(id,name,description) VALUES (4,'Basica','Cartas basicas di
 INSERT INTO halfdecks(id,name,description) VALUES (5,'Mazo con 3 cartas','Mazo de testing, no tiene todas la cartas');
 INSERT INTO halfdecks(id,name,description) VALUES (6,'Segundo mazo con 3 cartas','Mazo de testing, no tiene todas las cartas');
 
+--UNALIGED PLAYER (WHITE TROOPS)
+INSERT INTO players(id,name,house_id) VALUES (0, 'Unaligned Enemy',0);
 
 -- GAMES
-INSERT INTO players(id,name,power,influence,house_id) VALUES (0, 'Unaligned Enemy', 10,10,0);
-
 INSERT INTO games(id,date,name,map_template_id,automatic,creator) VALUES  (1,'2022-04-08','Partida mapa original',1,FALSE,'anddomrui');
-INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (1, 'P1 daviddhc', 'daviddhc',10,10,1,1);
-INSERT INTO players(id,name,username,power,influence,house_id,game_id) VALUES (2, 'P2 anddomrui', 'anddomrui',10,10,2,1);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (3, 'P3 manotebar',10,10,3,1);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (4, 'P4 javiFdz',10,10,4,1);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (1, 'P1 daviddhc', 'daviddhc',1,1);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (2, 'P2 anddomrui', 'anddomrui',2,1);
+INSERT INTO players(id,name,house_id,game_id) VALUES (3, 'P3 manotebar',3,1);
+INSERT INTO players(id,name,house_id,game_id) VALUES (4, 'P4 javiFdz',4,1);
 
 
-INSERT INTO games(id,date,name,map_template_id,automatic,creator) VALUES (2,'2022-04-09','Partida zona media',1,FALSE,'javiFdz');
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (5, 'Player1 javiTopG',1000,1000,1,2);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (6, 'Player2 davidZ',1000,1000,2,2);
+INSERT INTO games(id,date,name,map_template_id,automatic,creator) VALUES (2,'2022-04-09','Partida ZONA 2 y 3',1,FALSE,'javiFdz');
+INSERT INTO players(id,name,house_id,game_id) VALUES (5, 'Player1 javiTopG',1,2);
+INSERT INTO players(id,name,house_id,game_id) VALUES (6, 'Player2 davidZ',2,2);
 
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,creator) VALUES (3,'2022-04-09','Tropas blancas ',3,1,2,TRUE,'admin1');
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (7, 'Player1',1000,1000,1,3);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (8, 'Player2',1000,1000,2,3);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,creator) VALUES (3,'2022-04-09','Solo zona 2 ',1,1,2,TRUE,'admin1');
+INSERT INTO players(id,name,house_id,game_id) VALUES (7, 'Player1',1,3);
+INSERT INTO players(id,name,house_id,game_id) VALUES (8, 'Player2',2,3);
 
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,creator) VALUES (4,'2022-04-09','Partida de prueba',3,1,2,FALSE,'admin1');
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (9, 'Player1',1000,1000,1,4);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (10, 'Player2',1000,1000,2,4);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,finished,creator) VALUES (5,'2022-04-09','Partida acabada 1',1,1,2,FALSE,TRUE,'admin1');
+INSERT INTO players(id,name,house_id,game_id) VALUES (11, 'Player1',1,5);
+INSERT INTO players(id,name,house_id,game_id) VALUES (12, 'Player2',2,5);
 
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,finished,creator) VALUES (5,'2022-04-09','Partida acabada 1',3,1,2,FALSE,TRUE,'admin1');
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (11, 'Player1',1000,1000,1,5);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (12, 'Player2',1000,1000,2,5);
-
-INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,finished,creator) VALUES (6,'2022-04-09','Partida acabada 2',3,1,2,FALSE,TRUE,'admin1');
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (13, 'Player1',1000,1000,1,6);
-INSERT INTO players(id,name,power,influence,house_id,game_id) VALUES (14, 'Player2',1000,1000,2,6);
+INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,finished,creator) VALUES (6,'2022-04-09','Partida acabada 2',1,1,2,FALSE,TRUE,'admin1');
+INSERT INTO players(id,name,house_id,game_id) VALUES (13, 'Player1',1,6);
+INSERT INTO players(id,name,house_id,game_id) VALUES (14, 'Player2',2,6);
 
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 
