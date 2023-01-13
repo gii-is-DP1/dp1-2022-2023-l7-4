@@ -123,16 +123,18 @@ pageEncoding="UTF-8" %>
                         console.log("${editable}"=="false"?"none":"")
                         document.getElementById("hideable").style.display = display;
                     </script>
+                     <c:if test="${map.name=='' || map.description==''}">
                     <form:form modelAttribute="map"  class="form-horizontal custom-form"
                         method="post" action="/maps/${map.id}">
                         <label>Nombre y Descripcion del MAPA</label>
-                        
                         <motero2k:inputField label="id" name="id" hidden="hidden" />
                         <motero2k:inputField label="Nombre" name="name" />
                         <motero2k:inputField label="Descripcion" name="description" />
-                        <button class="btn btn-default" type="submit">Actualizar</button>
+                        <div style="color: rgba(205, 248, 255, 0.93); width: 100%; text-align: center; font-size: 1.2vmax; margin-bottom: 10px; text-rendering: optimizeSpeed;"><b>Nombre y descripcion no pueden estar vacios</b></div>
+                        <button class="btn btn-default" type="submit">Crear mapa</button>
                     </form:form>
-
+                </c:if>
+                    <c:if test="${map.name!='' && map.description!=''}">
                     <form:form modelAttribute="cityTemplate"  class="form-horizontal custom-form"
                         method="post" action="/maps/${map.id}/addCity">
                         <label>Nueva CIUDAD</label>
@@ -248,7 +250,7 @@ pageEncoding="UTF-8" %>
                     //INICIA EL MAPA
                     init('${game.id}')
                 </script>
-
+                </c:if>
             </div>
 
         </body>

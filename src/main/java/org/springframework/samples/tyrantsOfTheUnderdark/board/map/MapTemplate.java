@@ -9,11 +9,9 @@ import java.util.stream.Stream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathTemplate;
@@ -26,7 +24,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MapTemplate extends BaseEntity{
-
 
     String name="";
     String description="";
@@ -63,6 +60,12 @@ public class MapTemplate extends BaseEntity{
         
 
     }
+    public Boolean hasPreloadedTroops(){
+        return cityTemplates.stream().allMatch(city-> city.getUnaligned()=="")
+        &&
+        pathTemplates.stream().allMatch(path-> path.getUnaligned()=="");
+    }
+
     public Integer maxStartingCityCount(){
         Integer ct= pathTemplates.stream()
         .flatMap(path-> Stream.of(path.getFirstCityTemplate(),path.getSecondCityTemplate()))

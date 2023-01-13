@@ -45,19 +45,14 @@ public class MapTemplateService {
     }
 
     public Game findGame(MapTemplate map) {
-        System.out.println("hooooooooooola");
-        System.out.println(gameService.getGames().stream().map(x->x.getPlayers()).collect(Collectors.toList()));
         Optional<Game> game = gameService.getGames().stream()
-        // .filter(g-> g.getMapTemplate().equals(map))
+        .filter(g-> g.getMapTemplate().equals(map))
         .filter(g->g.getPlayers().size()==1).findFirst();
         Game finalGame;
         if(game.isPresent()){
             finalGame= game.get();
-            System.out.println("se ha encontrado existente");
         }else{
-            System.out.println("No habia CREANDO");
             finalGame = gameService.ofMapTemplate(map);
-            System.out.println(finalGame.getPlayers());
         }
         intializeGame.loadGameForMapVisual(finalGame);
         gameService.save(finalGame);

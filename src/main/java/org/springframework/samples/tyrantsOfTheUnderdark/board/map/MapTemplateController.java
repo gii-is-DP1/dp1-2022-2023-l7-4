@@ -64,16 +64,19 @@ public class MapTemplateController {
         return MAP_DETAILS;
     }
     @PostMapping("{mapId}")
-    public String mapDetailsSaveName(Map<String,Object> model,@PathVariable("mapId") MapTemplate mapBeforeChanges,@Valid  MapTemplate map,BindingResult result){
-        model.put("errors",result);
-        if(!result.hasErrors()){
+    public String mapDetailsSaveName(Map<String,Object> model,@PathVariable("mapId") MapTemplate mapBeforeChanges,@Valid MapTemplate map,BindingResult result){
+        if(result.hasErrors()){
+            model.put("errorMessage", "Nombre y descripcion no pueden estar vacios");
+        }else{
             mapBeforeChanges.setName(map.getName());
             mapBeforeChanges.setDescription(map.getDescription());
             mapTemplateService.save(mapBeforeChanges);
         }
+
+        model.put("errors",result);
         model.put("cityTemplate",new CityTemplate());
         model.put("pathTemplate",new PathTemplate());
-        model.put("map", map);
+        model.put("map", mapBeforeChanges);
         model.put("game",mapTemplateService.findGame(mapBeforeChanges));
         model.put("editable",mapTemplateService.isEditable(mapBeforeChanges));
         return MAP_DETAILS;
