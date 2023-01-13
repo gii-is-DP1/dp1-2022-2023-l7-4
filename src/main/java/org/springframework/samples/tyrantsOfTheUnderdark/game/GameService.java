@@ -85,7 +85,7 @@ public class GameService {
 	public List<Game> getMyGamesByNameAndState(String username,String name,String state){
 		List<Game> filteredGames=getGamesByNameAndState(name, state);
 		return filteredGames.stream().filter(g-> g.getPlayers().stream()
-		.filter(p->p.getName().contains(username)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
+		.filter(p->p.getName().equals(username)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
 	}
 
 	public void setGameAndHouseToPlayers(Game game){
