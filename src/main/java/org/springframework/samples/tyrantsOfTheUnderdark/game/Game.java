@@ -24,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.auditory.AuditableEntity;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
@@ -51,6 +52,7 @@ import lombok.Setter;
 public class Game extends AuditableEntity{
 
     @NotEmpty
+    @Size(min = 0,max = 30)
     String name= "";
     
     @ManyToOne

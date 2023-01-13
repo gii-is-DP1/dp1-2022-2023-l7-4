@@ -102,7 +102,7 @@ public class GameController {
 	public String processCreationForm(@Valid Game game, BindingResult result, Map<String, Object> model,Principal currentUser ) {
 		if (result.hasErrors()) {
             model.put("game", game);
-			model.put("status","El nombre no debe estar en blanco");
+			model.put("status","Entre  1 y 30 caracteres");
 			return VIEWS_GAME_CREATE_FORM;
 		}
 		else {
