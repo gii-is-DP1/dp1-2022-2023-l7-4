@@ -97,45 +97,45 @@ INSERT INTO players(id,name,house_id) VALUES (0, 'Unaligned Enemy',0);
 
 -- GAMES
 INSERT INTO games(id,date,name,map_template_id,automatic,creator) VALUES  (1,'2022-04-08','Partida mapa original',1,FALSE,'anddomrui');
-INSERT INTO players(id,name,username,house_id,game_id) VALUES (1, 'P1 daviddhc', 'daviddhc',1,1);
-INSERT INTO players(id,name,username,house_id,game_id) VALUES (2, 'P2 anddomrui', 'anddomrui',2,1);
-INSERT INTO players(id,name,house_id,game_id) VALUES (3, 'P3 manotebar',3,1);
-INSERT INTO players(id,name,house_id,game_id) VALUES (4, 'P4 javiFdz',4,1);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (1, 'daviddhc', 'daviddhc',1,1);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (2, 'anddomrui', 'anddomrui',2,1);
+INSERT INTO players(id,name,house_id,game_id) VALUES (3, 'manotebar',3,1);
+INSERT INTO players(id,name,house_id,game_id) VALUES (4, 'jaas3',4,1);
 
 
 INSERT INTO games(id,date,name,map_template_id,automatic,creator) VALUES (2,'2022-04-09','Partida ZONA 2 y 3',1,FALSE,'javiFdz');
-INSERT INTO players(id,name,house_id,game_id) VALUES (5, 'Player1 javiTopG',1,2);
-INSERT INTO players(id,name,house_id,game_id) VALUES (6, 'Player2 davidZ',2,2);
+INSERT INTO players(id,name,house_id,game_id) VALUES (5, 'melae',1,2);
+INSERT INTO players(id,name,house_id,game_id) VALUES (6, 'anddoii',2,2);
 
 INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,creator) VALUES (3,'2022-04-09','Solo zona 2 ',1,1,2,TRUE,'admin1');
-INSERT INTO players(id,name,house_id,game_id) VALUES (7, 'Player1',1,3);
-INSERT INTO players(id,name,house_id,game_id) VALUES (8, 'Player2',2,3);
+INSERT INTO players(id,name,house_id,game_id) VALUES (7, 'anddomrui',1,3);
+INSERT INTO players(id,name,house_id,game_id) VALUES (8, 'anddoii',2,3);
 
 INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,finished,creator) VALUES (5,'2022-04-09','Partida acabada 1',1,1,2,FALSE,TRUE,'admin1');
-INSERT INTO players(id,name,house_id,game_id) VALUES (11, 'Player1',1,5);
-INSERT INTO players(id,name,house_id,game_id) VALUES (12, 'Player2',2,5);
+INSERT INTO players(id,name,house_id,game_id) VALUES (11, 'anddoii',1,5);
+INSERT INTO players(id,name,house_id,game_id) VALUES (12, 'manotebar',2,5);
 
 INSERT INTO games(id,date,name,map_template_id,first_half_deck_id,second_half_deck_id,automatic,finished,creator) VALUES (6,'2022-04-09','Partida acabada 2',1,1,2,FALSE,TRUE,'admin1');
-INSERT INTO players(id,name,house_id,game_id) VALUES (13, 'Player1',1,6);
-INSERT INTO players(id,name,house_id,game_id) VALUES (14, 'Player2',2,6);
+INSERT INTO players(id,name,house_id,game_id) VALUES (13, 'jaas3',1,6);
+INSERT INTO players(id,name,house_id,game_id) VALUES (14, 'manotebar',2,6);
 
 INSERT INTO games(id,date,name,map_template_id,automatic,creator, finished) VALUES  (8,'2022-04-08','Partida mapa original',1,FALSE,'anddomrui', TRUE);
-INSERT INTO players(id,name,username,house_id,game_id) VALUES (15, 'P1 daviddhc', 'daviddhc',1,8);
-INSERT INTO players(id,name,username,house_id,game_id) VALUES (16, 'P2 anddomrui', 'anddomrui',2,8);
-INSERT INTO players(id,name,house_id,game_id) VALUES (17, 'P3 manotebar',3,8);
-INSERT INTO players(id,name,house_id,game_id) VALUES (18, 'P4 javiFdz',4,8);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (15, 'daviddhc', 'daviddhc',1,8);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (16, 'anddomrui', 'anddomrui',2,8);
+INSERT INTO players(id,name,house_id,game_id) VALUES (17, 'manotebar',3,8);
+INSERT INTO players(id,name,house_id,game_id) VALUES (18, 'jaas3',4,8);
 
 INSERT INTO games(id,date,name,map_template_id,automatic,creator, finished) VALUES  (9,'2022-04-08','Partida mapa original',1,FALSE,'anddomrui', TRUE);
-INSERT INTO players(id,name,username,house_id,game_id) VALUES (19, 'P1 daviddhc', 'daviddhc',1,9);
-INSERT INTO players(id,name,username,house_id,game_id) VALUES (20, 'P2 anddomrui', 'anddomrui',2,9);
-INSERT INTO players(id,name,house_id,game_id) VALUES (21, 'P3 manotebar',3,9);
-INSERT INTO players(id,name,house_id,game_id) VALUES (22, 'P4 javiFdz',4,9);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (19, 'daviddhc', 'daviddhc',1,9);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (20, 'anddomrui', 'anddomrui',2,9);
+INSERT INTO players(id,name,house_id,game_id) VALUES (21, 'manotebar',3,9);
+INSERT INTO players(id,name,house_id,game_id) VALUES (22, 'jaas3',4,9);
 
 INSERT INTO games(id,date,name,map_template_id,automatic,creator, finished) VALUES  (10,'2022-04-08','Partida mapa original',1,FALSE,'anddomrui', FALSE);
 INSERT INTO players(id,name,username,house_id,game_id) VALUES (23, 'P1 daviddhc', 'daviddhc',1,10);
-INSERT INTO players(id,name,username,house_id,game_id) VALUES (24, 'P2 anddomrui', 'anddomrui',2,10);
+INSERT INTO players(id,name,username,house_id,game_id) VALUES (24, 'anddomrui', 'anddomrui',2,10);
 INSERT INTO players(id,name,house_id,game_id) VALUES (25, 'P3 manotebar',3,10);
-INSERT INTO players(id,name,house_id,game_id) VALUES (26, 'P4 javiFdz',4,10);
+INSERT INTO players(id,name,house_id,game_id) VALUES (26, 'jaas3',4,10);
 
 -- ACTIONS USED TO FORM COMPLEX ACTIONS
 INSERT INTO actions(id,original_iterations,action_name,value,description) VALUES 

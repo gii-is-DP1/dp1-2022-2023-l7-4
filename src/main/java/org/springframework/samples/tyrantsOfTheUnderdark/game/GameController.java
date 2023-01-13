@@ -129,7 +129,7 @@ public class GameController {
 	public ModelAndView chooseMode(@PathVariable("gameId") Integer gameId){
 		ModelAndView result=null;
 		Game game=this.gameService.getGameById(gameId);
-		if(!game.isNotLoaded()|| !game.getMapTemplate().hasPreloadedTroops()){
+		if(!game.getMapTemplate().hasPreloadedTroops() || !game.isNotLoaded()){
 			result=new ModelAndView(TO_PLAY);
 		}else{
 			result=new ModelAndView("games/chooseMode");

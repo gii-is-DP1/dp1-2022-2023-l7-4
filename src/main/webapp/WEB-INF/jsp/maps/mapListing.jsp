@@ -19,10 +19,9 @@
 </style>
 <petclinic:layout pageName="maps">
 
-    <p class="titles">CREAR MAPA</p>
     <a href="/maps/new"  class="btn btn-default">NUEVO MAPA</a>
     <br><br>
-    <p class="titles">TODOS LOS MAPAS</p>
+    <div style="font-size: 1.2vmax;"><b>TODOS LOS MAPAS</b></div>
     
     <table id="mapsTable" class="table table-striped">
         <thead>

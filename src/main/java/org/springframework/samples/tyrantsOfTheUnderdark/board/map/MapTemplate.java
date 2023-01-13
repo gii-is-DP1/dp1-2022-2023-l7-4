@@ -62,7 +62,7 @@ public class MapTemplate extends BaseEntity{
     }
     public Boolean hasPreloadedTroops(){
         return cityTemplates.stream().allMatch(city-> city.getUnaligned()=="")
-        &&
+        ||
         pathTemplates.stream().allMatch(path-> path.getUnaligned()=="");
     }
 
