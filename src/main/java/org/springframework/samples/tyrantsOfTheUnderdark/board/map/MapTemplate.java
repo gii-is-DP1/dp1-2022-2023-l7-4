@@ -9,11 +9,9 @@ import java.util.stream.Stream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.city.CityTemplate;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.sector.path.PathTemplate;
@@ -27,18 +25,17 @@ import lombok.Setter;
 @Setter
 public class MapTemplate extends BaseEntity{
 
-
     String name="";
     String description="";
 
 
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mapTemplate")
-    List<PathTemplate> pathTemplates;
+    List<PathTemplate> pathTemplates= new ArrayList<>();
 
     
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mapTemplate")
-    List<CityTemplate> cityTemplates;
+    List<CityTemplate> cityTemplates = new ArrayList<>();
 
 
     public Integer startingCityCount(Integer playerCount){
@@ -59,17 +56,21 @@ public class MapTemplate extends BaseEntity{
                 if (secondCity.isStartingCity() ) cities.add(secondCity);
             }
         });
-        System.out.println(getName()+" ct "+cities.size());
         return cities.size();
         
 
     }
+    public Boolean hasPreloadedTroops(){
+        return cityTemplates.stream().allMatch(city-> city.getUnaligned()=="")
+        ||
+        pathTemplates.stream().allMatch(path-> path.getUnaligned()=="");
+    }
+
     public Integer maxStartingCityCount(){
         Integer ct= pathTemplates.stream()
         .flatMap(path-> Stream.of(path.getFirstCityTemplate(),path.getSecondCityTemplate()))
         .filter(cityT-> cityT.isStartingCity())
         .collect(Collectors.toSet()).size();
-        System.out.println(" max "+ct);
             return ct;
     }
 

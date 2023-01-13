@@ -19,10 +19,9 @@
 </style>
 <petclinic:layout pageName="maps">
 
-    <p class="titles">CREAR MAPA</p>
     <a href="/maps/new"  class="btn btn-default">NUEVO MAPA</a>
     <br><br>
-    <p class="titles">TODOS LOS MAPAS</p>
+    <div style="font-size: 1.2vmax;"><b>TODOS LOS MAPAS</b></div>
     
     <table id="mapsTable" class="table table-striped">
         <thead>
@@ -30,7 +29,6 @@
             <th>Nombre</th>
             <th>Descipción</th>
             <th></th>
-            <th>Eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -46,9 +44,7 @@
                 <td>
                     <a href="/maps/${map.id}"  class="btn btn-default">Ver</a>
                 </td>
-                <td>
-                    <a href="/maps/${map.id}/delete"  class="btn btn-default">Eliminar</a>
-                </td>
+
                 
             </tr>
         </c:forEach>

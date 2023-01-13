@@ -31,6 +31,7 @@ public class GameControllerTest {
     private MockMvc mockMvc;
 
 
+
     @BeforeEach
     public void setup(){
         mockMvc=MockMvcBuilders.webAppContextSetup(context)
@@ -40,9 +41,10 @@ public class GameControllerTest {
      @WithMockUser(username="anddomrui",authorities = {"player"})
     @Test
     public void testShowMyGames() throws Exception{
-        mockMvc.perform(get("/games/list"))
+        mockMvc.perform(get("/games?name=&state="))
         .andExpect(status().isOk())
         .andExpect(view().name("games/gameList"));
+
     }
 
     @WithMockUser(username="anddomrui",authorities = {"player"})

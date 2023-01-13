@@ -1,5 +1,6 @@
 package org.springframework.samples.tyrantsOfTheUnderdark.game;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -84,7 +85,7 @@ public class GameService {
 	public List<Game> getMyGamesByNameAndState(String username,String name,String state){
 		List<Game> filteredGames=getGamesByNameAndState(name, state);
 		return filteredGames.stream().filter(g-> g.getPlayers().stream()
-		.filter(p->p.getName().contains(username)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
+		.filter(p->p.getName().equals(username)).collect(Collectors.toList()).size()>0).collect(Collectors.toList());
 	}
 
 	public void setGameAndHouseToPlayers(Game game){
@@ -158,10 +159,10 @@ public class GameService {
     public Game ofMapTemplate(MapTemplate mapTemplate) {
         Game game= new Game();
 		game.setName("map visualizer");
+		Player p = new Player();
+		p.setGame(game);
+		game.getPlayers().add(p);
 		game.setMapTemplate(mapTemplate);
-		for (int i = 0; i < 4; i++) {
-			game.getPlayers().add(playerService.getPlayerById(0));
-		}
 		save(game);
 		return game;
     }

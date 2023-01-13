@@ -24,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.springframework.samples.tyrantsOfTheUnderdark.auditory.AuditableEntity;
 import org.springframework.samples.tyrantsOfTheUnderdark.board.map.MapTemplate;
@@ -51,6 +52,7 @@ import lombok.Setter;
 public class Game extends AuditableEntity{
 
     @NotEmpty
+    @Size(min = 0,max = 30)
     String name= "";
     
     @ManyToOne
@@ -181,21 +183,7 @@ public class Game extends AuditableEntity{
         return map;
     }
    
-    public Map<Player,Integer> getQualifyingTotalVp(){
-        Map<Player,Integer> map= new LinkedHashMap<>();
-        for(Player player:this.players){
-            Integer result=getPlayerScore(player).getTotalVp();
-            map.put(player,result);
-        }
-        Map<Player, Integer> resultado = map.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (map1, map2) -> map1, LinkedHashMap::new));
-        return resultado;
-    }
+
 
     public Map<Player, VictoryPoints> getQualifying(){
         Map<Player,VictoryPoints> map= new LinkedHashMap<>();
@@ -227,9 +215,7 @@ public class Game extends AuditableEntity{
     }
        
 
-    public Player getWinner(){
-        return getQualifyingTotalVp().entrySet().stream().findFirst().get().getKey();
-    }
+  
     public VictoryPoints getPlayerScore(Player player){
         VictoryPoints vp= new VictoryPoints();
         Integer controlVP=getControlCityVP(player);
@@ -284,6 +270,11 @@ public class Game extends AuditableEntity{
         List<Integer> zones = new ArrayList<>();
         zones.add(2);
         int playerCount = players.size();
+        if(playerCount == 1){// map edit (no players in game)
+            zones.add(1);
+            zones.add(3);
+            return zones;
+        }
         if(playerCount>=3) zones.add(3);
         if(playerCount==4) zones.add(1);
         return zones;
